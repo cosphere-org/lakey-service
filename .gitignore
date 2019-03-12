@@ -1,3 +1,5 @@
+
+env_private.sh
 *.py[cod]
 
 # C extensions

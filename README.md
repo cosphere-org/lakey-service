@@ -28,15 +28,7 @@ Laker was built and designed with one goal in mind: "to free up the data, which 
 [ ] describe how to set up ngrok
 - add ngrok conf for each developer to work in an independent way
 - `ngrok start --config ~/.ngrok/ngrok.yml --region eu --all`
-- ```
-authtoken: 56YEhE58pVGEtn9Ymf7Wo_74MT6rVgcazK6dXruBpRq
-tunnels:
-  lakey:
-    addr: 8888
-    proto: http
-    region: eu
-    hostname: lakey.eu.ngrok.io
-```
+
 [ ] add instructions with regards to usage of postgres --> maybe just use dockerized one --> like in presenter and others
 [ ] create notebook for adding custom Catalog Items
 [ ] update docs of lily --> move to github
