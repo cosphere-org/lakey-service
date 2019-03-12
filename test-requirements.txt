@@ -1,0 +1,18 @@
+
+# -- testing framework
+pytest==2.8.7
+
+# -- pytest support for django
+pytest-django==2.9.1
+
+# -- expose pythonpath
+pytest-pythonpath==0.7.1
+
+# -- mock integration with pytest
+pytest-mock==0.10.1
+
+# -- fake data generator
+fake-factory==0.5.6
+
+# -- freeze time
+freezegun==0.3.11
