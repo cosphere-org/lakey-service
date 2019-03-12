@@ -54,6 +54,7 @@ class AuthRequestAuthenticateUIView(View):
     )
     def get(self, request, request_uuid):
 
+        # FIXME: check is such `request_uuid` exists!!!!
         return HttpResponse(render_to_string(
             'authenticate.html',
             {

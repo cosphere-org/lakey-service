@@ -13,8 +13,7 @@ LILY_AUTHORIZER_CLASS = 'account.authorizer.Authorizer'
 SRC_DIR = (
     os.path.dirname(
         os.path.dirname(
-            os.path.dirname(
-                os.path.abspath(__file__)))))
+            os.path.abspath(__file__))))
 
 LILY_PROJECT_BASE = os.path.dirname(SRC_DIR)
 

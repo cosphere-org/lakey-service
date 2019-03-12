@@ -16,10 +16,10 @@ install:  ## install all dependencies and create virtualenv
 # DEVELOPMENT
 #
 shell:  ## run django shell (ipython)
-	source env.sh && python cosphere_auth_service/manage.py shell
+	source env.sh && python lakey_service/manage.py shell
 
 runserver:  ## run development server (for quick checks)
-	source env.sh && python cosphere_auth_service/manage.py runserver
+	source env.sh && python lakey_service/manage.py runserver
 
 #
 # TESTS
@@ -34,22 +34,22 @@ test_all:  ## run all available tests
 # UPGRADE_VERSION
 #
 upgrade_version_patch:  ## upgrade version by patch 0.0.X
-	source env.sh && python cosphere_auth_service/manage.py upgrade_version PATCH
+	source env.sh && python lakey_service/manage.py upgrade_version PATCH
 
 upgrade_version_minor:  ## upgrade version by minor 0.X.0
-	source env.sh && python cosphere_auth_service/manage.py upgrade_version MINOR
+	source env.sh && python lakey_service/manage.py upgrade_version MINOR
 
 upgrade_version_major:  ## upgrade version by major X.0.0
-	source env.sh && python cosphere_auth_service/manage.py upgrade_version MAJOR
+	source env.sh && python lakey_service/manage.py upgrade_version MAJOR
 
 #
 # START
 #
 start:  ## start service locally
 	source env.sh && \
-	python cosphere_auth_service/manage.py migrate && \
-	cd cosphere_auth_service && \
-	gunicorn conf.wsgi_api \
+	python lakey_service/manage.py migrate && \
+	cd lakey_service && \
+	gunicorn conf.wsgi \
 		--worker-class gevent \
 		-w 1 \
 		--log-level=debug \
@@ -57,4 +57,4 @@ start:  ## start service locally
 		-b 127.0.0.1:8000
 
 migrate:  ## migrate
-	python cosphere_auth_service/manage.py migrate
+	python lakey_service/manage.py migrate

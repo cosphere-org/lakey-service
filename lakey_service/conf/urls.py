@@ -16,4 +16,10 @@ urlpatterns = [
             ('catalogue.urls', 'catalogue'),
             namespace='catalogue')),
 
+    url(
+        r'^',
+        include(
+            ('lily.entrypoint.urls', 'entrypoint'),
+            namespace='entrypoint')),
+
 ]

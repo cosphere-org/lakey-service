@@ -2,19 +2,51 @@
 <html>
     <head>
         <title>Lakey Authentication</title>
-        <script
-            src="https://apis.google.com/js/platform.js"
-            async
-            defer>
-        </script>
         <meta
             name="google-signin-client_id"
             content="{{ client_id }}">
 
+        <link
+            href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"
+            rel="stylesheet">
+        <style>
+            body {
+                background: #e4e4e4;
+            }
+
+            #main {
+                height: 200px;
+                width: 100%;
+                font-family: 'IBM Plex Sans', sans-serif;
+            }
+
+            h2 {
+                font-weight: normal;
+            }
+
+            #authenticate {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
         <script
             type="text/javascript">
 
-            let onAuthenticate = (googleUser) => {
+            function renderButton() {
+                gapi.signin2.render('google-auth-button', {
+                    'scope': 'profile email',
+                    'width': 240,
+                    'height': 50,
+                    'longtitle': true,
+                    'theme': 'dark',
+                    'onsuccess': onSuccess,
+                    'onfailure': onFailure
+              });
+            }
+
+            function onSuccess(googleUser) {
                 let authRequestUUID = '{{ auth_request_uuid }}';
                 let profile = googleUser.getBasicProfile();
                 let authorizationCode = googleUser.getAuthResponse().id_token;
@@ -30,26 +62,37 @@
 
                 // document.body.innerHTML = '<div>DONE!</done>';
             }
+
+            function onFailure(error) {
+                console.log(error);
+            }
+
+        </script>
+        <script
+            src="https://apis.google.com/js/platform.js?onload=renderButton"
+            async
+            defer>
         </script>
     </head>
 
     <body>
 
         <div
-            id="authenticate">
+            id="main">
+            <div
+                id="authenticate">
 
-            <h2>Lakey Authentication</h2>
-            <div>
+                <h2>Sign In To Lakey</h2>
                 <div
-                    class="g-signin2"
-                    data-onsuccess="onAuthenticate"></div>
+                    id="google-auth-button"></div>
             </div>
-        </div>
 
-        <div
-            id="done">
+            <div
+                id="done">
 
-            DONE
+                DONE
+            </div>
+
         </div>
     </body>
 
