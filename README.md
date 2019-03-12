@@ -16,7 +16,6 @@ Laker was built and designed with one goal in mind: "to free up the data, which 
 [ ] remember to add task with regards to registering data needs, amount of downloads, who is requesting what etc.
     --> data audit
 
-[ ] move lakey to github
 [ ] finish styling of authentication page
 [ ] create repo for lakey-ui and add some basic stuff there
 [ ] add it to lakey-ui

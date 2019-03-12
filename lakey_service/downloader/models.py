@@ -1,92 +1,91 @@
 
-# from enum import Enum, unique
+from enum import Enum, unique
 
-# from django.contrib.auth.models import User
-# from django.db import models
-# from lily.base.models import (
-#     JSONSchemaField,
-#     ValidatingModel,
-#     number,
-#     schema,
-#     array,
-#     boolean,
-#     string,
-#     object,
-#     one_of,
-#     enum,
-# )
+from django.db import models
+from lily.base.models import (
+    JSONSchemaField,
+    ValidatingModel,
+    number,
+    schema,
+    array,
+    boolean,
+    string,
+    object,
+    one_of,
+    enum,
+)
 
-# from cataloger.models import CatalogItem
-
-
-# def spec_validator(spec):
-
-#     # FIXME: add some simple stuff here!!!! as example
-#     # FIXME: column names must be right
-#     # FIXME: operators work only for certain column types
-#     # ..
-#     pass
+from account.models import Account
+from cataloger.models import CatalogItem
 
 
-# class DownloadProcess(ValidatingModel):
+def spec_validator(spec):
 
-#     #
-#     # Version Control
-#     #
-#     created_datetime = models.DateTimeField(auto_now_add=True)
+    # FIXME: add some simple stuff here!!!! as example
+    # FIXME: column names must be right
+    # FIXME: operators work only for certain column types
+    # ..
+    pass
 
-#     updated_datetime = models.DateTimeField(auto_now=True)
 
-#     #
-#     # Authorship
-#     #
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+class DownloadProcess(ValidatingModel):
 
-#     #
-#     # SPEC
-#     #
-#     @unique
-#     class FilterOperatorsEnum(Enum):
+    #
+    # Version Control
+    #
+    created_datetime = models.DateTimeField(auto_now_add=True)
 
-#         GREATER_THAN = '>'
+    updated_datetime = models.DateTimeField(auto_now=True)
 
-#         GREATER_THAN_EQUAL = '>='
+    #
+    # Authorship
+    #
+    created_by = models.ForeignKey(Account, on_delete=models.CASCADE)
 
-#         SMALLER_THAN = '<'
+    #
+    # Data Related Fields
+    #
+    @unique
+    class FilterOperatorsEnum(Enum):
 
-#         SMALLER_THAN_EQUAL = '<='
+        GREATER_THAN = '>'
 
-#         EQUAL = '='
+        GREATER_THAN_EQUAL = '>='
 
-#         NOT_EQUAL = '!='
+        SMALLER_THAN = '<'
 
-#     download_spec = JSONSchemaField(
-#         schema=schema(
-#             columns=array(
-#                 object(
-#                     name=string(),
-#                     is_selected=boolean(),
-#                 )),
-#             filters=array(
-#                 object(
-#                     name=string(),
-#                     operator=enum(
-#                         list(FilterOperatorsEnum.__members__.values())),
-#                     value=one_of(
-#                         number(),
-#                         string()))),
-#             randomize_ratio=number()),
-#         validators=[spec_validator])
+        SMALLER_THAN_EQUAL = '<='
 
-#     download_uri = models.URLField()
+        EQUAL = '='
 
-#     download_real_size = models.IntegerField()
+        NOT_EQUAL = '!='
 
-#     download_estimated_size = models.IntegerField()
+    data_spec = JSONSchemaField(
+        schema=schema(
+            columns=array(
+                object(
+                    name=string(),
+                    is_selected=boolean(),
+                )),
+            filters=array(
+                object(
+                    name=string(),
+                    operator=enum([o.value for o in FilterOperatorsEnum]),
+                    value=one_of(
+                        number(),
+                        string()))),
+            randomize_ratio=number()),
+        validators=[spec_validator])
 
-#     #
-#     # CATALOGER / EXECUTOR
-#     #
-#     catalog_item = models.ForeignKey(CatalogItem, on_delete=models.CASCADE)
+    data_uri = models.URLField()
 
-#     executor_job_id = models.CharField(max_length=256)
+    data_real_size = models.IntegerField()
+
+    data_estimated_size = models.IntegerField()
+
+    #
+    # CATALOGER / EXECUTOR
+    #
+    catalog_item = models.ForeignKey(CatalogItem, on_delete=models.CASCADE)
+
+    executor_job_id = models.CharField(max_length=256)

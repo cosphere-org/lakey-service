@@ -9,7 +9,6 @@ from account.models import (
     Account,
     AuthRequest,
 )
-from account.constants import ACCOUNT_TYPE_RESEARCHER
 
 
 faker = Faker()
@@ -24,7 +23,7 @@ class EntityFactory:
     def account(self, email=None, type=None):
         return Account.objects.create(
             email=email or faker.email(),
-            type=type or ACCOUNT_TYPE_RESEARCHER)
+            type=type or Account.TYPES.RESEARCHER)
 
     def auth_request(self, account=None):
 

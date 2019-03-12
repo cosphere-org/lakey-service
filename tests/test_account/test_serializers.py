@@ -24,7 +24,8 @@ class AccountSerializerTestCase(TestCase):
         assert AccountSerializer(a).data == {
             '@type': 'account',
             'id': a.id,
-            'email': a.user.email,
+            'email': a.email,
+            'type': a.type,
             'type': 'RESEARCHER',
         }
 

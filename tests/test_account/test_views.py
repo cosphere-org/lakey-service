@@ -104,7 +104,7 @@ class AuthRequestAttachAccountViewTestCase(TestCase):
         }
         assert Account.objects.count() == 1
         a = Account.objects.all().first()
-        assert a.user.email == 'jacky@somewhere.org'
+        assert a.email == 'jacky@somewhere.org'
 
     def test_post__broken_body(self):
 

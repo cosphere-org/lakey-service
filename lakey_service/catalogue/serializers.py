@@ -9,9 +9,9 @@ class CatalogueItemSerializer(serializers.ModelSerializer):
 
     _type = 'catalogue_item'
 
-    maintainer = serializers.SerializerMethodField()
+    maintained_by = serializers.SerializerMethodField()
 
-    def get_maintainer(self, instance) -> AccountSerializer:
+    def get_maintained_by(self, instance) -> AccountSerializer:
         return AccountSerializer(instance).data
 
     class Meta:
@@ -25,7 +25,7 @@ class CatalogueItemSerializer(serializers.ModelSerializer):
             'executor_type',
 
             # -- derived fields
-            'maintainer',
+            'maintained_by',
         )
 
 

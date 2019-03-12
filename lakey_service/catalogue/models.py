@@ -63,6 +63,8 @@ class CatalogueItem(ValidatingModel):
     # FIXME: this must be validated as a part of the overall model validation
     # since I need access to the `spec` field !!!
     sample = JSONSchemaField(
+        default=[],
+        blank=True,
         schema=schema(
             array(
                 object())))
@@ -78,14 +80,14 @@ class CatalogueItem(ValidatingModel):
 
     spec = JSONSchemaField(
         schema=schema(
-            columns=array(
+            array(
                 object(
                     name=string(),
-                    type=enum([(t.name, t.value) for t in ColumnTypesEnum])),
+                    type=enum([(t.name, t.value) for t in ColumnTypesEnum]),
                     size=number(),
                     distribution=array(
                         object(
-                            # value=one_of(number(), string()),
+                            value=one_of(number(), string()),
                             count=number())),
                 ))),
         validators=[spec_validator])

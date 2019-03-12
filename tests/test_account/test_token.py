@@ -34,13 +34,11 @@ class AuthTokenTestCase(TestCase):
     def test_encode(self):
 
         assert AuthToken.encode(
-            Mock(type='BOSS', user=Mock(id=18, email='jacky@gmail.com'))
+            Mock(type='BOSS', id=18, email='jacky@gmail.com')
         ) == (
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.'
-            'eyJ1c2VyX2lkIjoxOCwiZW1haWwiOiJqYWNre'
-            'UBnbWFpbC5jb20iLCJhY2NvdW50X3R5cGUiOi'
-            'JCT1NTIiwiZXhwIjoxNTQxOTMxMjUyfQ.ZKuD'
-            '4HjG0l2AyX0Y0pyOHzLhTwXfEGMW6W3gJ03Fhzg')
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImVtYWlsIjoiam'
+            'Fja3lAZ21haWwuY29tIiwidHlwZSI6IkJPU1MiLCJleHAiOjE1NDE5MzEyNTJ9.'
+            'oP85pR2O---BKVGsu5r3fYDuUzfbIG0W8ijOsSI9aCU')
 
     #
     # DECODE
@@ -52,9 +50,9 @@ class AuthTokenTestCase(TestCase):
             jwt,
             'decode'
         ).return_value = {
-            'user_id': a.user.id,
-            'email': a.user.email,
-            'account_type': a.type,
+            'id': a.id,
+            'email': a.email,
+            'type': a.type,
         }
 
         assert AuthToken.decode('token') == a
@@ -90,7 +88,7 @@ class AuthTokenTestCase(TestCase):
     def test_decode__broken_payload(self):
 
         self.mocker.patch.object(jwt, 'decode').return_value = {
-            'no_user_id': 134,
+            'no_id': 134,
             'email': 'jacky@gmail.com',
         }
 
@@ -107,9 +105,9 @@ class AuthTokenTestCase(TestCase):
     def test_decode__account_does_not_exist(self):
 
         self.mocker.patch.object(jwt, 'decode').return_value = {
-            'user_id': 134,
+            'id': 134,
             'email': 'jacky@gmail.com',
-            'account_type': 'BOSS',
+            'type': 'BOSS',
         }
         request = Mock(META={'HTTP_AUTHORIZATION': 'bearer token'})
 

@@ -21,9 +21,9 @@ class AuthToken:
     def get_payload(account):
 
         return {
-            'account_id': account.id,
-            'account_email': account.email,
-            'account_type': account.type,
+            'id': account.id,
+            'email': account.email,
+            'type': account.type,
             'exp': datetime.utcnow() + settings.AUTH_TOKEN_EXPIRATION_DELTA
         }
 
@@ -46,9 +46,9 @@ class AuthToken:
 
         # -- payload decode
         try:
-            account_id = payload['account_id']
-            account_email = payload['account_email']
-            account_type = payload['account_type']
+            account_id = payload['id']
+            account_email = payload['email']
+            account_type = payload['type']
 
         except KeyError:
             raise EventFactory.AuthError(

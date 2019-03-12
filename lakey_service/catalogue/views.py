@@ -11,7 +11,7 @@ from lily import (
     Access,
 )
 
-from account.constants import ACCOUNT_TYPE_ANY, ACCOUNT_TYPE_ADMIN
+from account.models import Account
 from .domains import CATALOGUE
 from .models import CatalogueItem
 from .serializers import CatalogueItemListSerializer, CatalogueItemSerializer
@@ -27,7 +27,7 @@ class CatalogueItemCollectionView(View):
             title='Create Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[ACCOUNT_TYPE_ADMIN]),
+        access=Access(access_list=[Account.TYPES.ADMIN]),
 
         input=Input(body_parser=CatalogueItemParser),
 
@@ -50,7 +50,7 @@ class CatalogueItemCollectionView(View):
             title='Bulk Read Catalogue Items',
             domain=CATALOGUE),
 
-        access=Access(access_list=ACCOUNT_TYPE_ANY),
+        access=Access(access_list=Account.TYPES.ANY),
 
         input=Input(query_parser=QueryParser),
 
@@ -78,7 +78,7 @@ class CatalogueItemElementView(View):
             title='Read Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=ACCOUNT_TYPE_ANY),
+        access=Access(access_list=Account.TYPES.ANY),
 
         output=Output(serializer=CatalogueItemSerializer),
     )
@@ -93,7 +93,7 @@ class CatalogueItemElementView(View):
             title='Update Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[ACCOUNT_TYPE_ADMIN]),
+        access=Access(access_list=[Account.TYPES.ADMIN]),
 
         input=Input(body_parser=CatalogueItemParser),
 
@@ -114,7 +114,7 @@ class CatalogueItemElementView(View):
             title='Delete Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[ACCOUNT_TYPE_ADMIN]),
+        access=Access(access_list=[Account.TYPES.ADMIN]),
 
         output=Output(serializer=serializers.EmptySerializer),
     )
