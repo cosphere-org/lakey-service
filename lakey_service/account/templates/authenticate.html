@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lakey Authentication</title>
+        <script
+            src="https://apis.google.com/js/platform.js"
+            async
+            defer>
+        </script>
+        <meta
+            name="google-signin-client_id"
+            content="{{ client_id }}">
+
+        <script
+            type="text/javascript">
+
+            let onAuthenticate = (googleUser) => {
+                let authRequestUUID = '{{ auth_request_uuid }}';
+                let profile = googleUser.getBasicProfile();
+                let authorizationCode = googleUser.getAuthResponse().id_token;
+
+                // FIXME: add ajax call!
+                // FIXME: add progress while waiting for ajax
+                // FIXME: add switch to done screen
+                // FIXME: add switch something went wrong screen
+                // FIXME: add nice font
+                // https://developers.google.com/identity/sign-in/web/build-button
+                console.log('id_token: ' + authorizationCode);
+                console.log('Email: ' + profile.getEmail());
+
+                // document.body.innerHTML = '<div>DONE!</done>';
+            }
+        </script>
+    </head>
+
+    <body>
+
+        <div
+            id="authenticate">
+
+            <h2>Lakey Authentication</h2>
+            <div>
+                <div
+                    class="g-signin2"
+                    data-onsuccess="onAuthenticate"></div>
+            </div>
+        </div>
+
+        <div
+            id="done">
+
+            DONE
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,18 @@
+
+# -- qualiter
+# -e git+https://git.viessmann.com/scm/dataeng/qualiter.git#egg=qualiter
+
+# -- lily - API framework
+-e git+https://msobczak@bitbucket.org/goodai/lily.git#egg=lily
+
+# -- cryptography
+itsdangerous==0.24
+
+# -- oauth
+requests-oauthlib==1.2.0
+
+# -- http client
+requests==2.21.0
+
+# -- for checking postgresql connectivity
+# psycopg2-binary>=2.7.5
