@@ -9,10 +9,11 @@ class CatalogueItemSerializer(serializers.ModelSerializer):
 
     _type = 'catalogue_item'
 
-    maintained_by = serializers.SerializerMethodField()
+    created_by = AccountSerializer()
 
-    def get_maintained_by(self, instance) -> AccountSerializer:
-        return AccountSerializer(instance).data
+    updated_by = AccountSerializer()
+
+    maintained_by = AccountSerializer()
 
     class Meta:
         model = CatalogueItem
@@ -23,8 +24,8 @@ class CatalogueItemSerializer(serializers.ModelSerializer):
             'spec',
             'sample',
             'executor_type',
-
-            # -- derived fields
+            'created_by',
+            'updated_by',
             'maintained_by',
         )
 

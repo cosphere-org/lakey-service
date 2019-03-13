@@ -30,8 +30,7 @@ setup(
     name=__service_name__,
     version=__version__,
     description='Lakey for opening up Data Lake for masses',
-    # FIXME: change this!!!!!
-    url='https://git.viessmann.com/projects/HAC/repos/laker',
+    url='https://github.com/cosphere-org/lakey-service',
     author='Viessmann Data Chapter Team',
     author_email='data-engineers@viessmann.com',
     packages=find_packages(),

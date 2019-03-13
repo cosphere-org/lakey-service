@@ -8,7 +8,6 @@ from lily.base.models import (
     number,
     schema,
     array,
-    boolean,
     string,
     object,
     one_of,
@@ -19,7 +18,7 @@ from account.models import Account
 from cataloger.models import CatalogItem
 
 
-def spec_validator(spec):
+def data_spec_validator(spec):
 
     # FIXME: add some simple stuff here!!!! as example
     # FIXME: column names must be right
@@ -46,7 +45,7 @@ class DownloadProcess(ValidatingModel):
     # Data Related Fields
     #
     @unique
-    class FilterOperatorsEnum(Enum):
+    class FilterOperator(Enum):
 
         GREATER_THAN = '>'
 
@@ -63,19 +62,16 @@ class DownloadProcess(ValidatingModel):
     data_spec = JSONSchemaField(
         schema=schema(
             columns=array(
-                object(
-                    name=string(),
-                    is_selected=boolean(),
-                )),
+                string()),
             filters=array(
                 object(
                     name=string(),
-                    operator=enum([o.value for o in FilterOperatorsEnum]),
+                    operator=enum([o.value for o in FilterOperator]),
                     value=one_of(
                         number(),
                         string()))),
             randomize_ratio=number()),
-        validators=[spec_validator])
+        validators=[data_spec_validator])
 
     data_uri = models.URLField()
 

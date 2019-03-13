@@ -26,7 +26,6 @@ class AccountSerializerTestCase(TestCase):
             'id': a.id,
             'email': a.email,
             'type': a.type,
-            'type': 'RESEARCHER',
         }
 
 

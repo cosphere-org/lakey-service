@@ -34,12 +34,12 @@ class AuthorizerTestCase(TestCase):
         request = Mock(META={'HTTP_AUTHORIZATION': 'bearer token'})
 
         # -- raises nothing, just works fine
-        Authorizer([
+        authorized = Authorizer([
             Account.TYPES.RESEARCHER,
             Account.TYPES.ADMIN,
         ]).authorize(request)
 
-        assert request.account == a
+        assert authorized == {'account': a}
 
     def test_authorize__no_header(self):
 
