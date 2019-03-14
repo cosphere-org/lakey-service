@@ -9,36 +9,9 @@ Laker was built and designed with one goal in mind: "to free up the data, which 
 
 ## Reading Commands
 
+```
 http://<uri>/?domain=account_authentication&with_examples=true
-
-## TODO
-
-[ ] create fixture for models
-    --> add manage.py command for creating sample catalog items
-
-[ ] remember to add task with regards to registering data needs, amount of downloads, who is requesting what etc.
-    --> data audit
-
-[ ] create repo for lakey-ui and add some basic stuff there
-[ ] add it to lakey-ui
-[ ] add in lakey-ui authentication screen on discover and download
-[ ] add very basic widget for download
-[ ] add very basic widget for discover --> no full text search just display what it receives
-[ ] on download return random DataFrame
-
-[ ] describe how to set up ngrok
-- add ngrok conf for each developer to work in an independent way
-- `ngrok start --config ~/.ngrok/ngrok.yml --region eu --all`
-[ ] add instructions with regards to usage of postgres --> maybe just use dockerized one --> like in presenter and others
-
-e2e section in lakey --> via notebook
-[ ] create notebook for adding custom Catalog Items
-
-[ ] create installations instructions on github
-[ ] decide how to compile QUERY --> should process download do it based on spec? --> yup or rather executor?
-[ ] TO BE USED for client side download:
-    https://blogs.msdn.microsoft.com/cie/2017/05/13/azure-blob-storage-operations-with-storage-python-sdk/
-    https://github.com/Azure/azure-storage-python/blob/master/azure-storage-blob/azure/storage/blob/baseblobservice.py#L2082
+```
 
 ## Architecture
 
@@ -49,7 +22,7 @@ e2e section in lakey --> via notebook
 [ ] FIXME: add diagram to describe the FLOW here!!!!
 
 
-### Cataloger - discovery of data
+### Catalogue - discovery of data
 
 ...
 
