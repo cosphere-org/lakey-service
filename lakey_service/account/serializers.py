@@ -5,12 +5,8 @@ from .models import Account
 
 
 class AccountSerializer(serializers.ModelSerializer):
+
     _type = 'account'
-
-    email = serializers.SerializerMethodField()
-
-    def get_email(self, instance) -> str:
-        return instance.user.email
 
     class Meta:
         model = Account
@@ -22,6 +18,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
 
 class AuthTokenSerializer(serializers.Serializer):
+
     _type = 'auth_token'
 
     token = serializers.CharField()

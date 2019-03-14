@@ -1,74 +1,180 @@
 
-# from django.views.generic import View
-# from lily import (
-#     command,
-#     Input,
-#     Meta,
-#     name,
-#     Output,
-# )
+from django.views.generic import View
+from lily import (
+    command,
+    Input,
+    Meta,
+    name,
+    Output,
+    Access,
+    serializers,
+)
 
-# from .domains import DOWNLOAD_PROCESSES
-# from .models import DownloadProcess
-# from .serializers import DownloadProcessSerializer
-# from .parsers import DownloadProcessParser
-
-
-# class DownloadProcessElementView(View):
-
-#     @command(
-#         name=name.Read(DownloadProcess),
-
-#         meta=Meta(
-#             title='...',
-#             domain=DOWNLOAD_PROCESSES),
-
-#         output=Output(serializer=DownloadProcessSerializer),
-#     )
-#     def get(self, request, process_id):
-
-#         return self.event.Read(DownloadProcess.objects.get(process_id))
+from account.models import Account
+from catalogue.models import CatalogueItem
+from .domains import DOWNLOAD_REQUESTS
+from .models import DownloadRequest
+from .serializers import (
+    DownloadRequestRenderSerializer,
+    DownloadRequestEstimateSerializer,
+    DownloadRequestSerializer,
+    DownloadRequestListSerializer,
+)
+from .parsers import DownloadRequestParser, DownloadRequestRenderParser
 
 
-# class DownloadProcessCollectionView(View):
+class DownloadRequestRenderView(View):
 
-#     @command(
-#         name=name.Create(DownloadProcess),
+    @command(
+        name=name.Execute('RENDER', 'DOWNLOAD_REQUEST_UI_DATA'),
 
-#         meta=Meta(
-#             title='...',
-#             domain=DOWNLOAD_PROCESSES),
+        meta=Meta(
+            title=(
+                'Render data needed for the built up of the '
+                'download request form on client side'),
+            domain=DOWNLOAD_REQUESTS),
 
-#         input=Input(body=DownloadProcessParser),
+        input=Input(body_parser=DownloadRequestRenderParser),
 
-#         output=Output(serializer=DownloadProcessSerializer),
-#     )
-#     def post(self, request):
+        access=Access(access_list=Account.TYPES.ANY),
 
-#         process, _ = DownloadProcess.objects.get_or_create(
-#             download_spec=request.body['download_spec'])
+        output=Output(serializer=DownloadRequestRenderSerializer),
+    )
+    def post(self, request):
 
-#         return self.event.Created(process)
+        ci = CatalogueItem.objects.get(
+            id=request.input.body['catalogue_item_id'])
+
+        columns_operators = []
+        for column in ci.spec:
+            columns_operators.append({
+                'name': column['name'],
+                'operators': (
+                    DownloadRequest.column_type_to_operators[column['type']]),
+            })
+
+        raise self.event.Executed({
+            'columns_operators': columns_operators,
+        })
 
 
-# class DownloadProcessEstimateView(View):
+class DownloadRequestEstimateView(View):
 
-#     @command(
-#         name=name.Execute('ESTIMATE', 'SIZE_OF_DOWNLOAD_PROCESS'),
+    @command(
+        name=name.Execute('ESTIMATE', 'SIZE_OF_DOWNLOAD_REQUEST'),
 
-#         meta=Meta(
-#             title='...',
-#             domain=DOWNLOAD_PROCESSES),
+        meta=Meta(
+            title='Estimate the size download based on the provided spec',
+            domain=DOWNLOAD_REQUESTS),
 
-#         input=Input(body=DownloadProcessParser),
+        input=Input(body_parser=DownloadRequestParser),
 
-#         output=Output(serializer=DownloadProcessSerializer),
-#     )
-#     def post(self, request):
+        access=Access(access_list=Account.TYPES.ANY),
 
-#         download_spec = request.body['download_spec']
+        output=Output(serializer=DownloadRequestEstimateSerializer),
+    )
+    def post(self, request):
 
-#         estimated_size = DownloadProcess.objects.estimate_size(
-#             download_spec=download_spec)
+        raise self.event.Executed({
+            'estimated_size': DownloadRequest.objects.estimate_size(
+                **request.input.body),
+        })
 
-#         return self.event.Executed({'estimated_size': estimated_size})
+
+class DownloadRequestCollectionView(View):
+
+    @command(
+        name=name.Create(DownloadRequest),
+
+        meta=Meta(
+            title='Create Download Request',
+            description='''
+                Create a Download Request in a smart way meaning that:
+                - if same `DownloadRequest` already exists do not start
+                  another one. (FIXME: maybe just attach user to the
+                  waiters list)
+                -
+            ''',
+            domain=DOWNLOAD_REQUESTS),
+
+        input=Input(body_parser=DownloadRequestParser),
+
+        access=Access(access_list=Account.TYPES.ANY),
+
+        output=Output(serializer=DownloadRequestSerializer),
+    )
+    def post(self, request):
+
+        # @sowj add mechanism for figuring out if we're dealing with
+        # existing download request OR nor
+        # what if we have already another download that finished
+        # but it has slightly different spec but contain within
+        # the requested that??
+        r = DownloadRequest.objects.create(
+            created_by=request.access['account'],
+            **request.input.body)
+        r.waiters.add(request.access['account'])
+
+        raise self.event.Created(r)
+
+    @command(
+        name=name.BulkRead(DownloadRequest),
+
+        meta=Meta(
+            title='Bulk Read Download Requests which you are waiting for',
+            domain=DOWNLOAD_REQUESTS),
+
+        access=Access(access_list=Account.TYPES.ANY),
+
+        output=Output(serializer=DownloadRequestListSerializer),
+    )
+    def get(self, request):
+
+        requests = DownloadRequest.objects.filter(
+            waiters__id=request.access['account'].id)
+
+        raise self.event.BulkRead({'requests': requests})
+
+
+class DownloadRequestElementView(View):
+
+    @command(
+        name=name.Read(DownloadRequest),
+
+        meta=Meta(
+            title='Read DownloadRequest one is waiting for',
+            domain=DOWNLOAD_REQUESTS),
+
+        access=Access(access_list=Account.TYPES.ANY),
+
+        output=Output(serializer=DownloadRequestSerializer),
+    )
+    def get(self, request, request_id):
+
+        raise self.event.Read(
+            DownloadRequest.objects.get(
+                waiters__id=request.access['account'].id,
+                id=request_id))
+
+    @command(
+        name=name.Delete(DownloadRequest),
+
+        meta=Meta(
+            title='Creator can cancel request or remove himself from waiters',
+            domain=DOWNLOAD_REQUESTS),
+
+        access=Access(access_list=Account.TYPES.ANY),
+
+        output=Output(serializer=serializers.EmptySerializer),
+    )
+    def delete(self, request, request_id):
+
+        account = request.access['account']
+        r = DownloadRequest.objects.get(id=request_id)
+        r.waiters.remove(account)
+
+        if r.waiters.count() == 0:
+            r.is_cancelled = True
+            r.save()
+
+        raise self.event.Deleted()

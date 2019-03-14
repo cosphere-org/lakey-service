@@ -9,11 +9,11 @@ urlpatterns = [
     url(
         r'^items/$',
         views.CatalogueItemCollectionView.as_view(),
-        name='catalogue.items.collection'),
+        name='items.collection'),
 
     url(
         r'^items/(?P<item_id>\d+)$',
         views.CatalogueItemElementView.as_view(),
-        name='catalogue.items.element'),
+        name='items.element'),
 
 ]

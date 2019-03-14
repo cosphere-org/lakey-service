@@ -16,4 +16,16 @@ urlpatterns = [
             ('catalogue.urls', 'catalogue'),
             namespace='catalogue')),
 
+    url(
+        r'^downloader/',
+        include(
+            ('downloader.urls', 'downloader'),
+            namespace='downloader')),
+
+    url(
+        r'^',
+        include(
+            ('lily.entrypoint.urls', 'entrypoint'),
+            namespace='entrypoint')),
+
 ]

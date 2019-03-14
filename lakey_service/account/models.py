@@ -8,17 +8,24 @@ from requests_oauthlib import OAuth2Session
 from lily.base.events import EventFactory
 
 from .token import AuthToken
-from .constants import ACCOUNT_TYPE_ANY, ACCOUNT_TYPE_RESEARCHER
 
 
 class Account(models.Model):
 
     email = models.EmailField(unique=True)
 
+    class TYPES:
+
+        RESEARCHER = 'RESEARCHER'
+
+        ADMIN = 'ADMIN'
+
+        ANY = [RESEARCHER, ADMIN]
+
     type = models.CharField(
         max_length=64,
-        default=ACCOUNT_TYPE_RESEARCHER,
-        choices=[(t, t) for t in ACCOUNT_TYPE_ANY])
+        default=TYPES.RESEARCHER,
+        choices=[(t, t) for t in TYPES.ANY])
 
 
 class AuthRequest(models.Model):

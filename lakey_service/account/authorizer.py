@@ -18,7 +18,7 @@ class Authorizer:
             raise EventFactory.AuthError('COULD_NOT_FIND_AUTH_TOKEN')
 
         else:
-            if type_ != 'bearer':
+            if type_.lower().strip() != 'bearer':
                 raise EventFactory.AuthError('COULD_NOT_FIND_AUTH_TOKEN')
 
         account = AuthToken.decode(token)
@@ -26,4 +26,6 @@ class Authorizer:
         if account.type not in self.access_list:
             raise EventFactory.AccessDenied('ACCESS_DENIED')
 
-        request.account = account
+        # -- return the enrichment that should be available as
+        # -- `request.access` attribute
+        return {'account': account}

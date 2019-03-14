@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from unittest.mock import Mock
 
 from django.test import TestCase, override_settings
-from django.contrib.auth.models import User
 from django.utils import timezone
 from freezegun import freeze_time
 import pytest
@@ -24,14 +23,12 @@ class AccountTestCase(TestCase):
 
     def test_simple_create(self):
 
-        user = User.objects.create(
-            username='jacky@some.io',
+        a = Account.objects.create(
             email='jacky@some.io',
-            is_active=True)
+            type=Account.TYPES.ADMIN)
 
-        a = Account.objects.create(user=user)
-
-        assert a.user == user
+        assert a.email == 'jacky@some.io'
+        assert a.type == Account.TYPES.ADMIN
 
 
 class AuthRequestTestCase(TestCase):
@@ -67,7 +64,7 @@ class AuthRequestTestCase(TestCase):
 
         assert Account.objects.count() == 1
         r.refresh_from_db()
-        assert r.account.user.email == 'jacky@somewhere.org'
+        assert r.account.email == 'jacky@somewhere.org'
 
     def test_attach_account__account_exists(self):
 

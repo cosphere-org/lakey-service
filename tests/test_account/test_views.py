@@ -1,11 +1,14 @@
 
+from datetime import datetime, timedelta
 import json
 from uuid import uuid1
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
+from django.utils import timezone
 from lily.base.test import Client
 import pytest
+from freezegun import freeze_time
 
 from account.models import AuthRequest, Account
 from account.token import AuthToken
@@ -104,7 +107,7 @@ class AuthRequestAttachAccountViewTestCase(TestCase):
         }
         assert Account.objects.count() == 1
         a = Account.objects.all().first()
-        assert a.user.email == 'jacky@somewhere.org'
+        assert a.email == 'jacky@somewhere.org'
 
     def test_post__broken_body(self):
 
@@ -195,5 +198,26 @@ class AuthTokenViewTestCase(TestCase):
             'token': 'fd78cd7d87f',
         }
 
+    @override_settings(AUTH_REQUEST_EXPIRATION_DELTA=timedelta(seconds=120))
+    @freeze_time('2014-10-10 12:00:00')
     def test_post_expired(self):
-        pass
+
+        r = ef.auth_request()
+        r.account = ef.account()
+        r.created_datetime = timezone.make_aware(
+            datetime(2014, 10, 10, 11, 57, 0))
+        r.save()
+
+        response = self.app.post(
+            self.uri,
+            data=json.dumps({
+                'request_uuid': str(r.uuid),
+            }),
+            content_type='application/json')
+
+        assert response.status_code == 400
+        assert response.json() == {
+            '@event': 'EXPIRED_AUTH_REQUEST_DETECTED',
+            '@type': 'error',
+            'user_id': None,
+        }

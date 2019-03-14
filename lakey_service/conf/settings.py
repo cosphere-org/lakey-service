@@ -13,8 +13,7 @@ LILY_AUTHORIZER_CLASS = 'account.authorizer.Authorizer'
 SRC_DIR = (
     os.path.dirname(
         os.path.dirname(
-            os.path.dirname(
-                os.path.abspath(__file__)))))
+            os.path.abspath(__file__))))
 
 LILY_PROJECT_BASE = os.path.dirname(SRC_DIR)
 
@@ -109,7 +108,6 @@ INSTALLED_APPS = (
     'lily.docs',
     'lily.repo',
 
-    # 'raven.contrib.django.raven_compat',
     'django.contrib.postgres',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,6 +116,7 @@ INSTALLED_APPS = (
     # -- service's apps
     'account',
     'catalogue',
+    'downloader',
 )
 
 MIDDLEWARE = [

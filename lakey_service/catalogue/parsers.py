@@ -6,6 +6,8 @@ from .models import CatalogueItem
 
 class CatalogueItemParser(parsers.ModelParser):
 
+    maintained_by_id = parsers.IntegerField()
+
     class Meta:
         model = CatalogueItem
 
@@ -14,6 +16,6 @@ class CatalogueItemParser(parsers.ModelParser):
             'name',
             'spec',
             'sample',
-            'maintainer_user_id',
+            'maintained_by_id',
             'executor_type',
         )

@@ -1,15 +1,23 @@
 
-# from lily import parsers
+from lily import parsers
 
-# from .models import DownloadProcess
+from .models import DownloadRequest
 
 
-# class DownloadProcessParser(parsers.ModelParser):
+class DownloadRequestRenderParser(parsers.BodyParser):
 
-#     class Meta:
-#         model = DownloadProcess
+    catalogue_item_id = parsers.IntegerField()
 
-#         fields = (
-#             # -- model fields
-#             'download_spec',
-#         )
+
+class DownloadRequestParser(parsers.ModelParser):
+
+    catalogue_item_id = parsers.IntegerField()
+
+    class Meta:
+        model = DownloadRequest
+
+        fields = (
+            # -- model fields
+            'spec',
+            'catalogue_item_id',
+        )

@@ -14,5 +14,8 @@ requests-oauthlib==1.2.0
 # -- http client
 requests==2.21.0
 
-# -- for checking postgresql connectivity
-# psycopg2-binary>=2.7.5
+# -- for serving requests
+gunicorn==19.9.0
+
+# -- async worker for gunicorn
+gevent==1.4.0

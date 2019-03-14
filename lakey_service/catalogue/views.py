@@ -11,7 +11,7 @@ from lily import (
     Access,
 )
 
-from account.constants import ACCOUNT_TYPE_ANY, ACCOUNT_TYPE_ADMIN
+from account.models import Account
 from .domains import CATALOGUE
 from .models import CatalogueItem
 from .serializers import CatalogueItemListSerializer, CatalogueItemSerializer
@@ -27,21 +27,23 @@ class CatalogueItemCollectionView(View):
             title='Create Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[ACCOUNT_TYPE_ADMIN]),
+        access=Access(access_list=[Account.TYPES.ADMIN]),
 
         input=Input(body_parser=CatalogueItemParser),
 
-        output=Output(serializer=CatalogueItemListSerializer),
+        output=Output(serializer=CatalogueItemSerializer),
     )
     def post(self, request):
 
-        spec = request.body['spec']
-
-        return self.event.Created(CatalogueItem.objects.create(spec=spec))
+        raise self.event.Created(
+            CatalogueItem.objects.create(
+                created_by=request.access['account'],
+                updated_by=request.access['account'],
+                **request.input.body))
 
     class QueryParser(parsers.QueryParser):
 
-        query = parsers.CharField()
+        query = parsers.CharField(default=None)
 
     @command(
         name=name.BulkRead(CatalogueItem),
@@ -50,7 +52,7 @@ class CatalogueItemCollectionView(View):
             title='Bulk Read Catalogue Items',
             domain=CATALOGUE),
 
-        access=Access(access_list=ACCOUNT_TYPE_ANY),
+        access=Access(access_list=Account.TYPES.ANY),
 
         input=Input(query_parser=QueryParser),
 
@@ -58,15 +60,19 @@ class CatalogueItemCollectionView(View):
     )
     def get(self, request):
 
-        query = request.query['query']
+        query = request.input.query['query']
 
         if query:
-            items = CatalogueItem.objects.fts(query=query)
+            # FIXME: @zibg this is where you enter.
+            # 1. you must figure out which fields we want to search
+            # 2. how we must parse the query
+            # 3. and so on ...
+            items = CatalogueItem.objects.filter(name__icontains=query)
 
         else:
             items = CatalogueItem.objects.all()
 
-        return self.event.BulkRead({'items': items})
+        raise self.event.BulkRead({'items': items})
 
 
 class CatalogueItemElementView(View):
@@ -78,13 +84,13 @@ class CatalogueItemElementView(View):
             title='Read Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=ACCOUNT_TYPE_ANY),
+        access=Access(access_list=Account.TYPES.ANY),
 
         output=Output(serializer=CatalogueItemSerializer),
     )
     def get(self, request, item_id):
 
-        return self.event.Read(CatalogueItem.objects.get(id=item_id))
+        raise self.event.Read(CatalogueItem.objects.get(id=item_id))
 
     @command(
         name=name.Update(CatalogueItem),
@@ -93,7 +99,7 @@ class CatalogueItemElementView(View):
             title='Update Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[ACCOUNT_TYPE_ADMIN]),
+        access=Access(access_list=[Account.TYPES.ADMIN]),
 
         input=Input(body_parser=CatalogueItemParser),
 
@@ -102,10 +108,13 @@ class CatalogueItemElementView(View):
     def put(self, request, item_id):
 
         item = CatalogueItem.objects.get(id=item_id)
-        item.name = request.body['name']
+        for field, value in request.input.body.items():
+            setattr(item, field, value)
+
+        item.updated_by = request.access['account']
         item.save()
 
-        return self.event.Updated(item)
+        raise self.event.Updated(item)
 
     @command(
         name=name.Delete(CatalogueItem),
@@ -114,13 +123,24 @@ class CatalogueItemElementView(View):
             title='Delete Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[ACCOUNT_TYPE_ADMIN]),
+        access=Access(access_list=[Account.TYPES.ADMIN]),
 
         output=Output(serializer=serializers.EmptySerializer),
     )
     def delete(self, request, item_id):
 
         item = CatalogueItem.objects.get(id=item_id)
+        not_cancelled_count = (
+            item.download_requests.filter(is_cancelled=False).count())
+
+        if not_cancelled_count:
+            raise self.event.BrokenRequest(
+                'NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED',
+                data={
+                    'item_id': int(item_id),
+                    'not_cancelled_count': not_cancelled_count,
+                })
+
         item.delete()
 
-        return self.event.Deleted()
+        raise self.event.Deleted()
