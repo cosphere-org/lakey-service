@@ -68,6 +68,8 @@ class CatalogueItemCollectionViewTestCase(TestCase):
             '@event': 'CATALOGUEITEM_CREATED',
             **CatalogueItemSerializer(ci).data,
         }
+        assert ci.created_by == self.account
+        assert ci.updated_by == self.account
 
     def test_post_400__broken_request(self):
 
@@ -243,8 +245,12 @@ class CatalogueItemElementViewTestCase(TestCase):
     #
     def test_put_200(self):
 
-        a = ef.account()
-        ci = ef.catalogue_item(name='temperatures')
+        a_0 = ef.account()
+        a_1 = ef.account()
+        ci = ef.catalogue_item(
+            name='temperatures',
+            created_by=a_1,
+            updated_by=a_1)
 
         response = self.app.put(
             self.get_uri(ci.id),
@@ -260,7 +266,7 @@ class CatalogueItemElementViewTestCase(TestCase):
                         'distribution': None,
                     },
                 ],
-                'maintained_by_id': a.id,
+                'maintained_by_id': a_0.id,
                 'executor_type': 'DATABRICKS',
             }),
             content_type='application/json',
@@ -282,7 +288,9 @@ class CatalogueItemElementViewTestCase(TestCase):
                 'distribution': None,
             },
         ]
-        assert ci.maintained_by == a
+        assert ci.maintained_by == a_0
+        assert ci.created_by == a_1
+        assert ci.updated_by == self.account
         assert ci.executor_type == 'DATABRICKS'
 
     def test_put_400(self):
@@ -371,6 +379,53 @@ class CatalogueItemElementViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'CATALOGUEITEM_DELETED',
             '@type': 'empty',
+        }
+
+    def test_delete_400__not_cancelled_download_requests(self):
+
+        ci_0 = ef.catalogue_item(
+            name='temperatures',
+            spec=[
+                {
+                    'name': 'price',
+                    'type': 'INTEGER',
+                    'is_nullable': True,
+                    'distribution': None,
+                    'size': 1920,
+                },
+            ])
+        ef.download_request(
+            spec={
+                'columns': ['price'],
+                'filters': [],
+                'randomize_ratio': 0.1,
+            },
+            catalogue_item=ci_0)
+        ef.download_request(
+            spec={
+                'columns': ['price'],
+                'filters': [],
+                'randomize_ratio': 0.2,
+            },
+            catalogue_item=ci_0, is_cancelled=True)
+
+        # -- noise
+        ci_1 = ef.catalogue_item(name='iot_features')  # noqa
+
+        assert CatalogueItem.objects.all().count() == 2
+
+        response = self.app.delete(
+            self.get_uri(ci_0.id),
+            **self.headers)
+
+        assert CatalogueItem.objects.all().count() == 2
+        assert response.status_code == 400
+        assert response.json() == {
+            '@event': 'NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED',
+            '@type': 'error',
+            'item_id': ci_0.id,
+            'not_cancelled_count': 1,
+            'user_id': None,
         }
 
     def test_delete_404(self):

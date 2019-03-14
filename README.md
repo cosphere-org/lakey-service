@@ -13,43 +13,9 @@ http://<uri>/?domain=account_authentication&with_examples=true
 
 ## TODO
 
-LILY CHANGES
-    [ ] add example commands with serializers and parsers to the docs of lily
-
-    Input(body OR query)
-        request.input.body
-        request.input.query
-
-    Access()
-        request.access
-    [ ] move lily to github
-    [ ] LILY -> remove auto user_id from each request log
-    [ ] allow schema of JSON fields to get into the ENTRYPOINT
-        --> remove the $schema thingy only accept the pure schema
-    [ ] cleanup the idea of context (context.py)
-
-    [ ] fix the entrypoint so that it doesn't show bitbucket link!!!
-    [ ] expose lily_assitent
-        lily_assitent.makefile
-    [ ] fix lily_client render on gateway!!!
-        --> should be entangled from the rest
-    [ ] lily_delivery
-        add commands for dumping docker machines and saving in some secure place
-        like AWS secrets
-        lily_delivery.makefile
-    [ ] update docs of lily --> move to github
-    [ ] add lily assitent --> move to github
-    [ ] lily sort out stuff with `conf.yaml` --> maybe overwrite setup.py?
-    [ ] add help_text to the rendered endpoint spec that can be added to the serializer and parser (how to handle render fields???)
-    [ ] create a drawing of the commands and events around domains interacting!!! --> with embedded commands --> create docs on CoSphere!!!!
-    [ ] the ambition / the goal --> async tasks as Commands!!!!
-    [ ] add lily.makefile generator
-    [ ] add lily_assitent.makefile generator
-
 [ ] create fixture for models
     --> add manage.py command for creating sample catalog items
 
-[ ] render API.md!!!!
 [ ] remember to add task with regards to registering data needs, amount of downloads, who is requesting what etc.
     --> data audit
 

@@ -36,7 +36,10 @@ class CatalogueItemCollectionView(View):
     def post(self, request):
 
         raise self.event.Created(
-            CatalogueItem.objects.create(**request.input.body))
+            CatalogueItem.objects.create(
+                created_by=request.access['account'],
+                updated_by=request.access['account'],
+                **request.input.body))
 
     class QueryParser(parsers.QueryParser):
 
@@ -107,6 +110,8 @@ class CatalogueItemElementView(View):
         item = CatalogueItem.objects.get(id=item_id)
         for field, value in request.input.body.items():
             setattr(item, field, value)
+
+        item.updated_by = request.access['account']
         item.save()
 
         raise self.event.Updated(item)
@@ -125,6 +130,17 @@ class CatalogueItemElementView(View):
     def delete(self, request, item_id):
 
         item = CatalogueItem.objects.get(id=item_id)
+        not_cancelled_count = (
+            item.download_requests.filter(is_cancelled=False).count())
+
+        if not_cancelled_count:
+            raise self.event.BrokenRequest(
+                'NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED',
+                data={
+                    'item_id': int(item_id),
+                    'not_cancelled_count': not_cancelled_count,
+                })
+
         item.delete()
 
         raise self.event.Deleted()

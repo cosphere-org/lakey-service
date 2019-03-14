@@ -8,6 +8,7 @@ from account.models import (
     AuthRequest,
 )
 from catalogue.models import CatalogueItem
+from downloader.models import DownloadRequest
 
 faker = Faker()
 
@@ -18,6 +19,7 @@ class EntityFactory:
         Account.objects.all().delete()
         AuthRequest.objects.all().delete()
         CatalogueItem.objects.all().delete()
+        DownloadRequest.objects.all().delete()
 
     def account(self, email=None, type=None):
         return Account.objects.create(
@@ -71,3 +73,27 @@ class EntityFactory:
                 },
             ],
             executor_type=executor_type or choice(['DATABRICKS', 'ATHENA']))
+
+    def download_request(
+            self,
+            created_by=None,
+            spec=None,
+            uri=None,
+            real_size=None,
+            estimated_size=None,
+            catalogue_item=None,
+            is_cancelled=None,
+            executor_job_id=None):
+
+        if is_cancelled is None:
+            is_cancelled = False
+
+        return DownloadRequest.objects.create(
+            created_by=created_by,
+            spec=spec,
+            uri=uri,
+            real_size=real_size,
+            estimated_size=estimated_size,
+            catalogue_item=catalogue_item,
+            is_cancelled=is_cancelled,
+            executor_job_id=executor_job_id)

@@ -15,7 +15,7 @@ class CatalogueItemParserTestCase(TestCase):
 
     def test_parse(self):
 
-        parsed = CatalogueItemParser(data={
+        parser = CatalogueItemParser(data={
             'name': 'iot_events',
             'sample': [],
             'spec': [
@@ -30,9 +30,9 @@ class CatalogueItemParserTestCase(TestCase):
             'maintained_by_id': 1289,
             'executor_type': 'DATABRICKS',
         })
-        assert parsed.is_valid() is True
-        assert parsed.errors == {}
-        assert parsed.data == {
+        assert parser.is_valid() is True
+        assert parser.errors == {}
+        assert parser.data == {
             'executor_type': 'DATABRICKS',
             'maintained_by_id': 1289,
             'name': 'iot_events',
@@ -50,7 +50,7 @@ class CatalogueItemParserTestCase(TestCase):
 
     def test_parse__invalid(self):
 
-        parsed = CatalogueItemParser(data={
+        parser = CatalogueItemParser(data={
             'name': 'iot_events',
             'sample': [],
             'spec': [
@@ -65,8 +65,8 @@ class CatalogueItemParserTestCase(TestCase):
             'maintained_by_id': 1289,
             'executor_type': 'DATABRICKS',
         })
-        assert parsed.is_valid() is False
-        assert parsed.errors == {
+        assert parser.is_valid() is False
+        assert parser.errors == {
             'spec': [
                 "JSON did not validate. PATH: '0.size' REASON: '19203' "
                 "is not valid under any of the given schemas",

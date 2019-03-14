@@ -35,6 +35,7 @@ class CatalogueItemTestCase(TestCase):
                     {'value': 18.0, 'count': 9},
                     {'value': 19.1, 'count': 45},
                     {'value': 21.2, 'count': 10},
+                    {'value': None, 'count': 190},
                 ],
             },
         ]
@@ -156,6 +157,67 @@ class CatalogueItemTestCase(TestCase):
             'spec': [
                 "column type and distribution value type mismatch detected "
                 "for column 'value'",
+            ],
+        }
+
+    def test_invalid__broken_spec_distribution__values_not_unique(self):
+
+        a = ef.account()
+        spec = [
+            {
+                'name': 'value',
+                'type': 'FLOAT',
+                'size': None,
+                'is_nullable': True,
+                'distribution': [
+                    {'value': 19.0, 'count': 9},
+                    {'value': 19.0, 'count': 45},
+                    {'value': 21.2, 'count': 10},
+                ],
+            },
+        ]
+
+        with pytest.raises(ValidationError) as e:
+            CatalogueItem.objects.create(
+                maintained_by=a,
+                name='weather_temperatures',
+                sample=[],
+                spec=spec,
+                executor_type='DATABRICKS')
+
+        assert e.value.message_dict == {
+            'spec': [
+                "not unique distribution values for column 'value' detected",
+            ],
+        }
+
+    def test_invalid__broken_spec_distribution__counts_not_integers(self):
+
+        a = ef.account()
+        spec = [
+            {
+                'name': 'value',
+                'type': 'FLOAT',
+                'size': None,
+                'is_nullable': True,
+                'distribution': [
+                    {'value': 19.0, 'count': 45.9},
+                    {'value': 21.2, 'count': 10},
+                ],
+            },
+        ]
+
+        with pytest.raises(ValidationError) as e:
+            CatalogueItem.objects.create(
+                maintained_by=a,
+                name='weather_temperatures',
+                sample=[],
+                spec=spec,
+                executor_type='DATABRICKS')
+
+        assert e.value.message_dict == {
+            'spec': [
+                "not integers distribution counts for column 'value' detected",
             ],
         }
 

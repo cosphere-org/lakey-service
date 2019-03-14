@@ -4,42 +4,75 @@ from enum import Enum, unique
 from django.core.exceptions import ValidationError
 from django.db import models
 from lily.base.models import (
-    JSONSchemaField,
-    ValidatingModel,
-    number,
     array,
-    string,
     boolean,
+    enum,
+    JSONSchemaField,
+    null,
+    null_or,
+    number,
     object,
     one_of,
-    null_or,
-    enum,
+    string,
+    ValidatingModel,
 )
 
 from account.models import Account
 
 
 def spec_validator(spec):
+    """
+    - `spec[i].distribution` entries must have values that are of the same
+      type as defined in `spec[i].type` (None is allowed is column is defined
+      as `is_nullable`)
+    - `spec[i].distribution` entries values must be unique
+    - `spec[i].distribution` entries counts must be integers
 
-    for column_spec in spec:
-        # -- this must be addressed by top level schema validation
-        column_name = column_spec.get('name')
-        column_type = column_spec.get('type')
-        if not column_name or not column_type:
+    """
+
+    for col_spec in spec:
+
+        # -- HACK: the presence of those fields is enforced by another
+        # -- schema validation that happens before this one kicks in, but
+        # -- unfortunately when one validators fails it doesn't break the
+        # -- validation but just reports its errors and another validator
+        # -- is executed.
+        col_name = col_spec.get('name')
+        col_type = col_spec.get('type')
+        col_is_nullable = col_spec.get('is_nullable')
+        if not col_name or not col_type:
             continue
 
-        distribution = column_spec.get('distribution')
+        distribution = col_spec.get('distribution')
         if not distribution:
             continue
 
-        to_python_type = CatalogueItem.column_type_to_python_type
-        for col_type, col_python_type in to_python_type.items():
-            if column_type == col_type:
-                for entry in distribution:
-                    if not isinstance(entry['value'], col_python_type):
-                        raise ValidationError(
-                            f"column type and distribution value type "
-                            f"mismatch detected for column '{column_name}'")
+        # -- values in distribution must has correct type
+        col_type_to_python_type = CatalogueItem.column_type_to_python_type
+        expected_types = (col_type_to_python_type[col_type],)
+        if col_is_nullable:
+            expected_types += (type(None),)
+
+        for entry in distribution:
+            if not isinstance(entry['value'], expected_types):
+                raise ValidationError(
+                    f"column type and distribution value type "
+                    f"mismatch detected for column '{col_name}'")
+
+        # -- values in distribution must be unique
+        all_values = [entry['value'] for entry in distribution]
+        if len(all_values) != len(set(all_values)):
+            raise ValidationError(
+                f"not unique distribution values for column '{col_name}' "
+                "detected")
+
+        # -- counts in distribution must be integers
+        counts_are_ints = [
+            isinstance(entry['count'], int) for entry in distribution]
+        if not all(counts_are_ints):
+            raise ValidationError(
+                f"not integers distribution counts for column '{col_name}' "
+                "detected")
 
 
 class CatalogueItem(ValidatingModel):
@@ -114,7 +147,11 @@ class CatalogueItem(ValidatingModel):
                 distribution=null_or(
                     array(
                         object(
-                            value=one_of(number(), string(), boolean()),
+                            value=one_of(
+                                null(),
+                                number(),
+                                string(),
+                                boolean()),
                             count=number(),
                             required=['value', 'count']))),
                 required=[
@@ -145,6 +182,12 @@ class CatalogueItem(ValidatingModel):
         self.validate_samples_in_context_of_spec()
 
     def validate_samples_in_context_of_spec(self):
+        """
+        - `sample` entries must have the same names as registered in `spec`
+        - `sample` entries values must be the same as the ones registered in
+          `spec` (if `is_nullable` was set to True also None is allowed)
+
+        """
 
         if not self.sample:
             return

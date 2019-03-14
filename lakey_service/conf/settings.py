@@ -108,7 +108,6 @@ INSTALLED_APPS = (
     'lily.docs',
     'lily.repo',
 
-    # 'raven.contrib.django.raven_compat',
     'django.contrib.postgres',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -117,6 +116,7 @@ INSTALLED_APPS = (
     # -- service's apps
     'account',
     'catalogue',
+    'downloader',
 )
 
 MIDDLEWARE = [
