@@ -68,7 +68,6 @@ class AuthTokenTestCase(TestCase):
         assert e.value.data == {
             '@event': 'AUTH_TOKEN_EXPIRED',
             '@type': 'error',
-            'user_id': None,
         }
 
     def test_decode__token_is_broken(self):
@@ -82,7 +81,6 @@ class AuthTokenTestCase(TestCase):
         assert e.value.data == {
             '@event': 'AUTH_TOKEN_WAS_BROKEN',
             '@type': 'error',
-            'user_id': None,
         }
 
     def test_decode__broken_payload(self):
@@ -99,7 +97,6 @@ class AuthTokenTestCase(TestCase):
         assert e.value.data == {
             '@event': 'AUTH_TOKEN_MISSING_FIELDS_DETECTED',
             '@type': 'error',
-            'user_id': None,
         }
 
     def test_decode__account_does_not_exist(self):
@@ -118,5 +115,4 @@ class AuthTokenTestCase(TestCase):
         assert e.value.data == {
             '@event': 'AUTH_TOKEN_MISSING_ACCOUNT',
             '@type': 'error',
-            'user_id': None,
         }

@@ -29,3 +29,8 @@ class Authorizer:
         # -- return the enrichment that should be available as
         # -- `request.access` attribute
         return {'account': account}
+
+    def log(self, authorize_data):
+        return {
+            'account_id': authorize_data['account'].id
+        }

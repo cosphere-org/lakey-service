@@ -97,7 +97,6 @@ class AuthRequestTestCase(TestCase):
         assert e.value.data == {
             '@event': 'EMAIL_MISMATCH_DETECTED',
             '@type': 'error',
-            'user_id': None,
         }
 
     def test_attach_account__oauth_user_info_works(self):
@@ -133,7 +132,6 @@ class AuthRequestTestCase(TestCase):
         assert e.value.data == {
             '@event': 'GOOGLE_OAUTH2_USER_INFO_ERROR_DETECTED',
             '@type': 'error',
-            'user_id': None,
         }
         assert Account.objects.count() == 0
         r.refresh_from_db()
