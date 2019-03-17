@@ -1,18 +1,22 @@
 
-# -- testing framework
-pytest==2.8.7
-
-# -- pytest support for django
-pytest-django==2.9.1
-
-# -- expose pythonpath
-pytest-pythonpath==0.7.1
-
-# -- mock integration with pytest
-pytest-mock==0.10.1
-
-# -- fake data generator
-fake-factory==0.5.6
-
 # -- freeze time
 freezegun==0.3.11
+
+# -- allows specifying python project path to be discovered
+pytest-pythonpath==0.7.1
+
+# -- helps testing django based code
+pytest-django==3.4.8
+
+# -- provides injectable mocker fixture
+pytest-mock==0.10.1
+
+# -- human friendly testing of http requests to external APIs
+# DOCS: https://httpretty.readthedocs.io/en/latest/
+httpretty==0.9.5
+
+# -- fake data
+fake-factory==0.5.6
+
+# -- time zone management
+pytz==2015.7

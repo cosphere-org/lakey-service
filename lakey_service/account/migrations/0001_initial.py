@@ -16,19 +16,49 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Account',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'),
+                ),
                 ('email', models.EmailField(max_length=254, unique=True)),
-                ('type', models.CharField(choices=[('RESEARCHER', 'RESEARCHER'), ('ADMIN', 'ADMIN')], default='RESEARCHER', max_length=64)),
+                (
+                    'type',
+                    models.CharField(
+                        choices=[
+                            ('RESEARCHER', 'RESEARCHER'),
+                            ('ADMIN', 'ADMIN'),
+                        ],
+                        default='RESEARCHER',
+                        max_length=64),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='AuthRequest',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'),
+                ),
                 ('created_datetime', models.DateTimeField(auto_now_add=True)),
                 ('updated_datetime', models.DateTimeField(auto_now=True)),
                 ('uuid', models.UUIDField(default=uuid.uuid1, editable=False)),
-                ('account', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='account.Account')),
+                (
+                    'account',
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='account.Account'),
+                ),
             ],
         ),
     ]

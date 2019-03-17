@@ -4,7 +4,6 @@ import json
 from django.test import TestCase
 from django.urls import reverse
 from lily.base.test import Client
-import pytest
 
 from account.models import Account
 from account.token import AuthToken
@@ -177,7 +176,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
     def test_get_200__with_query(self):
 
         ci_0 = ef.catalogue_item(name='iot_features')
-        ci_1 = ef.catalogue_item(name='temperatures')
+        ci_1 = ef.catalogue_item(name='temperatures')  # noqa
         ci_2 = ef.catalogue_item(name='iot_events')
 
         response = self.app.get(

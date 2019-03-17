@@ -106,7 +106,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = (
     # -- lily apps
     'lily.docs',
-    'lily.repo',
+    'lily.entrypoint',
 
     'django.contrib.postgres',
     'django.contrib.auth',

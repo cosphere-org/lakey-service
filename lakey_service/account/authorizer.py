@@ -1,10 +1,10 @@
 
-from lily.base.events import EventFactory
+from lily import BaseAuthorizer
 
 from .token import AuthToken
 
 
-class Authorizer:
+class Authorizer(BaseAuthorizer):
 
     def __init__(self, access_list):
         self.access_list = access_list
@@ -15,16 +15,16 @@ class Authorizer:
             type_, token = request.META['HTTP_AUTHORIZATION'].split()
 
         except KeyError:
-            raise EventFactory.AuthError('COULD_NOT_FIND_AUTH_TOKEN')
+            raise self.AuthError('COULD_NOT_FIND_AUTH_TOKEN')
 
         else:
             if type_.lower().strip() != 'bearer':
-                raise EventFactory.AuthError('COULD_NOT_FIND_AUTH_TOKEN')
+                raise self.AuthError('COULD_NOT_FIND_AUTH_TOKEN')
 
         account = AuthToken.decode(token)
 
         if account.type not in self.access_list:
-            raise EventFactory.AccessDenied('ACCESS_DENIED')
+            raise self.AccessDenied('ACCESS_DENIED')
 
         # -- return the enrichment that should be available as
         # -- `request.access` attribute

@@ -24,8 +24,8 @@
                 "status": 201,
                 "content_type": "application/json",
                 "content": {
-                    "authenticate_ui_uri": "/accounts/auth_requests/39993e2a-46ed-11e9-b05d-0028f8484bd5/authenticate/ui/",
-                    "request_uuid": "39993e2a-46ed-11e9-b05d-0028f8484bd5",
+                    "authenticate_ui_uri": "/accounts/auth_requests/251bcf6a-48d4-11e9-b05d-0028f8484bd5/authenticate/ui/",
+                    "request_uuid": "251bcf6a-48d4-11e9-b05d-0028f8484bd5",
                     "@type": "auth_request",
                     "@event": "AUTH_REQUEST_CREATED"
                 }
@@ -39,7 +39,7 @@
             "request": {
                 "path": "/accounts/auth_requests/attach_account/",
                 "content": {
-                    "request_uuid": "39993e2b-46ed-11e9-b05d-0028f8484bd5",
+                    "request_uuid": "251bcf6b-48d4-11e9-b05d-0028f8484bd5",
                     "code": "some-authorization-code",
                     "email": "jacky@somewhere.org"
                 },
@@ -92,7 +92,7 @@
             "request": {
                 "path": "/accounts/auth_requests/attach_account/",
                 "content": {
-                    "request_uuid": "39993e2c-46ed-11e9-b05d-0028f8484bd5",
+                    "request_uuid": "251bcf6c-48d4-11e9-b05d-0028f8484bd5",
                     "code": "some-code",
                     "email": "jacky@somewhere.org"
                 },
@@ -117,7 +117,7 @@
             "request": {
                 "path": "/accounts/auth_tokens/",
                 "content": {
-                    "request_uuid": "39993e2d-46ed-11e9-b05d-0028f8484bd5"
+                    "request_uuid": "251bcf6d-48d4-11e9-b05d-0028f8484bd5"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json"
@@ -139,7 +139,7 @@
             "request": {
                 "path": "/accounts/auth_tokens/",
                 "content": {
-                    "request_uuid": "f5e7e000-5074-11e4-a56b-02426ec57dd1"
+                    "request_uuid": "f5e7e000-5074-11e4-99f9-02426ec57dd1"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json"
@@ -162,7 +162,7 @@
             "request": {
                 "path": "/catalogue/items/?query=IoT",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoiZGlldHJpY2hkaWxsb25AZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMwfQ.Rt_lVsnkoxk22eEecvRT7QJTc_80bpa8xkg3dCfWpBA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoiZ3V0bWFubmdlbmFAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTI3NTYwfQ.iuiJKxNgaFSgNZGgcgfRO_yhQ532e4x5g6lR0h8rBEw"
                 }
             },
             "response": {
@@ -276,7 +276,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoibWNsYXVnaGxpbmNoYWxtZXJzQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMwfQ.PZOkz3ph3ATxs6eKD3CK1s6FvD2KLa41Ow-phWrocMA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoiaGlsbGxrcmlzdGlhbkBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5Mjc1NjB9.O5Qg2OMciMzVjDtriHSDDFF0AblZfLGjQfz5tX8T3T8"
                 }
             },
             "response": {
@@ -297,19 +297,19 @@
                     "executor_type": "DATABRICKS",
                     "created_by": {
                         "id": 15,
-                        "email": "mclaughlinchalmers@hotmail.com",
+                        "email": "hilllkristian@gmail.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "updated_by": {
                         "id": 15,
-                        "email": "mclaughlinchalmers@hotmail.com",
+                        "email": "hilllkristian@gmail.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
                         "id": 16,
-                        "email": "gussielabadie@gmail.com",
+                        "email": "bayerosborne@senger-pouros.org",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -339,7 +339,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoia2lyc3RlbjExQGhpcnRoZS1mcmllc2VuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMH0.dBNhma1wJ5Uz9HzB9LwwcZM9z8cCt1_5FIVwprLWIsg"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoiaGZyaWVzZW5AZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTI3NTYwfQ.AlH--ukfNaac0hmJ3nXE0onQff3A0VqYzXLhKg1_osc"
                 }
             },
             "response": {
@@ -381,7 +381,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiam1pbGxzQHNwb3Jlci5pbmZvIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMwfQ.BlOc37fr1wN8ILmlDIpEk7xmfP9bdVqERrDCWSDv--I"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoicWNyb29rc0B5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5Mjc1NjB9.2kMsYpq0yLjI-N1Lv4UjQH-pDA_xZQBYDUpFxr9uN08"
                 }
             },
             "response": {
@@ -409,7 +409,7 @@
             "request": {
                 "path": "/catalogue/items/8",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoiaGlydGhlc2hhbm5hbkBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMX0.hkLDeH_evKbDW0xEwKN2Z-HgdL1iJStJSeilCCP4TN0"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoid2ZlaWxAbG93ZS1oYW5lLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjkyNzU2MH0.MBqYG6yk5P81UGZvyOM1SbY1bsiUaEMvyqpTtieTA_w"
                 }
             },
             "response": {
@@ -427,7 +427,7 @@
             "request": {
                 "path": "/catalogue/items/10",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoicHBhcmtlckB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI3MTg0MzF9.hUWXPsdD7hN1_eroZv9eOn77RmRgyml1mDjW9tfV4O0"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoiZWVmZmVydHpAZWJlcnQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTI3NTYwfQ.LE-tCOcVZ8AWI9HvltnQvIZW7PxvMho9hQ5SXq28xpU"
                 }
             },
             "response": {
@@ -447,7 +447,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoiemJyYWR0a2VAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMxfQ.E0caMVs3OkOX6bsw1cM9ImzGOt_lz7slwO5W5uU883Q"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoiZmFiaWFubXVycGh5QGNoYW1wbGluLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjkyNzU2MX0.DhcfJlVFygyAuRaUq7nzDQ7CpRi_BsNQvKo1PCQXf-Y"
                 }
             },
             "response": {
@@ -470,7 +470,7 @@
             "request": {
                 "path": "/catalogue/items/12",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoib3JsYXBhcmtlckBjYXJ0d3JpZ2h0LmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMX0.IOho8ehHMAdJHoPh-tER229oQI2lVdP9KDJrJBpdEIY"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoibXlybmEwMUBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5Mjc1NjF9.YZqvDr9k3rty1saiusGqDO_BPJ8WdrXl6J-JP95xa4M"
                 }
             },
             "response": {
@@ -523,7 +523,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiZ2JvZ2lzaWNoQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMxfQ.Larq-lB1gCN2a5KKuBjYJPlA6KiNH37Zf6l_oOJMmTg"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoic2FuaXlhNDJAZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTI3NTYxfQ.WEfA2b22XSyQ0DVb8YANqcdeG4EeDupCxwdazIJL86E"
                 }
             },
             "response": {
@@ -562,7 +562,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoibW9ocmtpYXJhQGFsdGVud2VydGgta2lybGluLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMX0.9vqxmPnN3aNtqz9cm1vfAsjKgDyGEM8bhUhWPla_L-0"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiYnJlaXRlbmJlcmdkZXNlYW5Ac2hpZWxkcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5Mjc1NjF9.H1Pqo5Salgk695lHVuY7sLKA1UvPXNv2RoI_SwjQn_w"
                 }
             },
             "response": {
@@ -583,19 +583,19 @@
                     "executor_type": "DATABRICKS",
                     "created_by": {
                         "id": 27,
-                        "email": "sengerletha@larkin.com",
+                        "email": "lilyannadaugherty@hotmail.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
                     "updated_by": {
                         "id": 25,
-                        "email": "mohrkiara@altenwerth-kirlin.com",
+                        "email": "breitenbergdesean@shields.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
                         "id": 26,
-                        "email": "mandi57@beatty.com",
+                        "email": "darlgerlach@reilly.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -625,7 +625,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoidWhhbnNlbkB3ZXN0Lm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMX0.13hsUOxnz5YN7FPqu_mc3TGJawraiyJ7Jwxi0LP2D2I"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoiZ2RlY2tvd0BrdWhuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjkyNzU2MX0.3k_ow5EM7-qB18Zid4RQ2evqCMxcKiNb9ClZpwAl1dI"
                 }
             },
             "response": {
@@ -667,7 +667,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoibG9sc29uQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMxfQ.KonDrMi3uP8ELc4calhCE9HlY2DsJfUrUGTxttRCZyM"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoicmRhbmllbEBydXNzZWwubmV0IiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTI3NTYxfQ.8tv-YBiXjKd4FK06nM3F-t6pLNDWFdgHv_qG2AjHKIY"
                 }
             },
             "response": {
@@ -694,7 +694,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoiZWxpb3QwMkBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMn0.HSBQ6wmVLNNvRwtlg5MpRLksmjWwZ4l65bvCHknOgHM"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoibG92aWVtY2tlbnppZUBtY2N1bGxvdWdoLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjkyNzU2MX0.fbVHJW4TGQHYr9xHGE-732Zbtf8CeTj5rLdOFt--o50"
                 }
             },
             "response": {
@@ -760,7 +760,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoidXRyZXV0ZWxAcmF5bm9yLWRpY2tpLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMn0.jGBH-IjLw8CLpm-z1rK7QAYGW8wfC6ijXShrDrqAClM"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoibHluY2hjYXJvbGluYUBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5Mjc1NjF9.V9eIJ7euDjYt12egWwhX53-ZtYKmERxIX3U9QqpBGnc"
                 }
             },
             "response": {
@@ -781,7 +781,7 @@
             "request": {
                 "path": "/downloader/requests/",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoiYmFydG9sZXR0aWVybmVzdEBsYW5nLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMn0.fXj3P4pOh-H_F5hjZS4RPHmhiuyJxpYb8rxxSOOtSiU"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoia3VuemVtYXJ5bHluQHNjaHVwcGUtY3JvbmEuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTI3NTYxfQ.CSAhewFoZo4Dlb1Gx3j65GXCGnl5ek8zLOnB1V5683U"
                 }
             },
             "response": {
@@ -808,7 +808,7 @@
                             "estimated_size": null,
                             "executor_job_id": null,
                             "catalogue_item": {
-                                "name": "Dolores Leffler",
+                                "name": "Elden Torphy",
                                 "spec": [
                                     {
                                         "name": "product",
@@ -826,7 +826,7 @@
                                     }
                                 ],
                                 "sample": [],
-                                "executor_type": "DATABRICKS",
+                                "executor_type": "ATHENA",
                                 "created_by": null,
                                 "updated_by": null,
                                 "maintained_by": null,
@@ -834,7 +834,7 @@
                             },
                             "created_by": {
                                 "id": 47,
-                                "email": "kautzerjustin@kerluke.org",
+                                "email": "deangelo04@kunze.com",
                                 "type": "RESEARCHER",
                                 "@type": "account"
                             },
@@ -860,7 +860,7 @@
                             "estimated_size": null,
                             "executor_job_id": null,
                             "catalogue_item": {
-                                "name": "Dolores Leffler",
+                                "name": "Elden Torphy",
                                 "spec": [
                                     {
                                         "name": "product",
@@ -878,7 +878,7 @@
                                     }
                                 ],
                                 "sample": [],
-                                "executor_type": "DATABRICKS",
+                                "executor_type": "ATHENA",
                                 "created_by": null,
                                 "updated_by": null,
                                 "maintained_by": null,
@@ -886,7 +886,7 @@
                             },
                             "created_by": {
                                 "id": 47,
-                                "email": "kautzerjustin@kerluke.org",
+                                "email": "deangelo04@kunze.com",
                                 "type": "RESEARCHER",
                                 "@type": "account"
                             },
@@ -919,7 +919,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoiZW1vb3JlQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMyfQ.WNahRfziIq0GC2F4MiGTYzs7afBd_-15WUqzH8VNZ2o"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoidGhvbWFzbWFubkBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5Mjc1NjF9.lVNyDtp7iEXj9cdqe_Hr7U42hzyQyXdUz6jxpmKkJ2A"
                 }
             },
             "response": {
@@ -939,7 +939,7 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "name": "Leeroy O'Reilly I",
+                        "name": "Alfonse Vandervort",
                         "spec": [
                             {
                                 "name": "product",
@@ -965,7 +965,7 @@
                     },
                     "created_by": {
                         "id": 48,
-                        "email": "emoore@hotmail.com",
+                        "email": "thomasmann@gmail.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
@@ -993,7 +993,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoiZmxhdGxleW5hdGhhbGllQGxlc2NoLmJpeiIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjcxODQzMn0.1SeueJtA1ehgfk1unJXlBnfm_vISisJZnzRpVJpCmb8"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoibGF1bmFqYXN0QG1vaHItZmFycmVsbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5Mjc1NjF9.se8Mhrp6XTJw0MPxjvA7u_9VEXqKIpkXUTz1Brm7I5M"
                 }
             },
             "response": {
@@ -1031,7 +1031,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTIsImVtYWlsIjoib3NzaWU5OUBhcm1zdHJvbmctZ2VybGFjaC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI3MTg0MzJ9.3Z74xXNi3irC6HPR6Zefm6JdMERsM_T-ZUNcrTUcKYQ"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTIsImVtYWlsIjoicG9sbGljaGJ1cm5pY2VAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTI3NTYxfQ.Q59hV9CBy6d15dy6QRMG_wi-hRdoO0SSyLg3tn1mQkU"
                 }
             },
             "response": {
@@ -1054,7 +1054,7 @@
             "request": {
                 "path": "/downloader/requests/7",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoiY3VtbWluZ3NuaW1AZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMyfQ.wiWjmfYBIc42MfFdDnlGe6SMtidZa0zlp8OWgxC98cQ"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoiYW5uYW1hZWJsaWNrQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjkyNzU2MX0.Sb_oyktwqL-9qJjpTTxra_RRDoFSoFITSo5eR4njDPA"
                 }
             },
             "response": {
@@ -1072,7 +1072,7 @@
             "request": {
                 "path": "/downloader/requests/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTUsImVtYWlsIjoicmFtb241N0BiZWVyLmluZm8iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI3MTg0MzJ9.Z0h8l9aqJ6Aqh3VZtbgfLR1lTveApwtLizq8i4YWDT0"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTUsImVtYWlsIjoiZGViaWdyaW1lc0B5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5Mjc1NjF9.UNkJDrW8ftFOH2j849e-lvV1EJrq1-N-aAu48VHSDDw"
                 }
             },
             "response": {
@@ -1095,7 +1095,7 @@
             "request": {
                 "path": "/downloader/requests/8",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTYsImVtYWlsIjoicGtpbmdAd2VpbWFubi5iaXoiLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI3MTg0MzJ9.zYprhxiI_RZnedP0xWe7sFqdLOL1lX2siTQTfecA1Bw"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTYsImVtYWlsIjoiaG9sbHk0MkBsaXR0bGUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTI3NTYxfQ.qS_aMZ6P7somLGGS2_3PLpskSLRi4FOEg-fVFXV9te8"
                 }
             },
             "response": {
@@ -1120,7 +1120,7 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "name": "Elinor Roberts",
+                        "name": "Dr. Tyrus Bernier",
                         "spec": [
                             {
                                 "name": "product",
@@ -1138,7 +1138,7 @@
                             }
                         ],
                         "sample": [],
-                        "executor_type": "ATHENA",
+                        "executor_type": "DATABRICKS",
                         "created_by": null,
                         "updated_by": null,
                         "maintained_by": null,
@@ -1146,7 +1146,7 @@
                     },
                     "created_by": {
                         "id": 57,
-                        "email": "cwunsch@block-weissnat.com",
+                        "email": "ikirlin@hintz.org",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -1162,7 +1162,7 @@
             "request": {
                 "path": "/downloader/requests/9",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTksImVtYWlsIjoiZW1tZXJpY2hsZWFsYUBsaXR0bGUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyNzE4NDMzfQ.h4QI_--oRQG-zTfFCht-DtVIFN-jWYrv1LD36JfNHiM"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTksImVtYWlsIjoiam9zZXBoaW5laG9tZW5pY2tAbGl0dGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MjkyNzU2MX0.lZzAyH4SzXDdTRknPPr5Hhj_sSQT2Y6mHur-1rBKB5M"
                 }
             },
             "response": {

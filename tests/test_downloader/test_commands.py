@@ -8,8 +8,6 @@ import pytest
 
 from account.models import Account
 from account.token import AuthToken
-from catalogue.models import CatalogueItem
-from catalogue.serializers import CatalogueItemSerializer
 from downloader.models import DownloadRequest
 from downloader.serializers import DownloadRequestSerializer
 from tests.factory import EntityFactory
@@ -192,8 +190,6 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
     #
     def test_post_201(self):
 
-        a = ef.account()
-
         assert DownloadRequest.objects.all().count() == 0
 
         response = self.app.post(
@@ -220,8 +216,6 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
         assert r.created_by == self.account
 
     def test_post_400__broken_request(self):
-
-        a = ef.account()
 
         assert DownloadRequest.objects.all().count() == 0
 
@@ -305,7 +299,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
         d_1.waiters.add(self.account)
 
         # -- noise
-        d_2 = DownloadRequest.objects.create(
+        d_2 = DownloadRequest.objects.create(  # noqa
             created_by=a,
             spec={
                 'columns': ['price'],

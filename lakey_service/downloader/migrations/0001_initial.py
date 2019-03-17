@@ -18,18 +18,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DownloadRequest',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'),
+                ),
                 ('created_datetime', models.DateTimeField(auto_now_add=True)),
                 ('updated_datetime', models.DateTimeField(auto_now=True)),
                 ('spec', lily.base.models.JSONSchemaField()),
                 ('uri', models.URLField(blank=True, null=True)),
                 ('real_size', models.IntegerField(blank=True, null=True)),
                 ('estimated_size', models.IntegerField(blank=True, null=True)),
-                ('executor_job_id', models.CharField(blank=True, max_length=256, null=True)),
+                (
+                    'executor_job_id',
+                    models.CharField(blank=True, max_length=256, null=True),
+                ),
                 ('is_cancelled', models.BooleanField(default=False)),
-                ('catalogue_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='download_requests', to='catalogue.CatalogueItem')),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='account.Account')),
-                ('waiters', models.ManyToManyField(related_name='download_requests_as_waiter', to='account.Account')),
+                (
+                    'catalogue_item',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='download_requests',
+                        to='catalogue.CatalogueItem'),
+                ),
+                (
+                    'created_by',
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to='account.Account'),
+                ),
+                (
+                    'waiters',
+                    models.ManyToManyField(
+                        related_name='download_requests_as_waiter',
+                        to='account.Account'),
+                ),
             ],
             options={
                 'abstract': False,

@@ -21,7 +21,8 @@ from account.models import Account
 
 
 def spec_validator(spec):
-    """
+    """Validate `CatalogueItem.spec`.
+
     - `spec[i].distribution` entries must have values that are of the same
       type as defined in `spec[i].type` (None is allowed is column is defined
       as `is_nullable`)
@@ -182,7 +183,8 @@ class CatalogueItem(ValidatingModel):
         self.validate_samples_in_context_of_spec()
 
     def validate_samples_in_context_of_spec(self):
-        """
+        """Validate `samples` using `CatalogueItem.spec` info.
+
         - `sample` entries must have the same names as registered in `spec`
         - `sample` entries values must be the same as the ones registered in
           `spec` (if `is_nullable` was set to True also None is allowed)

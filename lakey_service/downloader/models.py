@@ -144,7 +144,8 @@ class DownloadRequest(ValidatingModel):
         self.validate_spec_in_context_of_catalogue_item_spec()
 
     def validate_spec_in_context_of_catalogue_item_spec(self):
-        """
+        """Validate spec using `CatalogueItem.spec`.
+
         - `spec.columns` must be taken from the list of registered columns
           as specified in `catalogue_item.spec`
         - `spec.filters[i].name` must be taken from the list of
@@ -199,7 +200,8 @@ class DownloadRequest(ValidatingModel):
             # -- types used in filter must correspond to the types of their
             # -- respectful columns in `catalogue_item.spec`
             col_type = col_types[name]
-            col_python_type = CatalogueItem.column_type_to_python_type[col_type]
+            col_python_type = (
+                CatalogueItem.column_type_to_python_type[col_type])
             expected_types = (col_python_type,)
             if col_is_nullable[name]:
                 expected_types += (type(None),)

@@ -1,15 +1,14 @@
-
+import json
 import os
-
 from setuptools import setup, find_packages
-from lakey_service import __version__, __service_name__
 
 
-# -- REQUIREMENTS
-requirements_path = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), 'requirements.txt')
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
+#
+# REQUIREMENTS
+#
 def parse_requirements(requirements):
 
     return [
@@ -22,16 +21,25 @@ def parse_requirements(requirements):
     ]
 
 
-with open(requirements_path) as f:
+with open(os.path.join(BASE_DIR, 'requirements.txt')) as f:
     requirements = parse_requirements(f.readlines())
 
 
+#
+# CONFIG
+#
+with open(os.path.join(BASE_DIR, '.lily', 'config.json')) as f:
+    config = json.loads(f.read())
+
+
+# -- SETUP
 setup(
-    name=__service_name__,
-    version=__version__,
+    name=config['name'],
     description='Lakey for opening up Data Lake for masses',
-    url='https://github.com/cosphere-org/lakey-service',
-    author='Viessmann Data Chapter Team',
-    author_email='data-engineers@viessmann.com',
+    url=config['repository'],
+    version=config['version'],
+    author='CoSphere Team',
     packages=find_packages(),
-    install_requires=requirements)
+    install_requires=requirements,
+    package_data={'': ['requirements.txt']},
+    include_package_data=True)
