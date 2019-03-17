@@ -111,7 +111,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'conf.urls'
 
 
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = 'conf.wsgi.application'
