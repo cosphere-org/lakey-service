@@ -1,5 +1,5 @@
 
-# Laker
+# lakey-service
 
 Is a project allowing huge amount of people (clients) to connect with expensive Data Lakes in order to download data to their local machines which will allow rapid prototyping of data driven algorithms and applications.
 
