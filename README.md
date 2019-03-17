@@ -7,10 +7,27 @@ Is a project allowing huge amount of people (clients) to connect with expensive 
 
 Laker was built and designed with one goal in mind: "to free up the data, which are otherwise sitting idle and just being covered in dust".
 
-## Reading Commands
+## Installation
 
+```bash
+make install
+source .venv/bin/activate
 ```
-http://<uri>/?domain=account_authentication&with_examples=true
+
+## Running development server
+
+```bash
+make start_dev_server port=8889
+```
+
+## Running grok
+
+In order to test the authentication while still developing locally one can use `ngrok` proxy which will expose the locally running service over the web.
+
+In order to start such a process one can run:
+
+```bash
+make start_ngrok
 ```
 
 ## Architecture
@@ -21,11 +38,9 @@ http://<uri>/?domain=account_authentication&with_examples=true
 
 [ ] FIXME: add diagram to describe the FLOW here!!!!
 
-
 ### Catalogue - discovery of data
 
 ...
-
 
 ### Downloader - efficient data download
 

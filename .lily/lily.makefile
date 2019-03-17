@@ -59,9 +59,9 @@ docs_render_commands: test_all  ## render JSON representation of commands
 #
 start_gunicorn:  ## start service locally
 	source env.sh && \
+	export PYTHONPATH="${PYTHONPATH}:${PWD}/lakey_service" && \
 	python lakey_service/manage.py migrate && \
-	cd lakey_service && \
-	gunicorn conf.wsgi \
+	gunicorn lakey_service.wsgi \
 		--worker-class gevent \
 		-w 1 \
 		--log-level=debug \

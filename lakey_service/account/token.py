@@ -12,9 +12,9 @@ class AuthToken:
     def encode(account):
 
         return jwt.encode(
-            AuthToken.get_payload(account),
-            settings.AUTH_TOKEN_SECRET_KEY,
-            settings.AUTH_TOKEN_ALGORITHM
+            payload=AuthToken.get_payload(account),
+            key=settings.AUTH_TOKEN_SECRET_KEY,
+            algorithm=settings.AUTH_TOKEN_ALGORITHM
         ).decode('utf-8')
 
     @staticmethod
@@ -33,9 +33,10 @@ class AuthToken:
         # -- token decode
         try:
             payload = jwt.decode(
-                token,
-                settings.AUTH_TOKEN_SECRET_KEY,
-                True,
+                jwt=token,
+                key=settings.AUTH_TOKEN_SECRET_KEY,
+                verify=True,
+                algorithm=settings.AUTH_TOKEN_ALGORITHM,
                 options={'verify_exp': True})
 
         except jwt.ExpiredSignature:

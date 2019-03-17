@@ -115,7 +115,7 @@ class CatalogueItem(ValidatingModel):
     name = models.CharField(max_length=256, unique=True)
 
     sample = JSONSchemaField(
-        default=[],
+        default=list,
         blank=True,
         schema=array(
             object()))
