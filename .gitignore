@@ -1,5 +1,6 @@
 
 env_private.sh
+ngrok_private.yaml
 *.py[cod]
 
 # C extensions

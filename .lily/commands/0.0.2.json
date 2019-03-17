@@ -1,0 +1,4000 @@
+{
+    "CREATE_AUTH_REQUEST": {
+        "method": "post",
+        "path_conf": {
+            "path": "/accounts/auth_requests/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Create Auth Request",
+            "description": null,
+            "domain": {
+                "id": "account_authentication",
+                "name": "Account & Auth Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": null,
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/account/commands.py",
+            "start_line": 24,
+            "end_line": 43,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/account/serializers.py/#L27",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "authenticate_ui_uri",
+                        "request_uuid"
+                    ],
+                    "properties": {
+                        "authenticate_ui_uri": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "request_uuid": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "201 (AUTH_REQUEST_CREATED)": {
+                "method": "post",
+                "description": "AUTH_REQUEST_CREATED",
+                "request": {
+                    "path": "/accounts/auth_requests/",
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 201,
+                    "content_type": "application/json",
+                    "content": {
+                        "authenticate_ui_uri": "/accounts/auth_requests/3b25d2b2-48ff-11e9-b05d-0028f8484bd5/authenticate/ui/",
+                        "request_uuid": "3b25d2b2-48ff-11e9-b05d-0028f8484bd5",
+                        "@type": "auth_request",
+                        "@event": "AUTH_REQUEST_CREATED"
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "RENDER_AUTH_REQUEST_AUTHENTICATE_UI": {
+        "method": "get",
+        "path_conf": {
+            "path": "/accounts/auth_requests/{request_uuid}/authenticate/ui/",
+            "parameters": [
+                {
+                    "name": "request_uuid",
+                    "type": "string",
+                    "description": ""
+                }
+            ]
+        },
+        "meta": {
+            "title": "Render Auth Request Authentication UI",
+            "description": null,
+            "domain": {
+                "id": "account_authentication",
+                "name": "Account & Auth Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": null,
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/account/commands.py",
+            "start_line": 48,
+            "end_line": 63,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/.venv/src/lily/lily/base/serializers.py/#L155",
+                "schema": {}
+            }
+        },
+        "examples": {
+            "200": {
+                "method": "get",
+                "description": null,
+                "request": {
+                    "path": "/accounts/auth_requests/some-uuid/authenticate/ui/",
+                    "parameters": {
+                        "request_uuid": "some-uuid"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "text/html; charset=utf-8",
+                    "content": "<!DOCTYPE html>\n<html>\n    <head>\n        <title>Lakey Authentication</title>\n        <meta\n            name=\"google-signin-client_id\"\n            content=\"961918528927-12heq0l9f1tep1igb29tatkf2pr2p5f7.apps.googleusercontent.com\">\n\n        <link\n            href=\"https://fonts.googleapis.com/css?family=IBM+Plex+Sans\"\n            rel=\"stylesheet\">\n        <style>\n            body {\n                background: #e4e4e4;\n            }\n\n            #main {\n                height: 200px;\n                width: 100%;\n                font-family: 'IBM Plex Sans', sans-serif;\n            }\n\n            h2 {\n                font-weight: normal;\n            }\n\n            #authenticate {\n                display: flex;\n                flex-direction: column;\n                align-items: center;\n                justify-content: center;\n            }\n        </style>\n        <script\n            type=\"text/javascript\">\n\n            function renderButton() {\n                gapi.signin2.render('google-auth-button', {\n                    'scope': 'profile email',\n                    'width': 240,\n                    'height': 50,\n                    'longtitle': true,\n                    'theme': 'dark',\n                    'onsuccess': onSuccess,\n                    'onfailure': onFailure\n              });\n            }\n\n            function onSuccess(googleUser) {\n                let authRequestUUID = 'some-uuid';\n                let profile = googleUser.getBasicProfile();\n                let authorizationCode = googleUser.getAuthResponse().id_token;\n\n                // FIXME: add ajax call!\n                // FIXME: add progress while waiting for ajax\n                // FIXME: add switch to done screen\n                // FIXME: add switch something went wrong screen\n                // FIXME: add nice font\n                // https://developers.google.com/identity/sign-in/web/build-button\n                console.log('id_token: ' + authorizationCode);\n                console.log('Email: ' + profile.getEmail());\n\n                // document.body.innerHTML = '<div>DONE!</done>';\n            }\n\n            function onFailure(error) {\n                console.log(error);\n            }\n\n        </script>\n        <script\n            src=\"https://apis.google.com/js/platform.js?onload=renderButton\"\n            async\n            defer>\n        </script>\n    </head>\n\n    <body>\n\n        <div\n            id=\"main\">\n            <div\n                id=\"authenticate\">\n\n                <h2>Sign In To Lakey</h2>\n                <div\n                    id=\"google-auth-button\"></div>\n            </div>\n\n            <div\n                id=\"done\">\n\n                DONE\n            </div>\n\n        </div>\n    </body>\n\n</html>\n"
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "ATTACH_ACCOUNT_TO_AUTH_REQUEST": {
+        "method": "post",
+        "path_conf": {
+            "path": "/accounts/auth_requests/attach_account/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Attach Account to Auth Request",
+            "description": null,
+            "domain": {
+                "id": "account_authentication",
+                "name": "Account & Auth Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": null,
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/account/commands.py",
+            "start_line": 76,
+            "end_line": 95,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/.venv/src/lily/lily/base/serializers.py/#L155",
+                "schema": {}
+            },
+            "input_body": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/account/commands.py/#L68",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "request_uuid",
+                        "code",
+                        "email"
+                    ],
+                    "properties": {
+                        "request_uuid": {
+                            "type": "string"
+                        },
+                        "code": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string",
+                            "format": "email"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "200 (ACCOUNT_TO_AUTH_REQUEST_ATTACHED)": {
+                "method": "post",
+                "description": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED",
+                "request": {
+                    "path": "/accounts/auth_requests/attach_account/",
+                    "content": {
+                        "request_uuid": "3b25d2b3-48ff-11e9-b05d-0028f8484bd5",
+                        "code": "some-authorization-code",
+                        "email": "jacky@somewhere.org"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "empty",
+                        "@event": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED"
+                    }
+                }
+            },
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "post",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/accounts/auth_requests/attach_account/",
+                    "content": {
+                        "request_uuid": "some-uuid",
+                        "email": "jacky@somewhere.org"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "request_uuid": [
+                                "\"some-uuid\" is not a valid UUID."
+                            ],
+                            "code": [
+                                "This field is required."
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE"
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_AUTHREQUEST)": {
+                "method": "post",
+                "description": "COULD_NOT_FIND_AUTHREQUEST",
+                "request": {
+                    "path": "/accounts/auth_requests/attach_account/",
+                    "content": {
+                        "request_uuid": "3b25d2b4-48ff-11e9-b05d-0028f8484bd5",
+                        "code": "some-code",
+                        "email": "jacky@somewhere.org"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_AUTHREQUEST"
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "CREATE_AUTH_TOKEN": {
+        "method": "post",
+        "path_conf": {
+            "path": "/accounts/auth_tokens/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Create Auth Token",
+            "description": null,
+            "domain": {
+                "id": "account_authentication",
+                "name": "Account & Auth Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": null,
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/account/commands.py",
+            "start_line": 104,
+            "end_line": 121,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/account/serializers.py/#L20",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "token"
+                    ],
+                    "properties": {
+                        "token": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "input_body": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/account/commands.py/#L68",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "request_uuid"
+                    ],
+                    "properties": {
+                        "request_uuid": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "201 (AUTH_TOKEN_CREATED)": {
+                "method": "post",
+                "description": "AUTH_TOKEN_CREATED",
+                "request": {
+                    "path": "/accounts/auth_tokens/",
+                    "content": {
+                        "request_uuid": "3b25d2b5-48ff-11e9-b05d-0028f8484bd5"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 201,
+                    "content_type": "application/json",
+                    "content": {
+                        "token": "fd78cd7d87f",
+                        "@type": "auth_token",
+                        "@event": "AUTH_TOKEN_CREATED"
+                    }
+                }
+            },
+            "400 (EXPIRED_AUTH_REQUEST_DETECTED)": {
+                "method": "post",
+                "description": "EXPIRED_AUTH_REQUEST_DETECTED",
+                "request": {
+                    "path": "/accounts/auth_tokens/",
+                    "content": {
+                        "request_uuid": "f5e7e000-5074-11e4-94bd-02426ec57dd1"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "EXPIRED_AUTH_REQUEST_DETECTED"
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "CREATE_CATALOGUEITEM": {
+        "method": "post",
+        "path_conf": {
+            "path": "/catalogue/items/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Create Catalogue Item",
+            "description": null,
+            "domain": {
+                "id": "catalogue",
+                "name": "Catalogue Items Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/catalogue/commands.py",
+            "start_line": 23,
+            "end_line": 42,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/catalogue/serializers.py/#L8",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "spec",
+                        "executor_type",
+                        "created_by",
+                        "updated_by",
+                        "maintained_by"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "maxLength": 256
+                        },
+                        "spec": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "INTEGER",
+                                            "FLOAT",
+                                            "STRING",
+                                            "BOOLEAN"
+                                        ]
+                                    },
+                                    "size": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ]
+                                    },
+                                    "is_nullable": {
+                                        "type": "boolean"
+                                    },
+                                    "distribution": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "value": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "null"
+                                                                },
+                                                                {
+                                                                    "type": "number"
+                                                                },
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "boolean"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "count": {
+                                                            "type": "number"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "value",
+                                                        "count"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type",
+                                    "size",
+                                    "is_nullable",
+                                    "distribution"
+                                ]
+                            }
+                        },
+                        "sample": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {}
+                            }
+                        },
+                        "executor_type": {
+                            "type": "string",
+                            "enum": [
+                                "ATHENA",
+                                "DATABRICKS"
+                            ]
+                        },
+                        "created_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        },
+                        "updated_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        },
+                        "maintained_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "input_body": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/catalogue/parsers.py/#L7",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "spec",
+                        "maintained_by_id",
+                        "executor_type"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "maxLength": 256
+                        },
+                        "spec": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "INTEGER",
+                                            "FLOAT",
+                                            "STRING",
+                                            "BOOLEAN"
+                                        ]
+                                    },
+                                    "size": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ]
+                                    },
+                                    "is_nullable": {
+                                        "type": "boolean"
+                                    },
+                                    "distribution": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "value": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "null"
+                                                                },
+                                                                {
+                                                                    "type": "number"
+                                                                },
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "boolean"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "count": {
+                                                            "type": "number"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "value",
+                                                        "count"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type",
+                                    "size",
+                                    "is_nullable",
+                                    "distribution"
+                                ]
+                            }
+                        },
+                        "sample": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {}
+                            }
+                        },
+                        "maintained_by_id": {
+                            "type": "integer"
+                        },
+                        "executor_type": {
+                            "type": "string",
+                            "enum": [
+                                "ATHENA",
+                                "DATABRICKS"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "201 (CATALOGUEITEM_CREATED)": {
+                "method": "post",
+                "description": "CATALOGUEITEM_CREATED",
+                "request": {
+                    "path": "/catalogue/items/",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 16,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoidnJpdGNoaWVAZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2MDY2fQ.2RgXN1Gfuu6AVYa8REdWyneWOOKiHeX7iVsHSP0u02U"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 201,
+                    "content_type": "application/json",
+                    "content": {
+                        "name": "iot_events",
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "DATABRICKS",
+                        "created_by": {
+                            "id": 15,
+                            "email": "vritchie@gmail.com",
+                            "type": "ADMIN",
+                            "@type": "account"
+                        },
+                        "updated_by": {
+                            "id": 15,
+                            "email": "vritchie@gmail.com",
+                            "type": "ADMIN",
+                            "@type": "account"
+                        },
+                        "maintained_by": {
+                            "id": 16,
+                            "email": "plakin@crist-cassin.info",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "@type": "catalogue_item",
+                        "@event": "CATALOGUEITEM_CREATED"
+                    }
+                }
+            },
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "post",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/catalogue/items/",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 18,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoiZG9ubmVsbHliZXJ0b25Aam9obnNvbi5pbmZvIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2MDY2fQ.7pT-KOvJ8QfoIsGuUTFp5-AENYJqOh-RTXSd4MI5Mo0"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "spec": [
+                                "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE",
+                        "@access": {
+                            "account_id": 17
+                        }
+                    }
+                }
+            },
+            "400 (BODY_JSON_DID_NOT_PARSE)": {
+                "method": "post",
+                "description": "BODY_JSON_DID_NOT_PARSE",
+                "request": {
+                    "path": "/catalogue/items/",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 932039,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiamVyZW1lMzZAZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2MDY2fQ.p7sWYtUKCum9Y3AMGvquIrRJQtmB3ibAIoM3ETVh0Xc"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "maintained_by": [
+                                "account instance with id 932039 does not exist."
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_JSON_DID_NOT_PARSE",
+                        "@access": {
+                            "account_id": 19
+                        }
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "BULK_READ_CATALOGUEITEMS": {
+        "method": "get",
+        "path_conf": {
+            "path": "/catalogue/items/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Bulk Read Catalogue Items",
+            "description": null,
+            "domain": {
+                "id": "catalogue",
+                "name": "Catalogue Items Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "RESEARCHER",
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/catalogue/commands.py",
+            "start_line": 48,
+            "end_line": 75,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/catalogue/serializers.py/#L33",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "items"
+                    ],
+                    "properties": {
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "name",
+                                    "spec",
+                                    "executor_type",
+                                    "created_by",
+                                    "updated_by",
+                                    "maintained_by"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 256
+                                    },
+                                    "spec": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "INTEGER",
+                                                        "FLOAT",
+                                                        "STRING",
+                                                        "BOOLEAN"
+                                                    ]
+                                                },
+                                                "size": {
+                                                    "oneOf": [
+                                                        {
+                                                            "type": "null"
+                                                        },
+                                                        {
+                                                            "type": "number"
+                                                        }
+                                                    ]
+                                                },
+                                                "is_nullable": {
+                                                    "type": "boolean"
+                                                },
+                                                "distribution": {
+                                                    "oneOf": [
+                                                        {
+                                                            "type": "null"
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "value": {
+                                                                        "oneOf": [
+                                                                            {
+                                                                                "type": "null"
+                                                                            },
+                                                                            {
+                                                                                "type": "number"
+                                                                            },
+                                                                            {
+                                                                                "type": "string"
+                                                                            },
+                                                                            {
+                                                                                "type": "boolean"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "count": {
+                                                                        "type": "number"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "value",
+                                                                    "count"
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "name",
+                                                "type",
+                                                "size",
+                                                "is_nullable",
+                                                "distribution"
+                                            ]
+                                        }
+                                    },
+                                    "sample": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    },
+                                    "executor_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ATHENA",
+                                            "DATABRICKS"
+                                        ]
+                                    },
+                                    "created_by": {
+                                        "type": "object",
+                                        "required": [
+                                            "email"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ADMIN",
+                                                    "RESEARCHER"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "updated_by": {
+                                        "type": "object",
+                                        "required": [
+                                            "email"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ADMIN",
+                                                    "RESEARCHER"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "maintained_by": {
+                                        "type": "object",
+                                        "required": [
+                                            "email"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ADMIN",
+                                                    "RESEARCHER"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "input_query": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/catalogue/commands.py/#L44",
+                "schema": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "query": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "200 (CATALOGUEITEMS_BULK_READ)": {
+                "method": "get",
+                "description": "CATALOGUEITEMS_BULK_READ",
+                "request": {
+                    "path": "/catalogue/items/?query=IoT",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoiZ3JlZW5ob2x0c29uZHJhQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2MDY2fQ._cJOp_B9ixDMjT4PbJ0sa6z4tKqOTMQdqMCZO7xr-jQ"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "items": [
+                            {
+                                "name": "iot_features",
+                                "spec": [
+                                    {
+                                        "name": "location",
+                                        "size": 190234,
+                                        "type": "STRING",
+                                        "is_nullable": false,
+                                        "distribution": null
+                                    },
+                                    {
+                                        "name": "value",
+                                        "size": null,
+                                        "type": "FLOAT",
+                                        "is_nullable": true,
+                                        "distribution": [
+                                            {
+                                                "count": 9,
+                                                "value": 18.0
+                                            },
+                                            {
+                                                "count": 45,
+                                                "value": 19.1
+                                            },
+                                            {
+                                                "count": 10,
+                                                "value": 21.2
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "sample": [],
+                                "executor_type": "DATABRICKS",
+                                "created_by": null,
+                                "updated_by": null,
+                                "maintained_by": null,
+                                "@type": "catalogue_item"
+                            },
+                            {
+                                "name": "iot_events",
+                                "spec": [
+                                    {
+                                        "name": "location",
+                                        "size": 190234,
+                                        "type": "STRING",
+                                        "is_nullable": false,
+                                        "distribution": null
+                                    },
+                                    {
+                                        "name": "value",
+                                        "size": null,
+                                        "type": "FLOAT",
+                                        "is_nullable": true,
+                                        "distribution": [
+                                            {
+                                                "count": 9,
+                                                "value": 18.0
+                                            },
+                                            {
+                                                "count": 45,
+                                                "value": 19.1
+                                            },
+                                            {
+                                                "count": 10,
+                                                "value": 21.2
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "sample": [],
+                                "executor_type": "ATHENA",
+                                "created_by": null,
+                                "updated_by": null,
+                                "maintained_by": null,
+                                "@type": "catalogue_item"
+                            }
+                        ],
+                        "@type": "catalogue_items_list",
+                        "@event": "CATALOGUEITEMS_BULK_READ"
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "READ_CATALOGUEITEM": {
+        "method": "get",
+        "path_conf": {
+            "path": "/catalogue/items/{item_id}",
+            "parameters": [
+                {
+                    "name": "item_id",
+                    "type": "integer",
+                    "description": ""
+                }
+            ]
+        },
+        "meta": {
+            "title": "Read Catalogue Item",
+            "description": null,
+            "domain": {
+                "id": "catalogue",
+                "name": "Catalogue Items Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "RESEARCHER",
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/catalogue/commands.py",
+            "start_line": 80,
+            "end_line": 93,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/catalogue/serializers.py/#L8",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "spec",
+                        "executor_type",
+                        "created_by",
+                        "updated_by",
+                        "maintained_by"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "maxLength": 256
+                        },
+                        "spec": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "INTEGER",
+                                            "FLOAT",
+                                            "STRING",
+                                            "BOOLEAN"
+                                        ]
+                                    },
+                                    "size": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ]
+                                    },
+                                    "is_nullable": {
+                                        "type": "boolean"
+                                    },
+                                    "distribution": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "value": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "null"
+                                                                },
+                                                                {
+                                                                    "type": "number"
+                                                                },
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "boolean"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "count": {
+                                                            "type": "number"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "value",
+                                                        "count"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type",
+                                    "size",
+                                    "is_nullable",
+                                    "distribution"
+                                ]
+                            }
+                        },
+                        "sample": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {}
+                            }
+                        },
+                        "executor_type": {
+                            "type": "string",
+                            "enum": [
+                                "ATHENA",
+                                "DATABRICKS"
+                            ]
+                        },
+                        "created_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        },
+                        "updated_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        },
+                        "maintained_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "200 (CATALOGUEITEM_READ)": {
+                "method": "get",
+                "description": "CATALOGUEITEM_READ",
+                "request": {
+                    "path": "/catalogue/items/12",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoicGhhZ2VuZXNAdHJvbXAub3JnIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2MDY2fQ.QkXYijRdAU6PaiFNTEMAMeYl4Ci9MUQBBIE9bmAvrMw"
+                    },
+                    "parameters": {
+                        "item_id": "12"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "name": "temperatures",
+                        "spec": [
+                            {
+                                "name": "location",
+                                "size": 190234,
+                                "type": "STRING",
+                                "is_nullable": false,
+                                "distribution": null
+                            },
+                            {
+                                "name": "value",
+                                "size": null,
+                                "type": "FLOAT",
+                                "is_nullable": true,
+                                "distribution": [
+                                    {
+                                        "count": 9,
+                                        "value": 18.0
+                                    },
+                                    {
+                                        "count": 45,
+                                        "value": 19.1
+                                    },
+                                    {
+                                        "count": 10,
+                                        "value": 21.2
+                                    }
+                                ]
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "ATHENA",
+                        "created_by": null,
+                        "updated_by": null,
+                        "maintained_by": null,
+                        "@type": "catalogue_item",
+                        "@event": "CATALOGUEITEM_READ"
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
+                "method": "get",
+                "description": "COULD_NOT_FIND_CATALOGUEITEM",
+                "request": {
+                    "path": "/catalogue/items/69506",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoicmNvcmtlcnlAY2hyaXN0aWFuc2VuLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.qS2ZYvE5XSh1BVNMjUKGzPTRqVjYTW5nG7cRJ9DLnAw"
+                    },
+                    "parameters": {
+                        "item_id": "69506"
+                    }
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_CATALOGUEITEM",
+                        "@access": {
+                            "account_id": 24
+                        }
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "UPDATE_CATALOGUEITEM": {
+        "method": "put",
+        "path_conf": {
+            "path": "/catalogue/items/{item_id}",
+            "parameters": [
+                {
+                    "name": "item_id",
+                    "type": "integer",
+                    "description": ""
+                }
+            ]
+        },
+        "meta": {
+            "title": "Update Catalogue Item",
+            "description": null,
+            "domain": {
+                "id": "catalogue",
+                "name": "Catalogue Items Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/catalogue/commands.py",
+            "start_line": 95,
+            "end_line": 117,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/catalogue/serializers.py/#L8",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "spec",
+                        "executor_type",
+                        "created_by",
+                        "updated_by",
+                        "maintained_by"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "maxLength": 256
+                        },
+                        "spec": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "INTEGER",
+                                            "FLOAT",
+                                            "STRING",
+                                            "BOOLEAN"
+                                        ]
+                                    },
+                                    "size": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ]
+                                    },
+                                    "is_nullable": {
+                                        "type": "boolean"
+                                    },
+                                    "distribution": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "value": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "null"
+                                                                },
+                                                                {
+                                                                    "type": "number"
+                                                                },
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "boolean"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "count": {
+                                                            "type": "number"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "value",
+                                                        "count"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type",
+                                    "size",
+                                    "is_nullable",
+                                    "distribution"
+                                ]
+                            }
+                        },
+                        "sample": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {}
+                            }
+                        },
+                        "executor_type": {
+                            "type": "string",
+                            "enum": [
+                                "ATHENA",
+                                "DATABRICKS"
+                            ]
+                        },
+                        "created_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        },
+                        "updated_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        },
+                        "maintained_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "input_body": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/catalogue/parsers.py/#L7",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "spec",
+                        "maintained_by_id",
+                        "executor_type"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "maxLength": 256
+                        },
+                        "spec": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "INTEGER",
+                                            "FLOAT",
+                                            "STRING",
+                                            "BOOLEAN"
+                                        ]
+                                    },
+                                    "size": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ]
+                                    },
+                                    "is_nullable": {
+                                        "type": "boolean"
+                                    },
+                                    "distribution": {
+                                        "oneOf": [
+                                            {
+                                                "type": "null"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "value": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "null"
+                                                                },
+                                                                {
+                                                                    "type": "number"
+                                                                },
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "boolean"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "count": {
+                                                            "type": "number"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "value",
+                                                        "count"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type",
+                                    "size",
+                                    "is_nullable",
+                                    "distribution"
+                                ]
+                            }
+                        },
+                        "sample": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {}
+                            }
+                        },
+                        "maintained_by_id": {
+                            "type": "integer"
+                        },
+                        "executor_type": {
+                            "type": "string",
+                            "enum": [
+                                "ATHENA",
+                                "DATABRICKS"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "200 (CATALOGUEITEM_UPDATED)": {
+                "method": "put",
+                "description": "CATALOGUEITEM_UPDATED",
+                "request": {
+                    "path": "/catalogue/items/14",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 26,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiamx1ZXR0Z2VuQGt1bmRlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.9OFB5-37vO43D4Pvp0uYmhmZjCjX24GDrGoOLyMklE4"
+                    },
+                    "parameters": {
+                        "item_id": "14"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "name": "iot_events",
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "DATABRICKS",
+                        "created_by": {
+                            "id": 27,
+                            "email": "ibode@west-kovacek.net",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "updated_by": {
+                            "id": 25,
+                            "email": "jluettgen@kunde.com",
+                            "type": "ADMIN",
+                            "@type": "account"
+                        },
+                        "maintained_by": {
+                            "id": 26,
+                            "email": "fsteuber@vandervort-schroeder.net",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "@type": "catalogue_item",
+                        "@event": "CATALOGUEITEM_UPDATED"
+                    }
+                }
+            },
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "put",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/catalogue/items/15",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 29,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoiaGdpc2xhc29uQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.xK28j5N56gybOVNIOruiYRMZmxhjYm1vpH_NZNP1HoI"
+                    },
+                    "parameters": {
+                        "item_id": "15"
+                    }
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "spec": [
+                                "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE",
+                        "@access": {
+                            "account_id": 28
+                        }
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
+                "method": "put",
+                "description": "COULD_NOT_FIND_CATALOGUEITEM",
+                "request": {
+                    "path": "/catalogue/items/9022",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 31,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoiam9obnNvbmJhaWxleUBtYWdnaW8uaW5mbyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.-WWrwpWk1TBaGjhoaHGVRqQCqjyNCwrZP-9KNPxF4JA"
+                    },
+                    "parameters": {
+                        "item_id": "9022"
+                    }
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_CATALOGUEITEM",
+                        "@access": {
+                            "account_id": 30
+                        }
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "DELETE_CATALOGUEITEM": {
+        "method": "delete",
+        "path_conf": {
+            "path": "/catalogue/items/{item_id}",
+            "parameters": [
+                {
+                    "name": "item_id",
+                    "type": "integer",
+                    "description": ""
+                }
+            ]
+        },
+        "meta": {
+            "title": "Delete Catalogue Item",
+            "description": null,
+            "domain": {
+                "id": "catalogue",
+                "name": "Catalogue Items Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/catalogue/commands.py",
+            "start_line": 119,
+            "end_line": 146,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/.venv/src/lily/lily/base/serializers.py/#L155",
+                "schema": {}
+            }
+        },
+        "examples": {
+            "200 (CATALOGUEITEM_DELETED)": {
+                "method": "delete",
+                "description": "CATALOGUEITEM_DELETED",
+                "request": {
+                    "path": "/catalogue/items/8",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoia2lhbmExNUBsdWVpbHdpdHotemllbWFubi5iaXoiLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDYwNjZ9.6rbWYY_berKScrk6DAHMpU_VN12ujB7ONyEar8OrZgI"
+                    },
+                    "parameters": {
+                        "item_id": "8"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "empty",
+                        "@event": "CATALOGUEITEM_DELETED"
+                    }
+                }
+            },
+            "400 (NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED)": {
+                "method": "delete",
+                "description": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
+                "request": {
+                    "path": "/catalogue/items/10",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoibWFudWVsMjhAc3Ryb21hbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDYwNjZ9.pxudCrOiaZXQz02YVntd8SI0FDTEZGblCoGaSFTfeFM"
+                    },
+                    "parameters": {
+                        "item_id": "10"
+                    }
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "item_id": 10,
+                        "not_cancelled_count": 1,
+                        "@type": "error",
+                        "@event": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED"
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
+                "method": "delete",
+                "description": "COULD_NOT_FIND_CATALOGUEITEM",
+                "request": {
+                    "path": "/catalogue/items/69506",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoieXdhbHNoQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.0Y_0CAtSfpwSxAW7O36C4Kouu5RrAeLngcMBIGqL7Yo"
+                    },
+                    "parameters": {
+                        "item_id": "69506"
+                    }
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_CATALOGUEITEM",
+                        "@access": {
+                            "account_id": 22
+                        }
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "RENDER_DOWNLOAD_REQUEST_UI_DATA": {
+        "method": "post",
+        "path_conf": {
+            "path": "/downloader/requests/render_ui_data/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Render data needed for the built up of the download request form on client side",
+            "description": null,
+            "domain": {
+                "id": "download_requests",
+                "name": "Download Requests Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "RESEARCHER",
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/downloader/commands.py",
+            "start_line": 28,
+            "end_line": 58,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/downloader/serializers.py/#L18",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "columns_operators"
+                    ],
+                    "properties": {
+                        "columns_operators": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "name",
+                                    "operators"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "operators": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "input_body": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/downloader/parsers.py/#L7",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "catalogue_item_id"
+                    ],
+                    "properties": {
+                        "catalogue_item_id": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "200 (DOWNLOAD_REQUEST_UI_DATA_RENDERED)": {
+                "method": "post",
+                "description": "DOWNLOAD_REQUEST_UI_DATA_RENDERED",
+                "request": {
+                    "path": "/downloader/requests/render_ui_data/",
+                    "content": {
+                        "catalogue_item_id": 21
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoibWlndWVsYW5nZWxyaXBwaW5AcG91cm9zLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.xnH7FFJd9w2J_27tntv_Kp1UJ1cmAIfn_hk_P52DahM"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "columns_operators": [
+                            {
+                                "name": "product",
+                                "operators": [
+                                    ">",
+                                    ">=",
+                                    "<",
+                                    "<=",
+                                    "=",
+                                    "!="
+                                ],
+                                "@type": "column_operators"
+                            },
+                            {
+                                "name": "price",
+                                "operators": [
+                                    ">",
+                                    ">=",
+                                    "<",
+                                    "<=",
+                                    "=",
+                                    "!="
+                                ],
+                                "@type": "column_operators"
+                            },
+                            {
+                                "name": "available",
+                                "operators": [
+                                    "=",
+                                    "!="
+                                ],
+                                "@type": "column_operators"
+                            }
+                        ],
+                        "@type": "download_request_render",
+                        "@event": "DOWNLOAD_REQUEST_UI_DATA_RENDERED"
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "ESTIMATE_SIZE_OF_DOWNLOAD_REQUEST": {
+        "method": "post",
+        "path_conf": {
+            "path": "/downloader/requests/estimate/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Estimate the size download based on the provided spec",
+            "description": null,
+            "domain": {
+                "id": "download_requests",
+                "name": "Download Requests Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "RESEARCHER",
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/downloader/commands.py",
+            "start_line": 63,
+            "end_line": 81,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/downloader/serializers.py/#L25",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "estimated_size"
+                    ],
+                    "properties": {
+                        "estimated_size": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            },
+            "input_body": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/downloader/parsers.py/#L12",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "spec",
+                        "catalogue_item_id"
+                    ],
+                    "properties": {
+                        "spec": {
+                            "type": "object",
+                            "properties": {
+                                "columns": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "filters": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "operator": {
+                                                "type": "string",
+                                                "enum": [
+                                                    ">",
+                                                    ">=",
+                                                    "<",
+                                                    "<=",
+                                                    "=",
+                                                    "!="
+                                                ]
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "operator",
+                                            "value"
+                                        ]
+                                    }
+                                },
+                                "randomize_ratio": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "columns",
+                                "filters",
+                                "randomize_ratio"
+                            ]
+                        },
+                        "catalogue_item_id": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "200 (SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED)": {
+                "method": "post",
+                "description": "SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED",
+                "request": {
+                    "path": "/downloader/requests/estimate/",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "catalogue_item_id": 22
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoid3Vuc2NobGlzZXR0ZUB6Ym9uY2FrLWhhcnZleS5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDYwNjZ9.qzqKJZK_H6RDlXcwEgF_i8gjlbgVQhv_Ej4TDopIQcs"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "estimated_size": 1234,
+                        "@type": "download_request_estimated_size",
+                        "@event": "SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED"
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "CREATE_DOWNLOADREQUEST": {
+        "method": "post",
+        "path_conf": {
+            "path": "/downloader/requests/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Create Download Request",
+            "description": "Create a Download Request in a smart way meaning that: - if same `DownloadRequest` already exists do not start another one. (FIXME: maybe just attach user to the waiters list) -",
+            "domain": {
+                "id": "download_requests",
+                "name": "Download Requests Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "RESEARCHER",
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/downloader/commands.py",
+            "start_line": 86,
+            "end_line": 118,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/downloader/serializers.py/#L32",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "spec",
+                        "catalogue_item",
+                        "created_by"
+                    ],
+                    "properties": {
+                        "spec": {
+                            "type": "object",
+                            "properties": {
+                                "columns": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "filters": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "operator": {
+                                                "type": "string",
+                                                "enum": [
+                                                    ">",
+                                                    ">=",
+                                                    "<",
+                                                    "<=",
+                                                    "=",
+                                                    "!="
+                                                ]
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "operator",
+                                            "value"
+                                        ]
+                                    }
+                                },
+                                "randomize_ratio": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "columns",
+                                "filters",
+                                "randomize_ratio"
+                            ]
+                        },
+                        "uri": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "real_size": {
+                            "type": "integer",
+                            "minimum": -2147483648,
+                            "maximum": 2147483647
+                        },
+                        "estimated_size": {
+                            "type": "integer",
+                            "minimum": -2147483648,
+                            "maximum": 2147483647
+                        },
+                        "executor_job_id": {
+                            "type": "string",
+                            "maxLength": 256
+                        },
+                        "catalogue_item": {
+                            "type": "object",
+                            "required": [
+                                "name",
+                                "spec",
+                                "executor_type",
+                                "created_by",
+                                "updated_by",
+                                "maintained_by"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "maxLength": 256
+                                },
+                                "spec": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "INTEGER",
+                                                    "FLOAT",
+                                                    "STRING",
+                                                    "BOOLEAN"
+                                                ]
+                                            },
+                                            "size": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "null"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            },
+                                            "is_nullable": {
+                                                "type": "boolean"
+                                            },
+                                            "distribution": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "null"
+                                                    },
+                                                    {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "value": {
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "type": "null"
+                                                                        },
+                                                                        {
+                                                                            "type": "number"
+                                                                        },
+                                                                        {
+                                                                            "type": "string"
+                                                                        },
+                                                                        {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "count": {
+                                                                    "type": "number"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "value",
+                                                                "count"
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "type",
+                                            "size",
+                                            "is_nullable",
+                                            "distribution"
+                                        ]
+                                    }
+                                },
+                                "sample": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {}
+                                    }
+                                },
+                                "executor_type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ATHENA",
+                                        "DATABRICKS"
+                                    ]
+                                },
+                                "created_by": {
+                                    "type": "object",
+                                    "required": [
+                                        "email"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ADMIN",
+                                                "RESEARCHER"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "updated_by": {
+                                    "type": "object",
+                                    "required": [
+                                        "email"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ADMIN",
+                                                "RESEARCHER"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "maintained_by": {
+                                    "type": "object",
+                                    "required": [
+                                        "email"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ADMIN",
+                                                "RESEARCHER"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "created_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        },
+                        "is_cancelled": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            },
+            "input_body": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/downloader/parsers.py/#L12",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "spec",
+                        "catalogue_item_id"
+                    ],
+                    "properties": {
+                        "spec": {
+                            "type": "object",
+                            "properties": {
+                                "columns": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "filters": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "operator": {
+                                                "type": "string",
+                                                "enum": [
+                                                    ">",
+                                                    ">=",
+                                                    "<",
+                                                    "<=",
+                                                    "=",
+                                                    "!="
+                                                ]
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "operator",
+                                            "value"
+                                        ]
+                                    }
+                                },
+                                "randomize_ratio": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "columns",
+                                "filters",
+                                "randomize_ratio"
+                            ]
+                        },
+                        "catalogue_item_id": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "201 (DOWNLOADREQUEST_CREATED)": {
+                "method": "post",
+                "description": "DOWNLOADREQUEST_CREATED",
+                "request": {
+                    "path": "/downloader/requests/",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "catalogue_item_id": 24
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoibWFkZWxlaW5lNDJAYmVyZ3N0cm9tLWhlaWRlbnJlaWNoLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.LNIvTXKidLW31ApY29T3Ikift9AQRpC_XJl8U2bQTg4"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 201,
+                    "content_type": "application/json",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "uri": null,
+                        "real_size": null,
+                        "estimated_size": null,
+                        "executor_job_id": null,
+                        "catalogue_item": {
+                            "name": "Michell Wisoky",
+                            "spec": [
+                                {
+                                    "name": "product",
+                                    "size": null,
+                                    "type": "STRING",
+                                    "is_nullable": true,
+                                    "distribution": null
+                                },
+                                {
+                                    "name": "price",
+                                    "size": null,
+                                    "type": "INTEGER",
+                                    "is_nullable": false,
+                                    "distribution": null
+                                }
+                            ],
+                            "sample": [],
+                            "executor_type": "ATHENA",
+                            "created_by": null,
+                            "updated_by": null,
+                            "maintained_by": null,
+                            "@type": "catalogue_item"
+                        },
+                        "created_by": {
+                            "id": 48,
+                            "email": "madeleine42@bergstrom-heidenreich.org",
+                            "type": "ADMIN",
+                            "@type": "account"
+                        },
+                        "is_cancelled": false,
+                        "@type": "download_request",
+                        "@event": "DOWNLOADREQUEST_CREATED"
+                    }
+                }
+            },
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "post",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/downloader/requests/",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "catalogue_item_id": "TEXT"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoiZmFyb241NUBtb29yZS5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDYwNjZ9.S38aUg0hJpv8CwXRUpa5etQabhzm6tKlHkqOWCl4YHQ"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "catalogue_item_id": [
+                                "A valid integer is required."
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE",
+                        "@access": {
+                            "account_id": 49
+                        }
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
+                "method": "post",
+                "description": "COULD_NOT_FIND_CATALOGUEITEM",
+                "request": {
+                    "path": "/downloader/requests/",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "catalogue_item_id": 58495
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoiaGVzdGVyZnVua0BnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDYwNjZ9.e1kQbD-WMTspP_qtkepjXmsEM0-hxWP-5hVvXr_GzkQ"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_CATALOGUEITEM",
+                        "@access": {
+                            "account_id": 50
+                        }
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "BULK_READ_DOWNLOADREQUESTS": {
+        "method": "get",
+        "path_conf": {
+            "path": "/downloader/requests/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Bulk Read Download Requests which you are waiting for",
+            "description": null,
+            "domain": {
+                "id": "download_requests",
+                "name": "Download Requests Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "RESEARCHER",
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/downloader/commands.py",
+            "start_line": 120,
+            "end_line": 136,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/downloader/serializers.py/#L56",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "requests"
+                    ],
+                    "properties": {
+                        "requests": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "spec",
+                                    "catalogue_item",
+                                    "created_by"
+                                ],
+                                "properties": {
+                                    "spec": {
+                                        "type": "object",
+                                        "properties": {
+                                            "columns": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "filters": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "operator": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                ">",
+                                                                ">=",
+                                                                "<",
+                                                                "<=",
+                                                                "=",
+                                                                "!="
+                                                            ]
+                                                        },
+                                                        "value": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "number"
+                                                                },
+                                                                {
+                                                                    "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "boolean"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "name",
+                                                        "operator",
+                                                        "value"
+                                                    ]
+                                                }
+                                            },
+                                            "randomize_ratio": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "columns",
+                                            "filters",
+                                            "randomize_ratio"
+                                        ]
+                                    },
+                                    "uri": {
+                                        "type": "string",
+                                        "format": "uri"
+                                    },
+                                    "real_size": {
+                                        "type": "integer",
+                                        "minimum": -2147483648,
+                                        "maximum": 2147483647
+                                    },
+                                    "estimated_size": {
+                                        "type": "integer",
+                                        "minimum": -2147483648,
+                                        "maximum": 2147483647
+                                    },
+                                    "executor_job_id": {
+                                        "type": "string",
+                                        "maxLength": 256
+                                    },
+                                    "catalogue_item": {
+                                        "type": "object",
+                                        "required": [
+                                            "name",
+                                            "spec",
+                                            "executor_type",
+                                            "created_by",
+                                            "updated_by",
+                                            "maintained_by"
+                                        ],
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "maxLength": 256
+                                            },
+                                            "spec": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "INTEGER",
+                                                                "FLOAT",
+                                                                "STRING",
+                                                                "BOOLEAN"
+                                                            ]
+                                                        },
+                                                        "size": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "null"
+                                                                },
+                                                                {
+                                                                    "type": "number"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "is_nullable": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "distribution": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "null"
+                                                                },
+                                                                {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "value": {
+                                                                                "oneOf": [
+                                                                                    {
+                                                                                        "type": "null"
+                                                                                    },
+                                                                                    {
+                                                                                        "type": "number"
+                                                                                    },
+                                                                                    {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    {
+                                                                                        "type": "boolean"
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            "count": {
+                                                                                "type": "number"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "value",
+                                                                            "count"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "name",
+                                                        "type",
+                                                        "size",
+                                                        "is_nullable",
+                                                        "distribution"
+                                                    ]
+                                                }
+                                            },
+                                            "sample": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                }
+                                            },
+                                            "executor_type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ATHENA",
+                                                    "DATABRICKS"
+                                                ]
+                                            },
+                                            "created_by": {
+                                                "type": "object",
+                                                "required": [
+                                                    "email"
+                                                ],
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "format": "email"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "ADMIN",
+                                                            "RESEARCHER"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "updated_by": {
+                                                "type": "object",
+                                                "required": [
+                                                    "email"
+                                                ],
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "format": "email"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "ADMIN",
+                                                            "RESEARCHER"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "maintained_by": {
+                                                "type": "object",
+                                                "required": [
+                                                    "email"
+                                                ],
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "format": "email"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "ADMIN",
+                                                            "RESEARCHER"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "created_by": {
+                                        "type": "object",
+                                        "required": [
+                                            "email"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "ADMIN",
+                                                    "RESEARCHER"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "is_cancelled": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "200 (DOWNLOADREQUESTS_BULK_READ)": {
+                "method": "get",
+                "description": "DOWNLOADREQUESTS_BULK_READ",
+                "request": {
+                    "path": "/downloader/requests/",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoibGVubnkwMUBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.TwFHf-9tB_OKzoIjuMyJjz-H6cnnNbiioSKgNmTgAjQ"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "requests": [
+                            {
+                                "spec": {
+                                    "columns": [
+                                        "product"
+                                    ],
+                                    "filters": [
+                                        {
+                                            "name": "price",
+                                            "value": 78,
+                                            "operator": ">="
+                                        }
+                                    ],
+                                    "randomize_ratio": 1
+                                },
+                                "uri": null,
+                                "real_size": null,
+                                "estimated_size": null,
+                                "executor_job_id": null,
+                                "catalogue_item": {
+                                    "name": "Ms. Araceli Terry",
+                                    "spec": [
+                                        {
+                                            "name": "product",
+                                            "size": null,
+                                            "type": "STRING",
+                                            "is_nullable": true,
+                                            "distribution": null
+                                        },
+                                        {
+                                            "name": "price",
+                                            "size": null,
+                                            "type": "INTEGER",
+                                            "is_nullable": false,
+                                            "distribution": null
+                                        }
+                                    ],
+                                    "sample": [],
+                                    "executor_type": "ATHENA",
+                                    "created_by": null,
+                                    "updated_by": null,
+                                    "maintained_by": null,
+                                    "@type": "catalogue_item"
+                                },
+                                "created_by": {
+                                    "id": 47,
+                                    "email": "klockodestiny@parisian.com",
+                                    "type": "RESEARCHER",
+                                    "@type": "account"
+                                },
+                                "is_cancelled": false,
+                                "@type": "download_request"
+                            },
+                            {
+                                "spec": {
+                                    "columns": [
+                                        "product"
+                                    ],
+                                    "filters": [
+                                        {
+                                            "name": "price",
+                                            "value": 18,
+                                            "operator": "="
+                                        }
+                                    ],
+                                    "randomize_ratio": 0.8
+                                },
+                                "uri": null,
+                                "real_size": null,
+                                "estimated_size": null,
+                                "executor_job_id": null,
+                                "catalogue_item": {
+                                    "name": "Ms. Araceli Terry",
+                                    "spec": [
+                                        {
+                                            "name": "product",
+                                            "size": null,
+                                            "type": "STRING",
+                                            "is_nullable": true,
+                                            "distribution": null
+                                        },
+                                        {
+                                            "name": "price",
+                                            "size": null,
+                                            "type": "INTEGER",
+                                            "is_nullable": false,
+                                            "distribution": null
+                                        }
+                                    ],
+                                    "sample": [],
+                                    "executor_type": "ATHENA",
+                                    "created_by": null,
+                                    "updated_by": null,
+                                    "maintained_by": null,
+                                    "@type": "catalogue_item"
+                                },
+                                "created_by": {
+                                    "id": 47,
+                                    "email": "klockodestiny@parisian.com",
+                                    "type": "RESEARCHER",
+                                    "@type": "account"
+                                },
+                                "is_cancelled": false,
+                                "@type": "download_request"
+                            }
+                        ],
+                        "@type": "download_requests_list",
+                        "@event": "DOWNLOADREQUESTS_BULK_READ"
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "READ_DOWNLOADREQUEST": {
+        "method": "get",
+        "path_conf": {
+            "path": "/downloader/requests/{request_id}",
+            "parameters": [
+                {
+                    "name": "request_id",
+                    "type": "integer",
+                    "description": ""
+                }
+            ]
+        },
+        "meta": {
+            "title": "Read DownloadRequest one is waiting for",
+            "description": null,
+            "domain": {
+                "id": "download_requests",
+                "name": "Download Requests Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "RESEARCHER",
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/downloader/commands.py",
+            "start_line": 141,
+            "end_line": 157,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/lakey_service/downloader/serializers.py/#L32",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "spec",
+                        "catalogue_item",
+                        "created_by"
+                    ],
+                    "properties": {
+                        "spec": {
+                            "type": "object",
+                            "properties": {
+                                "columns": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "filters": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "operator": {
+                                                "type": "string",
+                                                "enum": [
+                                                    ">",
+                                                    ">=",
+                                                    "<",
+                                                    "<=",
+                                                    "=",
+                                                    "!="
+                                                ]
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "operator",
+                                            "value"
+                                        ]
+                                    }
+                                },
+                                "randomize_ratio": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "columns",
+                                "filters",
+                                "randomize_ratio"
+                            ]
+                        },
+                        "uri": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "real_size": {
+                            "type": "integer",
+                            "minimum": -2147483648,
+                            "maximum": 2147483647
+                        },
+                        "estimated_size": {
+                            "type": "integer",
+                            "minimum": -2147483648,
+                            "maximum": 2147483647
+                        },
+                        "executor_job_id": {
+                            "type": "string",
+                            "maxLength": 256
+                        },
+                        "catalogue_item": {
+                            "type": "object",
+                            "required": [
+                                "name",
+                                "spec",
+                                "executor_type",
+                                "created_by",
+                                "updated_by",
+                                "maintained_by"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "maxLength": 256
+                                },
+                                "spec": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "INTEGER",
+                                                    "FLOAT",
+                                                    "STRING",
+                                                    "BOOLEAN"
+                                                ]
+                                            },
+                                            "size": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "null"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            },
+                                            "is_nullable": {
+                                                "type": "boolean"
+                                            },
+                                            "distribution": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "null"
+                                                    },
+                                                    {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "value": {
+                                                                    "oneOf": [
+                                                                        {
+                                                                            "type": "null"
+                                                                        },
+                                                                        {
+                                                                            "type": "number"
+                                                                        },
+                                                                        {
+                                                                            "type": "string"
+                                                                        },
+                                                                        {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                "count": {
+                                                                    "type": "number"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "value",
+                                                                "count"
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "name",
+                                            "type",
+                                            "size",
+                                            "is_nullable",
+                                            "distribution"
+                                        ]
+                                    }
+                                },
+                                "sample": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {}
+                                    }
+                                },
+                                "executor_type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ATHENA",
+                                        "DATABRICKS"
+                                    ]
+                                },
+                                "created_by": {
+                                    "type": "object",
+                                    "required": [
+                                        "email"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ADMIN",
+                                                "RESEARCHER"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "updated_by": {
+                                    "type": "object",
+                                    "required": [
+                                        "email"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ADMIN",
+                                                "RESEARCHER"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "maintained_by": {
+                                    "type": "object",
+                                    "required": [
+                                        "email"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ADMIN",
+                                                "RESEARCHER"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "created_by": {
+                            "type": "object",
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "ADMIN",
+                                        "RESEARCHER"
+                                    ]
+                                }
+                            }
+                        },
+                        "is_cancelled": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {
+            "200 (DOWNLOADREQUEST_READ)": {
+                "method": "get",
+                "description": "DOWNLOADREQUEST_READ",
+                "request": {
+                    "path": "/downloader/requests/8",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoiZnJhbWlqYXl2aW9uQGhlcm1hbi5pbmZvIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2MDY2fQ.sbqxV8w8o6kR3CDq0slCjADo1dre38xUhnOz46U4-ZA"
+                    },
+                    "parameters": {
+                        "request_id": "8"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product"
+                            ],
+                            "filters": [
+                                {
+                                    "name": "price",
+                                    "value": 78,
+                                    "operator": ">="
+                                }
+                            ],
+                            "randomize_ratio": 1
+                        },
+                        "uri": null,
+                        "real_size": null,
+                        "estimated_size": null,
+                        "executor_job_id": null,
+                        "catalogue_item": {
+                            "name": "Dr. Colt Schamberger",
+                            "spec": [
+                                {
+                                    "name": "product",
+                                    "size": null,
+                                    "type": "STRING",
+                                    "is_nullable": true,
+                                    "distribution": null
+                                },
+                                {
+                                    "name": "price",
+                                    "size": null,
+                                    "type": "INTEGER",
+                                    "is_nullable": false,
+                                    "distribution": null
+                                }
+                            ],
+                            "sample": [],
+                            "executor_type": "DATABRICKS",
+                            "created_by": null,
+                            "updated_by": null,
+                            "maintained_by": null,
+                            "@type": "catalogue_item"
+                        },
+                        "created_by": {
+                            "id": 55,
+                            "email": "ardath78@hotmail.com",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "is_cancelled": false,
+                        "@type": "download_request",
+                        "@event": "DOWNLOADREQUEST_READ"
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_DOWNLOADREQUEST)": {
+                "method": "get",
+                "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
+                "request": {
+                    "path": "/downloader/requests/9",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoiYWlsZWVuMzVAamVyZGUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2MDY2fQ.QiYYw_al5TykvCKfTFqLLtJCNtmdpGbpvKM0yx5221Q"
+                    },
+                    "parameters": {
+                        "request_id": "9"
+                    }
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
+                        "@access": {
+                            "account_id": 57
+                        }
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "DELETE_DOWNLOADREQUEST": {
+        "method": "delete",
+        "path_conf": {
+            "path": "/downloader/requests/{request_id}",
+            "parameters": [
+                {
+                    "name": "request_id",
+                    "type": "integer",
+                    "description": ""
+                }
+            ]
+        },
+        "meta": {
+            "title": "Creator can cancel request or remove himself from waiters",
+            "description": null,
+            "domain": {
+                "id": "download_requests",
+                "name": "Download Requests Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": [
+                "RESEARCHER",
+                "ADMIN"
+            ],
+            "is_private": false,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/lakey_service/downloader/commands.py",
+            "start_line": 159,
+            "end_line": 180,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/.venv/src/lily/lily/base/serializers.py/#L155",
+                "schema": {}
+            }
+        },
+        "examples": {
+            "200 (DOWNLOADREQUEST_DELETED)": {
+                "method": "delete",
+                "description": "DOWNLOADREQUEST_DELETED",
+                "request": {
+                    "path": "/downloader/requests/7",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoidm9ucnVlZGVuamFjcXVlbGluZUB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDYwNjZ9.YX7ZGdf9eI7Mg2aFhl3oFQ3dU6OITpjwi7j815vq7Qc"
+                    },
+                    "parameters": {
+                        "request_id": "7"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "empty",
+                        "@event": "DOWNLOADREQUEST_DELETED"
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_DOWNLOADREQUEST)": {
+                "method": "delete",
+                "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
+                "request": {
+                    "path": "/downloader/requests/69506",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoiYWxleGFuZHJpYWhlbGxlckBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0NjA2Nn0.hgJlHsctal8CinBMen-VStpKef5aEkZce1jbHXJQuQI"
+                    },
+                    "parameters": {
+                        "request_id": "69506"
+                    }
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
+                        "@access": {
+                            "account_id": 53
+                        }
+                    }
+                }
+            }
+        },
+        "@type": "command"
+    },
+    "READ_ENTRY_POINT": {
+        "method": "get",
+        "path_conf": {
+            "path": "/",
+            "parameters": []
+        },
+        "meta": {
+            "title": "Read Entry Point",
+            "description": "Serve Service Entry Point data: - current version of the service - list of all available commands together with their configurations - examples collected for a given service.",
+            "domain": {
+                "id": "docs",
+                "name": "Docs Management",
+                "@type": "domain"
+            },
+            "@type": "meta"
+        },
+        "access": {
+            "access_list": null,
+            "is_private": true,
+            "is_external": false,
+            "@type": "access"
+        },
+        "source": {
+            "filepath": "/.venv/src/lily/lily/entrypoint/commands.py",
+            "start_line": 40,
+            "end_line": 110,
+            "@type": "source"
+        },
+        "schemas": {
+            "output": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/.venv/src/lily/lily/entrypoint/commands.py/#L18",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "version",
+                        "name",
+                        "commands"
+                    ],
+                    "properties": {
+                        "version": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "commands": {
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "input_query": {
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/56cc6389285be654791fd36fed32cbefd6c97033/.venv/src/lily/lily/entrypoint/commands.py/#L28",
+                "schema": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "commands": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "with_schemas": {
+                            "type": "boolean"
+                        },
+                        "with_examples": {
+                            "type": "boolean"
+                        },
+                        "is_private": {
+                            "type": "boolean"
+                        },
+                        "domain_id": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "examples": {},
+        "@type": "command"
+    }
+}

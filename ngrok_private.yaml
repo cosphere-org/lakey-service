@@ -1,8 +1,0 @@
-
-authtoken: 56YEhE58pVGEtn9Ymf7Wo_74MT6rVgcazK6dXruBpRq
-tunnels:
-  lakey:
-    addr: 8889
-    proto: http
-    region: eu
-    hostname: lakey.eu.ngrok.io
