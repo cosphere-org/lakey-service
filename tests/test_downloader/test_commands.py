@@ -8,8 +8,6 @@ import pytest
 
 from account.models import Account
 from account.token import AuthToken
-from catalogue.models import CatalogueItem
-from catalogue.serializers import CatalogueItemSerializer
 from downloader.models import DownloadRequest
 from downloader.serializers import DownloadRequestSerializer
 from tests.factory import EntityFactory
@@ -18,7 +16,7 @@ from tests.factory import EntityFactory
 ef = EntityFactory()
 
 
-class DownloadRequestRenderViewTestCase(TestCase):
+class DownloadRequestRenderCommandsTestCase(TestCase):
 
     uri = reverse('downloader:requests.render_ui_data')
 
@@ -92,7 +90,7 @@ class DownloadRequestRenderViewTestCase(TestCase):
         }
 
 
-class DownloadRequestEstimateViewTestCase(TestCase):
+class DownloadRequestEstimateCommandsTestCase(TestCase):
 
     uri = reverse('downloader:requests.estimate')
 
@@ -155,7 +153,7 @@ class DownloadRequestEstimateViewTestCase(TestCase):
         }
 
 
-class DownloadRequestCollectionViewTestCase(TestCase):
+class DownloadRequestCollectionCommandsTestCase(TestCase):
 
     uri = reverse('downloader:requests.collection')
 
@@ -192,8 +190,6 @@ class DownloadRequestCollectionViewTestCase(TestCase):
     #
     def test_post_201(self):
 
-        a = ef.account()
-
         assert DownloadRequest.objects.all().count() == 0
 
         response = self.app.post(
@@ -221,8 +217,6 @@ class DownloadRequestCollectionViewTestCase(TestCase):
 
     def test_post_400__broken_request(self):
 
-        a = ef.account()
-
         assert DownloadRequest.objects.all().count() == 0
 
         response = self.app.post(
@@ -246,7 +240,9 @@ class DownloadRequestCollectionViewTestCase(TestCase):
             'errors': {
                 'catalogue_item_id': ['A valid integer is required.'],
             },
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }
 
     def test_post_400__catalogue_item_does_not_exist(self):
@@ -271,7 +267,9 @@ class DownloadRequestCollectionViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }
 
     #
@@ -301,7 +299,7 @@ class DownloadRequestCollectionViewTestCase(TestCase):
         d_1.waiters.add(self.account)
 
         # -- noise
-        d_2 = DownloadRequest.objects.create(
+        d_2 = DownloadRequest.objects.create(  # noqa
             created_by=a,
             spec={
                 'columns': ['price'],
@@ -325,7 +323,7 @@ class DownloadRequestCollectionViewTestCase(TestCase):
         }
 
 
-class DownloadRequestElementViewTestCase(TestCase):
+class DownloadRequestElementCommandsTestCase(TestCase):
 
     def get_uri(self, request_id):
         return reverse(
@@ -404,7 +402,9 @@ class DownloadRequestElementViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_DOWNLOADREQUEST',
             '@type': 'error',
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }
 
     def test_get_404__wrong_id(self):
@@ -417,7 +417,9 @@ class DownloadRequestElementViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_DOWNLOADREQUEST',
             '@type': 'error',
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }
 
     #
@@ -461,5 +463,7 @@ class DownloadRequestElementViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_DOWNLOADREQUEST',
             '@type': 'error',
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }

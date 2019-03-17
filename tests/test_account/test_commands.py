@@ -18,7 +18,7 @@ from tests.factory import EntityFactory
 ef = EntityFactory()
 
 
-class AuthenticateUIViewTestCase(TestCase):
+class AuthenticateUICommandsTestCase(TestCase):
 
     def get_uri(self, request_uuid):
         return reverse(
@@ -40,7 +40,7 @@ class AuthenticateUIViewTestCase(TestCase):
         assert html.strip().startswith('<!DOCTYPE html>')
 
 
-class AuthRequestViewTestCase(TestCase):
+class AuthRequestCommandsTestCase(TestCase):
 
     uri = reverse('account:auth.requests')
 
@@ -68,7 +68,7 @@ class AuthRequestViewTestCase(TestCase):
         }
 
 
-class AuthRequestAttachAccountViewTestCase(TestCase):
+class AuthRequestAttachAccountCommandsTestCase(TestCase):
 
     uri = reverse('account:auth.requests.attach_account')
 
@@ -134,7 +134,6 @@ class AuthRequestAttachAccountViewTestCase(TestCase):
                 'code': ['This field is required.'],
                 'request_uuid': ['"some-uuid" is not a valid UUID.'],
             },
-            'user_id': 'anonymous',
         }
         assert Account.objects.count() == 0
 
@@ -155,12 +154,11 @@ class AuthRequestAttachAccountViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_AUTHREQUEST',
             '@type': 'error',
-            'user_id': 'anonymous',
         }
         assert Account.objects.count() == 0
 
 
-class AuthTokenViewTestCase(TestCase):
+class AuthTokenCommandsTestCase(TestCase):
 
     uri = reverse('account:auth.auth_token')
 
@@ -219,5 +217,4 @@ class AuthTokenViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'EXPIRED_AUTH_REQUEST_DETECTED',
             '@type': 'error',
-            'user_id': None,
         }

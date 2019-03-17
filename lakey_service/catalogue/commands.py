@@ -1,5 +1,4 @@
 
-from django.views.generic import View
 from lily import (
     command,
     Input,
@@ -9,6 +8,7 @@ from lily import (
     parsers,
     serializers,
     Access,
+    HTTPCommands,
 )
 
 from account.models import Account
@@ -18,7 +18,7 @@ from .serializers import CatalogueItemListSerializer, CatalogueItemSerializer
 from .parsers import CatalogueItemParser
 
 
-class CatalogueItemCollectionView(View):
+class CatalogueItemCollectionCommands(HTTPCommands):
 
     @command(
         name=name.Create(CatalogueItem),
@@ -75,7 +75,7 @@ class CatalogueItemCollectionView(View):
         raise self.event.BulkRead({'items': items})
 
 
-class CatalogueItemElementView(View):
+class CatalogueItemElementCommands(HTTPCommands):
 
     @command(
         name=name.Read(CatalogueItem),

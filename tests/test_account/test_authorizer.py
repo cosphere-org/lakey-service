@@ -51,7 +51,6 @@ class AuthorizerTestCase(TestCase):
         assert e.value.data == {
             '@event': 'COULD_NOT_FIND_AUTH_TOKEN',
             '@type': 'error',
-            'user_id': None,
         }
 
     def test_authorize__no_bearer(self):
@@ -64,7 +63,6 @@ class AuthorizerTestCase(TestCase):
         assert e.value.data == {
             '@event': 'COULD_NOT_FIND_AUTH_TOKEN',
             '@type': 'error',
-            'user_id': None,
         }
 
     def test_authorize__access_denied(self):
@@ -79,5 +77,4 @@ class AuthorizerTestCase(TestCase):
         assert e.value.data == {
             '@event': 'ACCESS_DENIED',
             '@type': 'error',
-            'user_id': None,
         }

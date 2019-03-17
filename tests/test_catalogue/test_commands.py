@@ -4,7 +4,6 @@ import json
 from django.test import TestCase
 from django.urls import reverse
 from lily.base.test import Client
-import pytest
 
 from account.models import Account
 from account.token import AuthToken
@@ -16,7 +15,7 @@ from tests.factory import EntityFactory
 ef = EntityFactory()
 
 
-class CatalogueItemCollectionViewTestCase(TestCase):
+class CatalogueItemCollectionCommandsTestCase(TestCase):
 
     uri = reverse('catalogue:items.collection')
 
@@ -107,7 +106,9 @@ class CatalogueItemCollectionViewTestCase(TestCase):
                     "required property",
                 ],
             },
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }
 
     def test_post_400__maintainer_does_not_exist(self):
@@ -141,7 +142,9 @@ class CatalogueItemCollectionViewTestCase(TestCase):
                 'maintained_by': [
                     'account instance with id 932039 does not exist.'],
             },
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
             '@type': 'error',
             '@event': 'BODY_JSON_DID_NOT_PARSE',
         }
@@ -173,7 +176,7 @@ class CatalogueItemCollectionViewTestCase(TestCase):
     def test_get_200__with_query(self):
 
         ci_0 = ef.catalogue_item(name='iot_features')
-        ci_1 = ef.catalogue_item(name='temperatures')
+        ci_1 = ef.catalogue_item(name='temperatures')  # noqa
         ci_2 = ef.catalogue_item(name='iot_events')
 
         response = self.app.get(
@@ -192,7 +195,7 @@ class CatalogueItemCollectionViewTestCase(TestCase):
         }
 
 
-class CatalogueItemElementViewTestCase(TestCase):
+class CatalogueItemElementCommandsTestCase(TestCase):
 
     def get_uri(self, item_id):
         return reverse('catalogue:items.element', kwargs={'item_id': item_id})
@@ -237,7 +240,9 @@ class CatalogueItemElementViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }
 
     #
@@ -327,7 +332,9 @@ class CatalogueItemElementViewTestCase(TestCase):
                     "required property",
                 ],
             },
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }
 
     def test_put_404(self):
@@ -356,7 +363,9 @@ class CatalogueItemElementViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }
 
     #
@@ -425,7 +434,6 @@ class CatalogueItemElementViewTestCase(TestCase):
             '@type': 'error',
             'item_id': ci_0.id,
             'not_cancelled_count': 1,
-            'user_id': None,
         }
 
     def test_delete_404(self):
@@ -438,5 +446,7 @@ class CatalogueItemElementViewTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            'user_id': 'anonymous',
+            '@access': {
+                'account_id': self.account.id,
+            },
         }

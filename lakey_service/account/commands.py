@@ -1,5 +1,4 @@
 
-from django.views.generic import View
 from django.urls import reverse
 from django.http import HttpResponse
 from django.conf import settings
@@ -11,6 +10,7 @@ from lily import (
     Output,
     parsers,
     serializers,
+    HTTPCommands,
 )
 from django.template.loader import render_to_string
 
@@ -19,7 +19,7 @@ from .models import AuthRequest
 from .serializers import AuthTokenSerializer, AuthRequestSerializer
 
 
-class AuthRequestView(View):
+class AuthRequestCommands(HTTPCommands):
 
     @command(
         name=name.Create('AUTH_REQUEST'),
@@ -43,7 +43,7 @@ class AuthRequestView(View):
         })
 
 
-class AuthRequestAuthenticateUIView(View):
+class AuthRequestAuthenticateUICommands(HTTPCommands):
 
     @command(
         name=name.Execute('RENDER', 'AUTH_REQUEST_AUTHENTICATE_UI'),
@@ -63,7 +63,7 @@ class AuthRequestAuthenticateUIView(View):
             }))
 
 
-class AuthRequestAttachAccountView(View):
+class AuthRequestAttachAccountCommands(HTTPCommands):
 
     class BodyParser(parsers.BodyParser):
 
@@ -95,7 +95,7 @@ class AuthRequestAttachAccountView(View):
         raise self.event.Executed()
 
 
-class AuthTokenView(View):
+class AuthTokenCommands(HTTPCommands):
 
     class BodyParser(parsers.BodyParser):
 

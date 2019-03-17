@@ -1,5 +1,4 @@
 
-from django.views.generic import View
 from lily import (
     command,
     Input,
@@ -8,6 +7,7 @@ from lily import (
     Output,
     Access,
     serializers,
+    HTTPCommands,
 )
 
 from account.models import Account
@@ -23,7 +23,7 @@ from .serializers import (
 from .parsers import DownloadRequestParser, DownloadRequestRenderParser
 
 
-class DownloadRequestRenderView(View):
+class DownloadRequestRenderCommands(HTTPCommands):
 
     @command(
         name=name.Execute('RENDER', 'DOWNLOAD_REQUEST_UI_DATA'),
@@ -58,7 +58,7 @@ class DownloadRequestRenderView(View):
         })
 
 
-class DownloadRequestEstimateView(View):
+class DownloadRequestEstimateCommands(HTTPCommands):
 
     @command(
         name=name.Execute('ESTIMATE', 'SIZE_OF_DOWNLOAD_REQUEST'),
@@ -81,7 +81,7 @@ class DownloadRequestEstimateView(View):
         })
 
 
-class DownloadRequestCollectionView(View):
+class DownloadRequestCollectionCommands(HTTPCommands):
 
     @command(
         name=name.Create(DownloadRequest),
@@ -136,7 +136,7 @@ class DownloadRequestCollectionView(View):
         raise self.event.BulkRead({'requests': requests})
 
 
-class DownloadRequestElementView(View):
+class DownloadRequestElementCommands(HTTPCommands):
 
     @command(
         name=name.Read(DownloadRequest),

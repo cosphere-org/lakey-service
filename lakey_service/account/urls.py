@@ -1,29 +1,29 @@
 
 from django.conf.urls import url
 
-from . import views
+from . import commands
 
 
 urlpatterns = [
 
     url(
         r'^auth_requests/$',
-        views.AuthRequestView.as_view(),
+        commands.AuthRequestCommands.as_view(),
         name='auth.requests'),
 
     url(
         r'^auth_requests/(?P<request_uuid>[\w\-]+)/authenticate/ui/$',
-        views.AuthRequestAuthenticateUIView.as_view(),
+        commands.AuthRequestAuthenticateUICommands.as_view(),
         name='auth.requests.authenticate.ui'),
 
     url(
         r'^auth_requests/attach_account/$',
-        views.AuthRequestAttachAccountView.as_view(),
+        commands.AuthRequestAttachAccountCommands.as_view(),
         name='auth.requests.attach_account'),
 
     url(
         r'^auth_tokens/$',
-        views.AuthTokenView.as_view(),
+        commands.AuthTokenCommands.as_view(),
         name='auth.auth_token'),
 
 ]

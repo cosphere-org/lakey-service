@@ -12,7 +12,7 @@ class OperatorsPerColumnSerializer(serializers.Serializer):
 
     name = serializers.CharField()
 
-    operators = serializers.ListSerializer(child=serializers.CharField())
+    operators = serializers.ListField(child=serializers.CharField())
 
 
 class DownloadRequestRenderSerializer(serializers.Serializer):
