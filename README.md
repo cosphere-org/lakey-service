@@ -57,7 +57,7 @@ In order to start such a process one can run:
 
 ```bash
 source env.sh && \
-ngrok start --config ngrok_private.yaml --region eu lakey-<you-name>
+ngrok start --config ngrok_private.yaml --region eu lakey-<your-name>
 ```
 
 ## DOCS
