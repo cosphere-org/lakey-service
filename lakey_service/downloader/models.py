@@ -23,7 +23,6 @@ class DownloadRequestManager(models.Manager):
 
     def estimate_size(self, spec, catalogue_item_id):
 
-        # @sowj: probably this a place for you to go crazy!
         return 123
 
 

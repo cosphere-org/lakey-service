@@ -63,10 +63,6 @@ class CatalogueItemCollectionCommands(HTTPCommands):
         query = request.input.query['query']
 
         if query:
-            # FIXME: @zibg this is where you enter.
-            # 1. you must figure out which fields we want to search
-            # 2. how we must parse the query
-            # 3. and so on ...
             items = CatalogueItem.objects.filter(name__icontains=query)
 
         else:

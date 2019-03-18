@@ -105,11 +105,6 @@ class DownloadRequestCollectionCommands(HTTPCommands):
     )
     def post(self, request):
 
-        # @sowj add mechanism for figuring out if we're dealing with
-        # existing download request OR nor
-        # what if we have already another download that finished
-        # but it has slightly different spec but contain within
-        # the requested that??
         r = DownloadRequest.objects.create(
             created_by=request.access['account'],
             **request.input.body)
