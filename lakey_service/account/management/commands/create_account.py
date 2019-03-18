@@ -19,7 +19,7 @@ def command(email, type):
         Account.objects.get(email=email)
 
     except Account.DoesNotExist:
-        account = Account.objects.create(email=email, type=type)
+        Account.objects.create(email=email, type=type)
 
     else:
         raise click.ClickException('Account with that email already exists')
