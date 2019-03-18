@@ -7,6 +7,8 @@ Is a project allowing huge amount of people (clients) to connect with expensive 
 
 Laker was built and designed with one goal in mind: "to free up the data, which are otherwise sitting idle and just being covered in dust".
 
+To learn more read high level overview regarding the [Big Data Myths](https://github.com/cosphere-org/lakey-service/blob/master/LAKEY.md)
+
 Before one starts working with `Lakey-Service` two files must be obtained over secured channel: `ngrok_private.yaml` and `env_private.sh` (please reach author for them).
 
 ## Installation
@@ -35,16 +37,17 @@ ngrok start --config ngrok_private.yaml --region eu lakey-<you-name>
 
 ## Architecture
 
-[![architecture](./assets/lakey-architecture.png)](https://www.draw.io/#G1zrMb3J6eeFVEmbUvT6ETs240ZzVe4eAy)
+[![lakey-flows-main](./assets/lakey-flows-main.png)](https://www.draw.io/#G10wj4nSI7JHLVParPvdDMrLe4CMT4Vg6r)
 
 ### Auth Token Management - who is who
 
-[ ] FIXME: add diagram to describe the FLOW here!!!!
+[![auth-token-flow](./assets/lakey-auth-token-flow.png)](https://www.draw.io/#G10wj4nSI7JHLVParPvdDMrLe4CMT4Vg6r)
 
 ### Catalogue - discovery of data
 
-...
+https://github.com/cosphere-org/lakey-service/blob/master/.lily/API.md#catalogue-items-management
 
 ### Downloader - efficient data download
 
-...
+https://github.com/cosphere-org/lakey-service/blob/master/.lily/API.md#download-requests-management
+
