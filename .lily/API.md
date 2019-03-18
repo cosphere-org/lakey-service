@@ -11,9 +11,9 @@ Request:
 POST /accounts/auth_requests/attach_account/ HTTP/1.1
 CONTENT-TYPE: application/json
 {
-    "code": "some-authorization-code",
     "email": "jacky@somewhere.org",
-    "request_uuid": "49363aa3-4901-11e9-b05d-0028f8484bd5"
+    "oauth_token": "some-oauth-token",
+    "request_uuid": "b3fff397-4974-11e9-b05d-0028f8484bd5"
 }
 ```
 Respone:
@@ -39,7 +39,7 @@ Respone:
     "@event": "BODY_DID_NOT_VALIDATE",
     "@type": "error",
     "errors": {
-        "code": [
+        "oauth_token": [
             "This field is required."
         ],
         "request_uuid": [
@@ -54,9 +54,9 @@ Request:
 POST /accounts/auth_requests/attach_account/ HTTP/1.1
 CONTENT-TYPE: application/json
 {
-    "code": "some-code",
     "email": "jacky@somewhere.org",
-    "request_uuid": "49363aa4-4901-11e9-b05d-0028f8484bd5"
+    "oauth_token": "some-auth-token",
+    "request_uuid": "b3fff398-4974-11e9-b05d-0028f8484bd5"
 }
 ```
 Respone:
@@ -79,8 +79,8 @@ Respone:
 {
     "@event": "AUTH_REQUEST_CREATED",
     "@type": "auth_request",
-    "authenticate_ui_uri": "/accounts/auth_requests/49363aa2-4901-11e9-b05d-0028f8484bd5/authenticate/ui/",
-    "request_uuid": "49363aa2-4901-11e9-b05d-0028f8484bd5"
+    "authenticate_ui_uri": "/accounts/auth_requests/b3fff396-4974-11e9-b05d-0028f8484bd5/authenticate/ui/",
+    "request_uuid": "b3fff396-4974-11e9-b05d-0028f8484bd5"
 }
 ```
 ### CREATE_AUTH_TOKEN: POST /accounts/auth_tokens/
@@ -92,7 +92,7 @@ Request:
 POST /accounts/auth_tokens/ HTTP/1.1
 CONTENT-TYPE: application/json
 {
-    "request_uuid": "49363aa5-4901-11e9-b05d-0028f8484bd5"
+    "request_uuid": "b3fff399-4974-11e9-b05d-0028f8484bd5"
 }
 ```
 Respone:
@@ -109,7 +109,7 @@ Request:
 POST /accounts/auth_tokens/ HTTP/1.1
 CONTENT-TYPE: application/json
 {
-    "request_uuid": "f5e7e000-5074-11e4-973a-02426ec57dd1"
+    "request_uuid": "f5e7e000-5074-11e4-9c28-02426ec57dd1"
 }
 ```
 Respone:
@@ -129,7 +129,7 @@ GET /accounts/auth_requests/some-uuid/authenticate/ui/ HTTP/1.1
 ```
 Respone:
 ```json
-"<!DOCTYPE html>\n<html>\n    <head>\n        <title>Lakey Authentication</title>\n        <meta\n            name=\"google-signin-client_id\"\n            content=\"961918528927-12heq0l9f1tep1igb29tatkf2pr2p5f7.apps.googleusercontent.com\">\n\n        <link\n            href=\"https://fonts.googleapis.com/css?family=IBM+Plex+Sans\"\n            rel=\"stylesheet\">\n        <style>\n            body {\n                background: #e4e4e4;\n            }\n\n            #main {\n                height: 200px;\n                width: 100%;\n                font-family: 'IBM Plex Sans', sans-serif;\n            }\n\n            h2 {\n                font-weight: normal;\n            }\n\n            #authenticate {\n                display: flex;\n                flex-direction: column;\n                align-items: center;\n                justify-content: center;\n            }\n        </style>\n        <script\n            type=\"text/javascript\">\n\n            function renderButton() {\n                gapi.signin2.render('google-auth-button', {\n                    'scope': 'profile email',\n                    'width': 240,\n                    'height': 50,\n                    'longtitle': true,\n                    'theme': 'dark',\n                    'onsuccess': onSuccess,\n                    'onfailure': onFailure\n              });\n            }\n\n            function onSuccess(googleUser) {\n                let authRequestUUID = 'some-uuid';\n                let profile = googleUser.getBasicProfile();\n                let authorizationCode = googleUser.getAuthResponse().id_token;\n\n                // FIXME: add ajax call!\n                // FIXME: add progress while waiting for ajax\n                // FIXME: add switch to done screen\n                // FIXME: add switch something went wrong screen\n                // FIXME: add nice font\n                // https://developers.google.com/identity/sign-in/web/build-button\n                console.log('id_token: ' + authorizationCode);\n                console.log('Email: ' + profile.getEmail());\n\n                // document.body.innerHTML = '<div>DONE!</done>';\n            }\n\n            function onFailure(error) {\n                console.log(error);\n            }\n\n        </script>\n        <script\n            src=\"https://apis.google.com/js/platform.js?onload=renderButton\"\n            async\n            defer>\n        </script>\n    </head>\n\n    <body>\n\n        <div\n            id=\"main\">\n            <div\n                id=\"authenticate\">\n\n                <h2>Sign In To Lakey</h2>\n                <div\n                    id=\"google-auth-button\"></div>\n            </div>\n\n            <div\n                id=\"done\">\n\n                DONE\n            </div>\n\n        </div>\n    </body>\n\n</html>\n"
+"<!DOCTYPE html>\n<html>\n    <head>\n        <title>Lakey Authentication</title>\n        <meta\n            name=\"google-signin-client_id\"\n            content=\"961918528927-12heq0l9f1tep1igb29tatkf2pr2p5f7.apps.googleusercontent.com\">\n\n        <link\n            href=\"https://fonts.googleapis.com/css?family=IBM+Plex+Sans\"\n            rel=\"stylesheet\">\n        <style>\n            body {\n                background: #e4e4e4;\n            }\n\n            #main {\n                height: 200px;\n                width: 100%;\n                font-family: 'IBM Plex Sans', sans-serif;\n            }\n\n            h2 {\n                font-weight: normal;\n            }\n\n            #authenticate, #done, #wait {\n                display: flex;\n                flex-direction: column;\n                align-items: center;\n                justify-content: center;\n            }\n\n            #done, #wait {\n                display: none;\n            }\n        </style>\n        <script\n            type=\"text/javascript\">\n\n\n            function renderButton() {\n                gapi.signin2.render('google-auth-button', {\n                    'scope': 'profile email',\n                    'width': 240,\n                    'height': 50,\n                    'longtitle': true,\n                    'theme': 'dark',\n                    'onsuccess': onSuccess,\n                    'onfailure': onFailure\n              });\n            }\n\n            function onSuccess(googleUser) {\n                let $done = document.getElementById('done');\n                let $wait = document.getElementById('wait');\n                let $authenticate = document.getElementById('authenticate');\n\n                let authRequestUUID = 'some-uuid';\n                let profile = googleUser.getBasicProfile();\n\n                let xhr = new XMLHttpRequest();\n                xhr.open(\n                    'POST',\n                    '/accounts/auth_requests/attach_account/');\n\n                xhr.setRequestHeader(\n                    \"Content-Type\", \"application/json;charset=UTF-8\");\n\n                xhr.send(\n                    JSON.stringify({\n                        request_uuid: authRequestUUID,\n                        oauth_token: googleUser.getAuthResponse().id_token,\n                        email: profile.getEmail(),\n                    })\n                );\n\n                // -- hide AUTHENTICATE view and show WAIT view\n                $authenticate.style['display'] = 'none';\n                $wait.style['display'] = 'flex';\n\n                xhr.onload = () => {\n                    // -- hide WAIT view and show DONE view\n                    $wait.style['display'] = 'none';\n                    $done.style['display'] = 'flex';\n                };\n            }\n\n            function onFailure(error) {\n                console.error(error);\n            }\n\n        </script>\n        <script\n            src=\"https://apis.google.com/js/platform.js?onload=renderButton\"\n            async\n            defer>\n        </script>\n    </head>\n\n    <body>\n\n        <div\n            id=\"main\">\n            <div\n                id=\"authenticate\">\n\n                <h2>Sign In To Lakey</h2>\n                <div\n                    id=\"google-auth-button\"></div>\n            </div>\n\n            <div\n                id=\"wait\">\n\n                PLEASE WAIT ...\n            </div>\n\n            <div\n                id=\"done\">\n\n                DONE, PLEASE RUN AGAIN CODE THAT GOT YOU HERE.\n            </div>\n\n        </div>\n    </body>\n\n</html>\n"
 ```
 ## Catalogue Items Management
 ### BULK_READ_CATALOGUEITEMS: GET /catalogue/items/
@@ -139,7 +139,7 @@ None
 Request:
 ```http
 GET /catalogue/items/?query=IoT HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoiZ2lic29ua2Fzc3Vsa2VAaGlydGhlLmluZm8iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.Nh_eU38v-YC_172PYBdNVBysF49JxhhqUaKlsQ-lFQU
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoiYW5pYmFsbGFiYWRpZUBseW5jaC1saW5kZ3Jlbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY1MjB9.N4WOL-bF7yTKfDeVHDPrttV-5pNJihdsmyNGsSAdmrc
 ```
 Respone:
 ```json
@@ -150,7 +150,7 @@ Respone:
         {
             "@type": "catalogue_item",
             "created_by": null,
-            "executor_type": "DATABRICKS",
+            "executor_type": "ATHENA",
             "maintained_by": null,
             "name": "iot_features",
             "sample": [],
@@ -188,7 +188,7 @@ Respone:
         {
             "@type": "catalogue_item",
             "created_by": null,
-            "executor_type": "DATABRICKS",
+            "executor_type": "ATHENA",
             "maintained_by": null,
             "name": "iot_events",
             "sample": [],
@@ -233,7 +233,7 @@ None
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoic3J5YW5Adm9sa21hbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.A4eLx-bFykHAihnVRIhiZyUzdKthKRRVnFNcU9IWfuM
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoicGdyYWR5QGt1dGNoLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.e4HQE3ZKm_UwPfU5pmWXN0LOW9i86nBeHPWjTIsAlwA
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
@@ -258,14 +258,14 @@ Respone:
     "@type": "catalogue_item",
     "created_by": {
         "@type": "account",
-        "email": "sryan@volkman.com",
+        "email": "pgrady@kutch.com",
         "id": 15,
         "type": "ADMIN"
     },
     "executor_type": "DATABRICKS",
     "maintained_by": {
         "@type": "account",
-        "email": "karsonryan@hotmail.com",
+        "email": "ramon87@yahoo.com",
         "id": 16,
         "type": "RESEARCHER"
     },
@@ -282,7 +282,7 @@ Respone:
     ],
     "updated_by": {
         "@type": "account",
-        "email": "sryan@volkman.com",
+        "email": "pgrady@kutch.com",
         "id": 15,
         "type": "ADMIN"
     }
@@ -292,7 +292,7 @@ Respone:
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoiam9obnN0b255dXN1ZkBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OH0.KBKhyk-K23zUsHURzfdPe-5xW3ErmOobsXYmQFZaliE
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoiY2FydHdyaWdodHRydW1hbkBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.AFoO4cGR9mWcbN2W2rEiznKBeha6QVPsPjtia19oNag
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
@@ -328,7 +328,7 @@ Respone:
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiaWpvaG5zb25AeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ4fQ.S_9l7HcR0Za8JZ0x4gBC_HZBySUQiYeio9Zs8ksx0jI
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiaGFsZXllZEB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY1MjB9.Kc1EsIZg9N-2lN48s0MtSBKXb4WuuJmirntlMDc6vnw
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
@@ -368,7 +368,7 @@ None
 Request:
 ```http
 DELETE /catalogue/items/8 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoiYXVicmFnb2xkbmVyQGt1bmRlLWNyb25pbi5uZXQiLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.UhJaO4vw-8j6K_MXYyBzfGFEAqCCnAvj_J3EvinUI1c
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoidGJvZ2lzaWNoQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.FLanN-58m1w_qrfGZXm7IbOf67bQbOKuIFsS0qs3d_o
 ```
 Respone:
 ```json
@@ -381,7 +381,7 @@ Respone:
 Request:
 ```http
 DELETE /catalogue/items/10 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoidnJpY2VAY2FydGVyLm5ldCIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OH0.g7Ic3rz-pUKHmSb28jPLxjVj9ZjVGdFgVaFocgZniNU
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoiZ3JpbWVzbWFpQHN0ZWhyLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.zJWw-XBae_rJoCcf3bAgEO6gYWfxuZXcQvtRlI6PjLo
 ```
 Respone:
 ```json
@@ -396,7 +396,7 @@ Respone:
 Request:
 ```http
 DELETE /catalogue/items/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoiaWd1c2lrb3dza2lAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ4fQ.P3ls-XajcOQTbYUmA86wGFXrHDwsEPtCL4qmHu54bG8
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoiZGFybmVsbDI4QGtvc3MuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2NTIwfQ.b7FxWniFL4l3ANklJ3qulGp2X6_oy1whaM1RLYCcYXw
 ```
 Respone:
 ```json
@@ -415,7 +415,7 @@ None
 Request:
 ```http
 GET /catalogue/items/12 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoiYmVhdHR5YWdhdGhhQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ4fQ.-KxPqqyw6akw5m0nygp4t-6Cei09OyeIrYNLLrQanwQ
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoiYnJpYW5uZWhvcHBlQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.MjubpMjv81Pg9S1UB5KBBvEwxFQgNM7Gpsyw--iDyP0
 ```
 Respone:
 ```json
@@ -463,7 +463,7 @@ Respone:
 Request:
 ```http
 GET /catalogue/items/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiYW1wYXJvYnJlaXRlbmJlcmdAa2Vzc2xlci5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.vuCqd5U49U9sr0L9gdhG_sPwwXSTyXet_yvW4_uR6O8
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiZHVidXF1ZW9ydmVsQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2NTIwfQ.HLXGIry7tXg9th4vD59-BIBhlmgxm8c8SfFSehXGHo4
 ```
 Respone:
 ```json
@@ -482,7 +482,7 @@ None
 Request:
 ```http
 PUT /catalogue/items/14 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoicGJlcm5pZXJAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.837m5GtGkg8xJBpSH-Mg8yP-9UuGLBKMgMfFGRNfvHo
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiaGFsdm9yc29uYXVkcmlhbmFAc2NoYWVmZXIuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2NTIwfQ.aLCoumekExHs-lCXc36l7bRBaxGFq6FBQpvhX4E5Xmg
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
@@ -507,14 +507,14 @@ Respone:
     "@type": "catalogue_item",
     "created_by": {
         "@type": "account",
-        "email": "elida08@skiles.com",
+        "email": "eulalieyost@johns.com",
         "id": 27,
         "type": "RESEARCHER"
     },
     "executor_type": "DATABRICKS",
     "maintained_by": {
         "@type": "account",
-        "email": "vbaumbach@gmail.com",
+        "email": "framisherlyn@gmail.com",
         "id": 26,
         "type": "RESEARCHER"
     },
@@ -531,7 +531,7 @@ Respone:
     ],
     "updated_by": {
         "@type": "account",
-        "email": "pbernier@hotmail.com",
+        "email": "halvorsonaudriana@schaefer.com",
         "id": 25,
         "type": "ADMIN"
     }
@@ -541,7 +541,7 @@ Respone:
 Request:
 ```http
 PUT /catalogue/items/15 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoibWVsbGllMzVAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.CaNbShp9bQlMmjChWdVUpvCiPul9fE0scrSZRCWKP84
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoiZ2xlYW5ub25Acm9oYW4uYml6IiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2NTIwfQ.y2UQM1aV1N6uKO13aD_m72jwb3zXshtYE6T-WjPMNgs
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
@@ -577,7 +577,7 @@ Respone:
 Request:
 ```http
 PUT /catalogue/items/9022 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoiaXphYmVsbGU3MkB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.vvH3LSUCSOVXh02dY5_bPL7H4BSC8_5NutLelFw9gbU
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoib2t1bmV2YWp1bGlzYUBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY1MjB9.25mest26zgGvETpN0wv5KT06nNrM0rqpT5PrcTydYOI
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
@@ -614,7 +614,7 @@ None
 Request:
 ```http
 GET /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoia2FzYW5kcmFhbHRlbndlcnRoQGJveWxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.ypYhl9n7QeQjxxwny-AyOG3NBYsNGI80tGguU6gJumk
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoiYXJtaWRhemVtbGFrQGdyZWVuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.IFh9QYppsvjJ_oUGxTIqcScISJWznROxIq6TlJ5YE6Y
 ```
 Respone:
 ```json
@@ -627,9 +627,9 @@ Respone:
             "catalogue_item": {
                 "@type": "catalogue_item",
                 "created_by": null,
-                "executor_type": "DATABRICKS",
+                "executor_type": "ATHENA",
                 "maintained_by": null,
-                "name": "Ms. Rochelle Boehm MD",
+                "name": "Farris Schmitt",
                 "sample": [],
                 "spec": [
                     {
@@ -651,7 +651,7 @@ Respone:
             },
             "created_by": {
                 "@type": "account",
-                "email": "strosinisamar@kozey-kiehn.biz",
+                "email": "rossiestroman@jaskolski-herzog.org",
                 "id": 47,
                 "type": "RESEARCHER"
             },
@@ -679,9 +679,9 @@ Respone:
             "catalogue_item": {
                 "@type": "catalogue_item",
                 "created_by": null,
-                "executor_type": "DATABRICKS",
+                "executor_type": "ATHENA",
                 "maintained_by": null,
-                "name": "Ms. Rochelle Boehm MD",
+                "name": "Farris Schmitt",
                 "sample": [],
                 "spec": [
                     {
@@ -703,7 +703,7 @@ Respone:
             },
             "created_by": {
                 "@type": "account",
-                "email": "strosinisamar@kozey-kiehn.biz",
+                "email": "rossiestroman@jaskolski-herzog.org",
                 "id": 47,
                 "type": "RESEARCHER"
             },
@@ -736,7 +736,7 @@ Create a Download Request in a smart way meaning that: - if same `DownloadReques
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoia2VuZHJpY2tzaXBlc0BnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.upcN_swieHWeNjNkG_-YQBmy8y56h3hOcKGVW31dFjk
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoidnNoaWVsZHNAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY1MjB9.tVukobqloqAqaZo_Pg9RdsRBOqhKOD3MxOvMwS7GaTU
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 24,
@@ -758,9 +758,9 @@ Respone:
     "catalogue_item": {
         "@type": "catalogue_item",
         "created_by": null,
-        "executor_type": "DATABRICKS",
+        "executor_type": "ATHENA",
         "maintained_by": null,
-        "name": "Germaine Schamberger",
+        "name": "Brigitte Cole",
         "sample": [],
         "spec": [
             {
@@ -782,7 +782,7 @@ Respone:
     },
     "created_by": {
         "@type": "account",
-        "email": "kendricksipes@gmail.com",
+        "email": "vshields@hotmail.com",
         "id": 48,
         "type": "ADMIN"
     },
@@ -805,7 +805,7 @@ Respone:
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoid2VzdGd1c3RAbmljb2xhcy1kYW1vcmUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ5fQ.AuMTVYDcIsRKV6tfqunD7sguzaCCwxr7BBSN9SARyKI
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoiemVub2JpYXNpcGVzQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2NTIwfQ.B9a3W7KJPfni_oSc7rnI60hMAcAm4x5gjGKo1Cvokng
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": "TEXT",
@@ -838,7 +838,7 @@ Respone:
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoic21pdGNoZWxsQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.tSx59CdmyZRJMKVC3DwMWA10RskCxe0oOS3JrSC8NaI
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoiZ3JldGFtb3Jpc3NldHRlQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.4aAdGk5dqyKX6vqL58M5eIF1CrXeera7L28D3An2Mgo
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 58495,
@@ -869,7 +869,7 @@ None
 Request:
 ```http
 DELETE /downloader/requests/7 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoid2FuZXRhMzZAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.3oAzzl_o4l570VjolPzT9VowvVjOxC1TfmpUhu7hY54
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoiZmFiaWFuOTVAbGVobmVyLXRoaWVsLmJpeiIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.OQdYEfxG3WYHDhBV74NTUJ0Os_8QeNKBSGDRKe-plOc
 ```
 Respone:
 ```json
@@ -882,7 +882,7 @@ Respone:
 Request:
 ```http
 DELETE /downloader/requests/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoiZmllbGRpbmc4MUBkYW1vcmUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ5fQ.-4vvEwaZHtPYMAotXwCUJrkbV6bsS2dCcVuvT4HvJLo
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoibW1hbnRlQGxpbmQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2NTIwfQ.7D1a_K0wJd1Mrlc3HVwqkn8la7BRzey86GAjdSlrtW4
 ```
 Respone:
 ```json
@@ -901,7 +901,7 @@ None
 Request:
 ```http
 POST /downloader/requests/estimate/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoiYWNvbm5AYmF0ei5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.Ak0We3EV0awT7sow5H7NJz_JyeNT6QcHuj5uvdSekks
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoiZGFtYXJpb24zMkBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.4eXk4rT-93rs6sU53w7mla5dgdibfWwJPDfSdFHlMBs
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 22,
@@ -930,7 +930,7 @@ None
 Request:
 ```http
 GET /downloader/requests/8 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoibGV0YTIzQHByaWNlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.u_BvEc22HsOyuirIIaiJI2Q4xSxHSzobxjy7dqCshCc
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoicGluazAwQHJpcHBpbi1ibGljay5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY1MjB9.R6dAYGQXOmXBzG7Gh7mkNqUZPwLi-I_ptGawcU8a2QM
 ```
 Respone:
 ```json
@@ -940,9 +940,9 @@ Respone:
     "catalogue_item": {
         "@type": "catalogue_item",
         "created_by": null,
-        "executor_type": "ATHENA",
+        "executor_type": "DATABRICKS",
         "maintained_by": null,
-        "name": "Florie Macejkovic",
+        "name": "Dr. Mat Volkman II",
         "sample": [],
         "spec": [
             {
@@ -964,7 +964,7 @@ Respone:
     },
     "created_by": {
         "@type": "account",
-        "email": "pam78@wiegand.org",
+        "email": "osborn37@prohaska-lueilwitz.com",
         "id": 55,
         "type": "RESEARCHER"
     },
@@ -992,7 +992,7 @@ Respone:
 Request:
 ```http
 GET /downloader/requests/9 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoic2tsb2Nrb0Byb2xmc29uLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.Q1qgZWQzPQSQtC7K5WsbuXtbizWqmHylLEj0HsLJhug
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoieGhhcnJpc0BsZWFubm9uLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.u5hAEjDKp2CA5mHfSIrNUTJeBesjdRO9JORSAYOiANs
 ```
 Respone:
 ```json
@@ -1011,7 +1011,7 @@ None
 Request:
 ```http
 POST /downloader/requests/render_ui_data/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoiaG9wcGV0cnlzdGFuQGtvc3MtbGFya2luLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.7v7QsM3lUl7iV8dhVufywEMfW7vaKcO5z4PDtuoFbng
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoib2hhcmFzdGVwaGFpbmVAd3Vuc2NoLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5NjUyMH0.TcDqBxqsKwmnWGy9vJQIsaTupGZdrtFIev-1R66oGHE
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 21
