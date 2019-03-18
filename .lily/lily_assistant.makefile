@@ -107,6 +107,7 @@ upgrade_version_major:  ## upgrade version by major X.0.0
 .PHONY: install
 install:  # generic install command for python
 	python -m venv .venv && \
+	pip install -U pip && \
 	source .venv/bin/activate && \
 	pip install -r requirements.txt && \
 	pip install -r test-requirements.txt
