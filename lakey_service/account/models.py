@@ -4,7 +4,8 @@ import uuid
 from django.utils import timezone
 from django.db import models
 from django.conf import settings
-from requests_oauthlib import OAuth2Session
+from google.oauth2 import id_token
+from google.auth.transport import requests
 from lily.base.events import EventFactory
 
 from .token import AuthToken
@@ -53,30 +54,30 @@ class AuthRequest(models.Model):
         default=uuid.uuid1,
         editable=False)
 
-    def attach_account(self, email, authorization_code):
+    def attach_account(self, email, oauth_token):
 
-        if self.get_oauth2_email(authorization_code) != email:
+        if self.get_oauth2_email(oauth_token) != email:
             raise EventFactory.BrokenRequest('EMAIL_MISMATCH_DETECTED')
 
         self.account, _ = Account.objects.get_or_create(email=email)
         self.save()
 
-    def get_oauth2_email(self, authorization_code):
+    def get_oauth2_email(self, oauth_token):
 
-        session = OAuth2Session(
-            settings.GOOGLE_OAUTH2_CLIENT_ID,
-            scope=settings.GOOGLE_OAUTH2_SCOPE)
+        try:
+            idinfo = id_token.verify_oauth2_token(
+                oauth_token,
+                requests.Request(),
+                settings.GOOGLE_OAUTH2_CLIENT_ID)
 
-        session.fetch_token(
-            settings.GOOGLE_OAUTH2_TOKEN_URI,
-            code=authorization_code,
-            client_secret=settings.GOOGLE_OAUTH2_CLIENT_SECRET)
+            issuers = ['accounts.google.com', 'https://accounts.google.com']
+            if idinfo['iss'] not in issuers:
+                raise EventFactory.Conflict(
+                    'GOOGLE_OAUTH2_USER_INFO_ERROR_DETECTED')
 
-        response = session.get(settings.GOOGLE_OAUTH2_USER_INFO_URI)
-        if response.status_code == 200:
-            return response.json()['email']
+            return idinfo['email']
 
-        else:
+        except ValueError:
             raise EventFactory.Conflict(
                 'GOOGLE_OAUTH2_USER_INFO_ERROR_DETECTED')
 

@@ -8,9 +8,6 @@
 # -- cryptography
 itsdangerous==0.24
 
-# -- oauth
-requests-oauthlib==1.2.0
-
 # -- http client
 requests==2.21.0
 
@@ -19,3 +16,6 @@ gunicorn==19.9.0
 
 # -- async worker for gunicorn
 gevent==1.4.0
+
+# -- google based authentication
+google-auth==1.6.3

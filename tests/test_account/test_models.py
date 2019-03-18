@@ -1,6 +1,5 @@
 
 from datetime import datetime, timedelta
-from unittest.mock import Mock
 
 from django.test import TestCase, override_settings
 from django.utils import timezone
@@ -101,33 +100,31 @@ class AuthRequestTestCase(TestCase):
 
     def test_attach_account__oauth_user_info_works(self):
 
-        oauth2_session_mock = self.mocker.patch('account.models.OAuth2Session')
-        get_mock = Mock(return_value=Mock(
-            status_code=200,
-            json=Mock(return_value={'email': 'jess@whatever.com'})))
-        oauth2_session_mock.return_value = Mock(
-            fetch_token=Mock(), get=get_mock)
+        id_token = self.mocker.patch('account.models.id_token')
+        id_token.verify_oauth2_token.return_value = {
+            'iss': 'https://accounts.google.com',
+            'email': 'jess@whatever.com',
+        }
 
         r = ef.auth_request()
-        r.attach_account('jess@whatever.com', 'auth.code')
+        r.attach_account('jess@whatever.com', 'oauth.token')
 
         assert Account.objects.count() == 1
         r.refresh_from_db()
         assert r.account == Account.objects.all().first()
 
-    def test_attach_account__oauth_user_info_broken(self):
+    def test_attach_account__wrong_issuer(self):
 
-        oauth2_session_mock = self.mocker.patch('account.models.OAuth2Session')
-        get_mock = Mock(return_value=Mock(
-            status_code=404,
-            json=Mock(return_value={'email': 'jess@whatever.com'})))
-        oauth2_session_mock.return_value = Mock(
-            fetch_token=Mock(), get=get_mock)
+        id_token = self.mocker.patch('account.models.id_token')
+        id_token.verify_oauth2_token.return_value = {
+            'iss': 'https://NOT.google.com',
+            'email': 'jess@whatever.com',
+        }
 
         r = ef.auth_request()
 
         with pytest.raises(EventFactory.Conflict) as e:
-            r.attach_account('jess@whatever.com', 'auth.code')
+            r.attach_account('jess@whatever.com', 'oauth.token')
 
         assert e.value.data == {
             '@event': 'GOOGLE_OAUTH2_USER_INFO_ERROR_DETECTED',

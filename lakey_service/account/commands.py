@@ -35,7 +35,6 @@ class AuthRequestCommands(HTTPCommands):
         r = AuthRequest.objects.create()
 
         raise self.event.Created({
-            # 'ui_uri': 'https://lakey.eu.ngrok.io/authentications/ui/',
             'authenticate_ui_uri': reverse(
                 'account:auth.requests.authenticate.ui',
                 kwargs={'request_uuid': r.uuid}),
@@ -69,7 +68,7 @@ class AuthRequestAttachAccountCommands(HTTPCommands):
 
         request_uuid = parsers.UUIDField()
 
-        code = parsers.CharField()
+        oauth_token = parsers.CharField()
 
         email = parsers.EmailField()
 
@@ -90,7 +89,7 @@ class AuthRequestAttachAccountCommands(HTTPCommands):
             uuid=request.input.body['request_uuid']
         ).attach_account(
             email=request.input.body['email'],
-            authorization_code=request.input.body['code'])
+            oauth_token=request.input.body['oauth_token'])
 
         raise self.event.Executed()
 

@@ -9,7 +9,7 @@
             "response": {
                 "status": 200,
                 "content_type": "text/html; charset=utf-8",
-                "content": "<!DOCTYPE html>\n<html>\n    <head>\n        <title>Lakey Authentication</title>\n        <meta\n            name=\"google-signin-client_id\"\n            content=\"961918528927-12heq0l9f1tep1igb29tatkf2pr2p5f7.apps.googleusercontent.com\">\n\n        <link\n            href=\"https://fonts.googleapis.com/css?family=IBM+Plex+Sans\"\n            rel=\"stylesheet\">\n        <style>\n            body {\n                background: #e4e4e4;\n            }\n\n            #main {\n                height: 200px;\n                width: 100%;\n                font-family: 'IBM Plex Sans', sans-serif;\n            }\n\n            h2 {\n                font-weight: normal;\n            }\n\n            #authenticate {\n                display: flex;\n                flex-direction: column;\n                align-items: center;\n                justify-content: center;\n            }\n        </style>\n        <script\n            type=\"text/javascript\">\n\n            function renderButton() {\n                gapi.signin2.render('google-auth-button', {\n                    'scope': 'profile email',\n                    'width': 240,\n                    'height': 50,\n                    'longtitle': true,\n                    'theme': 'dark',\n                    'onsuccess': onSuccess,\n                    'onfailure': onFailure\n              });\n            }\n\n            function onSuccess(googleUser) {\n                let authRequestUUID = 'some-uuid';\n                let profile = googleUser.getBasicProfile();\n                let authorizationCode = googleUser.getAuthResponse().id_token;\n\n                // FIXME: add ajax call!\n                // FIXME: add progress while waiting for ajax\n                // FIXME: add switch to done screen\n                // FIXME: add switch something went wrong screen\n                // FIXME: add nice font\n                // https://developers.google.com/identity/sign-in/web/build-button\n                console.log('id_token: ' + authorizationCode);\n                console.log('Email: ' + profile.getEmail());\n\n                // document.body.innerHTML = '<div>DONE!</done>';\n            }\n\n            function onFailure(error) {\n                console.log(error);\n            }\n\n        </script>\n        <script\n            src=\"https://apis.google.com/js/platform.js?onload=renderButton\"\n            async\n            defer>\n        </script>\n    </head>\n\n    <body>\n\n        <div\n            id=\"main\">\n            <div\n                id=\"authenticate\">\n\n                <h2>Sign In To Lakey</h2>\n                <div\n                    id=\"google-auth-button\"></div>\n            </div>\n\n            <div\n                id=\"done\">\n\n                DONE\n            </div>\n\n        </div>\n    </body>\n\n</html>\n"
+                "content": "<!DOCTYPE html>\n<html>\n    <head>\n        <title>Lakey Authentication</title>\n        <meta\n            name=\"google-signin-client_id\"\n            content=\"961918528927-12heq0l9f1tep1igb29tatkf2pr2p5f7.apps.googleusercontent.com\">\n\n        <link\n            href=\"https://fonts.googleapis.com/css?family=IBM+Plex+Sans\"\n            rel=\"stylesheet\">\n        <style>\n            body {\n                background: #e4e4e4;\n            }\n\n            #main {\n                height: 200px;\n                width: 100%;\n                font-family: 'IBM Plex Sans', sans-serif;\n            }\n\n            h2 {\n                font-weight: normal;\n            }\n\n            #authenticate, #done, #wait {\n                display: flex;\n                flex-direction: column;\n                align-items: center;\n                justify-content: center;\n            }\n\n            #done, #wait {\n                display: none;\n            }\n        </style>\n        <script\n            type=\"text/javascript\">\n\n\n            function renderButton() {\n                gapi.signin2.render('google-auth-button', {\n                    'scope': 'profile email',\n                    'width': 240,\n                    'height': 50,\n                    'longtitle': true,\n                    'theme': 'dark',\n                    'onsuccess': onSuccess,\n                    'onfailure': onFailure\n              });\n            }\n\n            function onSuccess(googleUser) {\n                let $done = document.getElementById('done');\n                let $wait = document.getElementById('wait');\n                let $authenticate = document.getElementById('authenticate');\n\n                let authRequestUUID = 'some-uuid';\n                let profile = googleUser.getBasicProfile();\n\n                let xhr = new XMLHttpRequest();\n                xhr.open(\n                    'POST',\n                    '/accounts/auth_requests/attach_account/');\n\n                xhr.setRequestHeader(\n                    \"Content-Type\", \"application/json;charset=UTF-8\");\n\n                xhr.send(\n                    JSON.stringify({\n                        request_uuid: authRequestUUID,\n                        oauth_token: googleUser.getAuthResponse().id_token,\n                        email: profile.getEmail(),\n                    })\n                );\n\n                // -- hide AUTHENTICATE view and show WAIT view\n                $authenticate.style['display'] = 'none';\n                $wait.style['display'] = 'flex';\n\n                xhr.onload = () => {\n                    // -- hide WAIT view and show DONE view\n                    $wait.style['display'] = 'none';\n                    $done.style['display'] = 'flex';\n                };\n            }\n\n            function onFailure(error) {\n                console.error(error);\n            }\n\n        </script>\n        <script\n            src=\"https://apis.google.com/js/platform.js?onload=renderButton\"\n            async\n            defer>\n        </script>\n    </head>\n\n    <body>\n\n        <div\n            id=\"main\">\n            <div\n                id=\"authenticate\">\n\n                <h2>Sign In To Lakey</h2>\n                <div\n                    id=\"google-auth-button\"></div>\n            </div>\n\n            <div\n                id=\"wait\">\n\n                PLEASE WAIT ...\n            </div>\n\n            <div\n                id=\"done\">\n\n                DONE, PLEASE RUN AGAIN CODE THAT GOT YOU HERE.\n            </div>\n\n        </div>\n    </body>\n\n</html>\n"
             }
         }
     },
@@ -24,8 +24,8 @@
                 "status": 201,
                 "content_type": "application/json",
                 "content": {
-                    "authenticate_ui_uri": "/accounts/auth_requests/49363aa2-4901-11e9-b05d-0028f8484bd5/authenticate/ui/",
-                    "request_uuid": "49363aa2-4901-11e9-b05d-0028f8484bd5",
+                    "authenticate_ui_uri": "/accounts/auth_requests/9fc553bc-4965-11e9-b05d-0028f8484bd5/authenticate/ui/",
+                    "request_uuid": "9fc553bc-4965-11e9-b05d-0028f8484bd5",
                     "@type": "auth_request",
                     "@event": "AUTH_REQUEST_CREATED"
                 }
@@ -39,8 +39,8 @@
             "request": {
                 "path": "/accounts/auth_requests/attach_account/",
                 "content": {
-                    "request_uuid": "49363aa3-4901-11e9-b05d-0028f8484bd5",
-                    "code": "some-authorization-code",
+                    "request_uuid": "9fc553bd-4965-11e9-b05d-0028f8484bd5",
+                    "oauth_token": "some-oauth-token",
                     "email": "jacky@somewhere.org"
                 },
                 "headers": {
@@ -77,7 +77,7 @@
                         "request_uuid": [
                             "\"some-uuid\" is not a valid UUID."
                         ],
-                        "code": [
+                        "oauth_token": [
                             "This field is required."
                         ]
                     },
@@ -92,8 +92,8 @@
             "request": {
                 "path": "/accounts/auth_requests/attach_account/",
                 "content": {
-                    "request_uuid": "49363aa4-4901-11e9-b05d-0028f8484bd5",
-                    "code": "some-code",
+                    "request_uuid": "9fc553be-4965-11e9-b05d-0028f8484bd5",
+                    "oauth_token": "some-auth-token",
                     "email": "jacky@somewhere.org"
                 },
                 "headers": {
@@ -117,7 +117,7 @@
             "request": {
                 "path": "/accounts/auth_tokens/",
                 "content": {
-                    "request_uuid": "49363aa5-4901-11e9-b05d-0028f8484bd5"
+                    "request_uuid": "9fc553bf-4965-11e9-b05d-0028f8484bd5"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json"
@@ -139,7 +139,7 @@
             "request": {
                 "path": "/accounts/auth_tokens/",
                 "content": {
-                    "request_uuid": "f5e7e000-5074-11e4-973a-02426ec57dd1"
+                    "request_uuid": "f5e7e000-5074-11e4-8c2e-02426ec57dd1"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json"
@@ -162,7 +162,7 @@
             "request": {
                 "path": "/catalogue/items/?query=IoT",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoiZ2lic29ua2Fzc3Vsa2VAaGlydGhlLmluZm8iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.Nh_eU38v-YC_172PYBdNVBysF49JxhhqUaKlsQ-lFQU"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoibG91YW5uY29uc2lkaW5lQGt1dmFsaXMtaGlscGVydC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTAwNDN9.aro6g7m_BlPBXpBOzDSTEyG8tVhWwFGyt0NITu9K71w"
                 }
             },
             "response": {
@@ -202,7 +202,7 @@
                                 }
                             ],
                             "sample": [],
-                            "executor_type": "DATABRICKS",
+                            "executor_type": "ATHENA",
                             "created_by": null,
                             "updated_by": null,
                             "maintained_by": null,
@@ -240,7 +240,7 @@
                                 }
                             ],
                             "sample": [],
-                            "executor_type": "DATABRICKS",
+                            "executor_type": "ATHENA",
                             "created_by": null,
                             "updated_by": null,
                             "maintained_by": null,
@@ -276,7 +276,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoic3J5YW5Adm9sa21hbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.A4eLx-bFykHAihnVRIhiZyUzdKthKRRVnFNcU9IWfuM"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoiaHVlbGdlcmRhQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTkwMDQzfQ.4ksvZZpsod0UbyHuWa4gS_YM0b9OReAGTQJJJ5hagFg"
                 }
             },
             "response": {
@@ -297,19 +297,19 @@
                     "executor_type": "DATABRICKS",
                     "created_by": {
                         "id": 15,
-                        "email": "sryan@volkman.com",
+                        "email": "huelgerda@hotmail.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "updated_by": {
                         "id": 15,
-                        "email": "sryan@volkman.com",
+                        "email": "huelgerda@hotmail.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
                         "id": 16,
-                        "email": "karsonryan@hotmail.com",
+                        "email": "jmiller@abshire-lockman.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -339,7 +339,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoiam9obnN0b255dXN1ZkBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OH0.KBKhyk-K23zUsHURzfdPe-5xW3ErmOobsXYmQFZaliE"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoiY2hhbmRsZXJqb2huc0B3YXJkLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5MDA0M30.MKphrV-46-usXH_RxE1Yl487nvMjhf_lKAKay4E0f7M"
                 }
             },
             "response": {
@@ -381,7 +381,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiaWpvaG5zb25AeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ4fQ.S_9l7HcR0Za8JZ0x4gBC_HZBySUQiYeio9Zs8ksx0jI"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiZGFuaWFhYnNoaXJlQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5MDA0M30.dlw8qzjNysUBxPaSmyugeU47O1Lfyta91iEYtO0k2z4"
                 }
             },
             "response": {
@@ -409,7 +409,7 @@
             "request": {
                 "path": "/catalogue/items/8",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoiYXVicmFnb2xkbmVyQGt1bmRlLWNyb25pbi5uZXQiLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.UhJaO4vw-8j6K_MXYyBzfGFEAqCCnAvj_J3EvinUI1c"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoiamFkZW11cnJheUBoYXVjay5vcmciLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTAwNDN9.3F_gzC-r5_-ZL6bSmBKOdEN4YZLTOd2z6u25Dw3vjNY"
                 }
             },
             "response": {
@@ -427,7 +427,7 @@
             "request": {
                 "path": "/catalogue/items/10",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoidnJpY2VAY2FydGVyLm5ldCIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OH0.g7Ic3rz-pUKHmSb28jPLxjVj9ZjVGdFgVaFocgZniNU"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoiZW1lcnNvbnBvdXJvc0Bob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5MDA0M30.UYuk5sWzMK7P1HqYFRuOclU49_Lpbg77Rp4cpJFQ7A4"
                 }
             },
             "response": {
@@ -447,7 +447,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoiaWd1c2lrb3dza2lAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ4fQ.P3ls-XajcOQTbYUmA86wGFXrHDwsEPtCL4qmHu54bG8"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoib2JlZG5hckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTAwNDN9.yry8B5v_zyHbrtQqCWHE-XeJRj_BjcncLAV27lxjJis"
                 }
             },
             "response": {
@@ -470,7 +470,7 @@
             "request": {
                 "path": "/catalogue/items/12",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoiYmVhdHR5YWdhdGhhQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ4fQ.-KxPqqyw6akw5m0nygp4t-6Cei09OyeIrYNLLrQanwQ"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoiYnJha3VzZGVubnlAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTkwMDQzfQ.WJhzQASeCp7dnHZshhwiuHmag94TFBqtc7cpuhLyURw"
                 }
             },
             "response": {
@@ -523,7 +523,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiYW1wYXJvYnJlaXRlbmJlcmdAa2Vzc2xlci5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.vuCqd5U49U9sr0L9gdhG_sPwwXSTyXet_yvW4_uR6O8"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoibGFpbGFoaGVybWFuQGJyZWtrZS5pbmZvIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTkwMDQzfQ.LlhqEd3x8cM6332-nCDsxoM-6Nhd7q7qOE_JGt4gdfg"
                 }
             },
             "response": {
@@ -562,7 +562,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoicGJlcm5pZXJAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDh9.837m5GtGkg8xJBpSH-Mg8yP-9UuGLBKMgMfFGRNfvHo"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiZnJlaWxseUBmYXktbWNsYXVnaGxpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTAwNDN9.RzeH_4uD2l1UJqaO9aDilwipL1m4oXmN4X1x426n34Q"
                 }
             },
             "response": {
@@ -583,19 +583,19 @@
                     "executor_type": "DATABRICKS",
                     "created_by": {
                         "id": 27,
-                        "email": "elida08@skiles.com",
+                        "email": "eberrolfson@hotmail.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
                     "updated_by": {
                         "id": 25,
-                        "email": "pbernier@hotmail.com",
+                        "email": "freilly@fay-mclaughlin.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
                         "id": 26,
-                        "email": "vbaumbach@gmail.com",
+                        "email": "lornepouros@larkin.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -625,7 +625,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoibWVsbGllMzVAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.CaNbShp9bQlMmjChWdVUpvCiPul9fE0scrSZRCWKP84"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoidGFtaWExMEBwdXJkeS5vcmciLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTAwNDN9.C3pk349e7S4Nven-SlNmKZ_8pKXbuOU0Cn1cYcmVe9A"
                 }
             },
             "response": {
@@ -667,7 +667,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoiaXphYmVsbGU3MkB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.vvH3LSUCSOVXh02dY5_bPL7H4BSC8_5NutLelFw9gbU"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoid2F0c2ljYXdhcmRlbGxAbHluY2gtbGFya2luLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5MDA0M30.Z2NZLaeODM1fHQoTo75CrGxNoPy_nu0U3pHPUJblcoc"
                 }
             },
             "response": {
@@ -694,7 +694,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoiaG9wcGV0cnlzdGFuQGtvc3MtbGFya2luLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.7v7QsM3lUl7iV8dhVufywEMfW7vaKcO5z4PDtuoFbng"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoiZGViZXJhc2NobmVpZGVyQHJ5YW4uYml6IiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTkwMDQ0fQ.TV3v7916us8N9ngLptdCf2CUEYfsQgkCQWACWpfG7WY"
                 }
             },
             "response": {
@@ -760,7 +760,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoiYWNvbm5AYmF0ei5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.Ak0We3EV0awT7sow5H7NJz_JyeNT6QcHuj5uvdSekks"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoiaGVhbmV5bWF0ZW9AcGFjb2NoYS1zdGVoci5pbmZvIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTkwMDQ0fQ.vMp0dCXNWsfy29AxprUyUitwkrLqCxNmwp99_o4az3o"
                 }
             },
             "response": {
@@ -781,7 +781,7 @@
             "request": {
                 "path": "/downloader/requests/",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoia2FzYW5kcmFhbHRlbndlcnRoQGJveWxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.ypYhl9n7QeQjxxwny-AyOG3NBYsNGI80tGguU6gJumk"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoibXdlc3RAZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTkwMDQ0fQ.yG9anRhEeEGWywQUiJvbUzdOeLg-hXI-03PeusVW0vg"
                 }
             },
             "response": {
@@ -808,7 +808,7 @@
                             "estimated_size": null,
                             "executor_job_id": null,
                             "catalogue_item": {
-                                "name": "Ms. Rochelle Boehm MD",
+                                "name": "Dr. Autry Bashirian",
                                 "spec": [
                                     {
                                         "name": "product",
@@ -834,7 +834,7 @@
                             },
                             "created_by": {
                                 "id": 47,
-                                "email": "strosinisamar@kozey-kiehn.biz",
+                                "email": "vicente28@hotmail.com",
                                 "type": "RESEARCHER",
                                 "@type": "account"
                             },
@@ -860,7 +860,7 @@
                             "estimated_size": null,
                             "executor_job_id": null,
                             "catalogue_item": {
-                                "name": "Ms. Rochelle Boehm MD",
+                                "name": "Dr. Autry Bashirian",
                                 "spec": [
                                     {
                                         "name": "product",
@@ -886,7 +886,7 @@
                             },
                             "created_by": {
                                 "id": 47,
-                                "email": "strosinisamar@kozey-kiehn.biz",
+                                "email": "vicente28@hotmail.com",
                                 "type": "RESEARCHER",
                                 "@type": "account"
                             },
@@ -919,7 +919,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoia2VuZHJpY2tzaXBlc0BnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.upcN_swieHWeNjNkG_-YQBmy8y56h3hOcKGVW31dFjk"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoibWNrZW56aWVraXBwQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5MDA0NH0.Ljen9h5iPHf7Tg6bYEdLARHCiRARUTGJZ2tV5r81s9Y"
                 }
             },
             "response": {
@@ -939,7 +939,7 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "name": "Germaine Schamberger",
+                        "name": "Harper Yundt",
                         "spec": [
                             {
                                 "name": "product",
@@ -957,7 +957,7 @@
                             }
                         ],
                         "sample": [],
-                        "executor_type": "DATABRICKS",
+                        "executor_type": "ATHENA",
                         "created_by": null,
                         "updated_by": null,
                         "maintained_by": null,
@@ -965,7 +965,7 @@
                     },
                     "created_by": {
                         "id": 48,
-                        "email": "kendricksipes@gmail.com",
+                        "email": "mckenziekipp@gmail.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
@@ -993,7 +993,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoid2VzdGd1c3RAbmljb2xhcy1kYW1vcmUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ5fQ.AuMTVYDcIsRKV6tfqunD7sguzaCCwxr7BBSN9SARyKI"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoiZ3JlZW5zb21tZXJAa3VsYXMuYml6IiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTkwMDQ0fQ.BpJSkjc_hCteRm356uz9tlfFqt_lH9BdvMgB0u8dEEg"
                 }
             },
             "response": {
@@ -1031,7 +1031,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoic21pdGNoZWxsQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.tSx59CdmyZRJMKVC3DwMWA10RskCxe0oOS3JrSC8NaI"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoiY2FyeW4xN0BsZWZmbGVyLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5MDA0NH0.hEO75-Vqs2wW9s-Zx0uhgLx2az5Xl7M96fa_GZuxLcc"
                 }
             },
             "response": {
@@ -1054,7 +1054,7 @@
             "request": {
                 "path": "/downloader/requests/7",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoid2FuZXRhMzZAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5NDY5NDl9.3oAzzl_o4l570VjolPzT9VowvVjOxC1TfmpUhu7hY54"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoiaWhhcnZleUByb29iLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5MDA0NH0.7KpLcRHXeXGfT5UUvAe_9HPwZ3MY9XzoXxwIzpgElv4"
                 }
             },
             "response": {
@@ -1072,7 +1072,7 @@
             "request": {
                 "path": "/downloader/requests/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoiZmllbGRpbmc4MUBkYW1vcmUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTQ2OTQ5fQ.-4vvEwaZHtPYMAotXwCUJrkbV6bsS2dCcVuvT4HvJLo"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoicG9ydGVyODBAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTAwNDR9.qmyh8H_AQnsbzV52SAVVLOcCjQ3NShm9SJUOecIyq58"
                 }
             },
             "response": {
@@ -1095,7 +1095,7 @@
             "request": {
                 "path": "/downloader/requests/8",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoibGV0YTIzQHByaWNlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.u_BvEc22HsOyuirIIaiJI2Q4xSxHSzobxjy7dqCshCc"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoic3RvbHRlbmJlcmdob2xsaXNAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTAwNDR9.kaE_s2ORC_FwoOY8Evn-7Md56qUZZxnbKWYEMIizSuQ"
                 }
             },
             "response": {
@@ -1120,7 +1120,7 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "name": "Florie Macejkovic",
+                        "name": "Muriel Schmeler",
                         "spec": [
                             {
                                 "name": "product",
@@ -1138,7 +1138,7 @@
                             }
                         ],
                         "sample": [],
-                        "executor_type": "ATHENA",
+                        "executor_type": "DATABRICKS",
                         "created_by": null,
                         "updated_by": null,
                         "maintained_by": null,
@@ -1146,7 +1146,7 @@
                     },
                     "created_by": {
                         "id": 55,
-                        "email": "pam78@wiegand.org",
+                        "email": "jeffgaylord@gmail.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -1162,7 +1162,7 @@
             "request": {
                 "path": "/downloader/requests/9",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoic2tsb2Nrb0Byb2xmc29uLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk0Njk0OX0.Q1qgZWQzPQSQtC7K5WsbuXtbizWqmHylLEj0HsLJhug"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoicG9ydGlhYm95ZXJAZ3VzaWtvd3NraS5uZXQiLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTAwNDR9.ugU3SgMmwE69rTPR-K5ohZBrDADArZGZnAwBi2FMYsM"
                 }
             },
             "response": {

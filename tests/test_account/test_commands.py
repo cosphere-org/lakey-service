@@ -95,7 +95,7 @@ class AuthRequestAttachAccountCommandsTestCase(TestCase):
             self.uri,
             data=json.dumps({
                 'request_uuid': str(r.uuid),
-                'code': 'some-authorization-code',
+                'oauth_token': 'some-oauth-token',
                 'email': 'jacky@somewhere.org',
             }),
             content_type='application/json')
@@ -131,7 +131,7 @@ class AuthRequestAttachAccountCommandsTestCase(TestCase):
             '@event': 'BODY_DID_NOT_VALIDATE',
             '@type': 'error',
             'errors': {
-                'code': ['This field is required.'],
+                'oauth_token': ['This field is required.'],
                 'request_uuid': ['"some-uuid" is not a valid UUID.'],
             },
         }
@@ -145,7 +145,7 @@ class AuthRequestAttachAccountCommandsTestCase(TestCase):
             self.uri,
             data=json.dumps({
                 'request_uuid': str(uuid1()),
-                'code': 'some-code',
+                'oauth_token': 'some-auth-token',
                 'email': 'jacky@somewhere.org',
             }),
             content_type='application/json')

@@ -7,6 +7,8 @@ Is a project allowing huge amount of people (clients) to connect with expensive 
 
 Laker was built and designed with one goal in mind: "to free up the data, which are otherwise sitting idle and just being covered in dust".
 
+Before one starts working with `Lakey-Service` two files must be obtained over secured channel: `ngrok_private.yaml` and `env_private.sh` (please reach author for them).
+
 ## Installation
 
 ```bash
@@ -27,7 +29,8 @@ In order to test the authentication while still developing locally one can use `
 In order to start such a process one can run:
 
 ```bash
-make start_ngrok
+source env.sh && \
+ngrok start --config ngrok_private.yaml --region eu lakey-<you-name>
 ```
 
 ## Architecture
