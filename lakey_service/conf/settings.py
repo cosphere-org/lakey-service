@@ -106,6 +106,7 @@ INSTALLED_APPS = (
     'downloader',
 )
 
+
 MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
