@@ -60,6 +60,28 @@ source env.sh && \
 ngrok start --config ngrok_private.yaml --region eu lakey-<your-name>
 ```
 
+## Setting up Accounts and Tokens
+
+### Creating ADMIN account
+
+```bash
+source env.sh && \
+python lakey_service/manage.py create_account johnny@where.com --type ADMIN
+```
+
+### Creating RESEARCHER account
+
+```bash
+source env.sh && \
+python lakey_service/manage.py create_account jacky@where.com
+```
+
+### Creating auth token for a given account
+```bash
+source env.sh && \
+python lakey_service/manage.py create_auth_token johnny@where.com
+```
+
 ## DOCS
 
 ### Architecture

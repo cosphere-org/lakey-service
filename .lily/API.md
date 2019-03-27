@@ -13,7 +13,7 @@ CONTENT-TYPE: application/json
 {
     "email": "jacky@somewhere.org",
     "oauth_token": "some-oauth-token",
-    "request_uuid": "c8f15713-4975-11e9-b05d-0028f8484bd5"
+    "request_uuid": "6b73a063-49cb-11e9-b05d-0028f8484bd5"
 }
 ```
 Respone:
@@ -56,7 +56,7 @@ CONTENT-TYPE: application/json
 {
     "email": "jacky@somewhere.org",
     "oauth_token": "some-auth-token",
-    "request_uuid": "c8f15714-4975-11e9-b05d-0028f8484bd5"
+    "request_uuid": "6b73a064-49cb-11e9-b05d-0028f8484bd5"
 }
 ```
 Respone:
@@ -79,8 +79,8 @@ Respone:
 {
     "@event": "AUTH_REQUEST_CREATED",
     "@type": "auth_request",
-    "authenticate_ui_uri": "/accounts/auth_requests/c8f15712-4975-11e9-b05d-0028f8484bd5/authenticate/ui/",
-    "request_uuid": "c8f15712-4975-11e9-b05d-0028f8484bd5"
+    "authenticate_ui_uri": "/accounts/auth_requests/6b73a062-49cb-11e9-b05d-0028f8484bd5/authenticate/ui/",
+    "request_uuid": "6b73a062-49cb-11e9-b05d-0028f8484bd5"
 }
 ```
 ### CREATE_AUTH_TOKEN: POST /accounts/auth_tokens/
@@ -92,7 +92,7 @@ Request:
 POST /accounts/auth_tokens/ HTTP/1.1
 CONTENT-TYPE: application/json
 {
-    "request_uuid": "c8f15715-4975-11e9-b05d-0028f8484bd5"
+    "request_uuid": "6b73a065-49cb-11e9-b05d-0028f8484bd5"
 }
 ```
 Respone:
@@ -109,7 +109,7 @@ Request:
 POST /accounts/auth_tokens/ HTTP/1.1
 CONTENT-TYPE: application/json
 {
-    "request_uuid": "f5e7e000-5074-11e4-8449-02426ec57dd1"
+    "request_uuid": "f5e7e000-5074-11e4-ba1d-02426ec57dd1"
 }
 ```
 Respone:
@@ -139,7 +139,7 @@ None
 Request:
 ```http
 GET /catalogue/items/?query=IoT HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoib2t1bmV2YXNoZWxseUBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY5ODR9.qH_Cbh6mgz5OjvPwhKxZB75df8Rn2FdaT4kTA8peZxI
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImVtYWlsIjoibGFya2luc3BlbmNlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTMwMzM3NjR9.RWzpKMt9UxXd4xqlGwxM9xjWeDFXfijWErkt0tpo0S0
 ```
 Respone:
 ```json
@@ -233,11 +233,11 @@ None
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoiZ2Vhcmxkd29sZmZAZWZmZXJ0ei5uZXQiLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY5ODR9.swqgj2KDpx1PUl_aUoGuP5ZB7qSaFUuizM7F6JEv1pw
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiYm1pdGNoZWxsQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NH0.VTuVWcEFNP9sYejloA2cEfZH-Pn3-ZnUWAaX-1MQQ_Y
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 16,
+    "maintained_by_id": 20,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -258,15 +258,15 @@ Respone:
     "@type": "catalogue_item",
     "created_by": {
         "@type": "account",
-        "email": "gearldwolff@effertz.net",
-        "id": 15,
+        "email": "bmitchell@yahoo.com",
+        "id": 19,
         "type": "ADMIN"
     },
     "executor_type": "DATABRICKS",
     "maintained_by": {
         "@type": "account",
-        "email": "candis24@yahoo.com",
-        "id": 16,
+        "email": "wolfvera@kulas.org",
+        "id": 20,
         "type": "RESEARCHER"
     },
     "name": "iot_events",
@@ -282,8 +282,8 @@ Respone:
     ],
     "updated_by": {
         "@type": "account",
-        "email": "gearldwolff@effertz.net",
-        "id": 15,
+        "email": "bmitchell@yahoo.com",
+        "id": 19,
         "type": "ADMIN"
     }
 }
@@ -292,11 +292,11 @@ Respone:
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoiaGVucnlvaGFyYUBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5Njk4NH0.EhAScx90-dVkyEa2vSZZ1N2eHemAPAIpK4JJyW_O3Bc
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoic2F2YW5uYWhtaXRjaGVsbEBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTMwMzM3NjR9.NVWdrF8NMHhLQApsG-OKH_vuut0gLFQPBbAI-KVkbXw
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 18,
+    "maintained_by_id": 22,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -313,7 +313,7 @@ Respone:
 ```json
 {
     "@access": {
-        "account_id": 17
+        "account_id": 21
     },
     "@event": "BODY_DID_NOT_VALIDATE",
     "@type": "error",
@@ -328,7 +328,7 @@ Respone:
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoibGlzYWtvZWxwaW5AeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2OTg0fQ.WUUt0TvPa4e-wBqGLGVzZEhlFcwA_arm774odvr83o8
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoidGFsaWF3aWxsbXNAc2Nocm9lZGVyLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NH0.1FWuhRv385SgRrOf9VYRtm_gsKEnhS7jDrL7J1ACikg
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
@@ -350,7 +350,7 @@ Respone:
 ```json
 {
     "@access": {
-        "account_id": 19
+        "account_id": 23
     },
     "@event": "BODY_JSON_DID_NOT_PARSE",
     "@type": "error",
@@ -368,7 +368,7 @@ None
 Request:
 ```http
 DELETE /catalogue/items/8 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoia2ZhcnJlbGxAc2lwZXMtbWNjdWxsb3VnaC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY5ODR9.XdMdEdljRjVp5BDiiUasqlMoelqwbGeHo2vKAAGFpOQ
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiZWxlYXNlNjZAa2VlbGluZy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTMwMzM3NjR9.WrAUV7NMjW4-sbAm4Tjc4b8xgN1j-n3Dnn96Dt6Tslk
 ```
 Respone:
 ```json
@@ -381,7 +381,7 @@ Respone:
 Request:
 ```http
 DELETE /catalogue/items/10 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoiZ2FzdG9uZmVlbmV5QGJlcmdlLm5ldCIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5Njk4NH0.a87LPU5rOGEG708eALjZOhSNAl3u709Fn6YNirpasig
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiZGFuZWVuODFAZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzMDMzNzY0fQ.VeeDEjpqEgDSA-RID8vvYf84iDfEme-E27h7sOJNIpg
 ```
 Respone:
 ```json
@@ -396,13 +396,13 @@ Respone:
 Request:
 ```http
 DELETE /catalogue/items/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoiaGlsbHNtYWRkZW5AZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2OTg0fQ.eeeXHsnIQ-oksLX0j6aiEhhWaFkRGWnR4Mvz-tWPg7Y
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjYsImVtYWlsIjoicm93ZW5hYWRhbXNAcG91cm9zLXJpdGNoaWUuaW5mbyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NH0.Rq4tm4jJtcb4PC41LVIYqJmozrgJZYDxzLXkIl8xZ-Y
 ```
 Respone:
 ```json
 {
     "@access": {
-        "account_id": 22
+        "account_id": 26
     },
     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
     "@type": "error"
@@ -415,7 +415,7 @@ None
 Request:
 ```http
 GET /catalogue/items/12 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoibGlsaWVncmVlbmhvbHRAY29sbGllci10b3duZS5vcmciLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY5ODR9._zxHgnS6CaGeR1Yj2n-qWhVXWVrLLgOfxnMZWioMXqs
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjcsImVtYWlsIjoiYWx5c2ZlZW5leUB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTMwMzM3NjR9.pflxi5CnSRnTj7nRGLyLPgFfjE2tXi-dRF7gNpoozxg
 ```
 Respone:
 ```json
@@ -463,13 +463,13 @@ Respone:
 Request:
 ```http
 GET /catalogue/items/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiZGlja2Vuc2ppbW15QGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5Njk4NH0.0TknczP1CM8-Yp7OVi9JMkXxopbKLza9t9PTu4jVOXE
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoiZ2VydHJ1ZGVrb25vcGVsc2tpQHJvZ2Fobi5vcmciLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTMwMzM3NjR9._a6Pt0LYa5Zn4CVSWVKwx7T4Sm4NxXHl4BfZvXA9gKk
 ```
 Respone:
 ```json
 {
     "@access": {
-        "account_id": 24
+        "account_id": 28
     },
     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
     "@type": "error"
@@ -482,11 +482,11 @@ None
 Request:
 ```http
 PUT /catalogue/items/14 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiZGFjaGRvcmV0dGFAYmF1bWJhY2guaW5mbyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5Njk4NH0.7xM-zQBcUC89N490s-N7cD3DXI0XQnOd7kwsIhuPEAE
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoibWFsYWthaWdyaW1lc0BkaWNrZW5zLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NH0.jRdZVtt3F5hUieWZW447TY6nFTvC3r1Nn8jW3CbK6oc
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 26,
+    "maintained_by_id": 30,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -507,15 +507,15 @@ Respone:
     "@type": "catalogue_item",
     "created_by": {
         "@type": "account",
-        "email": "clemence16@mills-bartoletti.com",
-        "id": 27,
+        "email": "makalaveum@gmail.com",
+        "id": 31,
         "type": "RESEARCHER"
     },
     "executor_type": "DATABRICKS",
     "maintained_by": {
         "@type": "account",
-        "email": "curtiswilliamson@yahoo.com",
-        "id": 26,
+        "email": "sparker@yahoo.com",
+        "id": 30,
         "type": "RESEARCHER"
     },
     "name": "iot_events",
@@ -531,8 +531,8 @@ Respone:
     ],
     "updated_by": {
         "@type": "account",
-        "email": "dachdoretta@baumbach.info",
-        "id": 25,
+        "email": "malakaigrimes@dickens.org",
+        "id": 29,
         "type": "ADMIN"
     }
 }
@@ -541,11 +541,11 @@ Respone:
 Request:
 ```http
 PUT /catalogue/items/15 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoiamVmZnJleWRveWxlQGRlY2tvdy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY5ODR9.AC82EcKxZnqTYthMT2U4xWja2MEhvojroqfgnTAtip8
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzIsImVtYWlsIjoiZHdhbmRvdWdsYXNAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzMDMzNzY0fQ.ndmyM8hhVgywkLfInUNQzcjKIHhJ5KVto5b9EKaMc7Y
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 29,
+    "maintained_by_id": 33,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -562,7 +562,7 @@ Respone:
 ```json
 {
     "@access": {
-        "account_id": 28
+        "account_id": 32
     },
     "@event": "BODY_DID_NOT_VALIDATE",
     "@type": "error",
@@ -577,11 +577,11 @@ Respone:
 Request:
 ```http
 PUT /catalogue/items/9022 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoiYnJhdW5sZXZpbkBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY5ODR9.gh0M51uke2So62SAY0s-JPB4VCtCjKC0c4pAavK-Wbw
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzQsImVtYWlsIjoic2JlY2h0ZWxhckB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTMwMzM3NjR9.IY0OKA23MdhkPEm2Bd9GiKXpI12an8JEzqXEZ6CaqRI
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 31,
+    "maintained_by_id": 35,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -599,7 +599,7 @@ Respone:
 ```json
 {
     "@access": {
-        "account_id": 30
+        "account_id": 34
     },
     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
     "@type": "error"
@@ -614,7 +614,7 @@ None
 Request:
 ```http
 GET /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoia2hpcnlyeWFuQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2OTg1fQ.h95gy37GcOWiMzF1QXnD0dMxTirBu9zVwEcklmn70Yw
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoidGhlYWRvcmU0OEBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTMwMzM3NjV9.mwn8Ki_-IbjmV0u8skAJCZDNcGZyuJFQ3CuAZjXOrLM
 ```
 Respone:
 ```json
@@ -629,7 +629,7 @@ Respone:
                 "created_by": null,
                 "executor_type": "DATABRICKS",
                 "maintained_by": null,
-                "name": "Solomon Hyatt",
+                "name": "Giovani Leffler",
                 "sample": [],
                 "spec": [
                     {
@@ -651,8 +651,8 @@ Respone:
             },
             "created_by": {
                 "@type": "account",
-                "email": "dessa92@strosin.net",
-                "id": 47,
+                "email": "caspermerna@douglas.info",
+                "id": 51,
                 "type": "RESEARCHER"
             },
             "estimated_size": null,
@@ -681,7 +681,7 @@ Respone:
                 "created_by": null,
                 "executor_type": "DATABRICKS",
                 "maintained_by": null,
-                "name": "Solomon Hyatt",
+                "name": "Giovani Leffler",
                 "sample": [],
                 "spec": [
                     {
@@ -703,8 +703,8 @@ Respone:
             },
             "created_by": {
                 "@type": "account",
-                "email": "dessa92@strosin.net",
-                "id": 47,
+                "email": "caspermerna@douglas.info",
+                "id": 51,
                 "type": "RESEARCHER"
             },
             "estimated_size": null,
@@ -736,7 +736,7 @@ Create a Download Request in a smart way meaning that: - if same `DownloadReques
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoiYnlyb24yM0B3aWxsLWtvdmFjZWsuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2OTg1fQ.Pjt6ZROC4EBMqUarwPkwFHbOR0RDavDtv85rkfW9e5o
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTIsImVtYWlsIjoidHJlbnRlbm9uZHJpY2thQHNhbmZvcmQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzMDMzNzY1fQ.1YqYvQq0YwYdaPzH0Mdr6oRPvkipjMZiX6t_tR1MUUg
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 24,
@@ -760,7 +760,7 @@ Respone:
         "created_by": null,
         "executor_type": "DATABRICKS",
         "maintained_by": null,
-        "name": "Talan Jakubowski",
+        "name": "Hermon Jenkins",
         "sample": [],
         "spec": [
             {
@@ -782,8 +782,8 @@ Respone:
     },
     "created_by": {
         "@type": "account",
-        "email": "byron23@will-kovacek.com",
-        "id": 48,
+        "email": "trentenondricka@sanford.com",
+        "id": 52,
         "type": "ADMIN"
     },
     "estimated_size": null,
@@ -805,7 +805,7 @@ Respone:
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoicnVmdXN3YWxrZXJAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2OTg1fQ.Hj6SjfPWcf5CLxgqokGWxePt_Mjhezli7-gYzi-H38Q
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoiZmhhcnJpc0Bob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NX0.8-rf4jLnDmPMJcnnHPm7rEF9C116AntvLvZNWKffnVc
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": "TEXT",
@@ -823,7 +823,7 @@ Respone:
 ```json
 {
     "@access": {
-        "account_id": 49
+        "account_id": 53
     },
     "@event": "BODY_DID_NOT_VALIDATE",
     "@type": "error",
@@ -838,7 +838,7 @@ Respone:
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoic2Nyb25pbkBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5Njk4NX0.Px3IrTMn2RcmrbuD_mNvoN4v2FFSMZXDFqCNEmmdRUY
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoicGFyaXNpYW5zaGVuYUBmZWVzdC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTMwMzM3NjV9.H0_xaiXnz-Rippiy5_YmHJfd0BzvbGwH43iRbCpO3yA
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 58495,
@@ -856,7 +856,7 @@ Respone:
 ```json
 {
     "@access": {
-        "account_id": 50
+        "account_id": 54
     },
     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
     "@type": "error"
@@ -869,7 +869,7 @@ None
 Request:
 ```http
 DELETE /downloader/requests/7 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoibWFyeWJlbGxlcm9zZW5iYXVtQGNyaXN0LmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1Mjk5Njk4NX0.aWj5cJiVEZlXHsuA5tlsVI1_KDUWD3mz7Cw1lPGe_6s
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTUsImVtYWlsIjoiZ2VuZXJhbGhpbGxzQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NX0.RZYA9oNiDi50FB_xkPxMm_W6Ru_tdA6znlPST3Zg-bE
 ```
 Respone:
 ```json
@@ -882,13 +882,13 @@ Respone:
 Request:
 ```http
 DELETE /downloader/requests/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoibm9ybWFuZDM2QHN0ZXViZXItaGFuZC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY5ODV9.ZFEM0ictjx4aqqmr35l_IcWCqTw4Cf7gg1tjnRlgfYE
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoia2l6emllMzdAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzMDMzNzY1fQ.W8EjKxL5x3SjRjsZYfWkhol7h-hqJfqjXXj_eBujuSA
 ```
 Respone:
 ```json
 {
     "@access": {
-        "account_id": 53
+        "account_id": 57
     },
     "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
     "@type": "error"
@@ -901,7 +901,7 @@ None
 Request:
 ```http
 POST /downloader/requests/estimate/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoiZGFsbGluNTRAb2xzb24uYml6IiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2OTg1fQ.N1pKJdmtvjY5qpKkbFHRu4uC9UZISrv1xARUmzyz8A0
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoiY3Jhd2ZvcmQxNkBydW5vbGZzc29uLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NX0.hcxUFnjTc6T-bDr3e4cy9SHlANmU9GZTl-YThxf6d54
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 22,
@@ -930,7 +930,7 @@ None
 Request:
 ```http
 GET /downloader/requests/8 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoic2hhbmRyYTk2QHNwaW5rYS1zY2hpbGxlci5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTI5OTY5ODV9.YUckltdoAqQcfB-TThNFSJaL1GbOtyLAKwerXO4gQVg
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTgsImVtYWlsIjoiZmVlbmV5Z3JhZHlAZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzMDMzNzY1fQ.VddJmYsr-o9BabxW-Q8VpEvxFIoEydy8_mEQyU66axc
 ```
 Respone:
 ```json
@@ -942,7 +942,7 @@ Respone:
         "created_by": null,
         "executor_type": "DATABRICKS",
         "maintained_by": null,
-        "name": "Damon Muller",
+        "name": "Melvin Gerhold",
         "sample": [],
         "spec": [
             {
@@ -964,8 +964,8 @@ Respone:
     },
     "created_by": {
         "@type": "account",
-        "email": "chantalbaumbach@kihn-konopelski.com",
-        "id": 55,
+        "email": "kilbackevie@yahoo.com",
+        "id": 59,
         "type": "RESEARCHER"
     },
     "estimated_size": null,
@@ -992,13 +992,13 @@ Respone:
 Request:
 ```http
 GET /downloader/requests/9 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoiYWx5c29uNTBAc2NoaW1tZWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2OTg1fQ.SZBAoBAECMFMZ-K4Jkq8oyDjhWb29M_mVdfCA8r7SSM
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjEsImVtYWlsIjoicmFuZGdveWV0dGVAcGF1Y2VrLm9yZyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NX0.aj0uMaP8-0KJ_KDgiMvEeY7V1A6wRvh8DMwlffcWvWA
 ```
 Respone:
 ```json
 {
     "@access": {
-        "account_id": 57
+        "account_id": 61
     },
     "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
     "@type": "error"
@@ -1011,7 +1011,7 @@ None
 Request:
 ```http
 POST /downloader/requests/render_ui_data/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoibGluZGdyZW5lZHdhcmRAbGVta2UuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUyOTk2OTg1fQ.Xa765bfXeY9dzvS4SD8k_Mm9CJVRipOLKiQudV_j828
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoic2hlcnJ5bG1ja2VuemllQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzAzMzc2NX0.x2-KsrELF6R0f9k5WCcuB8XOk53Ik9yQAgmGYAF9V-g
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 21
