@@ -430,6 +430,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         assert CatalogueItem.objects.all().count() == 2
         assert response.status_code == 400
         assert response.json() == {
+            '@access': {'account_id': 25},
             '@event': 'NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED',
             '@type': 'error',
             'item_id': ci_0.id,
