@@ -24,8 +24,8 @@
                 "status": 201,
                 "content_type": "application/json",
                 "content": {
-                    "authenticate_ui_uri": "/accounts/auth_requests/94c2656a-50ca-11e9-a64a-dc536008769a/authenticate/ui/",
-                    "request_uuid": "94c2656a-50ca-11e9-a64a-dc536008769a",
+                    "authenticate_ui_uri": "/accounts/auth_requests/6d73c8c4-5204-11e9-b05d-0028f8484bd5/authenticate/ui/",
+                    "request_uuid": "6d73c8c4-5204-11e9-b05d-0028f8484bd5",
                     "@type": "auth_request",
                     "@event": "AUTH_REQUEST_CREATED"
                 }
@@ -39,7 +39,7 @@
             "request": {
                 "path": "/accounts/auth_requests/attach_account/",
                 "content": {
-                    "request_uuid": "94c2656b-50ca-11e9-a64a-dc536008769a",
+                    "request_uuid": "6d73c8c5-5204-11e9-b05d-0028f8484bd5",
                     "oauth_token": "some-oauth-token",
                     "email": "jacky@somewhere.org"
                 },
@@ -92,7 +92,7 @@
             "request": {
                 "path": "/accounts/auth_requests/attach_account/",
                 "content": {
-                    "request_uuid": "94c2656c-50ca-11e9-a64a-dc536008769a",
+                    "request_uuid": "6d73c8c6-5204-11e9-b05d-0028f8484bd5",
                     "oauth_token": "some-auth-token",
                     "email": "jacky@somewhere.org"
                 },
@@ -117,7 +117,7 @@
             "request": {
                 "path": "/accounts/auth_tokens/",
                 "content": {
-                    "request_uuid": "94c2656d-50ca-11e9-a64a-dc536008769a"
+                    "request_uuid": "6d73c8c7-5204-11e9-b05d-0028f8484bd5"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json"
@@ -139,7 +139,7 @@
             "request": {
                 "path": "/accounts/auth_tokens/",
                 "content": {
-                    "request_uuid": "f5e7e000-5074-11e4-8dd2-507b9d415345"
+                    "request_uuid": "f5e7e000-5074-11e4-8af2-02426ec57dd1"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json"
@@ -162,7 +162,7 @@
             "request": {
                 "path": "/catalogue/items/?query=IoT",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImVtYWlsIjoiY2F0aHJ5bjEwQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzgwMzA2Mn0.TSmSB2XyvR1QUnA_I4EOqUa4O7iV0814gTNUvqQoXQw"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImVtYWlsIjoiZmF5YXJsaXNAa2xpbmcuaW5mbyIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzkzNzg1OH0.TH-KIuT6kWe1EqOh1Mp7Tn0gnYvU2JX1vhA0z1YnjeM"
                 }
             },
             "response": {
@@ -202,7 +202,7 @@
                                 }
                             ],
                             "sample": [],
-                            "executor_type": "DATABRICKS",
+                            "executor_type": "ATHENA",
                             "created_by": null,
                             "updated_by": null,
                             "maintained_by": null,
@@ -240,7 +240,7 @@
                                 }
                             ],
                             "sample": [],
-                            "executor_type": "ATHENA",
+                            "executor_type": "DATABRICKS",
                             "created_by": null,
                             "updated_by": null,
                             "maintained_by": null,
@@ -276,7 +276,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoibXVsbGVya2FtaWxhaEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzgwMzA2Mn0.VwxMsCkQECIkbhofLra1Is5eWR-YKdwO4N2vago4KQA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiYnVja3JpZGdlcGlua25leUB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTh9.Nir6yDavWcH_uwjVkgON99g8YFzXRSquyLKOFlgoo70"
                 }
             },
             "response": {
@@ -297,19 +297,19 @@
                     "executor_type": "DATABRICKS",
                     "created_by": {
                         "id": 19,
-                        "email": "mullerkamilah@hotmail.com",
+                        "email": "buckridgepinkney@yahoo.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "updated_by": {
                         "id": 19,
-                        "email": "mullerkamilah@hotmail.com",
+                        "email": "buckridgepinkney@yahoo.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
                         "id": 20,
-                        "email": "eleanoresteuber@gmail.com",
+                        "email": "kamila34@yahoo.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -339,7 +339,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoibWFydGlyZW5uZXJAd2lsbC5vcmciLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM4MDMwNjJ9.g-pRJW2QPdTAVSdjvRBqcrsrIZcPCvkruHk8LxniRdI"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoic2hpbGxzQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzkzNzg1OH0.I3Ruy3Vg1w_9RmjGuGqG7ohV14gxvVaWemyv8_AGU2g"
                 }
             },
             "response": {
@@ -381,7 +381,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoib25pa29sYXVzQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzgwMzA2Mn0.9_DD8gjFFYeUNN2y67RfM4azKZMFfWHNTe6H-asQB3I"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoiZGlhbGxvOTRAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTh9.yCgpVFgit3occxxTLB-6PK1j1TU1Dilan__lR33jpYA"
                 }
             },
             "response": {
@@ -409,7 +409,7 @@
             "request": {
                 "path": "/catalogue/items/8",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiaGVybmFuMDBAZ2xlYXNvbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM4MDMwNjJ9.RFMGNSFSGJG-b68M7tK0X12C6xzBF_0HDwwt_GLzM-8"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoicGFvbGEzOEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzkzNzg1OH0.dj1gDHdIpcHFoTmrLj5sjsRNZznTRrxGnV3oVZcKU6E"
                 }
             },
             "response": {
@@ -427,7 +427,7 @@
             "request": {
                 "path": "/catalogue/items/10",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiY3N0YXJrQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzgwMzA2Mn0.7H-j8xMLLzHzqEcBkZ7BjW7hFNUt7js9upmf18NovPE"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiZnJvc2VuYmF1bUB1bGxyaWNoLXJlbXBlbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTh9.rPSJxGRVqJXntQyeDeLIhWnDPZ23WHoNFamfwdobPvQ"
                 }
             },
             "response": {
@@ -450,7 +450,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjYsImVtYWlsIjoibW96ZWxsYTI0QGJlYWhhbi10b3kuYml6IiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzODAzMDYzfQ.taj4RtnV-VGCUIfmvenfOfSKUzF584K-qWcsux2pA94"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjYsImVtYWlsIjoic2ViZXJ0QGNhcnR3cmlnaHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzOTM3ODU4fQ.ubzW_WVBYh2lFu3k1QPc0PFMfXZvm3SJTdJBDhaHGa8"
                 }
             },
             "response": {
@@ -473,7 +473,7 @@
             "request": {
                 "path": "/catalogue/items/12",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjcsImVtYWlsIjoibWlndWVsNDJAc2lwZXMtbW9yYXIuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzODAzMDYzfQ.ro51BNms8ZrQpOcapBIyH4p0nno6xM-TMUCcN_GqFiM"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjcsImVtYWlsIjoiZnBvbGxpY2hAcmljZS5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTh9.Ur7gl2getTN3p5xYYlwBUHiuCKEjU1qHHgX1GSwXW5k"
                 }
             },
             "response": {
@@ -526,7 +526,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoiamFteWFoYW5kQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzODAzMDYzfQ._LiNUPsetCWtDhD6DgsjmJM2GklIweJR9C2-BDnHf8A"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoib3JsYW5kbzM0QHNwaW5rYS1wZmFubmVyc3RpbGwub3JnIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzOTM3ODU4fQ.NtG0SLAfKTdB1Q_V6V9Lx4_Xe3D3mYCwaupO7cgtlLE"
                 }
             },
             "response": {
@@ -565,7 +565,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoicmlja2k0M0B5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM4MDMwNjN9.SravUDIpub6c58r6LC-ibAehB5iMIawu-njLIAMSjz8"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoic3RhY2V5MzBAZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzOTM3ODU4fQ.MfMylsNuy7TUEr6I21hKTMbfnzDb2Pl9rpraxAlHy98"
                 }
             },
             "response": {
@@ -586,19 +586,19 @@
                     "executor_type": "DATABRICKS",
                     "created_by": {
                         "id": 31,
-                        "email": "kathryne00@watsica-pfeffer.net",
+                        "email": "rkohler@goodwin.biz",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
                     "updated_by": {
                         "id": 29,
-                        "email": "ricki43@yahoo.com",
+                        "email": "stacey30@gmail.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
                         "id": 30,
-                        "email": "tenika37@gutmann.com",
+                        "email": "bbecker@jaskolski.net",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -628,7 +628,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzIsImVtYWlsIjoicnVudGVmbGVtQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzgwMzA2M30.q0RO1Hy8-_QqD1C4v1Tz53uItmfEk5DooajXqlo0_Nk"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzIsImVtYWlsIjoiYWxpbmExMkBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzkzNzg1OH0.7oGHql_dZCGEQPtuDgEgQc6cMysvbg6KLyWsAcfsDok"
                 }
             },
             "response": {
@@ -670,7 +670,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzQsImVtYWlsIjoibXdoaXRlQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzgwMzA2M30.QHGNI5FiEBH5c6iXwdijXcORVyG42Vu2dc3bbAcrupo"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzQsImVtYWlsIjoiYXdoaXRlQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzkzNzg1OH0.Uh3_1EjOezRz67_SqZootZYKr-YUVbUMkAi3Dto0CGM"
                 }
             },
             "response": {
@@ -697,7 +697,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoiYWRsaW5lMTRAZXJkbWFuLWhhbmUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzODAzMDYzfQ.hzIFg17OS3zCctEEgjrsiAqO4yWUL27gM8794sKmm7M"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoiaGFsdHJvbXBAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTl9.-lsOwENTWbXOxxgvMpZWNo0ZNSp2VAQ7IdJNYrGH6l0"
                 }
             },
             "response": {
@@ -763,7 +763,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoiZ2lubnlzYXR0ZXJmaWVsZEBib2dpc2ljaC1kYW1vcmUuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzODAzMDYzfQ.Kei5eLU-H9sVMcYuc-BfvQIIXlkl0buawDnzp1_Cg1g"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoia3BhZGJlcmdAeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzOTM3ODU5fQ.8HTrDgghf8snO1401p4-quOLkqJl9JGc7Da7mIMRwqY"
                 }
             },
             "response": {
@@ -784,7 +784,7 @@
             "request": {
                 "path": "/downloader/requests/",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoib2dyYWR5QGJhc2hpcmlhbi1iYWlsZXkub3JnIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzODAzMDYzfQ.d2DvWaqpxnRsxSsuJLIrWcO5CE8xII18w5YmCHbahDY"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoiamNvbGxpZXJAd2lsbGlhbXNvbi10cmFudG93LmluZm8iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTl9.H4rxvNwg4-ASEdNztc0q-d6lbQA5yOXECVc60ubStZ0"
                 }
             },
             "response": {
@@ -811,7 +811,7 @@
                             "estimated_size": null,
                             "executor_job_id": null,
                             "catalogue_item": {
-                                "name": "Allie Thompson",
+                                "name": "Miss Zita Corwin",
                                 "spec": [
                                     {
                                         "name": "product",
@@ -829,7 +829,7 @@
                                     }
                                 ],
                                 "sample": [],
-                                "executor_type": "DATABRICKS",
+                                "executor_type": "ATHENA",
                                 "created_by": null,
                                 "updated_by": null,
                                 "maintained_by": null,
@@ -837,7 +837,7 @@
                             },
                             "created_by": {
                                 "id": 51,
-                                "email": "rashaadaufderhar@pouros.com",
+                                "email": "boyerwilfred@yahoo.com",
                                 "type": "RESEARCHER",
                                 "@type": "account"
                             },
@@ -863,7 +863,7 @@
                             "estimated_size": null,
                             "executor_job_id": null,
                             "catalogue_item": {
-                                "name": "Allie Thompson",
+                                "name": "Miss Zita Corwin",
                                 "spec": [
                                     {
                                         "name": "product",
@@ -881,7 +881,7 @@
                                     }
                                 ],
                                 "sample": [],
-                                "executor_type": "DATABRICKS",
+                                "executor_type": "ATHENA",
                                 "created_by": null,
                                 "updated_by": null,
                                 "maintained_by": null,
@@ -889,7 +889,7 @@
                             },
                             "created_by": {
                                 "id": 51,
-                                "email": "rashaadaufderhar@pouros.com",
+                                "email": "boyerwilfred@yahoo.com",
                                 "type": "RESEARCHER",
                                 "@type": "account"
                             },
@@ -922,7 +922,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTIsImVtYWlsIjoiZW1vZ2VuZXN0b2x0ZW5iZXJnQGRpY2tpbnNvbi1ydXNzZWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzODAzMDYzfQ.IWTxxY-6J0kpqV-dWCXcS9AAk2UY6YhUvrAL-kPSsfw"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTIsImVtYWlsIjoiZHNjaGFlZmVyQHBvd2xvd3NraS1yZWljaGVydC5iaXoiLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTl9.eSExBnsdpx67DAFq0k8cipMQ-Wi127Txv4oQHGXsQrk"
                 }
             },
             "response": {
@@ -942,7 +942,7 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "name": "Roma Armstrong",
+                        "name": "Earl Will",
                         "spec": [
                             {
                                 "name": "product",
@@ -968,7 +968,7 @@
                     },
                     "created_by": {
                         "id": 52,
-                        "email": "emogenestoltenberg@dickinson-russel.com",
+                        "email": "dschaefer@powlowski-reichert.biz",
                         "type": "ADMIN",
                         "@type": "account"
                     },
@@ -996,7 +996,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoiY3VtbWluZ3NjaHJ5c3RhbEB5YWhvby5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM4MDMwNjN9.aON15PRJtR_vwdXxZzFfyfEwZKy_vF5Un716TSiBvTI"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoiZXRlcnJ5QGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzkzNzg1OX0.uYwf2ZSwEjvCn1sYHEmsAKDmmtYTVQjbK254x6rgFIE"
                 }
             },
             "response": {
@@ -1034,7 +1034,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoibm9lbDQzQGdtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzgwMzA2M30.2ZEAPicdFmaVhZ-RMrN7P7BUC0WR2BJ_89bSqLNH014"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTQsImVtYWlsIjoiaWZ1bmtAZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzOTM3ODU5fQ.4xOFthKEXkHf1ghSaFd7N-eBeTfqULcPMrnlk_wa0Uk"
                 }
             },
             "response": {
@@ -1057,7 +1057,7 @@
             "request": {
                 "path": "/downloader/requests/7",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTUsImVtYWlsIjoiaG93ZWZsb3lAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM4MDMwNjN9.R6d3ATY7m4gKKr7Tn_gM0whvtpSxXsVmGxu2bb8ZQjI"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTUsImVtYWlsIjoibWVydHpqYW5lZW5AZ21haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzOTM3ODU5fQ.IwKbe9eTkARfsS4Oe6nKRvCJAsnmL8UQhfabgjS8FWI"
                 }
             },
             "response": {
@@ -1075,7 +1075,7 @@
             "request": {
                 "path": "/downloader/requests/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoiam1pdGNoZWxsQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzODAzMDYzfQ.FmtgbHH79k_q1zZXMtd0M4k9J94LUGyxeT0--OzW6gY"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoicm1vcmlzc2V0dGVAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTl9.npwrrmbkdxbZwlEfJ5z_SHYfGLnMj2m7qeCV_OiYs9c"
                 }
             },
             "response": {
@@ -1098,7 +1098,7 @@
             "request": {
                 "path": "/downloader/requests/8",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTgsImVtYWlsIjoiY2xlZG5lckB3aWxsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU1MzgwMzA2M30.gaHXyUFQPlmn-yVEeOK_vZ0RMLdquqTFs6iBmKXn5bA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTgsImVtYWlsIjoiaGpvaG5zQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTUzOTM3ODU5fQ.Edx0cL2EUkZaXiet826PFrtyu2xnn9lDf9wEUrCFj7w"
                 }
             },
             "response": {
@@ -1123,7 +1123,7 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "name": "Billy Witting",
+                        "name": "Karel Cormier",
                         "spec": [
                             {
                                 "name": "product",
@@ -1149,7 +1149,7 @@
                     },
                     "created_by": {
                         "id": 59,
-                        "email": "andra65@yahoo.com",
+                        "email": "barnard79@fisher.biz",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -1165,7 +1165,7 @@
             "request": {
                 "path": "/downloader/requests/9",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjEsImVtYWlsIjoiZ2F5bG9uamFrdWJvd3NraUBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM4MDMwNjR9.hN6BCx9pHzCk7cEbHTHU22KV--ySm8lceEnAYHuvZEg"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjEsImVtYWlsIjoia2hhZ2VuZXNAaG90bWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTM5Mzc4NTl9.DVwM0_FrUXtart6r-KNRX_bVTQmwXJIAAhtkG9pAoHE"
                 }
             },
             "response": {

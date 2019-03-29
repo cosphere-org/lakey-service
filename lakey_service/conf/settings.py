@@ -94,6 +94,8 @@ INSTALLED_APPS = (
     # -- lily apps
     'lily.docs',
     'lily.entrypoint',
+    'lily.assertion',
+    'lily.base',
 
     'django.contrib.postgres',
     'django.contrib.auth',
