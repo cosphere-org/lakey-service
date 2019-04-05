@@ -194,6 +194,68 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
             ],
         }
 
+    def test_get_200__query_many_words_default(self):
+
+        ci_0 = ef.catalogue_item(name='iot_features')
+        ci_1 = ef.catalogue_item(name='temperatures')  # noqa
+        ci_2 = ef.catalogue_item(name='iot_events')
+
+        response = self.app.get(
+            self.uri,
+            data={'query': 'feature tempera'},
+            **self.headers)
+
+        assert response.status_code == 200
+        assert response.json() == {
+            '@event': 'CATALOGUEITEMS_BULK_READ',
+            '@type': 'catalogue_items_list',
+            'items': [
+                CatalogueItemSerializer(ci_0).data,
+                CatalogueItemSerializer(ci_1).data,
+            ],
+        }
+
+    def test_get_200__query_many_words_and_or(self):
+
+        ci_0 = ef.catalogue_item(name='iot_features')
+        ci_1 = ef.catalogue_item(name='temperatures')  # noqa
+        ci_2 = ef.catalogue_item(name='iot_events')
+
+        response = self.app.get(
+            self.uri,
+            data={'query': 'feature & IOT | temperature'},
+            **self.headers)
+
+        assert response.status_code == 200
+        assert response.json() == {
+            '@event': 'CATALOGUEITEMS_BULK_READ',
+            '@type': 'catalogue_items_list',
+            'items': [
+                CatalogueItemSerializer(ci_0).data,
+                CatalogueItemSerializer(ci_1).data,
+            ],
+        }
+
+    def test_get_200__query_many_words_or_not(self):
+
+        ci_0 = ef.catalogue_item(name='iot_features')
+        ci_1 = ef.catalogue_item(name='temperatures')  # noqa
+        ci_2 = ef.catalogue_item(name='iot_events')
+
+        response = self.app.get(
+            self.uri,
+            data={'query': 'IOT ~features | temp'},
+            **self.headers)
+
+        assert response.status_code == 200
+        assert response.json() == {
+            '@event': 'CATALOGUEITEMS_BULK_READ',
+            '@type': 'catalogue_items_list',
+            'items': [
+                CatalogueItemSerializer(ci_1).data,
+                CatalogueItemSerializer(ci_2).data,
+            ],
+        }
 
 class CatalogueItemElementCommandsTestCase(TestCase):
 
@@ -430,7 +492,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         assert CatalogueItem.objects.all().count() == 2
         assert response.status_code == 400
         assert response.json() == {
-            '@access': {'account_id': 25},
+            '@access': {'account_id': self.account.id},
             '@event': 'NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED',
             '@type': 'error',
             'item_id': ci_0.id,

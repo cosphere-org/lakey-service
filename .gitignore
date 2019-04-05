@@ -57,4 +57,5 @@ bower_components
 
 # docker stuff
 docker-compose.yml
-
+.python-version
+.vscode/
