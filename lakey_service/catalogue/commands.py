@@ -1,4 +1,6 @@
+import re
 
+from django.db.models import Q
 from lily import (
     command,
     Input,
@@ -63,7 +65,24 @@ class CatalogueItemCollectionCommands(HTTPCommands):
         query = request.input.query['query']
 
         if query:
-            items = CatalogueItem.objects.filter(name__icontains=query)
+            qs = Q()
+            expression = re.compile(r'([\&\|\~])(\s+)')
+            query = expression.sub('\\1', query)
+            
+            for word in query.split():
+                if word[0] == '~':
+                    qs = qs & ~Q(name__icontains=word[1:])
+
+                elif word[0] == '&':
+                    qs = qs & Q(name__icontains=word[1:])
+
+                elif word[0] == '|':
+                    qs = qs | Q(name__icontains=word[1:])
+
+                else: 
+                    qs = qs | Q(name__icontains=word)
+
+            items = CatalogueItem.objects.filter(qs)
 
         else:
             items = CatalogueItem.objects.all()
