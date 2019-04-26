@@ -38,6 +38,7 @@ class CatalogueItemSerializerTestCase(TestCase):
 
         assert CatalogueItemSerializer(ci).data == {
             '@type': 'catalogue_item',
+            'id': ci.id,
             'created_by': AccountSerializer(a_0).data,
             'updated_by': None,
             'maintained_by': AccountSerializer(a_1).data,

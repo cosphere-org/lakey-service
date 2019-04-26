@@ -1,4 +1,5 @@
 
+from unittest.mock import call
 import json
 
 from django.test import TestCase
@@ -10,6 +11,7 @@ from account.models import Account
 from account.token import AuthToken
 from downloader.models import DownloadRequest
 from downloader.serializers import DownloadRequestSerializer
+from downloader.executors.athena import AthenaExecutor
 from tests.factory import EntityFactory
 
 
@@ -28,7 +30,7 @@ class DownloadRequestRenderCommandsTestCase(TestCase):
 
         token = AuthToken.encode(self.account)
         self.headers = {
-            'HTTP_AUTHORIZATION': f'Bearer {token}'
+            'HTTP_AUTHORIZATION': f'Bearer {token}'  # noqa
         }
 
     def test_post_200(self):
@@ -157,6 +159,10 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
 
     uri = reverse('downloader:requests.collection')
 
+    @pytest.fixture(autouse=True)
+    def initfixtures(self, mocker):
+        self.mocker = mocker
+
     def setUp(self):
         ef.clear()
 
@@ -190,6 +196,9 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
     #
     def test_post_201(self):
 
+        execute = self.mocker.patch.object(AthenaExecutor, 'execute')
+        execute.return_value = (
+            'https://s3.this.region.amazonaws.com/buk.et/results/567.csv')
         assert DownloadRequest.objects.all().count() == 0
 
         response = self.app.post(
@@ -214,6 +223,9 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             **DownloadRequestSerializer(r).data,
         }
         assert r.created_by == self.account
+        assert r.uri == (
+            'https://s3.this.region.amazonaws.com/buk.et/results/567.csv')
+        assert execute.call_args_list == [call(r)]
 
     def test_post_400__broken_request(self):
 

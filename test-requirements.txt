@@ -23,3 +23,6 @@ pytz==2015.7
 
 # -- for playing around with the APIs and random data generator
 pandas==0.24.2
+
+# -- for notebooks
+jupyter==1.0.0

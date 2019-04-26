@@ -6,14 +6,16 @@ import boto3
 
 athena = boto3.client(
     'athena',
-    aws_access_key_id=os.environ['AWS_S3_KEY_ID'],
-    aws_secret_access_key=os.environ['AWS_S3_KEY_SECRET'])
+    region_name=os.environ['AWS_LAKEY_REGION'],
+    aws_access_key_id=os.environ['AWS_LAKEY_KEY_ID'],
+    aws_secret_access_key=os.environ['AWS_LAKEY_KEY_SECRET'])
 
 
 s3 = boto3.client(
     's3',
-    aws_access_key_id=os.environ['AWS_S3_KEY_ID'],
-    aws_secret_access_key=os.environ['AWS_S3_KEY_SECRET'])
+    region_name=os.environ['AWS_LAKEY_REGION'],
+    aws_access_key_id=os.environ['AWS_LAKEY_KEY_ID'],
+    aws_secret_access_key=os.environ['AWS_LAKEY_KEY_SECRET'])
 
 
 # FIXME: !!!! data validation for Download Request -->
@@ -25,7 +27,7 @@ class AthenaExecutor:
 
         query = self.compile_to_query(download_request)
 
-        return self.execute_query(query)
+        return self.execute_query(download_request, query)
 
     def compile_to_query(self, download_request):
 
@@ -40,7 +42,7 @@ class AthenaExecutor:
         for f in spec['filters']:
             if isinstance(f['value'], str):
                 filters_entries.append(
-                    f"{f['name']} {f['operator']} '{f['value']}'")
+                    f"{f['name']} {f['operator']} '{f['value']}'")  # noqa
 
             else:
                 filters_entries.append(
@@ -67,19 +69,32 @@ class AthenaExecutor:
         return (
             f'SELECT {columns} FROM {table} {filters}').strip()
 
-    def execute_query(self, query):
+    def execute_query(self, download_request, query):
+
+        database = download_request.catalogue_item.name.split('.')[0]
+
         response = athena.start_query_execution(
             QueryString=query,
-            # FIXME: enrich the catalogue item with this info!!!!!!!
             QueryExecutionContext={
-                'Database': 'lakey'
+                'Database': database
             },
             ResultConfiguration={
-                # FIXME: this should be taken from the ENVs
-                'OutputLocation': 's3://lakey/results/',
+                'OutputLocation': os.environ['AWS_LAKEY_RESULTS_LOCATION'],
             })
 
-        # for now just PUBLIC uri!!!!
+        execution_id = response['QueryExecutionId']
+        bucket = os.environ['AWS_S3_BUCKET']
+        region = os.environ['AWS_LAKEY_REGION']
+
+        url = (
+            f'https://s3.{region}.amazonaws.com/{bucket}'
+            f'/results/{execution_id}.csv')
+
+        # -- FIXME: temp solution for making the url public
+        s3.put_object(
+            Key=f'/results/{execution_id}.csv',
+            Bucket=bucket,
+            ACL='public-read')
 
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         # the URL should be created by extra method on DEMAND!!!!
@@ -90,4 +105,4 @@ class AthenaExecutor:
         # 'lakey', 'results/cd471422-ef8f-484f-801a-2c7f52f47d3b.csv'
 
         # FIXME: test if range also works here!!!!
-        response['QueryExecutionId']
+        return url
