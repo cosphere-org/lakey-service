@@ -116,7 +116,7 @@ class DownloadRequest(ValidatingModel):
                         boolean()),
                     required=['name', 'operator', 'value'])),
             randomize_ratio=number(),
-            required=['columns', 'filters', 'randomize_ratio']))
+            required=['columns', 'filters']))
 
     uri = models.URLField(null=True, blank=True)
 
@@ -217,7 +217,7 @@ class DownloadRequest(ValidatingModel):
                     f"detected")
 
         # -- randomized_ratio must be in range [0, 1]
-        randomize_ratio = self.spec['randomize_ratio']
+        randomize_ratio = self.spec.get('randomize_ratio')
         if not isinstance(randomize_ratio, float):
             return
 
