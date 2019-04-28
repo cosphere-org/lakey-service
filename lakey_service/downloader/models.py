@@ -21,6 +21,7 @@ from catalogue.models import CatalogueItem
 
 class DownloadRequestManager(models.Manager):
 
+    # FIXME: add it!!!!!!!!!!!!!!!
     def estimate_size(self, spec, catalogue_item_id):
 
         return 123
@@ -163,6 +164,15 @@ class DownloadRequest(ValidatingModel):
             col['name']
             for col in self.catalogue_item.spec])
         columns = set(self.spec['columns'])
+
+        if not columns:
+            raise ValidationError(
+                "at least one column must be specified in 'columns'")
+
+        if len(self.spec['columns']) != len(columns):
+            raise ValidationError(
+                "columns must appear only once in 'columns'")
+
         col_is_nullable = {
             column_spec['name']: column_spec['is_nullable']
             for column_spec in self.catalogue_item.spec

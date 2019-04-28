@@ -24,6 +24,7 @@ class CatalogueItemParserTestCase(TestCase):
                     'type': 'FLOAT',
                     'size': 19203,
                     'is_nullable': False,
+                    'is_enum': False,
                     'distribution': None,
                 },
             ],
@@ -41,6 +42,7 @@ class CatalogueItemParserTestCase(TestCase):
                 {
                     'distribution': None,
                     'is_nullable': False,
+                    'is_enum': False,
                     'name': 'value',
                     'size': 19203,
                     'type': 'FLOAT',
@@ -59,6 +61,7 @@ class CatalogueItemParserTestCase(TestCase):
                     'type': 'FLOAT',
                     'size': '19203',
                     'is_nullable': False,
+                    'is_enum': False,
                     'distribution': None,
                 },
             ],

@@ -4,6 +4,7 @@ import json
 from django.test import TestCase
 from django.urls import reverse
 from lily.base.test import Client
+import pytest
 
 from account.models import Account
 from account.token import AuthToken
@@ -50,6 +51,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
                         'type': 'FLOAT',
                         'size': 19203,
                         'is_nullable': False,
+                        'is_enum': False,
                         'distribution': None,
                     },
                 ],
@@ -126,6 +128,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
                         'type': 'FLOAT',
                         'size': 19203,
                         'is_nullable': False,
+                        'is_enum': False,
                         'distribution': None,
                     },
                 ],
@@ -198,7 +201,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
 
         ci_0 = ef.catalogue_item(name='iot_features')
         ci_1 = ef.catalogue_item(name='temperatures')  # noqa
-        ci_2 = ef.catalogue_item(name='iot_events')
+        ci_2 = ef.catalogue_item(name='iot_events')  # noqa
 
         response = self.app.get(
             self.uri,
@@ -219,7 +222,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
 
         ci_0 = ef.catalogue_item(name='iot_features')
         ci_1 = ef.catalogue_item(name='temperatures')  # noqa
-        ci_2 = ef.catalogue_item(name='iot_events')
+        ci_2 = ef.catalogue_item(name='iot_events')  # noqa
 
         response = self.app.get(
             self.uri,
@@ -238,7 +241,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
 
     def test_get_200__query_many_words_or_not(self):
 
-        ci_0 = ef.catalogue_item(name='iot_features')
+        ci_0 = ef.catalogue_item(name='iot_features')  # noqa
         ci_1 = ef.catalogue_item(name='temperatures')  # noqa
         ci_2 = ef.catalogue_item(name='iot_events')
 
@@ -256,6 +259,49 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
                 CatalogueItemSerializer(ci_2).data,
             ],
         }
+
+    def test_get_200__with_has_samples(self):
+
+        ci_0 = ef.catalogue_item(name='iot_features', sample=[])
+        ci_1 = ef.catalogue_item(
+            name='temperatures',
+            sample=[
+                {'location': 'Wroclaw', 'value': 12.1},
+                {'location': 'Olawa', 'value': 34.4},
+            ])
+        ci_2 = ef.catalogue_item(name='iot_events', sample=[])
+
+        # -- with samples
+        response = self.app.get(
+            self.uri,
+            data={'has_samples': True},
+            **self.headers)
+
+        assert response.status_code == 200
+        assert response.json() == {
+            '@event': 'CATALOGUEITEMS_BULK_READ',
+            '@type': 'catalogue_items_list',
+            'items': [
+                CatalogueItemSerializer(ci_1).data,
+            ],
+        }
+
+        # -- without samples
+        response = self.app.get(
+            self.uri,
+            data={'has_samples': False},
+            **self.headers)
+
+        assert response.status_code == 200
+        assert response.json() == {
+            '@event': 'CATALOGUEITEMS_BULK_READ',
+            '@type': 'catalogue_items_list',
+            'items': [
+                CatalogueItemSerializer(ci_0).data,
+                CatalogueItemSerializer(ci_2).data,
+            ],
+        }
+
 
 class CatalogueItemElementCommandsTestCase(TestCase):
 
@@ -330,6 +376,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
                         'type': 'FLOAT',
                         'size': 19203,
                         'is_nullable': False,
+                        'is_enum': False,
                         'distribution': None,
                     },
                 ],
@@ -352,6 +399,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
                 'type': 'FLOAT',
                 'size': 19203,
                 'is_nullable': False,
+                'is_enum': False,
                 'distribution': None,
             },
         ]
@@ -375,6 +423,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
                         'name': 'value',
                         'size': 19203,
                         'is_nullable': False,
+                        'is_enum': False,
                         'distribution': None,
                     },
                 ],
@@ -412,6 +461,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
                         'type': 'FLOAT',
                         'size': 19203,
                         'is_nullable': False,
+                        'is_enum': False,
                         'distribution': None,
                     },
                 ],
@@ -461,6 +511,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
                     'name': 'price',
                     'type': 'INTEGER',
                     'is_nullable': True,
+                    'is_enum': True,
                     'distribution': None,
                     'size': 1920,
                 },
@@ -503,6 +554,70 @@ class CatalogueItemElementCommandsTestCase(TestCase):
 
         response = self.app.delete(
             self.get_uri(69506),
+            **self.headers)
+
+        assert response.status_code == 404
+        assert response.json() == {
+            '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
+            '@type': 'error',
+            '@access': {
+                'account_id': self.account.id,
+            },
+        }
+
+
+class CatalogueItemSampleAndDistributionsCommandsTestCase(TestCase):
+
+    def get_uri(self, item_id):
+        return reverse(
+            'catalogue:items.element.samples_and_distributions',
+            kwargs={'item_id': item_id})
+
+    @pytest.fixture(autouse=True)
+    def initfixtures(self, mocker):
+        self.mocker = mocker
+
+    def setUp(self):
+        ef.clear()
+
+        self.app = Client()
+        self.account = ef.account(type=Account.TYPES.ADMIN)
+
+        token = AuthToken.encode(self.account)
+        self.headers = {
+            'HTTP_AUTHORIZATION': f'Bearer {token}'
+        }
+
+    #
+    # UPDATE
+    #
+    def test_put_200(self):
+
+        update_samples_and_distributions = self.mocker.patch.object(
+            CatalogueItem, 'update_samples_and_distributions')
+        a_0 = ef.account()
+        a_1 = ef.account()
+        ci = ef.catalogue_item(
+            name='temperatures',
+            created_by=a_0,
+            updated_by=a_1)
+
+        response = self.app.put(
+            self.get_uri(ci.id),
+            **self.headers)
+
+        assert response.status_code == 200
+        ci.refresh_from_db()
+        assert response.json() == {
+            '@event': 'CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED',
+            '@type': 'empty',
+        }
+        assert update_samples_and_distributions.call_count == 1
+
+    def test_put_404(self):
+
+        response = self.app.put(
+            self.get_uri(9022),
             **self.headers)
 
         assert response.status_code == 404
