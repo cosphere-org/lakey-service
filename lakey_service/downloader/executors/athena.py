@@ -1,5 +1,6 @@
 
 from io import StringIO
+from time import sleep
 
 from django.conf import settings
 import boto3
@@ -83,9 +84,9 @@ class AthenaExecutor:
             catalogue_item.database,
             query=f'''
                 SELECT
-                    *
+                    g.*
                 FROM
-                    {catalogue_item.table},
+                    {catalogue_item.table} AS g,
                     (
                         SELECT
                             COUNT(*) AS total
@@ -147,7 +148,8 @@ class AthenaExecutor:
 
     def get_distribution_numerical(self, column, catalogue_item):
 
-        bins_count = settings.CATALOGUE_ITEMS_DISTRIBUTION_VALUE_BINS_COUNT
+        bins_count = (
+            settings.CATALOGUE_ITEMS_DISTRIBUTION_VALUE_BINS_COUNT)
 
         data = self.execute_to_df(
             catalogue_item.database,
@@ -162,7 +164,6 @@ class AthenaExecutor:
         min_ = data['min_'][0]
         max_ = data['max_'][0]
         spread = max_ - min_
-
         bins = self.execute_to_df(
             catalogue_item.database,
             query=f'''
@@ -179,6 +180,7 @@ class AthenaExecutor:
                         {catalogue_item.table}
                     ) AS g
                 GROUP BY g.bin
+                ORDER BY g.bin
             ''').to_dict(orient='records')
 
         return [
@@ -214,7 +216,7 @@ class AthenaExecutor:
         bucket = settings.AWS_S3_BUCKET
         region = settings.AWS_LAKEY_REGION
 
-        url = (
+        uri = (
             f'https://s3.{region}.amazonaws.com/{bucket}'
             f'/results/{execution_id}.csv')
 
@@ -232,4 +234,9 @@ class AthenaExecutor:
         # Client.generate_presigned_url
 
         # FIXME: test if range HEADER !!!! also works here!!!!
-        return url
+
+        # FIXME: make it smarter!!!
+        # -- wait some time till the results will be available
+        sleep(2)
+
+        return uri

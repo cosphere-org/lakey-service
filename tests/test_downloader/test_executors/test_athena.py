@@ -24,6 +24,8 @@ class AthenaExecutorTestCase(TestCase):
     def initfixtures(self, mocker):
         self.mocker = mocker
 
+        self.mocker.patch('downloader.executors.athena.sleep')
+
     def setUp(self):
         ef.clear()
 
@@ -188,9 +190,9 @@ class AthenaExecutorTestCase(TestCase):
         assert normalize_query(query['query']) == normalize_query(
             '''
             SELECT
-                *
+                g.*
             FROM
-                lakey.shopping,
+                lakey.shopping AS g,
                 (
                     SELECT
                         COUNT(*) AS total
@@ -348,6 +350,7 @@ class AthenaExecutorTestCase(TestCase):
                     lakey.shopping
                 ) AS g
             GROUP BY g.bin
+            ORDER BY g.bin
             ''')
 
     #

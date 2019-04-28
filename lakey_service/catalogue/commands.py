@@ -17,7 +17,7 @@ from account.models import Account
 from .domains import CATALOGUE
 from .models import CatalogueItem
 from .serializers import CatalogueItemListSerializer, CatalogueItemSerializer
-from .parsers import CatalogueItemParser
+from .parsers import CatalogueItemCreateParser, CatalogueItemUpdateParser
 
 
 class CatalogueItemCollectionCommands(HTTPCommands):
@@ -31,7 +31,7 @@ class CatalogueItemCollectionCommands(HTTPCommands):
 
         access=Access(access_list=[Account.TYPES.ADMIN]),
 
-        input=Input(body_parser=CatalogueItemParser),
+        input=Input(body_parser=CatalogueItemCreateParser),
 
         output=Output(serializer=CatalogueItemSerializer),
     )
@@ -126,7 +126,7 @@ class CatalogueItemElementCommands(HTTPCommands):
 
         access=Access(access_list=[Account.TYPES.ADMIN]),
 
-        input=Input(body_parser=CatalogueItemParser),
+        input=Input(body_parser=CatalogueItemUpdateParser),
 
         output=Output(serializer=CatalogueItemSerializer),
     )

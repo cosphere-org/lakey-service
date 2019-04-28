@@ -1,21 +1,21 @@
 
 from django.test import TestCase
 
-from catalogue.parsers import CatalogueItemParser
+from catalogue.parsers import CatalogueItemCreateParser
 from tests.factory import EntityFactory
 
 
 ef = EntityFactory()
 
 
-class CatalogueItemParserTestCase(TestCase):
+class CatalogueItemCreateParserTestCase(TestCase):
 
     def setUp(self):
         ef.clear()
 
     def test_parse(self):
 
-        parser = CatalogueItemParser(data={
+        parser = CatalogueItemCreateParser(data={
             'name': 'iot_events',
             'sample': [],
             'spec': [
@@ -52,7 +52,7 @@ class CatalogueItemParserTestCase(TestCase):
 
     def test_parse__invalid(self):
 
-        parser = CatalogueItemParser(data={
+        parser = CatalogueItemCreateParser(data={
             'name': 'iot_events',
             'sample': [],
             'spec': [
@@ -74,4 +74,29 @@ class CatalogueItemParserTestCase(TestCase):
                 "JSON did not validate. PATH: '0.size' REASON: '19203' "
                 "is not valid under any of the given schemas",
             ],
+        }
+
+    def test_parse__name_already_exists(self):
+
+        ef.catalogue_item(name='iot_events')
+
+        parser = CatalogueItemCreateParser(data={
+            'name': 'iot_events',
+            'sample': [],
+            'spec': [
+                {
+                    'name': 'value',
+                    'type': 'FLOAT',
+                    'size': 19203,
+                    'is_nullable': False,
+                    'is_enum': False,
+                    'distribution': None,
+                },
+            ],
+            'maintained_by_id': 1289,
+            'executor_type': 'DATABRICKS',
+        })
+        assert parser.is_valid() is False
+        assert parser.errors == {
+            'name': ['catalogue item with this name already exists.'],
         }

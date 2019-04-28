@@ -368,7 +368,6 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         response = self.app.put(
             self.get_uri(ci.id),
             data=json.dumps({
-                'name': 'iot_events',
                 'sample': [],
                 'spec': [
                     {
@@ -392,7 +391,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
             '@event': 'CATALOGUEITEM_UPDATED',
             **CatalogueItemSerializer(ci).data
         }
-        assert ci.name == 'iot_events'
+        assert ci.name == 'temperatures'
         assert ci.spec == [
             {
                 'name': 'value',
