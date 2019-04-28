@@ -1,0 +1,30 @@
+# -- IO of parquet files
+fastparquet==0.2.1
+pyarrow
+
+# -- parallel computation framework
+dask[complete]==1.0.0
+
+# -- notebook engine
+jupyter==1.0.0
+
+# -- stuff for visualisation
+ipywidgets==7.4.2
+datashader==0.6.8
+pyviz-comms==0.6.0
+holoviews==1.10.9
+
+tqdm==4.28.1
+
+# -- compression of parquet file
+python-snappy==0.5.3
+
+setproctitle==1.1.10
+numpy==1.15.0
+pandas==0.24.1
+modin==0.4.0
+
+sklearn
+folium==0.8.3
+
+seaborn
