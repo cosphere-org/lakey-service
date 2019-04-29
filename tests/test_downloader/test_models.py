@@ -315,3 +315,60 @@ class DownloadRequestTestCase(TestCase):
                 "'randomize_ratio' not in allowed [0, 1] range detected",
             ],
         }
+
+    #
+    # NORMALIZE_SPEC
+    #
+    def test_normalize_spec__sorts_columns(self):
+
+        assert DownloadRequest.normalize_spec({
+            'columns': ['price', 'amount', 'name'],
+            'filters': [],
+            'randomize_ratio': 0.9,
+        }) == 'columns:amount,name,price|filters:|randomize_ratio:0.9'
+
+    def test_normalize_spec__sorts_filters(self):
+
+        assert DownloadRequest.normalize_spec({
+            'columns': ['price', 'amount', 'name'],
+            'filters': [
+                {'name': 'price', 'operator': '>=', 'value': 78},
+                {'name': 'price', 'operator': '=', 'value': 23},
+                {'name': 'name', 'operator': '=', 'value': 'jack'},
+            ],
+            'randomize_ratio': 0.6,
+        }) == (
+            'columns:amount,name,price|'
+            'filters:name=jack,price=23,price>=78|'
+            'randomize_ratio:0.6')
+
+    def test_normalize_spec__no_randomize_ratio(self):
+
+        assert DownloadRequest.normalize_spec({
+            'columns': ['price', 'amount'],
+            'filters': [{'name': 'price', 'operator': '>=', 'value': 78}],
+        }) == 'columns:amount,price|filters:price>=78|randomize_ratio:1'
+
+    #
+    # PRE_SAVE FLOW
+    #
+    def test_pre_save_flow(self):
+
+        a = ef.account()
+        d = DownloadRequest.objects.create(
+            created_by=a,
+            spec={
+                'columns': ['product'],
+                'filters': [
+                    {
+                        'name': 'price',
+                        'operator': '>=',
+                        'value': 78,
+                    },
+                ],
+                'randomize_ratio': 1,
+            },
+            catalogue_item=self.ci)
+
+        assert d.normalized_spec == (
+            'columns:product|filters:price>=78|randomize_ratio:1')

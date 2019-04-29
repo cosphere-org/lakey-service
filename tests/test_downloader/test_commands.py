@@ -201,7 +201,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
     #
     # CREATE DOWNLOAD REQUEST
     #
-    def test_post_201(self):
+    def test_post_201__created(self):
 
         execute = self.mocker.patch.object(AthenaExecutor, 'execute')
         execute.return_value = (
@@ -233,6 +233,53 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
         assert r.uri == (
             'https://s3.this.region.amazonaws.com/buk.et/results/567.csv')
         assert execute.call_args_list == [call(r)]
+
+    def test_post_200__read(self):
+
+        execute = self.mocker.patch.object(AthenaExecutor, 'execute')
+
+        r = ef.download_request(
+            spec={
+                'columns': ['price', 'product'],
+                'filters': [
+                    {'name': 'price', 'operator': '>=', 'value': 78},
+                    {'name': 'price', 'operator': '=', 'value': 23},
+                    {'name': 'product', 'operator': '=', 'value': 'jack'},
+                ],
+                'randomize_ratio': 0.9,
+            },
+            uri=(
+                'https://s3.this.region.amazonaws.com/buk.et/results/567.csv'),
+            catalogue_item=self.ci)
+
+        assert DownloadRequest.objects.all().count() == 1
+
+        response = self.app.post(
+            self.uri,
+            data=json.dumps({
+                'spec': {
+                    'columns': ['product', 'price'],
+                    'filters': [
+                        {'name': 'product', 'operator': '=', 'value': 'jack'},
+                        {'name': 'price', 'operator': '=', 'value': 23},
+                        {'name': 'price', 'operator': '>=', 'value': 78},
+                    ],
+                    'randomize_ratio': 0.9,
+                },
+                'catalogue_item_id': self.ci.id,
+            }),
+            content_type='application/json',
+            **self.headers)
+
+        assert response.status_code == 200
+        assert DownloadRequest.objects.all().count() == 1
+        assert DownloadRequest.objects.all().first() == r
+
+        assert response.json() == {
+            '@event': 'DOWNLOADREQUEST_READ',
+            **DownloadRequestSerializer(r).data,
+        }
+        assert execute.call_count == 0
 
     def test_post_400__broken_request(self):
 

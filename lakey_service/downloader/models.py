@@ -2,6 +2,7 @@
 from enum import Enum, unique
 
 from django.core.exceptions import ValidationError
+from django.db.models.signals import pre_save
 from django.db import models
 from lily.base.models import (
     array,
@@ -119,6 +120,8 @@ class DownloadRequest(ValidatingModel):
             randomize_ratio=number(),
             required=['columns', 'filters']))
 
+    normalized_spec = models.TextField(default='', blank=True)
+
     uri = models.URLField(null=True, blank=True)
 
     real_size = models.IntegerField(null=True, blank=True)
@@ -186,7 +189,7 @@ class DownloadRequest(ValidatingModel):
 
         if not columns.issubset(allowed_columns):
             unknown_columns = columns - allowed_columns
-            unknown_columns = ', '.join([f"'{c}'" for c in unknown_columns])
+            unknown_columns = ', '.join([f"'{c}'" for c in unknown_columns])  # noqa
             raise ValidationError(
                 f"unknown columns in 'columns' detected: {unknown_columns}")
 
@@ -234,3 +237,25 @@ class DownloadRequest(ValidatingModel):
         if randomize_ratio < 0 or randomize_ratio > 1:
             raise ValidationError(
                 "'randomize_ratio' not in allowed [0, 1] range detected")
+
+    @staticmethod
+    def normalize_spec(spec):
+
+        columns = ','.join(sorted(spec['columns']))
+        filters = ','.join(sorted([
+            f"{f['name']}{f['operator']}{f['value']}"
+            for f in spec['filters']
+        ]))
+
+        randomize_ratio = spec.get('randomize_ratio', 1)
+        return (
+            f'columns:{columns}|'
+            f'filters:{filters}|'
+            f'randomize_ratio:{randomize_ratio}')
+
+
+def pre_save_flow(sender, instance, **kwargs):
+    instance.normalized_spec = DownloadRequest.normalize_spec(instance.spec)
+
+
+pre_save.connect(pre_save_flow, sender=DownloadRequest)

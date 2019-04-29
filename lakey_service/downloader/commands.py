@@ -85,7 +85,7 @@ class DownloadRequestEstimateCommands(HTTPCommands):
 class DownloadRequestCollectionCommands(HTTPCommands):
 
     @command(
-        name=name.Create(DownloadRequest),
+        name=name.CreateOrRead(DownloadRequest),
 
         meta=Meta(
             title='Create Download Request',
@@ -106,17 +106,26 @@ class DownloadRequestCollectionCommands(HTTPCommands):
     )
     def post(self, request):
 
-        r = DownloadRequest.objects.create(
-            created_by=request.access['account'],
-            **request.input.body)
+        spec = request.input.body['spec']
+
+        r, created = DownloadRequest.objects.get_or_create(
+            normalized_spec=DownloadRequest.normalize_spec(spec),
+            catalogue_item_id=request.input.body['catalogue_item_id'],
+            defaults={
+                'created_by': request.access['account'],
+                'spec': spec,
+            })
+
         r.waiters.add(request.access['account'])
 
-        # FIXME: make it lazy IF exists don't do it again!!!!!
-        # talk with @sowj
-        r.uri = AthenaExecutor().execute(r)
-        r.save()
+        if created:
+            r.uri = AthenaExecutor().execute(r)
+            r.save()
 
-        raise self.event.Created(r)
+            raise self.event.Created(r)
+
+        else:
+            raise self.event.Read(r)
 
     @command(
         name=name.BulkRead(DownloadRequest),
