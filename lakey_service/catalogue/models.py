@@ -18,6 +18,7 @@ from lily.base.models import (
 )
 
 from account.models import Account
+from downloader.executors.athena import AthenaExecutor
 
 
 def spec_validator(spec):
@@ -131,10 +132,13 @@ class CatalogueItem(ValidatingModel):
 
         BOOLEAN = 'BOOLEAN'
 
+        DATETIME = 'DATETIME'
+
     column_type_to_python_type = {
         ColumnType.INTEGER.value: int,
         ColumnType.FLOAT.value: float,
         ColumnType.STRING.value: str,
+        ColumnType.DATETIME.value: str,
         ColumnType.BOOLEAN.value: bool,
     }
 
@@ -143,6 +147,7 @@ class CatalogueItem(ValidatingModel):
             object(
                 name=string(),
                 type=enum(*[t.value for t in ColumnType]),
+                is_enum=boolean(),
                 size=null_or(number()),
                 is_nullable=boolean(),
                 distribution=null_or(
@@ -161,6 +166,7 @@ class CatalogueItem(ValidatingModel):
                     'size',
                     'is_nullable',
                     'distribution',
+                    'is_enum',
                 ],
             )),
         validators=[spec_validator])
@@ -226,3 +232,33 @@ class CatalogueItem(ValidatingModel):
                         f"column type and sample value type "
                         f"mismatch detected for row number {i} "
                         f"column '{name}'")
+
+    @property
+    def database(self):
+        return self.name.split('.')[0]
+
+    @property
+    def table(self):
+        return self.name
+
+    def update_samples_and_distributions(self):
+
+        if self.executor_type == self.Executor.ATHENA.value:
+            executor = AthenaExecutor()
+
+        else:
+            raise NotImplementedError()
+
+        # -- sample
+        self.sample = executor.get_sample(self)
+
+        for column in self.spec:
+
+            # -- size
+            column['size'] = executor.get_size(column['name'], self)
+
+            # -- distributions
+            column['distribution'] = executor.get_distribution(
+                column['name'], column['type'], column['is_enum'], self)
+
+        self.save()

@@ -20,6 +20,7 @@ class CatalogueItemSerializer(serializers.ModelSerializer):
 
         fields = (
             # -- model fields
+            'id',
             'name',
             'spec',
             'sample',

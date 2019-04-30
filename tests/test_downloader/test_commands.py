@@ -1,4 +1,5 @@
 
+from unittest.mock import call
 import json
 
 from django.test import TestCase
@@ -10,6 +11,7 @@ from account.models import Account
 from account.token import AuthToken
 from downloader.models import DownloadRequest
 from downloader.serializers import DownloadRequestSerializer
+from downloader.executors.athena import AthenaExecutor
 from tests.factory import EntityFactory
 
 
@@ -28,7 +30,7 @@ class DownloadRequestRenderCommandsTestCase(TestCase):
 
         token = AuthToken.encode(self.account)
         self.headers = {
-            'HTTP_AUTHORIZATION': f'Bearer {token}'
+            'HTTP_AUTHORIZATION': f'Bearer {token}'  # noqa
         }
 
     def test_post_200(self):
@@ -39,6 +41,7 @@ class DownloadRequestRenderCommandsTestCase(TestCase):
                     'name': 'product',
                     'type': 'STRING',
                     'is_nullable': True,
+                    'is_enum': True,
                     'size': None,
                     'distribution': None,
                 },
@@ -46,6 +49,7 @@ class DownloadRequestRenderCommandsTestCase(TestCase):
                     'name': 'price',
                     'type': 'INTEGER',
                     'is_nullable': False,
+                    'is_enum': False,
                     'size': None,
                     'distribution': None,
                 },
@@ -53,6 +57,7 @@ class DownloadRequestRenderCommandsTestCase(TestCase):
                     'name': 'available',
                     'type': 'BOOLEAN',
                     'is_nullable': False,
+                    'is_enum': False,
                     'size': None,
                     'distribution': None,
                 }
@@ -120,6 +125,7 @@ class DownloadRequestEstimateCommandsTestCase(TestCase):
                     'name': 'product',
                     'type': 'STRING',
                     'is_nullable': True,
+                    'is_enum': True,
                     'size': None,
                     'distribution': None,
                 },
@@ -127,6 +133,7 @@ class DownloadRequestEstimateCommandsTestCase(TestCase):
                     'name': 'price',
                     'type': 'INTEGER',
                     'is_nullable': False,
+                    'is_enum': False,
                     'size': None,
                     'distribution': None,
                 },
@@ -157,6 +164,10 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
 
     uri = reverse('downloader:requests.collection')
 
+    @pytest.fixture(autouse=True)
+    def initfixtures(self, mocker):
+        self.mocker = mocker
+
     def setUp(self):
         ef.clear()
 
@@ -168,6 +179,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
                     'name': 'product',
                     'type': 'STRING',
                     'is_nullable': True,
+                    'is_enum': True,
                     'size': None,
                     'distribution': None,
                 },
@@ -175,6 +187,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
                     'name': 'price',
                     'type': 'INTEGER',
                     'is_nullable': False,
+                    'is_enum': False,
                     'size': None,
                     'distribution': None,
                 },
@@ -188,8 +201,11 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
     #
     # CREATE DOWNLOAD REQUEST
     #
-    def test_post_201(self):
+    def test_post_201__created(self):
 
+        execute = self.mocker.patch.object(AthenaExecutor, 'execute')
+        execute.return_value = (
+            'https://s3.this.region.amazonaws.com/buk.et/results/567.csv')
         assert DownloadRequest.objects.all().count() == 0
 
         response = self.app.post(
@@ -214,6 +230,56 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             **DownloadRequestSerializer(r).data,
         }
         assert r.created_by == self.account
+        assert r.uri == (
+            'https://s3.this.region.amazonaws.com/buk.et/results/567.csv')
+        assert execute.call_args_list == [call(r)]
+
+    def test_post_200__read(self):
+
+        execute = self.mocker.patch.object(AthenaExecutor, 'execute')
+
+        r = ef.download_request(
+            spec={
+                'columns': ['price', 'product'],
+                'filters': [
+                    {'name': 'price', 'operator': '>=', 'value': 78},
+                    {'name': 'price', 'operator': '=', 'value': 23},
+                    {'name': 'product', 'operator': '=', 'value': 'jack'},
+                ],
+                'randomize_ratio': 0.9,
+            },
+            uri=(
+                'https://s3.this.region.amazonaws.com/buk.et/results/567.csv'),
+            catalogue_item=self.ci)
+
+        assert DownloadRequest.objects.all().count() == 1
+
+        response = self.app.post(
+            self.uri,
+            data=json.dumps({
+                'spec': {
+                    'columns': ['product', 'price'],
+                    'filters': [
+                        {'name': 'product', 'operator': '=', 'value': 'jack'},
+                        {'name': 'price', 'operator': '=', 'value': 23},
+                        {'name': 'price', 'operator': '>=', 'value': 78},
+                    ],
+                    'randomize_ratio': 0.9,
+                },
+                'catalogue_item_id': self.ci.id,
+            }),
+            content_type='application/json',
+            **self.headers)
+
+        assert response.status_code == 200
+        assert DownloadRequest.objects.all().count() == 1
+        assert DownloadRequest.objects.all().first() == r
+
+        assert response.json() == {
+            '@event': 'DOWNLOADREQUEST_READ',
+            **DownloadRequestSerializer(r).data,
+        }
+        assert execute.call_count == 0
 
     def test_post_400__broken_request(self):
 
@@ -346,6 +412,7 @@ class DownloadRequestElementCommandsTestCase(TestCase):
                     'name': 'product',
                     'type': 'STRING',
                     'is_nullable': True,
+                    'is_enum': True,
                     'size': None,
                     'distribution': None,
                 },
@@ -353,6 +420,7 @@ class DownloadRequestElementCommandsTestCase(TestCase):
                     'name': 'price',
                     'type': 'INTEGER',
                     'is_nullable': False,
+                    'is_enum': False,
                     'size': None,
                     'distribution': None,
                 },

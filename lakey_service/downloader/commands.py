@@ -21,6 +21,7 @@ from .serializers import (
     DownloadRequestListSerializer,
 )
 from .parsers import DownloadRequestParser, DownloadRequestRenderParser
+from .executors.athena import AthenaExecutor
 
 
 class DownloadRequestRenderCommands(HTTPCommands):
@@ -84,7 +85,7 @@ class DownloadRequestEstimateCommands(HTTPCommands):
 class DownloadRequestCollectionCommands(HTTPCommands):
 
     @command(
-        name=name.Create(DownloadRequest),
+        name=name.CreateOrRead(DownloadRequest),
 
         meta=Meta(
             title='Create Download Request',
@@ -105,12 +106,26 @@ class DownloadRequestCollectionCommands(HTTPCommands):
     )
     def post(self, request):
 
-        r = DownloadRequest.objects.create(
-            created_by=request.access['account'],
-            **request.input.body)
+        spec = request.input.body['spec']
+
+        r, created = DownloadRequest.objects.get_or_create(
+            normalized_spec=DownloadRequest.normalize_spec(spec),
+            catalogue_item_id=request.input.body['catalogue_item_id'],
+            defaults={
+                'created_by': request.access['account'],
+                'spec': spec,
+            })
+
         r.waiters.add(request.access['account'])
 
-        raise self.event.Created(r)
+        if created:
+            r.uri = AthenaExecutor().execute(r)
+            r.save()
+
+            raise self.event.Created(r)
+
+        else:
+            raise self.event.Read(r)
 
     @command(
         name=name.BulkRead(DownloadRequest),

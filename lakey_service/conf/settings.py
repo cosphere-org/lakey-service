@@ -5,10 +5,23 @@ import os
 
 SECRET_KEY = 'not.really.needed'
 
+DEBUG = True
+
 #
 # Lily
 #
 LILY_AUTHORIZER_CLASS = 'account.authorizer.Authorizer'
+
+#
+# LAKEY SPECIFIC
+#
+CATALOGUE_ITEMS_DISTRIBUTION_VALUE_LIMIT = int(
+    os.environ['CATALOGUE_ITEMS_DISTRIBUTION_VALUE_LIMIT'])
+
+CATALOGUE_ITEMS_DISTRIBUTION_VALUE_BINS_COUNT = int(
+    os.environ['CATALOGUE_ITEMS_DISTRIBUTION_VALUE_BINS_COUNT'])
+
+CATALOGUE_ITEMS_SAMPLE_SIZE = os.environ['CATALOGUE_ITEMS_SAMPLE_SIZE']
 
 #
 # Google OAuth2 Settings
@@ -39,6 +52,20 @@ AUTH_REQUEST_EXPIRATION_DELTA = timedelta(
     seconds=int(os.environ['AUTH_REQUEST_EXPIRATION_SECONDS']))
 
 #
+# AWS
+#
+AWS_LAKEY_REGION = os.environ['AWS_LAKEY_REGION']
+
+AWS_LAKEY_KEY_ID = os.environ['AWS_LAKEY_KEY_ID']
+
+AWS_LAKEY_KEY_SECRET = os.environ['AWS_LAKEY_KEY_SECRET']
+
+AWS_LAKEY_RESULTS_LOCATION = os.environ['AWS_LAKEY_RESULTS_LOCATION']
+
+AWS_S3_BUCKET = os.environ['AWS_S3_BUCKET']
+
+
+#
 # Internationalization
 #
 LANGUAGE_CODE = 'en-us'
@@ -50,6 +77,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 #
 # Environment Dependent Common Settings

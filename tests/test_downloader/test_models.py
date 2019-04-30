@@ -22,6 +22,7 @@ class DownloadRequestTestCase(TestCase):
                     'name': 'product',
                     'type': 'STRING',
                     'is_nullable': True,
+                    'is_enum': True,
                     'size': None,
                     'distribution': None,
                 },
@@ -29,6 +30,7 @@ class DownloadRequestTestCase(TestCase):
                     'name': 'price',
                     'type': 'INTEGER',
                     'is_nullable': False,
+                    'is_enum': False,
                     'size': None,
                     'distribution': None,
                 },
@@ -36,6 +38,7 @@ class DownloadRequestTestCase(TestCase):
                     'name': 'available',
                     'type': 'BOOLEAN',
                     'is_nullable': False,
+                    'is_enum': False,
                     'size': None,
                     'distribution': None,
                 }
@@ -94,6 +97,52 @@ class DownloadRequestTestCase(TestCase):
             'spec': [
                 "JSON did not validate. PATH: 'filters.0' REASON: 'operator' "
                 "is a required property",
+            ],
+        }
+
+    def test_broken_spec__empty_columns(self):
+
+        with pytest.raises(ValidationError) as e:
+            DownloadRequest.objects.create(
+                created_by=ef.account(),
+                spec={
+                    'columns': [],
+                    'filters': [
+                        {
+                            'name': 'price',
+                            'operator': '>=',
+                            'value': 78,
+                        },
+                    ],
+                },
+                catalogue_item=self.ci)
+
+        assert e.value.message_dict == {
+            '__all__': [
+                "at least one column must be specified in 'columns'",
+            ],
+        }
+
+    def test_broken_spec__not_unique_columns(self):
+
+        with pytest.raises(ValidationError) as e:
+            DownloadRequest.objects.create(
+                created_by=ef.account(),
+                spec={
+                    'columns': ['price', 'price'],
+                    'filters': [
+                        {
+                            'name': 'price',
+                            'operator': '>=',
+                            'value': 78,
+                        },
+                    ],
+                },
+                catalogue_item=self.ci)
+
+        assert e.value.message_dict == {
+            '__all__': [
+                "columns must appear only once in 'columns'",
             ],
         }
 
@@ -266,3 +315,60 @@ class DownloadRequestTestCase(TestCase):
                 "'randomize_ratio' not in allowed [0, 1] range detected",
             ],
         }
+
+    #
+    # NORMALIZE_SPEC
+    #
+    def test_normalize_spec__sorts_columns(self):
+
+        assert DownloadRequest.normalize_spec({
+            'columns': ['price', 'amount', 'name'],
+            'filters': [],
+            'randomize_ratio': 0.9,
+        }) == 'columns:amount,name,price|filters:|randomize_ratio:0.9'
+
+    def test_normalize_spec__sorts_filters(self):
+
+        assert DownloadRequest.normalize_spec({
+            'columns': ['price', 'amount', 'name'],
+            'filters': [
+                {'name': 'price', 'operator': '>=', 'value': 78},
+                {'name': 'price', 'operator': '=', 'value': 23},
+                {'name': 'name', 'operator': '=', 'value': 'jack'},
+            ],
+            'randomize_ratio': 0.6,
+        }) == (
+            'columns:amount,name,price|'
+            'filters:name=jack,price=23,price>=78|'
+            'randomize_ratio:0.6')
+
+    def test_normalize_spec__no_randomize_ratio(self):
+
+        assert DownloadRequest.normalize_spec({
+            'columns': ['price', 'amount'],
+            'filters': [{'name': 'price', 'operator': '>=', 'value': 78}],
+        }) == 'columns:amount,price|filters:price>=78|randomize_ratio:1'
+
+    #
+    # PRE_SAVE FLOW
+    #
+    def test_pre_save_flow(self):
+
+        a = ef.account()
+        d = DownloadRequest.objects.create(
+            created_by=a,
+            spec={
+                'columns': ['product'],
+                'filters': [
+                    {
+                        'name': 'price',
+                        'operator': '>=',
+                        'value': 78,
+                    },
+                ],
+                'randomize_ratio': 1,
+            },
+            catalogue_item=self.ci)
+
+        assert d.normalized_spec == (
+            'columns:product|filters:price>=78|randomize_ratio:1')

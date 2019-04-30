@@ -2,6 +2,8 @@
     "name": "lakey-service",
     "src_dir": "lakey_service",
     "repository": "https://github.com/cosphere-org/lakey-service",
-    "version": "0.2.1",
-    "last_commit_hash": "0a4b4c3538f543490d5c6ada2d50e701f99564e6"
+    "version": "0.2.2",
+    "next_version": null,
+    "last_commit_hash": "9ba9556147bf25b1d92d2ba3582738f6dd20f6a7",
+    "next_last_commit_hash": null
 }

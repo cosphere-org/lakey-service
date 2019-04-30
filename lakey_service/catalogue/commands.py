@@ -17,7 +17,7 @@ from account.models import Account
 from .domains import CATALOGUE
 from .models import CatalogueItem
 from .serializers import CatalogueItemListSerializer, CatalogueItemSerializer
-from .parsers import CatalogueItemParser
+from .parsers import CatalogueItemCreateParser, CatalogueItemUpdateParser
 
 
 class CatalogueItemCollectionCommands(HTTPCommands):
@@ -31,7 +31,7 @@ class CatalogueItemCollectionCommands(HTTPCommands):
 
         access=Access(access_list=[Account.TYPES.ADMIN]),
 
-        input=Input(body_parser=CatalogueItemParser),
+        input=Input(body_parser=CatalogueItemCreateParser),
 
         output=Output(serializer=CatalogueItemSerializer),
     )
@@ -46,6 +46,8 @@ class CatalogueItemCollectionCommands(HTTPCommands):
     class QueryParser(parsers.QueryParser):
 
         query = parsers.CharField(default=None)
+
+        has_samples = parsers.BooleanField(default=None)
 
     @command(
         name=name.BulkRead(CatalogueItem),
@@ -64,11 +66,13 @@ class CatalogueItemCollectionCommands(HTTPCommands):
 
         query = request.input.query['query']
 
+        has_samples = request.input.query['has_samples']
+
         if query:
             qs = Q()
             expression = re.compile(r'([\&\|\~])(\s+)')
             query = expression.sub('\\1', query)
-            
+
             for word in query.split():
                 if word[0] == '~':
                     qs = qs & ~Q(name__icontains=word[1:])
@@ -79,13 +83,19 @@ class CatalogueItemCollectionCommands(HTTPCommands):
                 elif word[0] == '|':
                     qs = qs | Q(name__icontains=word[1:])
 
-                else: 
+                else:
                     qs = qs | Q(name__icontains=word)
 
             items = CatalogueItem.objects.filter(qs)
 
         else:
             items = CatalogueItem.objects.all()
+
+        if has_samples:
+            items = items.exclude(sample=[])
+
+        elif not has_samples and has_samples is not None:
+            items = items.filter(sample=[])
 
         raise self.event.BulkRead({'items': items})
 
@@ -116,7 +126,7 @@ class CatalogueItemElementCommands(HTTPCommands):
 
         access=Access(access_list=[Account.TYPES.ADMIN]),
 
-        input=Input(body_parser=CatalogueItemParser),
+        input=Input(body_parser=CatalogueItemUpdateParser),
 
         output=Output(serializer=CatalogueItemSerializer),
     )
@@ -159,3 +169,27 @@ class CatalogueItemElementCommands(HTTPCommands):
         item.delete()
 
         raise self.event.Deleted()
+
+
+class CatalogueItemSampleAndDistributionsCommands(HTTPCommands):
+
+    @command(
+        name=name.Execute(
+            'WITH_SAMPLE_AND_DISTRIBUTION_UPDATE', CatalogueItem),
+
+        meta=Meta(
+            title='Update Catalogue Item with Samples and Distributions',
+            domain=CATALOGUE),
+
+        is_atomic=True,
+
+        access=Access(access_list=[Account.TYPES.ADMIN]),
+
+        output=Output(serializer=serializers.EmptySerializer),
+    )
+    def put(self, request, item_id):
+
+        item = CatalogueItem.objects.get(id=item_id)
+        item.update_samples_and_distributions()
+
+        raise self.event.Executed()

@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 import pytest
 
 from catalogue.models import CatalogueItem
+from downloader.executors.athena import AthenaExecutor
 from tests.factory import EntityFactory
 
 
@@ -11,6 +12,10 @@ ef = EntityFactory()
 
 
 class CatalogueItemTestCase(TestCase):
+
+    @pytest.fixture(autouse=True)
+    def initfixtures(self, mocker):
+        self.mocker = mocker
 
     def setUp(self):
         ef.clear()
@@ -24,6 +29,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'STRING',
                 'size': 190234,
                 'is_nullable': False,
+                'is_enum': False,
                 'distribution': None,
             },
             {
@@ -31,6 +37,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'FLOAT',
                 'size': None,
                 'is_nullable': True,
+                'is_enum': True,
                 'distribution': [
                     {'value': 18.0, 'count': 9},
                     {'value': 19.1, 'count': 45},
@@ -81,6 +88,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'STRING',
                 'size': 190234,
                 'is_nullable': False,
+                'is_enum': False,
                 'distribution': None,
             },
         ]
@@ -109,6 +117,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'STRING',
                 'size': '190234',
                 'is_nullable': False,
+                'is_enum': False,
                 'distribution': None,
             },
         ]
@@ -137,6 +146,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'FLOAT',
                 'size': None,
                 'is_nullable': True,
+                'is_enum': True,
                 'distribution': [
                     {'value': 18.0, 'count': 9},
                     {'value': '19', 'count': 45},
@@ -169,6 +179,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'FLOAT',
                 'size': None,
                 'is_nullable': True,
+                'is_enum': True,
                 'distribution': [
                     {'value': 19.0, 'count': 9},
                     {'value': 19.0, 'count': 45},
@@ -200,6 +211,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'FLOAT',
                 'size': None,
                 'is_nullable': True,
+                'is_enum': True,
                 'distribution': [
                     {'value': 19.0, 'count': 45.9},
                     {'value': 21.2, 'count': 10},
@@ -230,6 +242,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'STRING',
                 'size': None,
                 'is_nullable': True,
+                'is_enum': True,
                 'distribution': None,
             },
             {
@@ -237,6 +250,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'FLOAT',
                 'size': None,
                 'is_nullable': True,
+                'is_enum': True,
                 'distribution': None,
             },
         ]
@@ -267,6 +281,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'STRING',
                 'size': None,
                 'is_nullable': True,
+                'is_enum': True,
                 'distribution': None,
             },
             {
@@ -274,6 +289,7 @@ class CatalogueItemTestCase(TestCase):
                 'type': 'FLOAT',
                 'size': None,
                 'is_nullable': True,
+                'is_enum': True,
                 'distribution': None,
             },
         ]
@@ -295,3 +311,124 @@ class CatalogueItemTestCase(TestCase):
                 "number 0 column 'price'",
             ],
         }
+
+    #
+    # DATABASE
+    #
+    def test_database(self):
+
+        a = ef.account()
+        ci = CatalogueItem.objects.create(
+            maintained_by=a,
+            name='iot.events',
+            sample=[{'value': 189}],
+            spec=[
+                {
+                    'name': 'value',
+                    'type': 'INTEGER',
+                    'size': None,
+                    'is_nullable': False,
+                    'is_enum': False,
+                    'distribution': None,
+                },
+            ],
+            executor_type='ATHENA')
+
+        assert ci.database == 'iot'
+
+    #
+    # TABLE
+    #
+    def test_table(self):
+
+        a = ef.account()
+        ci = CatalogueItem.objects.create(
+            maintained_by=a,
+            name='iot.events',
+            sample=[{'value': 189}],
+            spec=[
+                {
+                    'name': 'value',
+                    'type': 'INTEGER',
+                    'size': None,
+                    'is_nullable': False,
+                    'is_enum': False,
+                    'distribution': None,
+                },
+            ],
+            executor_type='ATHENA')
+
+        assert ci.table == 'iot.events'
+
+    #
+    # UPDATE_SAMPLES_AND_DISTRIBUTIONS
+    #
+    def test_update_samples_and_distributions(self):
+
+        a = ef.account()
+        ci = CatalogueItem.objects.create(
+            maintained_by=a,
+            name='iot.events',
+            sample=[],
+            spec=[
+                {
+                    'name': 'name',
+                    'type': 'STRING',
+                    'size': None,
+                    'is_nullable': False,
+                    'is_enum': False,
+                    'distribution': None,
+                },
+                {
+                    'name': 'value',
+                    'type': 'INTEGER',
+                    'size': None,
+                    'is_nullable': False,
+                    'is_enum': False,
+                    'distribution': None,
+                },
+            ],
+            executor_type='ATHENA')
+
+        get_sample = self.mocker.patch.object(AthenaExecutor, 'get_sample')
+        get_sample.return_value = [
+            {'name': 'temperature', 'value': 381},
+            {'name': 'pressure', 'value': 13},
+        ]
+        get_size = self.mocker.patch.object(AthenaExecutor, 'get_size')
+        get_size.side_effect = [678, 789]
+        get_distribution = self.mocker.patch.object(
+            AthenaExecutor, 'get_distribution')
+        get_distribution.side_effect = [
+            [{'value': 'temperature', 'count': 19}],
+            [{'value': 233, 'count': 567}, {'value': 45, 'count': 123}],
+        ]
+
+        ci.update_samples_and_distributions()
+
+        ci.refresh_from_db()
+        assert ci.sample == [
+            {'name': 'temperature', 'value': 381},
+            {'name': 'pressure', 'value': 13},
+        ]
+        assert ci.spec == [
+            {
+                'name': 'name',
+                'type': 'STRING',
+                'size': 678,
+                'is_nullable': False,
+                'is_enum': False,
+                'distribution': [{'value': 'temperature', 'count': 19}],
+            },
+            {
+                'name': 'value',
+                'type': 'INTEGER',
+                'size': 789,
+                'is_nullable': False,
+                'is_enum': False,
+                'distribution': [
+                    {'value': 233, 'count': 567},
+                    {'value': 45, 'count': 123},
+                ],
+            },
+        ]

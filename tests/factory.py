@@ -58,6 +58,7 @@ class EntityFactory:
                     'type': 'STRING',
                     'size': 190234,
                     'is_nullable': False,
+                    'is_enum': False,
                     'distribution': None,
                 },
                 {
@@ -65,6 +66,7 @@ class EntityFactory:
                     'type': 'FLOAT',
                     'size': None,
                     'is_nullable': True,
+                    'is_enum': False,
                     'distribution': [
                         {'value': 18.0, 'count': 9},
                         {'value': 19.1, 'count': 45},
