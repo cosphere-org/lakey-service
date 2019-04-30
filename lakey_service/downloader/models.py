@@ -243,8 +243,8 @@ class DownloadRequest(ValidatingModel):
 
         columns = ','.join(sorted(spec['columns']))
         filters = ','.join(sorted([
-            f"{f['name']}{f['operator']}{f['value']}"
-            for f in spec['filters']
+            f"{fltr['name']}{fltr['operator']}{fltr['value']}"
+            for fltr in spec['filters']
         ]))
 
         randomize_ratio = spec.get('randomize_ratio', 1)

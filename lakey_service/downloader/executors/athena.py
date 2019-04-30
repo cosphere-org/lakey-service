@@ -42,14 +42,14 @@ class AthenaExecutor:
 
         # -- FILTERS
         filters_entries = []
-        for f in spec['filters']:
-            if isinstance(f['value'], str):
+        for fltr in spec['filters']:
+            if isinstance(fltr['value'], str):
                 filters_entries.append(
-                    f"{f['name']} {f['operator']} '{f['value']}'")  # noqa
+                    f"{fltr['name']} {fltr['operator']} '{fltr['value']}'")  # noqa
 
             else:
                 filters_entries.append(
-                    f"{f['name']} {f['operator']} {f['value']}")
+                    f"{fltr['name']} {fltr['operator']} {fltr['value']}")
 
         if filters_entries:
             filters_entries = ' AND '.join(filters_entries)
