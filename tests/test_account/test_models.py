@@ -24,10 +24,10 @@ class AccountTestCase(TestCase):
 
         a = Account.objects.create(
             email='jacky@some.io',
-            type=Account.TYPES.ADMIN)
+            type=Account.AccountType.ADMIN)
 
         assert a.email == 'jacky@some.io'
-        assert a.type == Account.TYPES.ADMIN
+        assert a.type == Account.AccountType.ADMIN
 
 
 class AuthRequestTestCase(TestCase):

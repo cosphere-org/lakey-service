@@ -7,6 +7,7 @@ from lily.base.models import (
     array,
     boolean,
     enum,
+    EnumChoiceField,
     JSONSchemaField,
     null,
     null_or,
@@ -181,9 +182,7 @@ class CatalogueItem(ValidatingModel):
 
         ATHENA = 'ATHENA'
 
-    executor_type = models.CharField(
-        max_length=256,
-        choices=[(e.name, e.value) for e in Executor])
+    executor_type = EnumChoiceField(max_length=256, enum=Executor)
 
     def clean(self):
         self.validate_samples_in_context_of_spec()

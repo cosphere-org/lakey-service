@@ -24,7 +24,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.TYPES.ADMIN)
+        self.account = ef.account(type=Account.AccountType.ADMIN)
 
         token = AuthToken.encode(self.account)
         self.headers = {
@@ -312,7 +312,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.TYPES.ADMIN)
+        self.account = ef.account(type=Account.AccountType.ADMIN)
 
         token = AuthToken.encode(self.account)
         self.headers = {
@@ -580,7 +580,7 @@ class CatalogueItemSampleAndDistributionsCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.TYPES.ADMIN)
+        self.account = ef.account(type=Account.AccountType.ADMIN)
 
         token = AuthToken.encode(self.account)
         self.headers = {

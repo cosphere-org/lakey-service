@@ -7,6 +7,7 @@ from django.conf import settings
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from lily.base.events import EventFactory
+from lily.base.models import EnumChoiceField
 
 from .token import AuthToken
 
@@ -15,7 +16,7 @@ class Account(models.Model):
 
     email = models.EmailField(unique=True)
 
-    class TYPES:
+    class AccountType:
 
         RESEARCHER = 'RESEARCHER'
 
@@ -23,10 +24,11 @@ class Account(models.Model):
 
         ANY = [RESEARCHER, ADMIN]
 
-    type = models.CharField(
+    type = EnumChoiceField(
         max_length=64,
-        default=TYPES.RESEARCHER,
-        choices=[(t, t) for t in TYPES.ANY])
+        default=AccountType.RESEARCHER,
+        enum_name='account_type',
+        choices=[(t, t) for t in AccountType.ANY])
 
 
 class AuthRequest(models.Model):

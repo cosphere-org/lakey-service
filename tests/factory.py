@@ -24,7 +24,7 @@ class EntityFactory:
     def account(self, email=None, type=None):
         return Account.objects.create(
             email=email or faker.email(),
-            type=type or Account.TYPES.RESEARCHER)
+            type=type or Account.AccountType.RESEARCHER)
 
     def auth_request(self, account=None):
 
