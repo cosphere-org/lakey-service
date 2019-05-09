@@ -106,7 +106,6 @@ def prepareOutsideTemperatureEvents(day_events, day_temps, month, day, interval,
         axis=1).compute()
     
     events['timestamp'] = ddata.apply(lambda x: timestamps, meta=('x', object), axis=1).compute()
-    
     events['property'] = feature_name
     
     return transformComplexDF(events[feature_columns], ['gateway_uuid', 'month', 'day', 'property'], 'value', 'timestamp')[feature_columns]
@@ -128,8 +127,7 @@ def prepareRoomTemperatureEvents(day_events, month, day, interval, number_of_cor
         meta=('x', object), 
         axis=1).compute()
     
-    events['timestamp'] = ddata.apply(lambda x: timestamps, meta=('x', object), axis=1).compute()
-    
+    events['timestamp'] = ddata.apply(lambda x: timestamps, meta=('x', object), axis=1).compute()  
     events['property'] = feature_name
     
     return transformComplexDF(events[feature_columns], ['gateway_uuid', 'month', 'day', 'property'], 'value', 'timestamp')[feature_columns]

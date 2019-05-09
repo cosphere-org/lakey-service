@@ -68,4 +68,4 @@ data/gateway_geolocations
 data/weather_sample
 data/features_sample
 data/gateway_geolocations
-data/*_fake/*
+data/*features_fake/*
