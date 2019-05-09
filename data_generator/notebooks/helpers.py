@@ -1,6 +1,7 @@
+import random
+
 import pandas as pd
 import dask.dataframe as dd
-
 
 # interval - int in seconds
 def getTimestampList(month, day, interval):
@@ -82,11 +83,6 @@ def transformComplexDF(df, col_immutable_names, col_values_name, col_timestamp_n
 ##########################################################################################################################
 
 feature_columns = ['gateway_uuid', 'timestamp', 'property', 'value', 'month', 'day']
-day_room_temps = pd.DataFrame({
-    'hour': range(24),
-    'mean': [20, 20.5, 20, 19.5, 19, 19.7, 20.2, 21, 22, 23, 24, 25, 25, 20, 21, 22, 23, 24, 24, 23, 23, 22, 22, 21],
-    'std': 2.0
-})
 
 
 def prepareOutsideTemperatureEvents(day_events, day_temps, month, day, interval, number_of_cores):
@@ -118,6 +114,12 @@ def prepareRoomTemperatureEvents(day_events, month, day, interval, number_of_cor
     ddata = dd.from_pandas(events, npartitions=number_of_cores)
     timestamps = getTimestampList(month, day, interval)
     
+    day_room_temps = pd.DataFrame({
+        'hour': range(24),
+        'mean': [20, 20.5, 20, 19.5, 19, 19.7, 20.2, 21, 22, 23, 24, 25, 25, 20, 21, 22, 23, 24, 24, 23, 23, 22, 22, 21],
+        'std': random.uniform(0.5, 3.0)
+    })
+
     events['value'] = ddata.apply(
         lambda x: getTemperatureList(
             day_room_temps,
