@@ -133,3 +133,16 @@ def prepareRoomTemperatureEvents(day_events, month, day, interval, number_of_cor
     events['property'] = feature_name
     
     return transformComplexDF(events[feature_columns], ['gateway_uuid', 'month', 'day', 'property'], 'value', 'timestamp')[feature_columns]
+
+def prepareWaterPressureEvents(day_events, month, day, interval, number_of_cores):
+    feature_name = 'device.water.pressure/value'
+
+    events = day_events
+    ddata = dd.from_pandas(events, npartitions=number_of_cores)
+    timestamps = getTimestampList(month, day, interval)
+
+    events['value'] = ddata.apply(lambda x: [(x.pressure_base_factor + x.factor / 10) for i in range(int(24 * 3600 / interval))], meta=('x', object), axis=1).compute()
+    events['timestamp'] = ddata.apply(lambda x: timestamps, meta=('x', object), axis=1).compute()  
+    events['property'] = feature_name
+    
+    return transformComplexDF(events[feature_columns], ['gateway_uuid', 'month', 'day', 'property'], 'value', 'timestamp')[feature_columns]
