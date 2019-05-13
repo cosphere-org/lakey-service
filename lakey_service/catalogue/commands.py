@@ -29,7 +29,7 @@ class CatalogueItemCollectionCommands(HTTPCommands):
             title='Create Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[Account.TYPES.ADMIN]),
+        access=Access(access_list=[Account.AccountType.ADMIN]),
 
         input=Input(body_parser=CatalogueItemCreateParser),
 
@@ -56,7 +56,7 @@ class CatalogueItemCollectionCommands(HTTPCommands):
             title='Bulk Read Catalogue Items',
             domain=CATALOGUE),
 
-        access=Access(access_list=Account.TYPES.ANY),
+        access=Access(access_list=Account.AccountType.ANY),
 
         input=Input(query_parser=QueryParser),
 
@@ -109,7 +109,7 @@ class CatalogueItemElementCommands(HTTPCommands):
             title='Read Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=Account.TYPES.ANY),
+        access=Access(access_list=Account.AccountType.ANY),
 
         output=Output(serializer=CatalogueItemSerializer),
     )
@@ -124,7 +124,7 @@ class CatalogueItemElementCommands(HTTPCommands):
             title='Update Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[Account.TYPES.ADMIN]),
+        access=Access(access_list=[Account.AccountType.ADMIN]),
 
         input=Input(body_parser=CatalogueItemUpdateParser),
 
@@ -148,7 +148,7 @@ class CatalogueItemElementCommands(HTTPCommands):
             title='Delete Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[Account.TYPES.ADMIN]),
+        access=Access(access_list=[Account.AccountType.ADMIN]),
 
         output=Output(serializer=serializers.EmptySerializer),
     )
@@ -183,7 +183,7 @@ class CatalogueItemSampleAndDistributionsCommands(HTTPCommands):
 
         is_atomic=True,
 
-        access=Access(access_list=[Account.TYPES.ADMIN]),
+        access=Access(access_list=[Account.AccountType.ADMIN]),
 
         output=Output(serializer=serializers.EmptySerializer),
     )

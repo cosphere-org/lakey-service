@@ -26,7 +26,7 @@ class DownloadRequestRenderCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.TYPES.ADMIN)
+        self.account = ef.account(type=Account.AccountType.ADMIN)
 
         token = AuthToken.encode(self.account)
         self.headers = {
@@ -107,7 +107,7 @@ class DownloadRequestEstimateCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.TYPES.ADMIN)
+        self.account = ef.account(type=Account.AccountType.ADMIN)
 
         token = AuthToken.encode(self.account)
         self.headers = {
@@ -172,7 +172,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.TYPES.ADMIN)
+        self.account = ef.account(type=Account.AccountType.ADMIN)
         self.ci = ef.catalogue_item(
             spec=[
                 {
@@ -399,7 +399,7 @@ class DownloadRequestElementCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.TYPES.ADMIN)
+        self.account = ef.account(type=Account.AccountType.ADMIN)
 
         token = AuthToken.encode(self.account)
         self.headers = {

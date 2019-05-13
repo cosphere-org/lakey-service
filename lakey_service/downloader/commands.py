@@ -37,7 +37,7 @@ class DownloadRequestRenderCommands(HTTPCommands):
 
         input=Input(body_parser=DownloadRequestRenderParser),
 
-        access=Access(access_list=Account.TYPES.ANY),
+        access=Access(access_list=Account.AccountType.ANY),
 
         output=Output(serializer=DownloadRequestRenderSerializer),
     )
@@ -70,7 +70,7 @@ class DownloadRequestEstimateCommands(HTTPCommands):
 
         input=Input(body_parser=DownloadRequestParser),
 
-        access=Access(access_list=Account.TYPES.ANY),
+        access=Access(access_list=Account.AccountType.ANY),
 
         output=Output(serializer=DownloadRequestEstimateSerializer),
     )
@@ -100,7 +100,7 @@ class DownloadRequestCollectionCommands(HTTPCommands):
 
         input=Input(body_parser=DownloadRequestParser),
 
-        access=Access(access_list=Account.TYPES.ANY),
+        access=Access(access_list=Account.AccountType.ANY),
 
         output=Output(serializer=DownloadRequestSerializer),
     )
@@ -134,7 +134,7 @@ class DownloadRequestCollectionCommands(HTTPCommands):
             title='Bulk Read Download Requests which you are waiting for',
             domain=DOWNLOAD_REQUESTS),
 
-        access=Access(access_list=Account.TYPES.ANY),
+        access=Access(access_list=Account.AccountType.ANY),
 
         output=Output(serializer=DownloadRequestListSerializer),
     )
@@ -155,7 +155,7 @@ class DownloadRequestElementCommands(HTTPCommands):
             title='Read DownloadRequest one is waiting for',
             domain=DOWNLOAD_REQUESTS),
 
-        access=Access(access_list=Account.TYPES.ANY),
+        access=Access(access_list=Account.AccountType.ANY),
 
         output=Output(serializer=DownloadRequestSerializer),
     )
@@ -173,7 +173,7 @@ class DownloadRequestElementCommands(HTTPCommands):
             title='Creator can cancel request or remove himself from waiters',
             domain=DOWNLOAD_REQUESTS),
 
-        access=Access(access_list=Account.TYPES.ANY),
+        access=Access(access_list=Account.AccountType.ANY),
 
         output=Output(serializer=serializers.EmptySerializer),
     )

@@ -60,8 +60,8 @@
                     "status": 201,
                     "content_type": "application/json",
                     "content": {
-                        "authenticate_ui_uri": "/accounts/auth_requests/e07faa10-6b16-11e9-aee9-34f64bbaddd0/authenticate/ui/",
-                        "request_uuid": "e07faa10-6b16-11e9-aee9-34f64bbaddd0",
+                        "authenticate_ui_uri": "/accounts/auth_requests/8504286a-71dc-11e9-bed6-0028f8484bd5/authenticate/ui/",
+                        "request_uuid": "8504286a-71dc-11e9-bed6-0028f8484bd5",
                         "@type": "auth_request",
                         "@event": "AUTH_REQUEST_CREATED"
                     }
@@ -106,7 +106,7 @@
         },
         "schemas": {
             "output": {
-                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/.venv/src/lily/lily/base/serializers.py/#L143",
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/home/maciej/projects/lily/lily/base/serializers.py/#L180",
                 "schema": {}
             }
         },
@@ -159,7 +159,7 @@
         },
         "schemas": {
             "output": {
-                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/.venv/src/lily/lily/base/serializers.py/#L143",
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/home/maciej/projects/lily/lily/base/serializers.py/#L180",
                 "schema": {}
             },
             "input_body": {
@@ -187,14 +187,14 @@
             }
         },
         "examples": {
-            "200 (ACCOUNT_TO_AUTH_REQUEST_ATTACHED)": {
+            "404 (COULD_NOT_FIND_AUTHREQUEST)": {
                 "method": "post",
-                "description": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED",
+                "description": "COULD_NOT_FIND_AUTHREQUEST",
                 "request": {
                     "path": "/accounts/auth_requests/attach_account/",
                     "content": {
-                        "request_uuid": "e07faa11-6b16-11e9-aee9-34f64bbaddd0",
-                        "oauth_token": "some-oauth-token",
+                        "request_uuid": "8504286b-71dc-11e9-bed6-0028f8484bd5",
+                        "oauth_token": "some-auth-token",
                         "email": "jacky@somewhere.org"
                     },
                     "headers": {
@@ -203,11 +203,11 @@
                     "parameters": {}
                 },
                 "response": {
-                    "status": 200,
+                    "status": 404,
                     "content_type": "application/json",
                     "content": {
-                        "@type": "empty",
-                        "@event": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED"
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_AUTHREQUEST"
                     }
                 }
             },
@@ -242,14 +242,14 @@
                     }
                 }
             },
-            "404 (COULD_NOT_FIND_AUTHREQUEST)": {
+            "200 (ACCOUNT_TO_AUTH_REQUEST_ATTACHED)": {
                 "method": "post",
-                "description": "COULD_NOT_FIND_AUTHREQUEST",
+                "description": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED",
                 "request": {
                     "path": "/accounts/auth_requests/attach_account/",
                     "content": {
-                        "request_uuid": "e07faa12-6b16-11e9-aee9-34f64bbaddd0",
-                        "oauth_token": "some-auth-token",
+                        "request_uuid": "8504286c-71dc-11e9-bed6-0028f8484bd5",
+                        "oauth_token": "some-oauth-token",
                         "email": "jacky@somewhere.org"
                     },
                     "headers": {
@@ -258,11 +258,11 @@
                     "parameters": {}
                 },
                 "response": {
-                    "status": 404,
+                    "status": 200,
                     "content_type": "application/json",
                     "content": {
-                        "@type": "error",
-                        "@event": "COULD_NOT_FIND_AUTHREQUEST"
+                        "@type": "empty",
+                        "@event": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED"
                     }
                 }
             }
@@ -328,35 +328,13 @@
             }
         },
         "examples": {
-            "400 (EXPIRED_AUTH_REQUEST_DETECTED)": {
-                "method": "post",
-                "description": "EXPIRED_AUTH_REQUEST_DETECTED",
-                "request": {
-                    "path": "/accounts/auth_tokens/",
-                    "content": {
-                        "request_uuid": "f5e7e000-5074-11e4-8ada-024247a0384a"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "@type": "error",
-                        "@event": "EXPIRED_AUTH_REQUEST_DETECTED"
-                    }
-                }
-            },
             "201 (AUTH_TOKEN_CREATED)": {
                 "method": "post",
                 "description": "AUTH_TOKEN_CREATED",
                 "request": {
                     "path": "/accounts/auth_tokens/",
                     "content": {
-                        "request_uuid": "e07faa13-6b16-11e9-aee9-34f64bbaddd0"
+                        "request_uuid": "8504286d-71dc-11e9-bed6-0028f8484bd5"
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json"
@@ -370,6 +348,28 @@
                         "token": "fd78cd7d87f",
                         "@type": "auth_token",
                         "@event": "AUTH_TOKEN_CREATED"
+                    }
+                }
+            },
+            "400 (EXPIRED_AUTH_REQUEST_DETECTED)": {
+                "method": "post",
+                "description": "EXPIRED_AUTH_REQUEST_DETECTED",
+                "request": {
+                    "path": "/accounts/auth_tokens/",
+                    "content": {
+                        "request_uuid": "f5e7e000-5074-11e4-8e42-0242557aae96"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "EXPIRED_AUTH_REQUEST_DETECTED"
                     }
                 }
             }
@@ -437,6 +437,7 @@
                                     },
                                     "type": {
                                         "type": "string",
+                                        "enum_name": null,
                                         "enum": [
                                             "INTEGER",
                                             "FLOAT",
@@ -519,6 +520,7 @@
                         },
                         "executor_type": {
                             "type": "string",
+                            "enum_name": "Executor",
                             "enum": [
                                 "ATHENA",
                                 "DATABRICKS"
@@ -539,6 +541,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -561,6 +564,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -583,6 +587,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -618,6 +623,7 @@
                                     },
                                     "type": {
                                         "type": "string",
+                                        "enum_name": null,
                                         "enum": [
                                             "INTEGER",
                                             "FLOAT",
@@ -703,6 +709,7 @@
                         },
                         "executor_type": {
                             "type": "string",
+                            "enum_name": "Executor",
                             "enum": [
                                 "ATHENA",
                                 "DATABRICKS"
@@ -713,6 +720,116 @@
             }
         },
         "examples": {
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "post",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/catalogue/items/",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 15,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTUzfQ.5SS7Fva4wRwQQyCYioxrJpqNqnyOeQvlJNvFetv93B4"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "spec": [
+                                "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE",
+                        "@access": {
+                            "account_id": 14
+                        }
+                    }
+                }
+            },
+            "201 (CATALOGUEITEM_CREATED)": {
+                "method": "post",
+                "description": "CATALOGUEITEM_CREATED",
+                "request": {
+                    "path": "/catalogue/items/",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "is_enum": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 20,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.GGsUnnO92TWrTOqseEQ2L6F9xx50nLWERMcaYLq67R4"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 201,
+                    "content_type": "application/json",
+                    "content": {
+                        "id": 15,
+                        "name": "iot_events",
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "is_enum": false,
+                                "distribution": null
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "DATABRICKS",
+                        "created_by": {
+                            "id": 19,
+                            "email": "emery47@barrows-schmitt.com",
+                            "type": "ADMIN",
+                            "@type": "account"
+                        },
+                        "updated_by": {
+                            "id": 19,
+                            "email": "emery47@barrows-schmitt.com",
+                            "type": "ADMIN",
+                            "@type": "account"
+                        },
+                        "maintained_by": {
+                            "id": 20,
+                            "email": "cbeatty@gmail.com",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "@type": "catalogue_item",
+                        "@event": "CATALOGUEITEM_CREATED"
+                    }
+                }
+            },
             "400 (BODY_JSON_DID_NOT_PARSE)": {
                 "method": "post",
                 "description": "BODY_JSON_DID_NOT_PARSE",
@@ -736,7 +853,7 @@
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzEsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.aSHP7rByKZYlVzrusKVx05iy-uaUQ8OBMGuwgxU-dq4"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.tx5jIhBSxoW6fMsfRqQTxBgMWwk-x13l-wwM7DslR34"
                     },
                     "parameters": {}
                 },
@@ -752,118 +869,8 @@
                         "@type": "error",
                         "@event": "BODY_JSON_DID_NOT_PARSE",
                         "@access": {
-                            "account_id": 71
+                            "account_id": 24
                         }
-                    }
-                }
-            },
-            "400 (BODY_DID_NOT_VALIDATE)": {
-                "method": "post",
-                "description": "BODY_DID_NOT_VALIDATE",
-                "request": {
-                    "path": "/catalogue/items/",
-                    "content": {
-                        "name": "iot_events",
-                        "sample": [],
-                        "spec": [
-                            {
-                                "name": "value",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "distribution": null
-                            }
-                        ],
-                        "maintained_by_id": 73,
-                        "executor_type": "DATABRICKS"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzIsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.cerwGk1XLVfbKvEoYrnTwhUMy3MXevGDfPAdwgvMhWY"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "errors": {
-                            "spec": [
-                                "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
-                            ]
-                        },
-                        "@type": "error",
-                        "@event": "BODY_DID_NOT_VALIDATE",
-                        "@access": {
-                            "account_id": 72
-                        }
-                    }
-                }
-            },
-            "201 (CATALOGUEITEM_CREATED)": {
-                "method": "post",
-                "description": "CATALOGUEITEM_CREATED",
-                "request": {
-                    "path": "/catalogue/items/",
-                    "content": {
-                        "name": "iot_events",
-                        "sample": [],
-                        "spec": [
-                            {
-                                "name": "value",
-                                "type": "FLOAT",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "is_enum": false,
-                                "distribution": null
-                            }
-                        ],
-                        "maintained_by_id": 75,
-                        "executor_type": "DATABRICKS"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzQsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.TD40Ha80HiX4OQFIgqApDs3hcCum2-9TDf13j2Qz96g"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 201,
-                    "content_type": "application/json",
-                    "content": {
-                        "id": 61,
-                        "name": "iot_events",
-                        "spec": [
-                            {
-                                "name": "value",
-                                "type": "FLOAT",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "is_enum": false,
-                                "distribution": null
-                            }
-                        ],
-                        "sample": [],
-                        "executor_type": "DATABRICKS",
-                        "created_by": {
-                            "id": 74,
-                            "email": "charlanolan@oreilly-adams.com",
-                            "type": "ADMIN",
-                            "@type": "account"
-                        },
-                        "updated_by": {
-                            "id": 74,
-                            "email": "charlanolan@oreilly-adams.com",
-                            "type": "ADMIN",
-                            "@type": "account"
-                        },
-                        "maintained_by": {
-                            "id": 75,
-                            "email": "finneganwaelchi@rowe.com",
-                            "type": "RESEARCHER",
-                            "@type": "account"
-                        },
-                        "@type": "catalogue_item",
-                        "@event": "CATALOGUEITEM_CREATED"
                     }
                 }
             }
@@ -940,6 +947,7 @@
                                                 },
                                                 "type": {
                                                     "type": "string",
+                                                    "enum_name": null,
                                                     "enum": [
                                                         "INTEGER",
                                                         "FLOAT",
@@ -1022,6 +1030,7 @@
                                     },
                                     "executor_type": {
                                         "type": "string",
+                                        "enum_name": "Executor",
                                         "enum": [
                                             "ATHENA",
                                             "DATABRICKS"
@@ -1042,6 +1051,7 @@
                                             },
                                             "type": {
                                                 "type": "string",
+                                                "enum_name": "account_type",
                                                 "enum": [
                                                     "ADMIN",
                                                     "RESEARCHER"
@@ -1064,6 +1074,7 @@
                                             },
                                             "type": {
                                                 "type": "string",
+                                                "enum_name": "account_type",
                                                 "enum": [
                                                     "ADMIN",
                                                     "RESEARCHER"
@@ -1086,6 +1097,7 @@
                                             },
                                             "type": {
                                                 "type": "string",
+                                                "enum_name": "account_type",
                                                 "enum": [
                                                     "ADMIN",
                                                     "RESEARCHER"
@@ -1120,9 +1132,9 @@
                 "method": "get",
                 "description": "CATALOGUEITEMS_BULK_READ",
                 "request": {
-                    "path": "/catalogue/items/?query=IOT+%7Efeatures+%7C+temp",
+                    "path": "/catalogue/items/?query=feature+%26+IOT+%7C+temperature",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzgsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.nAy2uoutLgukeq4vnEJ-QjkyMnw8YThkvlDj6l8Qfjk"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.r232eoTyTs46mGQpNlv4Fn1gmtUesXoFvM80U_a05D8"
                     },
                     "parameters": {}
                 },
@@ -1132,8 +1144,8 @@
                     "content": {
                         "items": [
                             {
-                                "id": 69,
-                                "name": "temperatures",
+                                "id": 22,
+                                "name": "iot_features",
                                 "spec": [
                                     {
                                         "name": "location",
@@ -1173,8 +1185,8 @@
                                 "@type": "catalogue_item"
                             },
                             {
-                                "id": 70,
-                                "name": "iot_events",
+                                "id": 23,
+                                "name": "temperatures",
                                 "spec": [
                                     {
                                         "name": "location",
@@ -1290,6 +1302,7 @@
                                     },
                                     "type": {
                                         "type": "string",
+                                        "enum_name": null,
                                         "enum": [
                                             "INTEGER",
                                             "FLOAT",
@@ -1372,6 +1385,7 @@
                         },
                         "executor_type": {
                             "type": "string",
+                            "enum_name": "Executor",
                             "enum": [
                                 "ATHENA",
                                 "DATABRICKS"
@@ -1392,6 +1406,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -1414,6 +1429,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -1436,6 +1452,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -1448,47 +1465,23 @@
             }
         },
         "examples": {
-            "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
-                "method": "get",
-                "description": "COULD_NOT_FIND_CATALOGUEITEM",
-                "request": {
-                    "path": "/catalogue/items/69506",
-                    "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzksImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.rB47tYlZgemkr23r-n9Sig0XNgxqQp9HgzH22dqD2zU"
-                    },
-                    "parameters": {
-                        "item_id": "69506"
-                    }
-                },
-                "response": {
-                    "status": 404,
-                    "content_type": "application/json",
-                    "content": {
-                        "@type": "error",
-                        "@event": "COULD_NOT_FIND_CATALOGUEITEM",
-                        "@access": {
-                            "account_id": 79
-                        }
-                    }
-                }
-            },
             "200 (CATALOGUEITEM_READ)": {
                 "method": "get",
                 "description": "CATALOGUEITEM_READ",
                 "request": {
-                    "path": "/catalogue/items/74",
+                    "path": "/catalogue/items/25",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODQsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.qy1S00c-_iMrT8do109oCpVkgzfvCOja5S0TtJ4uaIo"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.Ec3DG-A4xmnki15CInyTIgzr4J6hTVklJObSTkbznl4"
                     },
                     "parameters": {
-                        "item_id": "74"
+                        "item_id": "25"
                     }
                 },
                 "response": {
                     "status": 200,
                     "content_type": "application/json",
                     "content": {
-                        "id": 74,
+                        "id": 25,
                         "name": "temperatures",
                         "spec": [
                             {
@@ -1528,6 +1521,30 @@
                         "maintained_by": null,
                         "@type": "catalogue_item",
                         "@event": "CATALOGUEITEM_READ"
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
+                "method": "get",
+                "description": "COULD_NOT_FIND_CATALOGUEITEM",
+                "request": {
+                    "path": "/catalogue/items/69506",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzQsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.da88Mm11W7rI8Yek_DIhBIk1NPgAvl80D7bZ3uJKXM4"
+                    },
+                    "parameters": {
+                        "item_id": "69506"
+                    }
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_CATALOGUEITEM",
+                        "@access": {
+                            "account_id": 34
+                        }
                     }
                 }
             }
@@ -1601,6 +1618,7 @@
                                     },
                                     "type": {
                                         "type": "string",
+                                        "enum_name": null,
                                         "enum": [
                                             "INTEGER",
                                             "FLOAT",
@@ -1683,6 +1701,7 @@
                         },
                         "executor_type": {
                             "type": "string",
+                            "enum_name": "Executor",
                             "enum": [
                                 "ATHENA",
                                 "DATABRICKS"
@@ -1703,6 +1722,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -1725,6 +1745,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -1747,6 +1768,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -1777,6 +1799,7 @@
                                     },
                                     "type": {
                                         "type": "string",
+                                        "enum_name": null,
                                         "enum": [
                                             "INTEGER",
                                             "FLOAT",
@@ -1855,6 +1878,7 @@
                         },
                         "executor_type": {
                             "type": "string",
+                            "enum_name": "Executor",
                             "enum": [
                                 "ATHENA",
                                 "DATABRICKS"
@@ -1865,80 +1889,11 @@
             }
         },
         "examples": {
-            "200 (CATALOGUEITEM_UPDATED)": {
-                "method": "put",
-                "description": "CATALOGUEITEM_UPDATED",
-                "request": {
-                    "path": "/catalogue/items/73",
-                    "content": {
-                        "sample": [],
-                        "spec": [
-                            {
-                                "name": "value",
-                                "type": "FLOAT",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "is_enum": false,
-                                "distribution": null
-                            }
-                        ],
-                        "maintained_by_id": 82,
-                        "executor_type": "DATABRICKS"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODEsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.EiuirfOxL5vKDZVcCYMFfFQ5U6RWLePTX3-Zry6SGpY"
-                    },
-                    "parameters": {
-                        "item_id": "73"
-                    }
-                },
-                "response": {
-                    "status": 200,
-                    "content_type": "application/json",
-                    "content": {
-                        "id": 73,
-                        "name": "temperatures",
-                        "spec": [
-                            {
-                                "name": "value",
-                                "type": "FLOAT",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "is_enum": false,
-                                "distribution": null
-                            }
-                        ],
-                        "sample": [],
-                        "executor_type": "DATABRICKS",
-                        "created_by": {
-                            "id": 83,
-                            "email": "ochamplin@hotmail.com",
-                            "type": "RESEARCHER",
-                            "@type": "account"
-                        },
-                        "updated_by": {
-                            "id": 81,
-                            "email": "charlanolan@oreilly-adams.com",
-                            "type": "ADMIN",
-                            "@type": "account"
-                        },
-                        "maintained_by": {
-                            "id": 82,
-                            "email": "finneganwaelchi@rowe.com",
-                            "type": "RESEARCHER",
-                            "@type": "account"
-                        },
-                        "@type": "catalogue_item",
-                        "@event": "CATALOGUEITEM_UPDATED"
-                    }
-                }
-            },
             "400 (BODY_DID_NOT_VALIDATE)": {
                 "method": "put",
                 "description": "BODY_DID_NOT_VALIDATE",
                 "request": {
-                    "path": "/catalogue/items/76",
+                    "path": "/catalogue/items/29",
                     "content": {
                         "name": "iot_events",
                         "sample": [],
@@ -1951,15 +1906,15 @@
                                 "distribution": null
                             }
                         ],
-                        "maintained_by_id": 86,
+                        "maintained_by_id": 28,
                         "executor_type": "DATABRICKS"
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODUsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.XOaRrCZ7xrnqOHjGK_Y5jlubI1NB_HAx244tu025oLw"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjcsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.XEylJilmfaCmIKteLnXlUHiNEO2p5cA3ZgdcHUeH_RA"
                     },
                     "parameters": {
-                        "item_id": "76"
+                        "item_id": "29"
                     }
                 },
                 "response": {
@@ -1974,8 +1929,77 @@
                         "@type": "error",
                         "@event": "BODY_DID_NOT_VALIDATE",
                         "@access": {
-                            "account_id": 85
+                            "account_id": 27
                         }
+                    }
+                }
+            },
+            "200 (CATALOGUEITEM_UPDATED)": {
+                "method": "put",
+                "description": "CATALOGUEITEM_UPDATED",
+                "request": {
+                    "path": "/catalogue/items/30",
+                    "content": {
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "is_enum": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 30,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.hezCAvJU7bWBSwro7ijz_7226T4sB2lb_FG1m1ncMG8"
+                    },
+                    "parameters": {
+                        "item_id": "30"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "id": 30,
+                        "name": "temperatures",
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "is_enum": false,
+                                "distribution": null
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "DATABRICKS",
+                        "created_by": {
+                            "id": 31,
+                            "email": "roseanne07@gmail.com",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "updated_by": {
+                            "id": 29,
+                            "email": "emery47@barrows-schmitt.com",
+                            "type": "ADMIN",
+                            "@type": "account"
+                        },
+                        "maintained_by": {
+                            "id": 30,
+                            "email": "cbeatty@gmail.com",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "@type": "catalogue_item",
+                        "@event": "CATALOGUEITEM_UPDATED"
                     }
                 }
             },
@@ -1997,12 +2021,12 @@
                                 "distribution": null
                             }
                         ],
-                        "maintained_by_id": 90,
+                        "maintained_by_id": 36,
                         "executor_type": "DATABRICKS"
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODksImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.9jz0msFYiBkysCPRou3SqVuPpbeD2DWxLfI0hj-7W1E"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzUsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.de94tH57zW9u8aM3UCDvnOgmajrjsPqf5xuyIQoxyOE"
                     },
                     "parameters": {
                         "item_id": "9022"
@@ -2015,7 +2039,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                         "@access": {
-                            "account_id": 89
+                            "account_id": 35
                         }
                     }
                 }
@@ -2061,7 +2085,7 @@
         },
         "schemas": {
             "output": {
-                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/.venv/src/lily/lily/base/serializers.py/#L143",
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/home/maciej/projects/lily/lily/base/serializers.py/#L180",
                 "schema": {}
             }
         },
@@ -2070,12 +2094,12 @@
                 "method": "delete",
                 "description": "CATALOGUEITEM_DELETED",
                 "request": {
-                    "path": "/catalogue/items/71",
+                    "path": "/catalogue/items/27",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODAsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.2YmM0N7D2MEsjtxUOJOR8dfbMjKVJH9SAYRHr3iZ1MI"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjYsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.mVf1KSj5a_-h0JAtY1RMfdS_5l7oV3tPHPAnpcd_Lho"
                     },
                     "parameters": {
-                        "item_id": "71"
+                        "item_id": "27"
                     }
                 },
                 "response": {
@@ -2087,13 +2111,39 @@
                     }
                 }
             },
+            "400 (NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED)": {
+                "method": "delete",
+                "description": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
+                "request": {
+                    "path": "/catalogue/items/31",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzIsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.lSuQ0o1a3PQhLLjHODW6WUYCYAbe23PlaYUjznPHwY8"
+                    },
+                    "parameters": {
+                        "item_id": "31"
+                    }
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "item_id": 31,
+                        "not_cancelled_count": 1,
+                        "@type": "error",
+                        "@event": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
+                        "@access": {
+                            "account_id": 32
+                        }
+                    }
+                }
+            },
             "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
                 "method": "delete",
                 "description": "COULD_NOT_FIND_CATALOGUEITEM",
                 "request": {
                     "path": "/catalogue/items/69506",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODcsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.0n3S1Mja0TIUkcs9L-HSqjr1DJBJv5C9tj7z96EQjiA"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzMsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.QNH5B7l3iqSMgmOW_gkxSXGqJCCtlqApz1pOUX7Wjn0"
                     },
                     "parameters": {
                         "item_id": "69506"
@@ -2106,33 +2156,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                         "@access": {
-                            "account_id": 87
-                        }
-                    }
-                }
-            },
-            "400 (NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED)": {
-                "method": "delete",
-                "description": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
-                "request": {
-                    "path": "/catalogue/items/77",
-                    "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.UYWhszx6urFdGZNg8nwIxvvW2Z-mCRNzpuNa2aAVflU"
-                    },
-                    "parameters": {
-                        "item_id": "77"
-                    }
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "item_id": 77,
-                        "not_cancelled_count": 1,
-                        "@type": "error",
-                        "@event": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
-                        "@access": {
-                            "account_id": 88
+                            "account_id": 33
                         }
                     }
                 }
@@ -2178,7 +2202,7 @@
         },
         "schemas": {
             "output": {
-                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/.venv/src/lily/lily/base/serializers.py/#L143",
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/home/maciej/projects/lily/lily/base/serializers.py/#L180",
                 "schema": {}
             }
         },
@@ -2187,12 +2211,12 @@
                 "method": "put",
                 "description": "CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED",
                 "request": {
-                    "path": "/catalogue/items/79/samples_and_distributions/",
+                    "path": "/catalogue/items/33/samples_and_distributions/",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTEsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.YjKkgqsXRlkcsRAoMQijQipNO0Yqa09hNO2Th0Cxg84"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzcsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.NZGpAeP7SqT7gBiOIbMdgQKij1D_d1Hmcy4kYkqaBKY"
                     },
                     "parameters": {
-                        "item_id": "79"
+                        "item_id": "33"
                     }
                 },
                 "response": {
@@ -2210,7 +2234,7 @@
                 "request": {
                     "path": "/catalogue/items/9022/samples_and_distributions/",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTQsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjN9.wXEdpAHF27rexsydNbU2uIVcCdC3uLSD-Z14G1Np_4Q"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDAsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU0fQ.xrMseUeNwKO8wCdyzjvbKXjpHRtqXp52LUYSRqidiPc"
                     },
                     "parameters": {
                         "item_id": "9022"
@@ -2223,7 +2247,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                         "@access": {
-                            "account_id": 94
+                            "account_id": 40
                         }
                     }
                 }
@@ -2317,11 +2341,11 @@
                 "request": {
                     "path": "/downloader/requests/render_ui_data/",
                     "content": {
-                        "catalogue_item_id": 40
+                        "catalogue_item_id": 58
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzYsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.RQDWPnCX4Akon-YOxD_9MFz2S2xEfghxYMtTWR3rgWo"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjgsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.vQ25eCDwEP7K6yYwv8QKtsBD45FVaDr5G5A_ModM7Uc"
                     },
                     "parameters": {}
                 },
@@ -2445,6 +2469,7 @@
                                             },
                                             "operator": {
                                                 "type": "string",
+                                                "enum_name": null,
                                                 "enum": [
                                                     ">",
                                                     ">=",
@@ -2506,11 +2531,11 @@
                             "filters": [],
                             "randomize_ratio": 0.9
                         },
-                        "catalogue_item_id": 29
+                        "catalogue_item_id": 52
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjEsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjF9.mjYKcwzyA9fFZf0nc0E4yoV80vJoXraejgVKO2A4D4k"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjEsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.9JzHZsZABb0yN-4IPLZvvzoF5SGDq8PjpSgkPZLB4ts"
                     },
                     "parameters": {}
                 },
@@ -2588,6 +2613,7 @@
                                             },
                                             "operator": {
                                                 "type": "string",
+                                                "enum_name": null,
                                                 "enum": [
                                                     ">",
                                                     ">=",
@@ -2673,6 +2699,7 @@
                                             },
                                             "type": {
                                                 "type": "string",
+                                                "enum_name": null,
                                                 "enum": [
                                                     "INTEGER",
                                                     "FLOAT",
@@ -2755,6 +2782,7 @@
                                 },
                                 "executor_type": {
                                     "type": "string",
+                                    "enum_name": "Executor",
                                     "enum": [
                                         "ATHENA",
                                         "DATABRICKS"
@@ -2775,6 +2803,7 @@
                                         },
                                         "type": {
                                             "type": "string",
+                                            "enum_name": "account_type",
                                             "enum": [
                                                 "ADMIN",
                                                 "RESEARCHER"
@@ -2797,6 +2826,7 @@
                                         },
                                         "type": {
                                             "type": "string",
+                                            "enum_name": "account_type",
                                             "enum": [
                                                 "ADMIN",
                                                 "RESEARCHER"
@@ -2819,6 +2849,7 @@
                                         },
                                         "type": {
                                             "type": "string",
+                                            "enum_name": "account_type",
                                             "enum": [
                                                 "ADMIN",
                                                 "RESEARCHER"
@@ -2843,6 +2874,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -2884,6 +2916,7 @@
                                             },
                                             "operator": {
                                                 "type": "string",
+                                                "enum_name": null,
                                                 "enum": [
                                                     ">",
                                                     ">=",
@@ -2931,6 +2964,45 @@
             }
         },
         "examples": {
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "post",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/downloader/requests/",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "catalogue_item_id": "TEXT"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjIsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.REMPsDVuYwwanhfxmQrAfKp-Mp8wIH56DQMiub_M8g8"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "catalogue_item_id": [
+                                "A valid integer is required."
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE",
+                        "@access": {
+                            "account_id": 62
+                        }
+                    }
+                }
+            },
             "200 (DOWNLOADREQUEST_READ)": {
                 "method": "post",
                 "description": "DOWNLOADREQUEST_READ",
@@ -2961,11 +3033,11 @@
                             ],
                             "randomize_ratio": 0.9
                         },
-                        "catalogue_item_id": 30
+                        "catalogue_item_id": 54
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjF9.hjOCY_7yg-ETdwWgAdSqbf8niweQEW_7gA8t5ytYJro"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjMsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.rLIRsf4_qJ063TKEfs4xcGopMGa2T9qPGTWW1MA3tL8"
                     },
                     "parameters": {}
                 },
@@ -3002,8 +3074,8 @@
                         "estimated_size": null,
                         "executor_job_id": null,
                         "catalogue_item": {
-                            "id": 30,
-                            "name": "Lindy Davis I",
+                            "id": 54,
+                            "name": "Katina Beatty",
                             "spec": [
                                 {
                                     "name": "product",
@@ -3036,79 +3108,6 @@
                     }
                 }
             },
-            "400 (BODY_DID_NOT_VALIDATE)": {
-                "method": "post",
-                "description": "BODY_DID_NOT_VALIDATE",
-                "request": {
-                    "path": "/downloader/requests/",
-                    "content": {
-                        "spec": {
-                            "columns": [
-                                "product",
-                                "price"
-                            ],
-                            "filters": [],
-                            "randomize_ratio": 0.9
-                        },
-                        "catalogue_item_id": "TEXT"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.-rVYtzCtLbxN1sy8KuiP9fpoeptMvSQuJTiY2wcLRyk"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "errors": {
-                            "catalogue_item_id": [
-                                "A valid integer is required."
-                            ]
-                        },
-                        "@type": "error",
-                        "@event": "BODY_DID_NOT_VALIDATE",
-                        "@access": {
-                            "account_id": 23
-                        }
-                    }
-                }
-            },
-            "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
-                "method": "post",
-                "description": "COULD_NOT_FIND_CATALOGUEITEM",
-                "request": {
-                    "path": "/downloader/requests/",
-                    "content": {
-                        "spec": {
-                            "columns": [
-                                "product",
-                                "price"
-                            ],
-                            "filters": [],
-                            "randomize_ratio": 0.9
-                        },
-                        "catalogue_item_id": 58495
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.W2krTHLVXhMiWJxwOsg_p6XmNqevYYSLK1JBHw_WMyw"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 404,
-                    "content_type": "application/json",
-                    "content": {
-                        "@type": "error",
-                        "@event": "COULD_NOT_FIND_CATALOGUEITEM",
-                        "@access": {
-                            "account_id": 24
-                        }
-                    }
-                }
-            },
             "201 (DOWNLOADREQUEST_CREATED)": {
                 "method": "post",
                 "description": "DOWNLOADREQUEST_CREATED",
@@ -3123,11 +3122,11 @@
                             "filters": [],
                             "randomize_ratio": 0.9
                         },
-                        "catalogue_item_id": 33
+                        "catalogue_item_id": 55
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.G-O4kIEmLGqKxVCUcVhEXeCnjRcKN5JJMMgc4bYtUPo"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjQsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.3Nm2X-Nzu63AysBLk6L-a6-ln_8WWnG3bfNLvLjyJ8g"
                     },
                     "parameters": {}
                 },
@@ -3148,8 +3147,8 @@
                         "estimated_size": null,
                         "executor_job_id": null,
                         "catalogue_item": {
-                            "id": 33,
-                            "name": "Lindy Davis I",
+                            "id": 55,
+                            "name": "Katina Beatty",
                             "spec": [
                                 {
                                     "name": "product",
@@ -3176,14 +3175,48 @@
                             "@type": "catalogue_item"
                         },
                         "created_by": {
-                            "id": 25,
-                            "email": "charlanolan@oreilly-adams.com",
+                            "id": 64,
+                            "email": "emery47@barrows-schmitt.com",
                             "type": "ADMIN",
                             "@type": "account"
                         },
                         "is_cancelled": false,
                         "@type": "download_request",
                         "@event": "DOWNLOADREQUEST_CREATED"
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
+                "method": "post",
+                "description": "COULD_NOT_FIND_CATALOGUEITEM",
+                "request": {
+                    "path": "/downloader/requests/",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "catalogue_item_id": 58495
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjUsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.HVkte481cJbiR54O4euXjXBjGA-ZQCN2rNhaXyZJ7GE"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_CATALOGUEITEM",
+                        "@access": {
+                            "account_id": 65
+                        }
                     }
                 }
             }
@@ -3259,6 +3292,7 @@
                                                         },
                                                         "operator": {
                                                             "type": "string",
+                                                            "enum_name": null,
                                                             "enum": [
                                                                 ">",
                                                                 ">=",
@@ -3344,6 +3378,7 @@
                                                         },
                                                         "type": {
                                                             "type": "string",
+                                                            "enum_name": null,
                                                             "enum": [
                                                                 "INTEGER",
                                                                 "FLOAT",
@@ -3426,6 +3461,7 @@
                                             },
                                             "executor_type": {
                                                 "type": "string",
+                                                "enum_name": "Executor",
                                                 "enum": [
                                                     "ATHENA",
                                                     "DATABRICKS"
@@ -3446,6 +3482,7 @@
                                                     },
                                                     "type": {
                                                         "type": "string",
+                                                        "enum_name": "account_type",
                                                         "enum": [
                                                             "ADMIN",
                                                             "RESEARCHER"
@@ -3468,6 +3505,7 @@
                                                     },
                                                     "type": {
                                                         "type": "string",
+                                                        "enum_name": "account_type",
                                                         "enum": [
                                                             "ADMIN",
                                                             "RESEARCHER"
@@ -3490,6 +3528,7 @@
                                                     },
                                                     "type": {
                                                         "type": "string",
+                                                        "enum_name": "account_type",
                                                         "enum": [
                                                             "ADMIN",
                                                             "RESEARCHER"
@@ -3514,6 +3553,7 @@
                                             },
                                             "type": {
                                                 "type": "string",
+                                                "enum_name": "account_type",
                                                 "enum": [
                                                     "ADMIN",
                                                     "RESEARCHER"
@@ -3538,7 +3578,7 @@
                 "request": {
                     "path": "/downloader/requests/",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjYsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.wlQfG7CXUvntRqzwxuP6iWt0ziJk_nXSzUHTHgR9ync"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjYsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.p1oKlijcYS0c4je9h_CyK_ePG2VrvEtU5VL0t_GjlsQ"
                     },
                     "parameters": {}
                 },
@@ -3566,8 +3606,8 @@
                                 "estimated_size": null,
                                 "executor_job_id": null,
                                 "catalogue_item": {
-                                    "id": 34,
-                                    "name": "Lindy Davis I",
+                                    "id": 57,
+                                    "name": "Katina Beatty",
                                     "spec": [
                                         {
                                             "name": "product",
@@ -3594,8 +3634,8 @@
                                     "@type": "catalogue_item"
                                 },
                                 "created_by": {
-                                    "id": 27,
-                                    "email": "bashirianjustice@yahoo.com",
+                                    "id": 67,
+                                    "email": "shataragreenholt@yahoo.com",
                                     "type": "RESEARCHER",
                                     "@type": "account"
                                 },
@@ -3621,8 +3661,8 @@
                                 "estimated_size": null,
                                 "executor_job_id": null,
                                 "catalogue_item": {
-                                    "id": 34,
-                                    "name": "Lindy Davis I",
+                                    "id": 57,
+                                    "name": "Katina Beatty",
                                     "spec": [
                                         {
                                             "name": "product",
@@ -3649,8 +3689,8 @@
                                     "@type": "catalogue_item"
                                 },
                                 "created_by": {
-                                    "id": 27,
-                                    "email": "bashirianjustice@yahoo.com",
+                                    "id": 67,
+                                    "email": "shataragreenholt@yahoo.com",
                                     "type": "RESEARCHER",
                                     "@type": "account"
                                 },
@@ -3733,6 +3773,7 @@
                                             },
                                             "operator": {
                                                 "type": "string",
+                                                "enum_name": null,
                                                 "enum": [
                                                     ">",
                                                     ">=",
@@ -3818,6 +3859,7 @@
                                             },
                                             "type": {
                                                 "type": "string",
+                                                "enum_name": null,
                                                 "enum": [
                                                     "INTEGER",
                                                     "FLOAT",
@@ -3900,6 +3942,7 @@
                                 },
                                 "executor_type": {
                                     "type": "string",
+                                    "enum_name": "Executor",
                                     "enum": [
                                         "ATHENA",
                                         "DATABRICKS"
@@ -3920,6 +3963,7 @@
                                         },
                                         "type": {
                                             "type": "string",
+                                            "enum_name": "account_type",
                                             "enum": [
                                                 "ADMIN",
                                                 "RESEARCHER"
@@ -3942,6 +3986,7 @@
                                         },
                                         "type": {
                                             "type": "string",
+                                            "enum_name": "account_type",
                                             "enum": [
                                                 "ADMIN",
                                                 "RESEARCHER"
@@ -3964,6 +4009,7 @@
                                         },
                                         "type": {
                                             "type": "string",
+                                            "enum_name": "account_type",
                                             "enum": [
                                                 "ADMIN",
                                                 "RESEARCHER"
@@ -3988,6 +4034,7 @@
                                 },
                                 "type": {
                                     "type": "string",
+                                    "enum_name": "account_type",
                                     "enum": [
                                         "ADMIN",
                                         "RESEARCHER"
@@ -4007,12 +4054,12 @@
                 "method": "get",
                 "description": "DOWNLOADREQUEST_READ",
                 "request": {
-                    "path": "/downloader/requests/14",
+                    "path": "/downloader/requests/16",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzEsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.c_779Xg_cYRmj7bVOnOXKDBrT72doPtOFs3_zz47M-w"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjksImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.io351m2kvTk5h1_keMdp0neCqJfY9pq1CMmqjZgJTd8"
                     },
                     "parameters": {
-                        "request_id": "14"
+                        "request_id": "16"
                     }
                 },
                 "response": {
@@ -4037,8 +4084,8 @@
                         "estimated_size": null,
                         "executor_job_id": null,
                         "catalogue_item": {
-                            "id": 37,
-                            "name": "Lindy Davis I",
+                            "id": 59,
+                            "name": "Katina Beatty",
                             "spec": [
                                 {
                                     "name": "product",
@@ -4065,8 +4112,8 @@
                             "@type": "catalogue_item"
                         },
                         "created_by": {
-                            "id": 32,
-                            "email": "bashirianjustice@yahoo.com",
+                            "id": 70,
+                            "email": "shataragreenholt@yahoo.com",
                             "type": "RESEARCHER",
                             "@type": "account"
                         },
@@ -4082,7 +4129,7 @@
                 "request": {
                     "path": "/downloader/requests/69506",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzUsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.bZ2UpIFEjgzXVYLY-BQYA5fjTh7Tw6SyOlCMLkUu6Jc"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzYsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU2fQ.iTTfu1Dq8yvlwoAyY7d_K49dbKPGSiWXHBm_9zo-98o"
                     },
                     "parameters": {
                         "request_id": "69506"
@@ -4095,7 +4142,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
                         "@access": {
-                            "account_id": 35
+                            "account_id": 76
                         }
                     }
                 }
@@ -4142,7 +4189,7 @@
         },
         "schemas": {
             "output": {
-                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/.venv/src/lily/lily/base/serializers.py/#L143",
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/home/maciej/projects/lily/lily/base/serializers.py/#L180",
                 "schema": {}
             }
         },
@@ -4151,12 +4198,12 @@
                 "method": "delete",
                 "description": "DOWNLOADREQUEST_DELETED",
                 "request": {
-                    "path": "/downloader/requests/13",
+                    "path": "/downloader/requests/18",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.vLXbspY9MTsIoEIHdrwZl9uB71T4GbXcGb-PNlBTt24"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzMsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.psMyX1j6rWBXcTjkxN533t-PySzFvlRm2FpLPBFSc7Q"
                     },
                     "parameters": {
-                        "request_id": "13"
+                        "request_id": "18"
                     }
                 },
                 "response": {
@@ -4174,7 +4221,7 @@
                 "request": {
                     "path": "/downloader/requests/69506",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoiY2hhcmxhbm9sYW5Ab3JlaWxseS1hZGFtcy5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NTY2OTQ1NjJ9.Ac9wk8SgfiS_m2zk_6JdEKQPsrARjGr2Dbegd04D7XA"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzUsImVtYWlsIjoiZW1lcnk0N0BiYXJyb3dzLXNjaG1pdHQuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTU3NDM5MTU1fQ.onzcMl2br94OWA1-SzaajVPLwV20z31o_d5dPuVPizw"
                     },
                     "parameters": {
                         "request_id": "69506"
@@ -4187,7 +4234,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
                         "@access": {
-                            "account_id": 30
+                            "account_id": 75
                         }
                     }
                 }
@@ -4218,20 +4265,21 @@
             "@type": "access"
         },
         "source": {
-            "filepath": "/.venv/src/lily/lily/entrypoint/commands.py",
-            "start_line": 52,
-            "end_line": 117,
+            "filepath": "/home/maciej/projects/lily/lily/entrypoint/commands.py",
+            "start_line": 54,
+            "end_line": 121,
             "@type": "source"
         },
         "schemas": {
             "output": {
-                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/.venv/src/lily/lily/entrypoint/commands.py/#L20",
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/home/maciej/projects/lily/lily/entrypoint/commands.py/#L20",
                 "schema": {
                     "type": "object",
                     "required": [
                         "version_info",
                         "name",
-                        "commands"
+                        "commands",
+                        "at__enums"
                     ],
                     "properties": {
                         "version_info": {
@@ -4261,12 +4309,18 @@
                         },
                         "commands": {
                             "type": "object"
+                        },
+                        "at__enums": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            }
                         }
                     }
                 }
             },
             "input_query": {
-                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/.venv/src/lily/lily/entrypoint/commands.py/#L40",
+                "uri": "https://github.com/cosphere-org/lakey-service/blob/9ba9556147bf25b1d92d2ba3582738f6dd20f6a7/home/maciej/projects/lily/lily/entrypoint/commands.py/#L42",
                 "schema": {
                     "type": "object",
                     "required": [],
@@ -4295,5 +4349,23 @@
         },
         "examples": {},
         "@type": "command"
-    }
+    },
+    "@enums": [
+        {
+            "enum": [
+                "ATHENA",
+                "DATABRICKS"
+            ],
+            "enum_name": "Executor",
+            "type": "string"
+        },
+        {
+            "enum": [
+                "ADMIN",
+                "RESEARCHER"
+            ],
+            "enum_name": "account_type",
+            "type": "string"
+        }
+    ]
 }

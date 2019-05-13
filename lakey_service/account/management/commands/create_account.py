@@ -10,8 +10,8 @@ from ...models import Account
     type=str)
 @click.option(
     '--type',
-    default=Account.TYPES.RESEARCHER,
-    type=click.Choice(Account.TYPES.ANY))
+    default=Account.AccountType.RESEARCHER,
+    type=click.Choice(Account.AccountType.ANY))
 def command(email, type):
     """Create account of a given type."""
 
