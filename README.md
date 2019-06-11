@@ -82,6 +82,25 @@ source env.sh && \
 python lakey_service/manage.py create_auth_token johnny@where.com
 ```
 
+## Creating Fake Catalogue Items
+
+Inside `lakey_service/catalogue/management/commands/items/` catalogue one can find example yaml files describing the fake catalogue items. One can use them directly or based on them generate own fake catalogue items.
+
+For the management of those fake catalogue items there are two commands at hand:
+
+```bash
+make create_fake_catalogue_items
+```
+
+which will create catalogue items if they do not exist yet (using the `name` to determine their existence) or do nothing.
+
+And 2nd command:
+```bash
+make create_fake_catalogue_items_with_overwrite
+```
+
+which will either create catalogue items or overwrite existing ones if anything with regards to their spec or sample changed.
+
 ## DOCS
 
 ### Architecture
