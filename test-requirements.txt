@@ -26,3 +26,6 @@ pandas==0.24.2
 
 # -- for notebooks
 jupyter==1.0.0
+
+# -- yaml serialization / deserialization
+PyYAML>=5.1
