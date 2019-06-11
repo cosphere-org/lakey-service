@@ -147,6 +147,7 @@ class CatalogueItem(ValidatingModel):
         schema=array(
             object(
                 name=string(),
+                description=string(),
                 type=enum(*[t.value for t in ColumnType]),
                 is_enum=boolean(),
                 size=null_or(number()),

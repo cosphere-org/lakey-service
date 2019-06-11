@@ -1,0 +1,72 @@
+
+name: sales data
+
+executor_type: DATABRICKS
+
+spec:
+  - name: client_id
+    description: the unique identifier of the client
+    type: STRING
+    size: 190234
+    is_nullable: false
+    is_enum: false
+    distribution:
+      - value: jacky.1
+        count: 1342
+
+      - value: johnny.12
+        count: 6789
+
+      - value: bobby.4
+        count: 567
+
+  - name: paid
+    description: amount of money paid
+    type: FLOAT
+    size: 67
+    is_nullable: true
+    is_enum: false
+    distribution:
+      - value: 1.0
+        count: 56
+
+      - value: 2.0
+        count: 567
+
+      - value: 4.0
+        count: 567
+
+      - value: 34.0
+        count: 1235
+
+      - value: 45.0
+        count: 8799
+
+  - name: currency
+    description: currency in which payment occurred
+    type: STRING
+    size: 67
+    is_nullable: true
+    is_enum: false
+    distribution:
+      - value: EUR
+        count: 563
+
+      - value: USD
+        count: 567
+
+      - value: PLN
+        count: 567
+
+sample:
+  - client_id: jacky.2
+    paid: 112.25
+    currency: EUR
+
+  - client_id: alice.2
+    paid: 4500.0
+    currency: PLN
+
+  - client_id: john.567
+    paid: 56.78
+    currency: USD
