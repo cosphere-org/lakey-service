@@ -5,7 +5,7 @@ Is a project allowing huge amount of people (clients) to connect with expensive 
 
 ## The Goal
 
-Laker was built and designed with one goal in mind: "to free up the data, which are otherwise sitting idle and just being covered in dust".
+Lakey was built and designed with one goal in mind: "to free up the data, which are otherwise sitting idle and just being covered in dust".
 
 To learn more read high level overview regarding the [Big Data Myths](https://github.com/cosphere-org/lakey-service/blob/master/LAKEY.md)
 
