@@ -30,6 +30,9 @@ class Account(models.Model):
         enum_name='account_type',
         choices=[(t, t) for t in AccountType.ANY])
 
+    def __str__(self):
+        return self.email
+
 
 class AuthRequest(models.Model):
 

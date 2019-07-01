@@ -14,7 +14,7 @@ from catalogue.models import CatalogueItem
     '--overwrite',
     is_flag=True,
     default=False)
-def command(overwrite):
+def command(overwrite):  # pragma: no cover
     """Create fake Catalogue Items."""
 
     a = Account.objects.filter(type='ADMIN').first()

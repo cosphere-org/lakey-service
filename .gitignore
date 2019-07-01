@@ -2,6 +2,7 @@
 env_private.sh
 ngrok_private.yaml
 *.py[cod]
+lakey_service/STATIC
 
 # C extensions
 *.so
