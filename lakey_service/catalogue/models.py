@@ -143,34 +143,36 @@ class CatalogueItem(ValidatingModel):
         ColumnType.BOOLEAN.value: bool,
     }
 
+    SPEC_SCHEMA = array(
+        object(
+            name=string(),
+            description=string(),
+            type=enum(*[t.value for t in ColumnType]),
+            is_enum=boolean(),
+            size=null_or(number()),
+            is_nullable=boolean(),
+            distribution=null_or(
+                array(
+                    object(
+                        value=one_of(
+                            null(),
+                            number(),
+                            string(),
+                            boolean()),
+                        count=number(),
+                        required=['value', 'count']))),
+            required=[
+                'name',
+                'type',
+                'size',
+                'is_nullable',
+                'distribution',
+                'is_enum',
+            ],
+        ))
+
     spec = JSONSchemaField(
-        schema=array(
-            object(
-                name=string(),
-                description=string(),
-                type=enum(*[t.value for t in ColumnType]),
-                is_enum=boolean(),
-                size=null_or(number()),
-                is_nullable=boolean(),
-                distribution=null_or(
-                    array(
-                        object(
-                            value=one_of(
-                                null(),
-                                number(),
-                                string(),
-                                boolean()),
-                            count=number(),
-                            required=['value', 'count']))),
-                required=[
-                    'name',
-                    'type',
-                    'size',
-                    'is_nullable',
-                    'distribution',
-                    'is_enum',
-                ],
-            )),
+        schema=SPEC_SCHEMA,
         validators=[spec_validator])
 
     #
@@ -262,3 +264,6 @@ class CatalogueItem(ValidatingModel):
                 column['name'], column['type'], column['is_enum'], self)
 
         self.save()
+
+    def __str__(self):
+        return self.name
