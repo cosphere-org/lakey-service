@@ -22,8 +22,11 @@ from catalogue.models import CatalogueItem
 
 class DownloadRequestManager(models.Manager):
 
-    # FIXME: add it!!!!!!!!!!!!!!!
     def estimate_size(self, spec, catalogue_item_id):
+
+        ci = CatalogueItem.objects.get(id=catalogue_item_id)
+
+        ci.spec
 
         return 123
 

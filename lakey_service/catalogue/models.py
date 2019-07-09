@@ -59,7 +59,7 @@ def spec_validator(spec):
         for entry in distribution:
             if not isinstance(entry['value'], expected_types):
                 raise ValidationError(
-                    f"column type and distribution value type "
+                    f"column type and distribution value type "  # noqa
                     f"mismatch detected for column '{col_name}'")
 
         # -- values in distribution must be unique

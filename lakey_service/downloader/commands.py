@@ -107,7 +107,6 @@ class DownloadRequestCollectionCommands(HTTPCommands):
     def post(self, request):
 
         spec = request.input.body['spec']
-
         r, created = DownloadRequest.objects.get_or_create(
             normalized_spec=DownloadRequest.normalize_spec(spec),
             catalogue_item_id=request.input.body['catalogue_item_id'],
