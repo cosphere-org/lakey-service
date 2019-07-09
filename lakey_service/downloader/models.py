@@ -256,6 +256,12 @@ class DownloadRequest(ValidatingModel):
             f'filters:{filters}|'
             f'randomize_ratio:{randomize_ratio}')
 
+    def __str__(self):
+        return (
+            f'{self.id} - '
+            f'{self.created_by.email}: '
+            f'requested {self.catalogue_item.name}')
+
 
 def pre_save_flow(sender, instance, **kwargs):
     instance.normalized_spec = DownloadRequest.normalize_spec(instance.spec)
