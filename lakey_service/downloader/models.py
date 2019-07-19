@@ -24,10 +24,6 @@ class DownloadRequestManager(models.Manager):
 
     def estimate_size(self, spec, catalogue_item_id):
 
-        ci = CatalogueItem.objects.get(id=catalogue_item_id)
-
-        ci.spec
-
         return 123
 
 
@@ -256,7 +252,7 @@ class DownloadRequest(ValidatingModel):
             f'filters:{filters}|'
             f'randomize_ratio:{randomize_ratio}')
 
-    def __str__(self):
+    def __str__(self):  # noqa
         return (
             f'{self.id} - '
             f'{self.created_by.email}: '

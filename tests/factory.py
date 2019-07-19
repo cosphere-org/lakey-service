@@ -9,6 +9,8 @@ from account.models import (
 )
 from catalogue.models import CatalogueItem
 from downloader.models import DownloadRequest
+from chunk.models import Chunk
+
 
 faker = Faker()
 
@@ -19,6 +21,7 @@ class EntityFactory:
         Account.objects.all().delete()
         AuthRequest.objects.all().delete()
         CatalogueItem.objects.all().delete()
+        Chunk.objects.all().delete()
         DownloadRequest.objects.all().delete()
 
     def account(self, email=None, type=None):

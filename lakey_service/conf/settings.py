@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'account',
     'catalogue',
     'downloader',
+    'chunk',
 )
 
 
