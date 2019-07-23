@@ -7,6 +7,7 @@ from lily.base.models import (
     JSONSchemaField,
     number,
     object,
+    one_of,
     string,
     ValidatingModel,
 )
@@ -39,15 +40,15 @@ class Chunk(ValidatingModel):
     def validate_borders_in_context_of_catalogue_item(self):
 
         allowed_columns = [
-            [col['name'] for col in self.catalogue_item.spec]
-            ]
+            col['name'] for col in self.catalogue_item.spec]
+            
 
         for border in self.borders:
             column = border['column']
 
             if not column in allowed_columns:
                 raise ValidationError(
-                    f"unknown columns in 'columns' detected: {column}")
+                    f"unknown column detected")
 
             if border['minimum'] >= border['maximum']:
                 raise ValidationError(
