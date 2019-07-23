@@ -14,3 +14,4 @@ class Chunk(ValidatingModel):
 
     borders = JSONSchemaField(
         schema=object())
+

@@ -29,3 +29,6 @@ class ChunkTestCase(TestCase):
             'A': [15, 15],
             'B': [0, -10],
         }
+
+    def test_catalogue_chunk (self):
+        ci = ef.catalogue_item()
