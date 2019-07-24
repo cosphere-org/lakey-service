@@ -23,7 +23,7 @@ from downloader.executors.athena import AthenaExecutor
 from catalogue.managers import CatalogueItemManager
 
 import pandas
-from chunk.models import Chunk
+# from chunk.models import Chunk
 
 
 def spec_validator(spec):
@@ -271,38 +271,38 @@ class CatalogueItem(ValidatingModel):
 
         self.save()
 
-    def create_chunks(self):
-        global_df = pandas.DataFrame(self.sample)
-        borders = []
-
-        def division(local_df, max_count):
-            col_to_slice = local_df.var().idxmax()
-            local_df = local_df.sort_values(col_to_slice)
-            count = local_df.index.size
-            median = int(count / 2)
-
-            if not count <= max_count:
-                left_half_df = local_df.iloc[:median]
-                division(left_half_df, max_count)
-
-                right_half_df = local_df.iloc[median:]
-                division(right_half_df, max_count)
-            else:
-                border = []
-                for col_name in local_df:
-                    col = local_df[col_name]
-                    border.append([col.min(), col.max(), count, col_name])
-                borders.append(border)
-                return
-
-        division(global_df, 3)
-
-        chunks = []
-        for border in borders:
-            chunks.append(Chunk(catalogue_item=self, borders=border))
-        Chunk.objects.bulk_create(chunks)
-
-        print(Chunk.objects.all())
+    # def create_chunks(self):
+    #     global_df = pandas.DataFrame(self.sample)
+    #     borders = []
+    #
+    #     def division(local_df, max_count):
+    #         col_to_slice = local_df.var().idxmax()
+    #         local_df = local_df.sort_values(col_to_slice)
+    #         count = local_df.index.size
+    #         median = int(count / 2)
+    #
+    #         if not count <= max_count:
+    #             left_half_df = local_df.iloc[:median]
+    #             division(left_half_df, max_count)
+    #
+    #             right_half_df = local_df.iloc[median:]
+    #             division(right_half_df, max_count)
+    #         else:
+    #             border = []
+    #             for col_name in local_df:
+    #                 col = local_df[col_name]
+    #                 border.append([col.min(), col.max(), count, col_name])
+    #             borders.append(border)
+    #             return
+    #
+    #     division(global_df, 3)
+    #
+    #     chunks = []
+    #     for border in borders:
+    #         chunks.append(Chunk(catalogue_item=self, borders=border))
+    #     Chunk.objects.bulk_create(chunks)
+    #
+    #     print(Chunk.objects.all())
 
     def __str__(self):
         return self.name

@@ -67,7 +67,7 @@ class CatalogueItemTestCase(TestCase):
             spec=spec,
             executor_type='DATABRICKS')
 
-        print(ci.create_chunks())
+        print(CatalogueItem.objects.create_chunks(0, 3))
 
 
 
