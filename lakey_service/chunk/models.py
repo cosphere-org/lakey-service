@@ -38,11 +38,11 @@ class Chunk(ValidatingModel):
         self.validate_borders_in_context_of_catalogue_item()
 
     def validate_borders_in_context_of_catalogue_item(self):
-            
+
         if self.borders:
 
             allowed_columns = [
-            col['name'] for col in self.catalogue_item.spec]
+                col['name'] for col in self.catalogue_item.spec]
 
             if len(self.catalogue_item.spec) != len(self.borders):
                 raise ValidationError(
@@ -54,19 +54,22 @@ class Chunk(ValidatingModel):
                 minimum = border['minimum']
                 maximum = border['maximum']
 
+                if column is None or minimum is None or maximum is None:
+                    continue
+
                 if not column in allowed_columns:
                     raise ValidationError(
                         f"unknown column detected")
 
-                if column == '' or column == None:
+                if column == '' or column is None:
                     raise ValidationError(
                         f"column can not by empty")
 
-                if minimum == None or minimum == '':
+                if minimum is None or minimum == '':
                     raise ValidationError(
                         f"minimum can not by empty")
 
-                if maximum == None or maximum == '':
+                if maximum is None or maximum == '':
                     raise ValidationError(
                         f"minimum can not by empty")
 
