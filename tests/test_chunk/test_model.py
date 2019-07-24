@@ -32,3 +32,4 @@ class ChunkTestCase(TestCase):
 
     def test_catalogue_chunk (self):
         ci = ef.catalogue_item()
+        ci.objects.create_chunks()
