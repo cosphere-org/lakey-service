@@ -33,7 +33,7 @@ class CatalogueItemManager(models.Manager):
 
         chunks = []
         for border in borders:
-            chunks.append(Chunk(catalogue_item=self, borders=border))
+            chunks.append(Chunk(catalogue_item=ci, borders=border))
         Chunk.objects.bulk_create(chunks)
 
         print(Chunk.objects.all())
