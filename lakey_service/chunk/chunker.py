@@ -1,9 +1,8 @@
 import numpy as np
+import pandas as pd
 
-def chunker_algorithm(ci, cube_size):
 
-    table = ci.costam
-    chunks_borders_alg = split(table)
+def chunker_algorithm(cube_size):
 
     def split(table):
         split_axis = find_split_axis(table)
@@ -26,11 +25,13 @@ def chunker_algorithm(ci, cube_size):
             return split(split_table1) + split(split_table2)
             
         else:
-            chunk = {}
+            chunk = []
             for col in table.columns:
-                chunk["column"] = col
-                chunk["minimum"] = table.col.min()
-                chunk["maximun"] = table.col.max()
+                chunk.append({
+                    "column": col,
+                    "minimum": table[col].min(),
+                    "maximun": table[col].max(),
+                })
 
             return [chunk]
 
@@ -42,17 +43,33 @@ def chunker_algorithm(ci, cube_size):
                 greatest_variance = variance
                 split_axis = col
         return split_axis
+    
+    
+    return split(table_2)
 
 
-    return chunks_borders_alg
+# def draw_2d(chunks_borders):
+#     x_min = table_2.A.min()
+#     x_max = table_2.A.max()
+#     y_min = table_2.B.min()
+#     y_max = table_2.B.max()
+    
+#     fig, ax = plt.subplots()
+#     for bord in chunks_borders:
+#         ax.add_artist(mpatch.Rectangle((bord[0]["minimum"], bord[1]["minimum"]), 
+#                                      bord[0]["maximun"]-bord[0]["minimum"], bord[1]["maximun"]-bord[1]["minimum"], fill = None))
+#     ax.set_xlim((x_min, x_max))
+#     ax.set_ylim((y_min, y_max))
+#     plt.show()
 
 
-chunks_borders = chunker_algorithm(ci, 10000)
+chunks_borders = chunker_algorithm(1000)
+#draw_2d(chunks_borders)
 
-chunks = []
-for border in chunks_borders:
-    chunks.append(Chunk(
-        catalogue_item=ci,
-        borders=border))
+# chunks = []
+# for border in chunks_borders:
+#     chunks.append(Chunk(
+#         catalogue_item=ci,
+#         borders=border))
 
-Chunk.objects.bulk_create(chunks)
+# Chunk.objects.bulk_create(chunks)

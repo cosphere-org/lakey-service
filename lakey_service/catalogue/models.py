@@ -31,7 +31,16 @@ def spec_validator(spec):
     - `spec[i].distribution` entries values must be unique
     - `spec[i].distribution` entries counts must be integers
 
+    fix me: alsow check that we have at least one column
+    fix me: alsow make sure that column can not be null
+    fix me: make sure that distribution has lower and upper bounds
+
     """
+    #??? when this validator is called
+    print(spec)
+    if len(spec) < 1:
+        raise ValidationError(
+            "catalogue_item has to have at least one column")
 
     for col_spec in spec:
 
@@ -196,7 +205,8 @@ class CatalogueItem(ValidatingModel):
         - `sample` entries must have the same names as registered in `spec`
         - `sample` entries values must be the same as the ones registered in
           `spec` (if `is_nullable` was set to True also None is allowed)
-
+        
+        
         """
 
         if not self.sample:

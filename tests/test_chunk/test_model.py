@@ -74,31 +74,27 @@ class ChunkTestCase(TestCase):
             },
         ]
 
-    def test_borders_cannot_be_empty(self):
+    def test_borders_validation__expect_array(self):
+
+        ci = self.ci([{}, {}])
 
         with pytest.raises(ValidationError) as e:
             Chunk.objects.create(
-                catalogue_item=self.ci(),
-                borders=[])
+                catalogue_item=ci,
+                borders='whatever'
+                )
 
         assert e.value.message_dict == {
-            '__all__': ['chunk - borders must be provided'],
-        }
+            'borders': [
+                "JSON did not validate. PATH: '.' REASON: 'whatever' is not of "
+            "type 'array'"],
+            }
 
-    def test_borders_have_different_number_of_elements_than_catalogue_item(
-            self):
+        # FIXME: check that when borders is not a list!!!!! what happens
 
-        ci = ef.catalogue_item(
-            spec=[
-                {
-                    'name': "A",
-                    'type': 'STRING',
-                    'is_nullable': True,
-                    'is_enum': True,
-                    'size': None,
-                    'distribution': None,
-                },
-            ])
+    def test_borders_should_match_columns_in_catalogue_item(self):
+
+        ci = self.ci([{'name': 'C'}, {}])
 
         with pytest.raises(ValidationError) as e:
             Chunk.objects.create(
@@ -117,36 +113,8 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
-            '__all__': [
-                "borders have to have same number of entries as "
-                "catalogue_item.spec"
-            ]
+            '__all__': ['borders columns do not match catalogue item']
         }
-
-    def test_borders_validation__all_columns_must_be_present(self):
-        pass
-
-    def test_borders_validation__expect_array(self):
-
-        c = Chunk.objects.create(
-            catalogue_item=self.ci,
-            borders=[
-                {
-                    'column': 'A',
-                    'minimum': 10,
-                    'maximum': 15,
-                },
-                {
-                    'column': 'B',
-                    'minimum': 20,
-                    'maximum': 25,
-                },
-            ])
-
-        # FIXME: check that when borders is not a list!!!!! what happens
-        assert type(c.borders).__name__ == "list"
-
-    def test_borders_validation__column_not_null(self):
 
         ci = self.ci()
 
@@ -155,22 +123,48 @@ class ChunkTestCase(TestCase):
                 catalogue_item=ci,
                 borders=[
                     {
-                        'column': None,
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            '__all__': ['borders columns do not match catalogue item']
+        }
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
                         'minimum': 10,
                         'maximum': 15,
                     },
                     {
                         'column': 'B',
-                        'minimum': 20,
-                        'maximum': 25,
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'C',
+                        'minimum': 10,
+                        'maximum': 15,
                     },
                 ])
 
         assert e.value.message_dict == {
-            '__all__': ['column can not be empty'],
+            '__all__': ['unknown column detected']
         }
 
     def test_borders_validation__column_is_correct_type(self):
+
+        #ci = self.ci([{'name': True,}, {}])
+        #not working becouse of catalog item create error
+        #??? ask
 
         ci = self.ci()
 
@@ -192,21 +186,22 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
-            'spec': [
-                "JSON did not validate. PATH: '0.name'"
-                " REASON: True is not of type 'string'"
-            ],
+            '__all__': ['borders columns do not match catalogue item'],
+            'borders': ["JSON did not validate. PATH: '0.column' REASON: True is not of "
+                    "type 'string'"]
         }
 
-    def test_borders_validation__column_from_catalogue_item(self):
+    def test_borders_validation__minimum_not_null(self):
+
+        ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
             Chunk.objects.create(
-                catalogue_item=self.ci(),
+                catalogue_item=ci,
                 borders=[
                     {
-                        'column': 'whatever',
-                        'minimum': 10,
+                        'column': 'A',
+                        'minimum': '',
                         'maximum': 15,
                     },
                     {
@@ -216,13 +211,15 @@ class ChunkTestCase(TestCase):
                     },
                 ])
 
-        assert e.value.message_dict == {'__all__': ['unknown column detected']}
+        assert e.value.message_dict == {
+            '__all__': ['minimum can not by empty']
+        }
 
-    def test_borders_validation__minimum_not_null(self):
+        ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
             Chunk.objects.create(
-                catalogue_item=self.ci(),
+                catalogue_item=ci,
                 borders=[
                     {
                         'column': 'A',
@@ -236,13 +233,43 @@ class ChunkTestCase(TestCase):
                     },
                 ])
 
-        assert e.value.message_dict['__all__'][0] == "minimum can not by empty"
+        #??? ask why validation function do not raise errors
+        assert e.value.message_dict == {
+            'borders': ["JSON did not validate. PATH: '0.minimum' REASON: None is not "
+                'valid under any of the given schemas']
+        }
 
-    def test_borders_validation__minimum_is_correct_type(self):
+        ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
             Chunk.objects.create(
-                catalogue_item=self.ci,
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': None,
+                        'maximum': 25,
+                    },
+                ])
+
+        #??? ask why validation function do not raise errors
+        assert e.value.message_dict == {
+            'borders': ["JSON did not validate. PATH: '1.minimum' REASON: None is not "
+                'valid under any of the given schemas']
+        }
+
+    def test_borders_validation__minimum_is_correct_type(self):
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
                 borders=[
                     {
                         'column': 'A',
@@ -264,14 +291,64 @@ class ChunkTestCase(TestCase):
             ],
         }
 
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': True,
+                        'maximum': 25,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            'borders': [
+                "JSON did not validate. PATH: '1.minimum' "
+                "REASON: True is not valid under any of the "
+                "given schemas",
+            ],
+        }
+
     def test_borders_validation__minimum_from_catalogue_item(self):
         pass
 
     def test_borders_validation__maximum_not_null(self):
 
+        ci = self.ci()
+
         with pytest.raises(ValidationError) as e:
             Chunk.objects.create(
-                catalogue_item=self.ci,
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': '',
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            '__all__': ['maximum can not by empty']
+        }
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
                 borders=[
                     {
                         'column': 'A',
@@ -283,18 +360,45 @@ class ChunkTestCase(TestCase):
                         'minimum': 20,
                         'maximum': 25,
                     },
-                ],
-            )
+                ])
 
+        #??? ask why validation function do not raise errors
         assert e.value.message_dict == {
-            '__all__': ["minimum can not by empty"],
+            'borders': ["JSON did not validate. PATH: '0.maximum' REASON: None is not "
+                'valid under any of the given schemas']
+        }
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': None,
+                    },
+                ])
+
+        #??? ask why validation function do not raise errors
+        assert e.value.message_dict == {
+            'borders': ["JSON did not validate. PATH: '1.maximum' REASON: None is not "
+                'valid under any of the given schemas']
         }
 
     def test_borders_validation__maximum_is_correct_type(self):
 
+        ci = self.ci()
+
         with pytest.raises(ValidationError) as e:
             Chunk.objects.create(
-                catalogue_item=self.ci,
+                catalogue_item=ci,
                 borders=[
                     {
                         'column': 'A',
@@ -309,9 +413,38 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
+            '__all__': ['maximum has to be greater than minimum'],
             'borders': [
-                "JSON did not validate. PATH: '0.maximum' REASON: True is "
-                "not valid under any of the given schemas",
+                "JSON did not validate. PATH: '0.maximum' "
+                "REASON: True is not valid under any of the "
+                "given schemas",
+            ],
+        }
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': True,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            '__all__': ['maximum has to be greater than minimum'],
+            'borders': [
+                "JSON did not validate. PATH: '1.maximum' "
+                "REASON: True is not valid under any of the "
+                "given schemas",
             ],
         }
 
@@ -320,9 +453,11 @@ class ChunkTestCase(TestCase):
 
     def test_borders_validation__maximum_is_greater_than_minimum(self):
 
+        ci = self.ci()
+
         with pytest.raises(ValidationError) as e:
             Chunk.objects.create(
-                catalogue_item=self.ci,
+                catalogue_item=ci,
                 borders=[
                     {
                         'column': 'A',
@@ -333,6 +468,50 @@ class ChunkTestCase(TestCase):
                         'column': 'B',
                         'minimum': 20,
                         'maximum': 25,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            '__all__': ["maximum has to be greater than minimum"],
+        }
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 25,
+                        'maximum': 25,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            '__all__': ["maximum has to be greater than minimum"],
+        }
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 25,
+                        'maximum': 20,
                     },
                 ])
 

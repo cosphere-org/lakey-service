@@ -69,6 +69,16 @@ class CatalogueItemTestCase(TestCase):
         ]
         assert ci.spec == spec
 
+    def test_invalid__catalogue_item_shoud_have_at_leat_one_column(self):
+
+        with pytest.raises(ValidationError) as e:
+            ef.catalogue_item(spec=[])
+
+        assert e.value.message_dict == {
+            
+        }
+
+    #??? ask below
     def test_invalid__name_should_be_unique(self):
 
         ef.catalogue_item(name='feature')
