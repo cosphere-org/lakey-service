@@ -432,3 +432,6 @@ class CatalogueItemTestCase(TestCase):
                 ],
             },
         ]
+
+
+
