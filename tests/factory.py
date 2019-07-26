@@ -71,9 +71,9 @@ class EntityFactory:
                     'is_nullable': True,
                     'is_enum': False,
                     'distribution': [
-                        {'value': 18.0, 'count': 9},
-                        {'value': 19.1, 'count': 45},
-                        {'value': 21.2, 'count': 10},
+                        {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
+                        {'value_min': 22.0, 'value_max': 24.0, 'count': 21},
+                        {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
                     ],
                 },
             ],

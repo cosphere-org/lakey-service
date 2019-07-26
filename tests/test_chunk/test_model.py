@@ -318,7 +318,42 @@ class ChunkTestCase(TestCase):
         }
 
     def test_borders_validation__minimum_from_catalogue_item(self):
-        pass
+        
+        ci = self.ci([{
+                'distribution': [
+                        {'value_min': "temperature1.1", 'value_max': "temperature2.1", 'count': 9},
+                        {'value_min': "temperature1.2", 'value_max': "temperature2.2", 'count': 21},
+                        {'value_min': "temperature1.3", 'value_max': "temperature2.3", 'count': 49},
+                    ],
+            },
+            {
+                'distribution': [
+                        {'value_min': 18, 'value_max': 20, 'count': 9},
+                        {'value_min': 22, 'value_max': 24, 'count': 21},
+                        {'value_min': 25, 'value_max': 32, 'count': 49},
+                    ],
+            },
+            ])
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            '__all__': ['minimum has to match catalogue_item minimum']
+        }
 
     def test_borders_validation__maximum_not_null(self):
 
@@ -449,7 +484,42 @@ class ChunkTestCase(TestCase):
         }
 
     def test_borders_validation__maximum_from_catalogue_item(self):
-        pass
+        
+        ci = self.ci([{
+                'distribution': [
+                        {'value_min': "temperature1.1", 'value_max': "temperature2.1", 'count': 9},
+                        {'value_min': "temperature1.2", 'value_max': "temperature2.2", 'count': 21},
+                        {'value_min': "temperature1.3", 'value_max': "temperature2.3", 'count': 49},
+                    ],
+            },
+            {
+                'distribution': [
+                        {'value_min': 18, 'value_max': 20, 'count': 9},
+                        {'value_min': 22, 'value_max': 24, 'count': 21},
+                        {'value_min': 25, 'value_max': 32, 'count': 49},
+                    ],
+            },
+            ])
+
+        with pytest.raises(ValidationError) as e:
+            Chunk.objects.create(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 'temperature1.1',
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 18,
+                        'maximum': 25,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            '__all__': ['maximum has to match catalogue_item maximum']
+        }
 
     def test_borders_validation__maximum_is_greater_than_minimum(self):
 

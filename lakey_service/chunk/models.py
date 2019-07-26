@@ -44,10 +44,6 @@ class Chunk(ValidatingModel):
             allowed_columns = [
                 col['name'] for col in self.catalogue_item.spec]
 
-            # if len(self.catalogue_item.spec) != len(self.borders):
-            #     raise ValidationError(
-            #             f"borders have to have same number of entries"
-            #             " as catalogue_item.spec")
             if type(self.borders).__name__ == 'list':
             #this if is temporary becouse lily schema validation is done after this function
 
@@ -74,26 +70,29 @@ class Chunk(ValidatingModel):
                         raise ValidationError(
                             f"unknown column detected")
 
-                    # if column == '' or column is None:
-                    #     raise ValidationError(
-                    #         f"column can not by empty")
-
                     if minimum == None or minimum == '':
                         raise ValidationError(
                             f"minimum can not by empty")
+
+                    import ipdb; ipdb.set_trace()
+                    for col in self.catalogue_item.spec:
+                        if minimum != col['distribution'][0]['value_min']:
+                            raise ValidationError(
+                                f"minimum has to match catalogue_item minimum")
 
                     if maximum == None or maximum == '':
                         raise ValidationError(
                             f"maximum can not by empty")
 
+                    for col in self.catalogue_item.spec:
+                        if maximum != col['distribution'][-1]['value_max']:
+                            raise ValidationError(
+                                f"maximum has to match catalogue_item maximum")
+
                     if border['minimum'] >= border['maximum']:
                         raise ValidationError(
                             f"maximum has to be greater than minimum")
-
-            # if type(minimum).__name__ != self.catalogue_item.spec:
-            #     raise ValidationError(
-            #         f"minimum can not by empty")
-
+        
         else:
             raise ValidationError(
                         f"chunk - borders must be created")
