@@ -17,6 +17,10 @@ from catalogue.models import CatalogueItem
 
 class Chunk(ValidatingModel):
 
+    created_datetime = models.DateTimeField(auto_now_add=True)
+
+    updated_datetime = models.DateTimeField(auto_now=True)
+
     catalogue_item = models.ForeignKey(
         CatalogueItem,
         on_delete=models.CASCADE,
@@ -33,7 +37,8 @@ class Chunk(ValidatingModel):
             )
         )
 
-   
+    count = models.IntegerField(default=None)
+
     def clean(self):
         self.validate_borders_in_context_of_catalogue_item()
 
@@ -58,7 +63,7 @@ class Chunk(ValidatingModel):
                             "borders columns do not match catalogue item"
                             )
 
-                for border in self.borders:
+                for ind, border in enumerate(self.borders):
                     column = border['column']
                     minimum = border['minimum']
                     maximum = border['maximum']
@@ -74,18 +79,17 @@ class Chunk(ValidatingModel):
                         raise ValidationError(
                             f"minimum can not by empty")
 
-                    import ipdb; ipdb.set_trace()
-                    for col in self.catalogue_item.spec:
-                        if minimum != col['distribution'][0]['value_min']:
+                    if self.catalogue_item.spec[ind]['distribution']:
+                        if minimum != self.catalogue_item.spec[ind]['distribution'][0]['value_min']:
                             raise ValidationError(
                                 f"minimum has to match catalogue_item minimum")
-
+                    
                     if maximum == None or maximum == '':
                         raise ValidationError(
                             f"maximum can not by empty")
 
-                    for col in self.catalogue_item.spec:
-                        if maximum != col['distribution'][-1]['value_max']:
+                    if self.catalogue_item.spec[ind]['distribution']:
+                        if maximum != self.catalogue_item.spec[ind]['distribution'][-1]['value_max']:
                             raise ValidationError(
                                 f"maximum has to match catalogue_item maximum")
 
@@ -96,5 +100,3 @@ class Chunk(ValidatingModel):
         else:
             raise ValidationError(
                         f"chunk - borders must be created")
-
-        ######min max value ?????????????#################

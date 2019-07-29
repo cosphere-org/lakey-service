@@ -41,25 +41,38 @@ class ChunkTestCase(TestCase):
             },
         ])
 
-    def test_simple_creation(self):
 
-        ci = self.ci()
+    def c(self, overrides=None, catalogue_item=None, borders=None):
 
-        c = Chunk.objects.create(
-            catalogue_item=ci,
-            borders=[
+        if overrides is None:
+            overrides = [{}, {}]
+
+        return ef.chunk(
+            catalogue_item = catalogue_item,
+            borders = borders or [
                 {
                     'column': 'A',
                     'minimum': 10,
                     'maximum': 15,
+                    **overrides[0],
                 },
                 {
                     'column': 'B',
                     'minimum': 20,
                     'maximum': 25,
+                    **overrides[0],
                 },
-            ])
+            ],
+        )
 
+
+    def test_simple_creation(self):
+
+        ci = self.ci()
+        c = self.c(catalogue_item = ci)
+
+        assert c.created_datetime is not None
+        assert c.updated_datetime is not None
         assert c.catalogue_item == ci
         assert c.borders == [
             {
@@ -73,14 +86,22 @@ class ChunkTestCase(TestCase):
                 'maximum': 25,
             },
         ]
+        assert c.count is not None
+
+    def test_count__correct_type(self):
+
+        ci = self.ci()
+        c = self.c(catalogue_item = ci)
+
+        assert type(c.count).__name__ == 'int'
 
     def test_borders_validation__expect_array(self):
 
         ci = self.ci([{}, {}])
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
-                catalogue_item=ci,
+            self.c(
+                catalogue_item = ci, 
                 borders='whatever'
                 )
 
@@ -97,20 +118,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci([{'name': 'C'}, {}])
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
-                catalogue_item=ci,
-                borders=[
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 15,
-                    },
-                    {
-                        'column': 'B',
-                        'minimum': 20,
-                        'maximum': 25,
-                    },
-                ])
+            self.c(catalogue_item = ci)
 
         assert e.value.message_dict == {
             '__all__': ['borders columns do not match catalogue item']
@@ -119,15 +127,16 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
-                catalogue_item=ci,
-                borders=[
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 15,
-                    },
-                ])
+            self.c(
+                    catalogue_item = ci,
+                    borders=[
+                        {
+                            'column': 'A',
+                            'minimum': 10,
+                            'maximum': 15,
+                        },
+                    ]   
+                )
 
         assert e.value.message_dict == {
             '__all__': ['borders columns do not match catalogue item']
@@ -136,7 +145,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -170,7 +179,7 @@ class ChunkTestCase(TestCase):
 
         with pytest.raises(ValidationError) as e:
 
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -196,7 +205,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -218,7 +227,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -242,7 +251,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -268,7 +277,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -294,7 +303,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -336,18 +345,18 @@ class ChunkTestCase(TestCase):
             ])
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
                         'column': 'A',
-                        'minimum': 10,
-                        'maximum': 15,
+                        'minimum': 'whatever',
+                        'maximum': 'temperature2.3',
                     },
                     {
                         'column': 'B',
-                        'minimum': 20,
-                        'maximum': 25,
+                        'minimum': 18,
+                        'maximum': 32,
                     },
                 ])
 
@@ -360,7 +369,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -382,7 +391,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -406,7 +415,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -432,7 +441,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -459,7 +468,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -502,18 +511,18 @@ class ChunkTestCase(TestCase):
             ])
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
                         'column': 'A',
                         'minimum': 'temperature1.1',
-                        'maximum': 15,
+                        'maximum': 'whatevera',
                     },
                     {
                         'column': 'B',
                         'minimum': 18,
-                        'maximum': 25,
+                        'maximum': 32,
                     },
                 ])
 
@@ -526,7 +535,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -548,7 +557,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {
@@ -570,7 +579,7 @@ class ChunkTestCase(TestCase):
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
-            Chunk.objects.create(
+            self.c(
                 catalogue_item=ci,
                 borders=[
                     {

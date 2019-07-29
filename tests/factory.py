@@ -102,3 +102,30 @@ class EntityFactory:
             catalogue_item=catalogue_item,
             is_cancelled=is_cancelled,
             executor_job_id=executor_job_id)
+
+    def chunk(
+            self,
+            created_datetime=None,
+            updated_datetime=None,
+            catalogue_item=None,
+            borders=None,
+            count=None,):
+        
+        return Chunk.objects.create(
+            created_datetime = created_datetime,
+            updated_datetime = updated_datetime,
+            catalogue_item = catalogue_item,
+            borders = borders or [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                    },
+                ],
+            count = faker.random_int(500, 100000),
+            )

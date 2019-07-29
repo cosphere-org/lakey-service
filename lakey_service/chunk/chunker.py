@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+table_2 = pd.read_csv('2_column.csv')
 
 def chunker_algorithm(cube_size):
 
@@ -64,6 +65,7 @@ def chunker_algorithm(cube_size):
 
 
 chunks_borders = chunker_algorithm(1000)
+
 #draw_2d(chunks_borders)
 
 # chunks = []
