@@ -18,13 +18,80 @@ from lily.base.models import (
 
 from account.models import Account
 from catalogue.models import CatalogueItem
+from chunk.models import Chunk
 
 
 class DownloadRequestManager(models.Manager):
 
     def estimate_size(self, spec, catalogue_item_id):
+        catalogue_item = CatalogueItem.objects.get(pk=catalogue_item_id)
+        all_chunks = Chunk.objects.filter(catalogue_item=catalogue_item_id)
+        filter_chunks = []
+        common_chunks = []
+        return_chunks = []
+        max_size = 0
 
-        return 123
+        columns_type_by_name = {}
+        for column in catalogue_item.spec:
+            columns_type_by_name[column['name']] = column['type']
+
+        for chunk in all_chunks:
+            for spec_filter in spec['filters']:
+                filter_operator = spec_filter['operator']
+                filter_value = spec_filter['value']
+                column_name = spec_filter['name']
+
+                for border in chunk.borders:
+                    if border['column'] == column_name:
+                        if columns_type_by_name[column_name] == 'INTEGER':
+                            if filter_operator == '>':
+                                if border['minimum'] > filter_value:
+                                    filter_chunks.append(chunk)
+                            elif filter_operator == '<':
+                                if border['maximum'] < filter_value:
+                                    filter_chunks.append(chunk)
+                            elif filter_operator == '>=':
+                                if border['minimum'] >= filter_value:
+                                    filter_chunks.append(chunk)
+                            elif filter_operator == '<=':
+                                if border['maximum'] <= filter_value:
+                                    filter_chunks.append(chunk)
+                            elif filter_operator == '=':
+                                if border['maximum'] > filter_value > border['minimum']:
+                                    filter_chunks.append(chunk)
+                            elif filter_operator == '!=':
+                                if border['maximum'] < filter_value < border['minimum']:
+                                    filter_chunks.append(chunk)
+
+        if len(spec['filters']) > 1:
+            for chunk in filter_chunks:
+                if filter_chunks.count(chunk) > 1 and chunk not in common_chunks:
+                    common_chunks.append(chunk)
+            return_chunks = common_chunks
+        else:
+            return_chunks = filter_chunks
+
+        for chunk in return_chunks:
+            for border in chunk.borders:
+                border_type = columns_type_by_name[border['column']]
+                border_count = border['count']
+
+                if border_type == 'INTEGER':
+                    max_size += 4 * border_count
+
+        # print('FILTER')
+        # for chunk in filter_chunks:
+        #     print('filter', chunk.pk, chunk.borders)
+        #
+        # print('COMMON')
+        # for chunk in common_chunks:
+        #     print('common', chunk.pk, chunk.borders)
+        #
+        # print('RETURN')
+        # for chunk in return_chunks:
+        #     print('return', chunk.pk, chunk.borders)
+
+        return max_size
 
 
 class DownloadRequest(ValidatingModel):

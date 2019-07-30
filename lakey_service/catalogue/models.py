@@ -301,10 +301,11 @@ class CatalogueItem(ValidatingModel):
                     borders=[
                         {
                             'column': col,
+                            'count': count,
                             'minimum': int(min_),
                             'maximum': int(max_),
                         }
-                        for min_, max_, _, col in chunk_borders
+                        for min_, max_, count, col in chunk_borders
                     ]))
         Chunk.objects.bulk_create(chunks)
 
