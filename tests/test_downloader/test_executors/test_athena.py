@@ -168,7 +168,7 @@ class AthenaExecutorTestCase(TestCase):
         assert normalize_query(self.executor.compile_to_query(d)) == (
             'SELECT q.* FROM ('
             'SELECT product, available FROM lakey.shopping ) '
-            'AS q WHERE RAND() >= 0.9')
+            'AS q WHERE RAND() <= 0.9')
 
     #
     # GET_SAMPLE
@@ -396,6 +396,13 @@ class AthenaExecutorTestCase(TestCase):
         athena.start_query_execution.return_value = {
             'QueryExecutionId': 'some.exec.id',
         }
+        athena.get_query_execution.return_value = {
+            'QueryExecution': {
+                'Status': {
+                    'State': 'SUCCEEDED',
+                },
+            },
+        }
 
         assert self.executor.execute_query(
             'my.db.0',
@@ -412,5 +419,5 @@ class AthenaExecutorTestCase(TestCase):
             call(
                 ACL='public-read',
                 Bucket='lakey',
-                Key='/results/some.exec.id.csv'),
+                Key='results/some.exec.id.csv'),
         ]

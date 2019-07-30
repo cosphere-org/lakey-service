@@ -22,7 +22,6 @@ from catalogue.models import CatalogueItem
 
 class DownloadRequestManager(models.Manager):
 
-    # FIXME: add it!!!!!!!!!!!!!!!
     def estimate_size(self, spec, catalogue_item_id):
 
         return 123
@@ -253,7 +252,7 @@ class DownloadRequest(ValidatingModel):
             f'filters:{filters}|'
             f'randomize_ratio:{randomize_ratio}')
 
-    def __str__(self):
+    def __str__(self):  # noqa
         return (
             f'{self.id} - '
             f'{self.created_by.email}: '
