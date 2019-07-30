@@ -315,7 +315,6 @@ class DownloadRequestTestCase(TestCase):
                 "'randomize_ratio' not in allowed [0, 1] range detected",
             ],
         }
-
     #
     # NORMALIZE_SPEC
     #
@@ -398,6 +397,13 @@ class DownloadRequestTestCase(TestCase):
             ],
             sample=[{'A': 10, 'B': 22}])
         # FIXME: !!! some more please!!!
+        # min([true, true, ...]) min([100, 80, ..]),
+        # Chunk distribution, test estimate,
+        #
+        # zwraca nam minimaln ilość rzędw z min max
+        # toy model chunk and test
+        # lili init hooks git
+        # Testować estymator
         d = DownloadRequest.objects.create(
             created_by=a,
             spec={

@@ -25,7 +25,3 @@ class ChunkTestCase(TestCase):
             })
 
         assert c.catalogue_item == ci
-        assert c.borders == {
-            'A': [15, 15],
-            'B': [0, -10],
-        }
