@@ -373,8 +373,10 @@ class DownloadRequestTestCase(TestCase):
         assert d.normalized_spec == (
             'columns:product|filters:price>=78|randomize_ratio:1')
 
-    def test_estimate_size(self):
+    def test_estimate_size__filter_with_open_range(self):
+
         a = ef.account()
+        # FIXME: !!! simplify!!!
         self.ci = ef.catalogue_item(
             spec=[
                 {
@@ -394,19 +396,8 @@ class DownloadRequestTestCase(TestCase):
                     'distribution': None,
                 },
             ],
-            sample=[{'A': 10, 'B': 22},
-                    {'A': 11, 'B': 15},
-                    {'A': 30, 'B': 22},
-                    {'A': 41, 'B': 15},
-                    {'A': 50, 'B': 32},
-                    {'A': 61, 'B': 15},
-                    {'A': 70, 'B': 22},
-                    {'A': 81, 'B': 55},
-                    {'A': 20, 'B': 32},
-                    {'A': 31, 'B': 25},
-                    {'A': 31, 'B': 25},
-                    {'A': 31, 'B': 25},
-            ])
+            sample=[{'A': 10, 'B': 22}])
+        # FIXME: !!! some more please!!!
         d = DownloadRequest.objects.create(
             created_by=a,
             spec={

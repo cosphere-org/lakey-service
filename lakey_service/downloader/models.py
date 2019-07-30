@@ -24,72 +24,59 @@ from chunk.models import Chunk
 class DownloadRequestManager(models.Manager):
 
     def estimate_size(self, spec, catalogue_item_id):
-        catalogue_item = CatalogueItem.objects.get(pk=catalogue_item_id)
-        all_chunks = Chunk.objects.filter(catalogue_item=catalogue_item_id)
-        filter_chunks = []
-        common_chunks = []
-        return_chunks = []
+        catalogue_item = CatalogueItem.objects.get(id=catalogue_item_id)
+        all_chunks = Chunk.objects.filter(catalogue_item=catalogue_item)
         max_size = 0
 
         columns_type_by_name = {}
         for column in catalogue_item.spec:
             columns_type_by_name[column['name']] = column['type']
 
+        # [PERFORMANCE-ISSUE]: here we iterate over all chunks for a given
+        # catalogue item.
         for chunk in all_chunks:
+            chunk_passed = []
+
             for spec_filter in spec['filters']:
                 filter_operator = spec_filter['operator']
                 filter_value = spec_filter['value']
                 column_name = spec_filter['name']
 
-                for border in chunk.borders:
-                    if border['column'] == column_name:
-                        if columns_type_by_name[column_name] == 'INTEGER':
-                            if filter_operator == '>':
-                                if border['minimum'] > filter_value:
-                                    filter_chunks.append(chunk)
-                            elif filter_operator == '<':
-                                if border['maximum'] < filter_value:
-                                    filter_chunks.append(chunk)
-                            elif filter_operator == '>=':
-                                if border['minimum'] >= filter_value:
-                                    filter_chunks.append(chunk)
-                            elif filter_operator == '<=':
-                                if border['maximum'] <= filter_value:
-                                    filter_chunks.append(chunk)
-                            elif filter_operator == '=':
-                                if border['maximum'] > filter_value > border['minimum']:
-                                    filter_chunks.append(chunk)
-                            elif filter_operator == '!=':
-                                if border['maximum'] < filter_value < border['minimum']:
-                                    filter_chunks.append(chunk)
+                border = chunk.borders_per_column[column_name]
+                b_min, b_max = border['minimum'], border['maximum']
 
-        if len(spec['filters']) > 1:
-            for chunk in filter_chunks:
-                if filter_chunks.count(chunk) > 1 and chunk not in common_chunks:
-                    common_chunks.append(chunk)
-            return_chunks = common_chunks
-        else:
-            return_chunks = filter_chunks
+                if columns_type_by_name[column_name] == 'INTEGER':
+                    if filter_operator == '>':
+                        if b_min > filter_value:
+                            chunk_passed.append(True)
 
-        for chunk in return_chunks:
-            for border in chunk.borders:
-                border_type = columns_type_by_name[border['column']]
-                border_count = border['count']
+                    elif filter_operator == '<':
+                        if b_max < filter_value:
+                            chunk_passed.append(True)
 
-                if border_type == 'INTEGER':
-                    max_size += 4 * border_count
+                    elif filter_operator == '>=':
+                        if b_min >= filter_value:
+                            chunk_passed.append(True)
 
-        # print('FILTER')
-        # for chunk in filter_chunks:
-        #     print('filter', chunk.pk, chunk.borders)
-        #
-        # print('COMMON')
-        # for chunk in common_chunks:
-        #     print('common', chunk.pk, chunk.borders)
-        #
-        # print('RETURN')
-        # for chunk in return_chunks:
-        #     print('return', chunk.pk, chunk.borders)
+                    elif filter_operator == '<=':
+                        if b_max <= filter_value:
+                            chunk_passed.append(True)
+
+                    elif filter_operator == '=':
+                        if b_max > filter_value > b_min:
+                            chunk_passed.append(True)
+
+                    elif filter_operator == '!=':
+                        if b_max < filter_value < b_min:
+                            chunk_passed.append(True)
+
+            if all(chunk_passed):
+                for col in spec['columns']:
+                    border_type = columns_type_by_name[col]
+                    border_count = border['count']
+
+                    if border_type == 'INTEGER':
+                        max_size += 4 * border_count
 
         return max_size
 
