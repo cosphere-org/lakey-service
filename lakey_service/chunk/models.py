@@ -9,7 +9,3 @@ class Chunk(ValidatingModel):
         'catalogue.CatalogueItem',
         on_delete=models.CASCADE,
         related_name='chunks')
-
-    # FIXME: enrich the schema to reflect borders structure!!!!
-    borders = JSONSchemaField(
-        schema=object())

@@ -23,5 +23,3 @@ class ChunkTestCase(TestCase):
                 'A': [15, 15],
                 'B': [0, -10],
             })
-
-        assert c.catalogue_item == ci
