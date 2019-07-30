@@ -33,9 +33,9 @@ class Chunk(ValidatingModel):
                 minimum=one_of(number(), string()),
                 maximum=one_of(number(), string()),
                 required=['column', 'minimum', 'maximum'],
-                )
             )
         )
+    )
 
     count = models.IntegerField(default=None)
 

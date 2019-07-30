@@ -70,7 +70,7 @@ def spec_validator(spec):
         # -- values in distribution must be unique
         values_min = [entry['value_min'] for entry in distribution]
         values_max = [entry['value_max'] for entry in distribution]
-        all_values = values_min + values_max  
+        all_values = values_min + values_max
         if len(all_values) != len(set(all_values)):
             raise ValidationError(
                 f"not unique distribution values for column '{col_name}' "
@@ -208,8 +208,6 @@ class CatalogueItem(ValidatingModel):
         - `sample` entries must have the same names as registered in `spec`
         - `sample` entries values must be the same as the ones registered in
           `spec` (if `is_nullable` was set to True also None is allowed)
-        
-        
         """
 
         if not self.sample:

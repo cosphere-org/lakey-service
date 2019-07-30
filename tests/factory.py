@@ -8,8 +8,8 @@ from account.models import (
     AuthRequest,
 )
 from catalogue.models import CatalogueItem
-from downloader.models import DownloadRequest
 from chunk.models import Chunk
+from downloader.models import DownloadRequest
 
 
 faker = Faker()
@@ -109,23 +109,22 @@ class EntityFactory:
             updated_datetime=None,
             catalogue_item=None,
             borders=None,
-            count=None,):
-        
+            count=None):
+
         return Chunk.objects.create(
-            created_datetime = created_datetime,
-            updated_datetime = updated_datetime,
-            catalogue_item = catalogue_item,
-            borders = borders or [
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 15,
-                    },
-                    {
-                        'column': 'B',
-                        'minimum': 20,
-                        'maximum': 25,
-                    },
-                ],
-            count = faker.random_int(500, 100000),
-            )
+            created_datetime=created_datetime,
+            updated_datetime=updated_datetime,
+            catalogue_item=catalogue_item,
+            borders=borders or [
+                {
+                    'column': 'A',
+                    'minimum': 10,
+                    'maximum': 15,
+                },
+                {
+                    'column': 'B',
+                    'minimum': 20,
+                    'maximum': 25,
+                },
+            ],
+            count=faker.random_int(500, 100000))
