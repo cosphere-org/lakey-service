@@ -43,60 +43,41 @@ class Chunk(ValidatingModel):
         self.validate_borders_in_context_of_catalogue_item()
 
     def validate_borders_in_context_of_catalogue_item(self):
-        
+
         if self.borders:
 
-            allowed_columns = [
-                col['name'] for col in self.catalogue_item.spec]
+            for entry in self.catalogue_item.spec:
+                col = entry['name']
+                dist = entry['distribution']
 
-            if type(self.borders).__name__ == 'list':
-            #this if is temporary becouse lily schema validation is done after this function
+                try:
+                    border = self.borders_by_col[col]
 
-                for col in self.catalogue_item.spec:
-                    is_in_borders = False
-                    for bor in self.borders:
-                        if bor['column'] == col['name']:
-                            is_in_borders = True
+                except KeyError:
+                    raise ValidationError(
+                        "borders columns do not match catalogue item")
 
-                    if is_in_borders == False:
-                        raise ValidationError(
-                            "borders columns do not match catalogue item"
-                            )
+                minimum = border['minimum']
+                maximum = border['maximum']
 
-                for ind, border in enumerate(self.borders):
-                    column = border['column']
-                    minimum = border['minimum']
-                    maximum = border['maximum']
+                if minimum in [None, '']:
+                    raise ValidationError("minimum can not be empty")
 
-                    if column is None or minimum is None or maximum is None:
-                        continue
+                if minimum < dist[0]['value_min']:
+                    raise ValidationError(
+                        f"minimum has to match catalogue_item minimum")
 
-                    if not column in allowed_columns:
-                        raise ValidationError(
-                            f"unknown column detected")
+                if maximum in [None, '']:
+                    raise ValidationError("maximum can not be empty")
 
-                    if minimum == None or minimum == '':
-                        raise ValidationError(
-                            f"minimum can not by empty")
+                if maximum > dist[-1]['value_max']:
+                    raise ValidationError(
+                        'maximum has to smaller than max of catalogue_item '
+                        'distribution')
 
-                    if self.catalogue_item.spec[ind]['distribution']:
-                        if minimum != self.catalogue_item.spec[ind]['distribution'][0]['value_min']:
-                            raise ValidationError(
-                                f"minimum has to match catalogue_item minimum")
-                    
-                    if maximum == None or maximum == '':
-                        raise ValidationError(
-                            f"maximum can not by empty")
+                if minimum >= maximum:
+                    raise ValidationError(
+                        "maximum has to be greater than minimum")
 
-                    if self.catalogue_item.spec[ind]['distribution']:
-                        if maximum != self.catalogue_item.spec[ind]['distribution'][-1]['value_max']:
-                            raise ValidationError(
-                                f"maximum has to match catalogue_item maximum")
-
-                    if border['minimum'] >= border['maximum']:
-                        raise ValidationError(
-                            f"maximum has to be greater than minimum")
-        
         else:
-            raise ValidationError(
-                        f"chunk - borders must be created")
+            raise ValidationError("chunk - borders must be created")

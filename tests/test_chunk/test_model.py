@@ -41,7 +41,6 @@ class ChunkTestCase(TestCase):
             },
         ])
 
-
     def c(self, overrides=None, catalogue_item=None, borders=None):
 
         if overrides is None:
@@ -64,7 +63,6 @@ class ChunkTestCase(TestCase):
                 },
             ],
         )
-
 
     def test_simple_creation(self):
 
@@ -101,7 +99,7 @@ class ChunkTestCase(TestCase):
 
         with pytest.raises(ValidationError) as e:
             self.c(
-                catalogue_item = ci, 
+                catalogue_item = ci,
                 borders='whatever'
                 )
 
@@ -135,7 +133,7 @@ class ChunkTestCase(TestCase):
                             'minimum': 10,
                             'maximum': 15,
                         },
-                    ]   
+                    ]
                 )
 
         assert e.value.message_dict == {
@@ -327,7 +325,7 @@ class ChunkTestCase(TestCase):
         }
 
     def test_borders_validation__minimum_from_catalogue_item(self):
-        
+
         ci = self.ci([{
                 'distribution': [
                         {'value_min': "temperature1.1", 'value_max': "temperature2.1", 'count': 9},
@@ -493,7 +491,7 @@ class ChunkTestCase(TestCase):
         }
 
     def test_borders_validation__maximum_from_catalogue_item(self):
-        
+
         ci = self.ci([{
                 'distribution': [
                         {'value_min': "temperature1.1", 'value_max': "temperature2.1", 'count': 9},
