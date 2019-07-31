@@ -3,6 +3,7 @@ import pandas as pd
 
 table_2 = pd.read_csv('2_column.csv')
 
+
 def chunker_algorithm(cube_size):
 
     def split(table):
@@ -14,17 +15,16 @@ def chunker_algorithm(cube_size):
         split_table2 = table[table[split_axis] < median]
 
         table_median = table.loc[table[split_axis] == median]
-        half_of_all = table[split_axis].count()/2
+        half_of_all = table[split_axis].count() / 2
 
-        if split_table1[split_axis].count() != split_table2[split_axis].count():
+        if split_table1[split_axis].count() != split_table2[split_axis].count(): # noqa
             split_table1 = split_table1.append(
-                table_median.head(int(half_of_all - split_table1[split_axis].count())))
+                table_median.head(int(half_of_all - split_table1[split_axis].count()))) # noqa
             split_table2 = split_table2.append(
-                table_median.tail(int(half_of_all - split_table2[split_axis].count())))
+                table_median.tail(int(half_of_all - split_table2[split_axis].count()))) # noqa
 
         if element_count > cube_size:
             return split(split_table1) + split(split_table2)
-            
         else:
             chunk = []
             for col in table.columns:
@@ -44,8 +44,7 @@ def chunker_algorithm(cube_size):
                 greatest_variance = variance
                 split_axis = col
         return split_axis
-    
-    
+
     return split(table_2)
 
 
@@ -54,11 +53,11 @@ def chunker_algorithm(cube_size):
 #     x_max = table_2.A.max()
 #     y_min = table_2.B.min()
 #     y_max = table_2.B.max()
-    
+
 #     fig, ax = plt.subplots()
 #     for bord in chunks_borders:
-#         ax.add_artist(mpatch.Rectangle((bord[0]["minimum"], bord[1]["minimum"]), 
-#                                      bord[0]["maximun"]-bord[0]["minimum"], bord[1]["maximun"]-bord[1]["minimum"], fill = None))
+#         ax.add_artist(mpatch.Rectangle((bord[0]["minimum"], bord[1]["minimum"]), # noqa
+#     bord[0]["maximun"]-bord[0]["minimum"], bord[1]["maximun"]-bord[1]["minimum"], fill = None)) # noqa
 #     ax.set_xlim((x_min, x_max))
 #     ax.set_ylim((y_min, y_max))
 #     plt.show()

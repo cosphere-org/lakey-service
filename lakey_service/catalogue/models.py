@@ -65,7 +65,6 @@ def spec_validator(spec):
                     f"mismatch detected for column '{col_name}'")
 
         # -- values in distribution must be unique
-        all_values = [entry['value'] for entry in distribution]
         if len(all_values) != len(set(all_values)):
             raise ValidationError(
                 f"not unique distribution values for column '{col_name}' "

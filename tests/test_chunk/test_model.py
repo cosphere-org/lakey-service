@@ -47,8 +47,8 @@ class ChunkTestCase(TestCase):
             overrides = [{}, {}]
 
         return ef.chunk(
-            catalogue_item = catalogue_item,
-            borders = borders or [
+            catalogue_item=catalogue_item,
+            borders=borders or [
                 {
                     'column': 'A',
                     'minimum': 10,
@@ -67,7 +67,7 @@ class ChunkTestCase(TestCase):
     def test_simple_creation(self):
 
         ci = self.ci()
-        c = self.c(catalogue_item = ci)
+        c = self.c(catalogue_item=ci)
 
         assert c.created_datetime is not None
         assert c.updated_datetime is not None
@@ -89,7 +89,7 @@ class ChunkTestCase(TestCase):
     def test_count__correct_type(self):
 
         ci = self.ci()
-        c = self.c(catalogue_item = ci)
+        c = self.c(catalogue_item=ci)
 
         assert type(c.count).__name__ == 'int'
 
@@ -99,24 +99,22 @@ class ChunkTestCase(TestCase):
 
         with pytest.raises(ValidationError) as e:
             self.c(
-                catalogue_item = ci,
+                catalogue_item=ci,
                 borders='whatever'
-                )
+            )
 
         assert e.value.message_dict == {
             'borders': [
-                "JSON did not validate. PATH: '.' REASON: 'whatever' is not of "
-            "type 'array'"],
-            }
-
-        # FIXME: check that when borders is not a list!!!!! what happens
+                "JSON did not validate. PATH: '.' REASON: 'whatever' is "
+                "not of type 'array'"],
+        }
 
     def test_borders_should_match_columns_in_catalogue_item(self):
 
         ci = self.ci([{'name': 'C'}, {}])
 
         with pytest.raises(ValidationError) as e:
-            self.c(catalogue_item = ci)
+            self.c(catalogue_item=ci)
 
         assert e.value.message_dict == {
             '__all__': ['borders columns do not match catalogue item']
@@ -126,15 +124,15 @@ class ChunkTestCase(TestCase):
 
         with pytest.raises(ValidationError) as e:
             self.c(
-                    catalogue_item = ci,
-                    borders=[
-                        {
-                            'column': 'A',
-                            'minimum': 10,
-                            'maximum': 15,
-                        },
-                    ]
-                )
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                    },
+                ]
+            )
 
         assert e.value.message_dict == {
             '__all__': ['borders columns do not match catalogue item']
@@ -194,8 +192,10 @@ class ChunkTestCase(TestCase):
 
         assert e.value.message_dict == {
             '__all__': ['borders columns do not match catalogue item'],
-            'borders': ["JSON did not validate. PATH: '0.column' REASON: True is not of "
-                    "type 'string'"]
+            'borders': [
+                "JSON did not validate. PATH: '0.column' REASON: "
+                "True is not of type 'string'"
+            ]
         }
 
     def test_borders_validation__minimum_not_null(self):
@@ -242,8 +242,10 @@ class ChunkTestCase(TestCase):
 
         #??? ask why validation function do not raise errors
         assert e.value.message_dict == {
-            'borders': ["JSON did not validate. PATH: '0.minimum' REASON: None is not "
-                'valid under any of the given schemas']
+            'borders': [
+                "JSON did not validate. PATH: '0.minimum' REASON: None "
+                "is not valid under any of the given schemas"
+            ]
         }
 
         ci = self.ci()
@@ -266,8 +268,10 @@ class ChunkTestCase(TestCase):
 
         #??? ask why validation function do not raise errors
         assert e.value.message_dict == {
-            'borders': ["JSON did not validate. PATH: '1.minimum' REASON: None is not "
-                'valid under any of the given schemas']
+            'borders': [
+                "JSON did not validate. PATH: '1.minimum' REASON: None is not "
+                'valid under any of the given schemas'
+            ]
         }
 
     def test_borders_validation__minimum_is_correct_type(self):
@@ -326,21 +330,25 @@ class ChunkTestCase(TestCase):
 
     def test_borders_validation__minimum_from_catalogue_item(self):
 
-        ci = self.ci([{
+        ci = self.ci([
+            {
                 'distribution': [
-                        {'value_min': "temperature1.1", 'value_max': "temperature2.1", 'count': 9},
-                        {'value_min': "temperature1.2", 'value_max': "temperature2.2", 'count': 21},
-                        {'value_min': "temperature1.3", 'value_max': "temperature2.3", 'count': 49},
-                    ],
+                    {'value_min': "temperature1.1", 'value_max':
+                        "temperature2.1", 'count': 9},
+                    {'value_min': "temperature1.2", 'value_max':
+                        "temperature2.2", 'count': 21},
+                    {'value_min': "temperature1.3", 'value_max':
+                        "temperature2.3", 'count': 49},
+                ],
             },
             {
                 'distribution': [
-                        {'value_min': 18, 'value_max': 20, 'count': 9},
-                        {'value_min': 22, 'value_max': 24, 'count': 21},
-                        {'value_min': 25, 'value_max': 32, 'count': 49},
-                    ],
+                    {'value_min': 18, 'value_max': 20, 'count': 9},
+                    {'value_min': 22, 'value_max': 24, 'count': 21},
+                    {'value_min': 25, 'value_max': 32, 'count': 49},
+                ],
             },
-            ])
+        ])
 
         with pytest.raises(ValidationError) as e:
             self.c(
@@ -406,8 +414,10 @@ class ChunkTestCase(TestCase):
 
         #??? ask why validation function do not raise errors
         assert e.value.message_dict == {
-            'borders': ["JSON did not validate. PATH: '0.maximum' REASON: None is not "
-                'valid under any of the given schemas']
+            'borders': [
+                "JSON did not validate. PATH: '0.maximum' REASON: "
+                'None is not valid under any of the given schemas'
+            ]
         }
 
         ci = self.ci()
@@ -430,7 +440,8 @@ class ChunkTestCase(TestCase):
 
         #??? ask why validation function do not raise errors
         assert e.value.message_dict == {
-            'borders': ["JSON did not validate. PATH: '1.maximum' REASON: None is not "
+            'borders': [
+                "JSON did not validate. PATH: '1.maximum' REASON: None is not "
                 'valid under any of the given schemas']
         }
 
@@ -493,20 +504,23 @@ class ChunkTestCase(TestCase):
     def test_borders_validation__maximum_from_catalogue_item(self):
 
         ci = self.ci([{
-                'distribution': [
-                        {'value_min': "temperature1.1", 'value_max': "temperature2.1", 'count': 9},
-                        {'value_min': "temperature1.2", 'value_max': "temperature2.2", 'count': 21},
-                        {'value_min': "temperature1.3", 'value_max': "temperature2.3", 'count': 49},
-                    ],
-            },
+            'distribution': [
+                {'value_min': "temperature1.1", 'value_max': "temperature2.1",
+                    'count': 9},
+                {'value_min': "temperature1.2", 'value_max': "temperature2.2",
+                    'count': 21},
+                {'value_min': "temperature1.3", 'value_max': "temperature2.3",
+                    'count': 49},
+            ],
+        },
             {
-                'distribution': [
-                        {'value_min': 18, 'value_max': 20, 'count': 9},
-                        {'value_min': 22, 'value_max': 24, 'count': 21},
-                        {'value_min': 25, 'value_max': 32, 'count': 49},
-                    ],
-            },
-            ])
+            'distribution': [
+                {'value_min': 18, 'value_max': 20, 'count': 9},
+                {'value_min': 22, 'value_max': 24, 'count': 21},
+                {'value_min': 25, 'value_max': 32, 'count': 49},
+            ],
+        },
+        ])
 
         with pytest.raises(ValidationError) as e:
             self.c(
