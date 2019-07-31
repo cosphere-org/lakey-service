@@ -39,10 +39,9 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value': 18.0, 'count': 9},
-                    {'value': 19.1, 'count': 45},
-                    {'value': 21.2, 'count': 10},
-                    {'value': None, 'count': 190},
+                    {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
+                    {'value_min': 22.0, 'value_max': 24.0, 'count': 21},
+                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
                 ],
             },
         ]
@@ -148,9 +147,9 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value': 18.0, 'count': 9},
-                    {'value': '19', 'count': 45},
-                    {'value': 21.2, 'count': 10},
+                    {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
+                    {'value_min': 18.0, 'value_max': 24.0, 'count': 21},
+                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
                 ],
             },
         ]
@@ -181,9 +180,10 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value': 19.0, 'count': 9},
-                    {'value': 19.0, 'count': 45},
-                    {'value': 21.2, 'count': 10},
+                    {'value_min': 18.0, 'value_max': 20.0, 'count': '9'},
+                    {'value_min': 22.0, 'value_max': 24.0, 'count': 21},
+                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
+
                 ],
             },
         ]
@@ -213,8 +213,9 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value': 19.0, 'count': 45.9},
-                    {'value': 21.2, 'count': 10},
+                    {'value_min': 18.0, 'value_max': 20.0, 'count': '9'},
+                    {'value_min': 22.0, 'value_max': 24.0, 'count': 21},
+                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
                 ],
             },
         ]
@@ -229,8 +230,13 @@ class CatalogueItemTestCase(TestCase):
 
         assert e.value.message_dict == {
             'spec': [
-                "not integers distribution counts for column 'value' detected",
-            ],
+                "JSON did not validate. PATH: '0.distribution' REASON: "
+                "[{'value_min': 18.0, 'value_max': 20.0, 'count': '9'}, "
+                "{'value_min': 22.0, 'value_max': 24.0, 'count': 21}, "
+                "{'value_min': 25.0, 'value_max': 32.0, 'count': 49}] "
+                "is not valid under any of "
+                'the given schemas',
+                "not integers distribution counts for column 'value' detected"]
         }
 
     def test_invalid__broken_sample_not_same_names(self):
@@ -392,24 +398,26 @@ class CatalogueItemTestCase(TestCase):
 
         get_sample = self.mocker.patch.object(AthenaExecutor, 'get_sample')
         get_sample.return_value = [
-            {'name': 'temperature', 'value': 381},
-            {'name': 'pressure', 'value': 13},
+            {'name': 'temperature', 'value_min': 233, 'value_max': 273},
+            {'name': 'pressure', 'value_min': 40, 'value_max': 67},
         ]
         get_size = self.mocker.patch.object(AthenaExecutor, 'get_size')
         get_size.side_effect = [678, 789]
         get_distribution = self.mocker.patch.object(
             AthenaExecutor, 'get_distribution')
         get_distribution.side_effect = [
-            [{'value': 'temperature', 'count': 19}],
-            [{'value': 233, 'count': 567}, {'value': 45, 'count': 123}],
+            [{'value_min': 'temperature1',
+                'value_max': 'temperature2', 'count': 19}],
+            [{'value_min': 233, 'value_max': 273, 'count': 567},
+                {'value_min': 40, 'value_max': 67, 'count': 123}],
         ]
 
         ci.update_samples_and_distributions()
 
         ci.refresh_from_db()
         assert ci.sample == [
-            {'name': 'temperature', 'value': 381},
-            {'name': 'pressure', 'value': 13},
+            {'name': 'temperature', 'value_min': 233, 'value_max': 273},
+            {'name': 'pressure', 'value_min': 40, 'value_max': 67},
         ]
         assert ci.spec == [
             {
@@ -418,7 +426,10 @@ class CatalogueItemTestCase(TestCase):
                 'size': 678,
                 'is_nullable': False,
                 'is_enum': False,
-                'distribution': [{'value': 'temperature', 'count': 19}],
+                'distribution': [
+                    {'value_min':
+                        'temperature1', 'value_max':
+                            'temperature2', 'count': 19}],
             },
             {
                 'name': 'value',
@@ -427,10 +438,8 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': False,
                 'is_enum': False,
                 'distribution': [
-                    {'value': 233, 'count': 567},
-                    {'value': 45, 'count': 123},
+                    {'value_min': 233, 'value_max': 273, 'count': 567},
+                    {'value_min': 40, 'value_max': 67, 'count': 123},
                 ],
             },
         ]
-
-
