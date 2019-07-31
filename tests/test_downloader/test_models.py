@@ -315,7 +315,6 @@ class DownloadRequestTestCase(TestCase):
                 "'randomize_ratio' not in allowed [0, 1] range detected",
             ],
         }
-
     #
     # NORMALIZE_SPEC
     #
@@ -372,3 +371,61 @@ class DownloadRequestTestCase(TestCase):
 
         assert d.normalized_spec == (
             'columns:product|filters:price>=78|randomize_ratio:1')
+
+    def test_estimate_size__filter_with_open_range(self):
+
+        a = ef.account()
+        # FIXME: !!! simplify!!!
+        self.ci = ef.catalogue_item(
+            spec=[
+                {
+                    'name': 'A',
+                    'type': 'INTEGER',
+                    'is_nullable': True,
+                    'is_enum': True,
+                    'size': None,
+                    'distribution': None,
+                },
+                {
+                    'name': 'B',
+                    'type': 'INTEGER',
+                    'is_nullable': False,
+                    'is_enum': False,
+                    'size': None,
+                    'distribution': None,
+                },
+            ],
+            sample=[{'A': 10, 'B': 22}])
+        # FIXME: !!! some more please!!!
+        # min([true, true, ...]) min([100, 80, ..]),
+        # Chunk distribution, test estimate,
+        #
+        # zwraca nam minimaln ilość rzędw z min max
+        # toy model chunk and test
+        # lili init hooks git
+        # Testować estymator
+        d = DownloadRequest.objects.create(
+            created_by=a,
+            spec={
+                'columns': ['A'],
+                'filters': [
+                    {
+                        'name': 'A',
+                        'operator': '>=',
+                        'value': 10,
+                    },
+                    {
+                        'name': 'B',
+                        'operator': '=',
+                        'value': 22,
+                    },
+
+                ],
+                'randomize_ratio': 1,
+            },
+            catalogue_item=self.ci)
+
+        self.ci.create_chunks(3)
+        est = DownloadRequest.objects.estimate_size(d.spec, self.ci.pk)
+
+        assert est

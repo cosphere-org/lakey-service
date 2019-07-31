@@ -21,6 +21,9 @@ from lily.base.models import (
 from account.models import Account
 from downloader.executors.athena import AthenaExecutor
 
+import pandas
+from chunk.models import Chunk
+
 
 def spec_validator(spec):
     """Validate `CatalogueItem.spec`.
@@ -56,14 +59,22 @@ def spec_validator(spec):
         if col_is_nullable:
             expected_types += (type(None),)
 
-        for entry in distribution:
-            if not isinstance(entry['value'], expected_types):
-                raise ValidationError(
-                    f"column type and distribution value type "  # noqa
-                    f"mismatch detected for column '{col_name}'")
+        if distribution:
+            for entry in distribution:
+                if not isinstance(entry['value_min'], expected_types):
+                    raise ValidationError(
+                        f"column type and distribution value type "  # noqa
+                        f"mismatch detected for column '{col_name}'")
+
+                if not isinstance(entry['value_max'], expected_types):
+                    raise ValidationError(
+                        f"column type and distribution value type "  # noqa
+                        f"mismatch detected for column '{col_name}'")
 
         # -- values in distribution must be unique
-        all_values = [entry['value'] for entry in distribution]
+        values_min = [entry['value_min'] for entry in distribution]
+        values_max = [entry['value_max'] for entry in distribution]
+        all_values = values_min + values_max
         if len(all_values) != len(set(all_values)):
             raise ValidationError(
                 f"not unique distribution values for column '{col_name}' "
@@ -154,13 +165,18 @@ class CatalogueItem(ValidatingModel):
             distribution=null_or(
                 array(
                     object(
-                        value=one_of(
+                        value_min=one_of(
+                            null(),
+                            number(),
+                            string(),
+                            boolean()),
+                        value_max=one_of(
                             null(),
                             number(),
                             string(),
                             boolean()),
                         count=number(),
-                        required=['value', 'count']))),
+                        required=['value_min', 'value_max', 'count']))),
             required=[
                 'name',
                 'type',
@@ -264,6 +280,48 @@ class CatalogueItem(ValidatingModel):
                 column['name'], column['type'], column['is_enum'], self)
 
         self.save()
+
+    def create_chunks(self, m_c):
+        global_df = pandas.DataFrame(self.sample)
+        chunks_borders = []
+
+        def division(local_df, max_count):
+            col_to_slice = local_df.var().idxmax()
+            local_df = local_df.sort_values(col_to_slice)
+            count = local_df.index.size
+            median = int(count / 2)
+
+            if not count <= max_count:
+                left_half_df = local_df.iloc[:median]
+                division(left_half_df, max_count)
+
+                right_half_df = local_df.iloc[median:]
+                division(right_half_df, max_count)
+            else:
+                border = []
+                for col_name in local_df:
+                    col = local_df[col_name]
+                    border.append([col.min(), col.max(), count, col_name])
+                chunks_borders.append(border)
+                return
+
+        division(global_df, m_c)
+
+        chunks = []
+        for chunk_borders in chunks_borders:
+            chunks.append(
+                Chunk(
+                    catalogue_item=self,
+                    borders=[
+                        {
+                            'column': col,
+                            'count': count,
+                            'minimum': int(min_),
+                            'maximum': int(max_),
+                        }
+                        for min_, max_, count, col in chunk_borders
+                    ]))
+        Chunk.objects.bulk_create(chunks)
 
     def __str__(self):
         return self.name
