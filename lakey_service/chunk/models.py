@@ -42,18 +42,42 @@ class Chunk(ValidatingModel):
 
     def validate_borders_in_context_of_catalogue_item(self):
 
-        if self.borders:
+        if isinstance(self.borders, list):
 
-            for entry in self.catalogue_item.spec:
-                col = entry['name']
-                dist = entry['distribution']
+            ci_columns = set([col["name"] for col in self.catalogue_item.spec])
+            borders_columns = set([
+                border["column"]
+                for border in self.borders])
 
-                try:
-                    border = self.borders_by_col[col]
+            #??? ask: is that ok
+            if not borders_columns.issubset(ci_columns):
+                raise ValidationError(
+                    "borders columns do not match catalogue item")
 
-                except KeyError:
-                    raise ValidationError(
-                        "borders columns do not match catalogue item")
+            if not ci_columns.issubset(borders_columns):
+                raise ValidationError(
+                    "borders columns do not match catalogue item")
+
+            # for entry in matched_columns:
+            #     col = entry['name']
+            #     dist = entry['distribution']
+
+            #     border = None
+            #     try:
+            #         for br in self.borders:
+            #             if br["column"] == col:
+            #                 border = br
+            #                 break
+
+            #     except KeyError:
+            #         raise ValidationError(
+            #             "borders columns do not match catalogue item")
+
+            #     if border is None:
+            #         raise ValidationError(
+            #             "borders columns do not match catalogue item")
+
+            for border in self.borders:
 
                 minimum = border['minimum']
                 maximum = border['maximum']
@@ -61,21 +85,26 @@ class Chunk(ValidatingModel):
                 if minimum in [None, '']:
                     raise ValidationError("minimum can not be empty")
 
-                if minimum < dist[0]['value_min']:
-                    raise ValidationError(
-                        f"minimum has to match catalogue_item minimum")
+                #??? ask: assuming distribution is not required
+                # if dist:
+                #     if minimum < dist['value_min']:
+                #         raise ValidationError(
+                #             f"minimum has to match catalogue_item minimum")
 
                 if maximum in [None, '']:
                     raise ValidationError("maximum can not be empty")
 
-                if maximum > dist[-1]['value_max']:
-                    raise ValidationError(
-                        'maximum has to smaller than max of catalogue_item '
-                        'distribution')
+                #??? ask: assuming distribution is not required
+                # if dist:
+                #     if maximum > dist[-1]['value_max']:
+                #         raise ValidationError(
+                #             'maximum has to smaller than max of catalogue_item ' # noqa
+                #             'distribution')
 
                 if minimum >= maximum:
                     raise ValidationError(
                         "maximum has to be greater than minimum")
 
         else:
-            raise ValidationError("chunk - borders must be created")
+            raise ValidationError(
+                "chunk - borders must be created and type list")

@@ -58,7 +58,7 @@ class ChunkTestCase(TestCase):
                     'column': 'B',
                     'minimum': 20,
                     'maximum': 25,
-                    **overrides[0],
+                    **overrides[1],
                 },
             ],
         )
@@ -103,6 +103,7 @@ class ChunkTestCase(TestCase):
             )
 
         assert e.value.message_dict == {
+            '__all__': ['chunk - borders must be created and type list'],
             'borders': [
                 "JSON did not validate. PATH: '.' REASON: 'whatever' is "
                 "not of type 'array'"],
@@ -161,7 +162,7 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
-            '__all__': ['unknown column detected']
+            '__all__': ['borders columns do not match catalogue item']
         }
 
     def test_borders_validation__column_is_correct_type(self):
@@ -218,7 +219,7 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
-            '__all__': ['minimum can not by empty']
+            '__all__': ['minimum can not be empty']
         }
 
         ci = self.ci()
@@ -241,6 +242,7 @@ class ChunkTestCase(TestCase):
 
         # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
+            '__all__': ['minimum can not be empty'],
             'borders': [
                 "JSON did not validate. PATH: '0.minimum' REASON: None "
                 "is not valid under any of the given schemas"
@@ -267,9 +269,10 @@ class ChunkTestCase(TestCase):
 
         # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
+            '__all__': ['minimum can not be empty'],
             'borders': [
-                "JSON did not validate. PATH: '1.minimum' REASON: None is not "
-                'valid under any of the given schemas'
+                "JSON did not validate. PATH: '1.minimum' REASON: None "
+                "is not valid under any of the given schemas"
             ]
         }
 
@@ -390,7 +393,7 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
-            '__all__': ['maximum can not by empty']
+            '__all__': ['maximum can not be empty']
         }
 
         ci = self.ci()
@@ -413,6 +416,7 @@ class ChunkTestCase(TestCase):
 
         # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
+            '__all__': ['maximum can not be empty'],
             'borders': [
                 "JSON did not validate. PATH: '0.maximum' REASON: "
                 'None is not valid under any of the given schemas'
@@ -439,6 +443,7 @@ class ChunkTestCase(TestCase):
 
         # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
+            '__all__': ['maximum can not be empty'],
             'borders': [
                 "JSON did not validate. PATH: '1.maximum' REASON: None is not "
                 'valid under any of the given schemas']
