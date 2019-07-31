@@ -3,7 +3,6 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 import pytest
 
-from chunk.models import Chunk
 from tests.factory import EntityFactory
 
 
@@ -168,9 +167,9 @@ class ChunkTestCase(TestCase):
 
     def test_borders_validation__column_is_correct_type(self):
 
-        #ci = self.ci([{'name': True,}, {}])
-        #not working becouse of catalog item create error
-        #??? ask
+        # ci = self.ci([{'name': True,}, {}])
+        # not working becouse of catalog item create error
+        # ??? ask
 
         ci = self.ci()
 
@@ -241,7 +240,7 @@ class ChunkTestCase(TestCase):
                     },
                 ])
 
-        #??? ask why validation function do not raise errors
+        # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
             '__all__': ['minimum can not be empty'],
             'borders': [
@@ -268,7 +267,7 @@ class ChunkTestCase(TestCase):
                     },
                 ])
 
-        #??? ask why validation function do not raise errors
+        # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
             '__all__': ['minimum can not be empty'],
             'borders': [
@@ -415,7 +414,7 @@ class ChunkTestCase(TestCase):
                     },
                 ])
 
-        #??? ask why validation function do not raise errors
+        # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
             '__all__': ['maximum can not be empty'],
             'borders': [
@@ -442,7 +441,7 @@ class ChunkTestCase(TestCase):
                     },
                 ])
 
-        #??? ask why validation function do not raise errors
+        # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
             '__all__': ['maximum can not be empty'],
             'borders': [
