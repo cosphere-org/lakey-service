@@ -2,7 +2,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 import pytest
-from faker import Faker
 
 from catalogue.models import CatalogueItem
 from downloader.executors.athena import AthenaExecutor
@@ -10,7 +9,6 @@ from tests.factory import EntityFactory
 
 
 ef = EntityFactory()
-faker = Faker()
 
 
 class CatalogueItemTestCase(TestCase):
@@ -41,9 +39,10 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
-                    {'value_min': 22.0, 'value_max': 24.0, 'count': 21},
-                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
+                    {'value': 18.0, 'count': 9},
+                    {'value': 19.1, 'count': 45},
+                    {'value': 21.2, 'count': 10},
+                    {'value': None, 'count': 190},
                 ],
             },
         ]
@@ -70,20 +69,6 @@ class CatalogueItemTestCase(TestCase):
         ]
         assert ci.spec == spec
 
-    def test_invalid__catalogue_item_shoud_have_at_leat_one_column(self):
-
-        with pytest.raises(ValidationError) as e:
-            CatalogueItem.objects.create(
-            name=faker.name(),
-            sample=[],
-            spec=[],
-            executor_type='DATABRICKS')
-
-        assert e.value.message_dict == {
-            'spec': ['This field cannot be blank.']
-        }
-
-    #??? ask below
     def test_invalid__name_should_be_unique(self):
 
         ef.catalogue_item(name='feature')
@@ -163,9 +148,9 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
-                    {'value_min': '22.0', 'value_max': 24.0, 'count': 21},
-                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
+                    {'value': 18.0, 'count': 9},
+                    {'value': '19', 'count': 45},
+                    {'value': 21.2, 'count': 10},
                 ],
             },
         ]
@@ -196,9 +181,9 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
-                    {'value_min': 18.0, 'value_max': 24.0, 'count': 21},
-                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
+                    {'value': 19.0, 'count': 9},
+                    {'value': 19.0, 'count': 45},
+                    {'value': 21.2, 'count': 10},
                 ],
             },
         ]
@@ -228,9 +213,8 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value_min': 18.0, 'value_max': 20.0, 'count': '9'},
-                    {'value_min': 22.0, 'value_max': 24.0, 'count': 21},
-                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
+                    {'value': 19.0, 'count': 45.9},
+                    {'value': 21.2, 'count': 10},
                 ],
             },
         ]
@@ -244,12 +228,9 @@ class CatalogueItemTestCase(TestCase):
                 executor_type='DATABRICKS')
 
         assert e.value.message_dict == {
-            'spec': ["JSON did not validate. PATH: '0.distribution' REASON: "
-            "[{'value_min': 18.0, 'value_max': 20.0, 'count': '9'}, "
-            "{'value_min': 22.0, 'value_max': 24.0, 'count': 21}, {'value_min': "
-            "25.0, 'value_max': 32.0, 'count': 49}] is not valid under any of "
-            'the given schemas',
-            "not integers distribution counts for column 'value' detected"]
+            'spec': [
+                "not integers distribution counts for column 'value' detected",
+            ],
         }
 
     def test_invalid__broken_sample_not_same_names(self):
@@ -419,8 +400,8 @@ class CatalogueItemTestCase(TestCase):
         get_distribution = self.mocker.patch.object(
             AthenaExecutor, 'get_distribution')
         get_distribution.side_effect = [
-            [{'value_min': 'temperature1', 'value_max': 'temperature2', 'count': 19}],
-            [{'value_min': 233, 'value_max': 273, 'count': 567}, {'value_min': 40, 'value_max': 67, 'count': 123}],
+            [{'value': 'temperature', 'count': 19}],
+            [{'value': 233, 'count': 567}, {'value': 45, 'count': 123}],
         ]
 
         ci.update_samples_and_distributions()
@@ -437,7 +418,7 @@ class CatalogueItemTestCase(TestCase):
                 'size': 678,
                 'is_nullable': False,
                 'is_enum': False,
-                'distribution': [{'value_min': 'temperature1', 'value_max': 'temperature2', 'count': 19}],
+                'distribution': [{'value': 'temperature', 'count': 19}],
             },
             {
                 'name': 'value',
@@ -446,8 +427,10 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': False,
                 'is_enum': False,
                 'distribution': [
-                    {'value_min': 233, 'value_max': 273, 'count': 567}, 
-                    {'value_min': 40, 'value_max': 67, 'count': 123},
+                    {'value': 233, 'count': 567},
+                    {'value': 45, 'count': 123},
                 ],
             },
         ]
+
+
