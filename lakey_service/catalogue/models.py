@@ -24,6 +24,7 @@ from downloader.executors.athena import AthenaExecutor
 import pandas
 from chunk.models import Chunk
 
+
 def spec_validator(spec):
     """Validate `CatalogueItem.spec`.
 
