@@ -12,6 +12,8 @@ from lily.base.models import (
     ValidatingModel,
 )
 
+from catalogue.models import CatalogueItem
+
 
 class Chunk(ValidatingModel):
 
@@ -20,7 +22,7 @@ class Chunk(ValidatingModel):
     updated_datetime = models.DateTimeField(auto_now=True)
 
     catalogue_item = models.ForeignKey(
-        'catalogue.CatalogueItem',
+        CatalogueItem,
         on_delete=models.CASCADE,
         related_name='chunks')
 
