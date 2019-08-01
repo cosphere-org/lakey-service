@@ -63,24 +63,6 @@ class Chunk(ValidatingModel):
                 raise ValidationError(
                     "borders columns do not match catalogue item")
 
-            # for entry in matched_columns:
-            #     col = entry['name']
-            #     dist = entry['distribution']
-
-            #     border = None
-            #     try:
-            #         for br in self.borders:
-            #             if br["column"] == col:
-            #                 border = br
-            #                 break
-
-            #     except KeyError:
-            #         raise ValidationError(
-            #             "borders columns do not match catalogue item")
-
-            #     if border is None:
-            #         raise ValidationError(
-            #             "borders columns do not match catalogue item")
 
             for border in self.borders:
 
