@@ -318,6 +318,7 @@ class DownloadRequestTestCase(TestCase):
     #
     # NORMALIZE_SPEC
     #
+
     def test_normalize_spec__sorts_columns(self):
 
         assert DownloadRequest.normalize_spec({
