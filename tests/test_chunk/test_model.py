@@ -358,18 +358,19 @@ class ChunkTestCase(TestCase):
                 borders=[
                     {
                         'column': 'A',
-                        'minimum': 'whatever',
+                        'minimum': 'temperature1.1',
                         'maximum': 'temperature2.3',
                     },
                     {
                         'column': 'B',
-                        'minimum': 18,
+                        'minimum': 1,
                         'maximum': 32,
                     },
                 ])
 
         assert e.value.message_dict == {
-            '__all__': ['minimum has to match catalogue_item minimum']
+            '__all__': [
+                'borders minimu has to be greater than catalogue_item minimum']
         }
 
     def test_borders_validation__maximum_not_null(self):
@@ -533,17 +534,19 @@ class ChunkTestCase(TestCase):
                     {
                         'column': 'A',
                         'minimum': 'temperature1.1',
-                        'maximum': 'whatevera',
+                        'maximum': 'temperature2.3',
                     },
                     {
                         'column': 'B',
                         'minimum': 18,
-                        'maximum': 32,
+                        'maximum': 9983,
                     },
                 ])
 
         assert e.value.message_dict == {
-            '__all__': ['maximum has to match catalogue_item maximum']
+            '__all__': [
+                'borders maximum has to be greater than'
+                ' catalogue_item maximum']
         }
 
     def test_borders_validation__maximum_is_greater_than_minimum(self):

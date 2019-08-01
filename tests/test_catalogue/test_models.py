@@ -147,7 +147,7 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
+                    {'value_min': 18, 'value_max': 20.0, 'count': 9},
                     {'value_min': 18.0, 'value_max': 24.0, 'count': 21},
                     {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
                 ],
@@ -180,8 +180,8 @@ class CatalogueItemTestCase(TestCase):
                 'is_nullable': True,
                 'is_enum': True,
                 'distribution': [
-                    {'value_min': 18.0, 'value_max': 20.0, 'count': '9'},
-                    {'value_min': 22.0, 'value_max': 24.0, 'count': 21},
+                    {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
+                    {'value_min': 18.0, 'value_max': 24.0, 'count': 21},
                     {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
 
                 ],

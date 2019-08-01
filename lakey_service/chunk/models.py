@@ -49,7 +49,6 @@ class Chunk(ValidatingModel):
                 border["column"]
                 for border in self.borders])
 
-            #??? ask: is that ok
             if not borders_columns.issubset(ci_columns):
                 raise ValidationError(
                     "borders columns do not match catalogue item")
@@ -58,48 +57,49 @@ class Chunk(ValidatingModel):
                 raise ValidationError(
                     "borders columns do not match catalogue item")
 
-            # for entry in matched_columns:
-            #     col = entry['name']
-            #     dist = entry['distribution']
-
-            #     border = None
-            #     try:
-            #         for br in self.borders:
-            #             if br["column"] == col:
-            #                 border = br
-            #                 break
-
-            #     except KeyError:
-            #         raise ValidationError(
-            #             "borders columns do not match catalogue item")
-
-            #     if border is None:
-            #         raise ValidationError(
-            #             "borders columns do not match catalogue item")
-
             for border in self.borders:
 
                 minimum = border['minimum']
                 maximum = border['maximum']
+                border_column_name = border["column"]
 
                 if minimum in [None, '']:
                     raise ValidationError("minimum can not be empty")
 
-                #??? ask: assuming distribution is not required
-                # if dist:
-                #     if minimum < dist['value_min']:
-                #         raise ValidationError(
-                #             f"minimum has to match catalogue_item minimum")
+                if isinstance(minimum, int):
+                    # !!! FIX ME different types np enum
+                    for col in self.catalogue_item.spec:
+                        if border_column_name == col["name"]:
+
+                            if col["distribution"]:
+                                list_distribution = [
+                                    x["value_min"]
+                                    for x in col["distribution"]]
+                                catalogue_item_minimum = min(list_distribution)
+
+                                if minimum < catalogue_item_minimum:
+                                    raise ValidationError(
+                                        'borders minimu has to be greater than'
+                                        ' catalogue_item minimum')
 
                 if maximum in [None, '']:
                     raise ValidationError("maximum can not be empty")
 
-                #??? ask: assuming distribution is not required
-                # if dist:
-                #     if maximum > dist[-1]['value_max']:
-                #         raise ValidationError(
-                #             'maximum has to smaller than max of catalogue_item ' # noqa
-                #             'distribution')
+                if isinstance(maximum, int):
+                    # !!! FIX ME different types np enum
+                    for col in self.catalogue_item.spec:
+                        if border_column_name == col["name"]:
+
+                            if col["distribution"]:
+                                list_distribution = [
+                                    x["value_max"]
+                                    for x in col["distribution"]]
+                                catalogue_item_maximum = max(list_distribution)
+
+                                if maximum > catalogue_item_maximum:
+                                    raise ValidationError(
+                                        'borders maximum has to be greater '
+                                        'than catalogue_item maximum')
 
                 if minimum >= maximum:
                     raise ValidationError(

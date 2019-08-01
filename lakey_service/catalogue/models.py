@@ -176,7 +176,9 @@ class CatalogueItem(ValidatingModel):
                             string(),
                             boolean()),
                         count=number(),
-                        required=['value_min', 'value_max', 'count']))),
+                        required=['value_min', 'value_max', 'count'])
+                )
+            ),
             required=[
                 'name',
                 'type',
