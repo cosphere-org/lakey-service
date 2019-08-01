@@ -52,12 +52,14 @@ class ChunkTestCase(TestCase):
                     'column': 'A',
                     'minimum': 10,
                     'maximum': 15,
+                    'distribution': None,
                     **overrides[0],
                 },
                 {
                     'column': 'B',
                     'minimum': 20,
                     'maximum': 25,
+                    'distribution': None,
                     **overrides[1],
                 },
             ],
@@ -76,14 +78,18 @@ class ChunkTestCase(TestCase):
                 'column': 'A',
                 'minimum': 10,
                 'maximum': 15,
+                'distribution': None,
             },
             {
                 'column': 'B',
                 'minimum': 20,
                 'maximum': 25,
+                'distribution': None,
             },
         ]
         assert c.count is not None
+        for border in c.borders:
+            assert border['distribution'] is None
 
     def test_count__correct_type(self):
 
@@ -91,6 +97,16 @@ class ChunkTestCase(TestCase):
         c = self.c(catalogue_item=ci)
 
         assert type(c.count).__name__ == 'int'
+
+    def test_catalog_item__is_not_none(self):
+
+        pass
+
+        # c = self.c()
+        # !!! fix me:
+        # ??? ask
+
+        # assert c.catalogue_item is not None
 
     def test_borders_validation__expect_array(self):
 
@@ -130,6 +146,7 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                 ]
             )
@@ -148,16 +165,19 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                     {
                         'column': 'C',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                 ])
 
@@ -167,28 +187,14 @@ class ChunkTestCase(TestCase):
 
     def test_borders_validation__column_is_correct_type(self):
 
-        # ci = self.ci([{'name': True,}, {}])
-        # not working becouse of catalog item create error
-        # ??? ask
-
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
 
             self.c(
-                catalogue_item=ci,
-                borders=[
-                    {
-                        'column': True,
-                        'minimum': 10,
-                        'maximum': 15,
-                    },
-                    {
-                        'column': 'B',
-                        'minimum': 20,
-                        'maximum': 25,
-                    },
-                ])
+                overrides=[{'column': True}, {}],
+                catalogue_item=ci
+            )
 
         assert e.value.message_dict == {
             '__all__': ['borders columns do not match catalogue item'],
@@ -204,68 +210,22 @@ class ChunkTestCase(TestCase):
 
         with pytest.raises(ValidationError) as e:
             self.c(
+                overrides=[{}, {'minimum': ''}],
                 catalogue_item=ci,
-                borders=[
-                    {
-                        'column': 'A',
-                        'minimum': '',
-                        'maximum': 15,
-                    },
-                    {
-                        'column': 'B',
-                        'minimum': 20,
-                        'maximum': 25,
-                    },
-                ])
-
-        assert e.value.message_dict == {
-            '__all__': ['minimum can not be empty']
-        }
-
-        ci = self.ci()
-
-        with pytest.raises(ValidationError) as e:
-            self.c(
-                catalogue_item=ci,
-                borders=[
-                    {
-                        'column': 'A',
-                        'minimum': None,
-                        'maximum': 15,
-                    },
-                    {
-                        'column': 'B',
-                        'minimum': 20,
-                        'maximum': 25,
-                    },
-                ])
+            )
 
         # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
             '__all__': ['minimum can not be empty'],
-            'borders': [
-                "JSON did not validate. PATH: '0.minimum' REASON: None "
-                "is not valid under any of the given schemas"
-            ]
         }
 
         ci = self.ci()
 
         with pytest.raises(ValidationError) as e:
             self.c(
+                overrides=[{}, {'minimum': None}],
                 catalogue_item=ci,
-                borders=[
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 15,
-                    },
-                    {
-                        'column': 'B',
-                        'minimum': None,
-                        'maximum': 25,
-                    },
-                ])
+            )
 
         # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
@@ -288,11 +248,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': True,
                         'maximum': 15,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 20,
                         'maximum': 25,
+                        'distribution': None,
                     },
                 ])
 
@@ -314,11 +276,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': True,
                         'maximum': 25,
+                        'distribution': None,
                     },
                 ])
 
@@ -360,11 +324,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 'temperature1.1',
                         'maximum': 'temperature2.3',
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 1,
                         'maximum': 32,
+                        'distribution': None,
                     },
                 ])
 
@@ -385,11 +351,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': '',
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 20,
                         'maximum': 25,
+                        'distribution': None,
                     },
                 ])
 
@@ -407,11 +375,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': None,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 20,
                         'maximum': 25,
+                        'distribution': None,
                     },
                 ])
 
@@ -434,11 +404,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 20,
                         'maximum': None,
+                        'distribution': None,
                     },
                 ])
 
@@ -462,11 +434,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': True,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 20,
                         'maximum': 25,
+                        'distribution': None,
                     },
                 ])
 
@@ -489,11 +463,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 20,
                         'maximum': True,
+                        'distribution': None,
                     },
                 ])
 
@@ -535,11 +511,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 'temperature1.1',
                         'maximum': 'temperature2.3',
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 18,
                         'maximum': 9983,
+                        'distribution': None,
                     },
                 ])
 
@@ -561,11 +539,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 10,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 20,
                         'maximum': 25,
+                        'distribution': None,
                     },
                 ])
 
@@ -583,11 +563,13 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 25,
                         'maximum': 25,
+                        'distribution': None,
                     },
                 ])
 
@@ -605,14 +587,21 @@ class ChunkTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 15,
+                        'distribution': None,
                     },
                     {
                         'column': 'B',
                         'minimum': 25,
                         'maximum': 20,
+                        'distribution': None,
                     },
                 ])
 
         assert e.value.message_dict == {
             '__all__': ["maximum has to be greater than minimum"],
         }
+
+    def test_distribution__is_consistent_with_catalogue_item_dist(self):
+
+        pass
+        # ??? ask

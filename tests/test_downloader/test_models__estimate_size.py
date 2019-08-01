@@ -16,38 +16,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
     def setUp(self):
         ef.clear()
 
-        self.ci = ef.catalogue_item()
-
-    def test_estimate_size__filter_with_open_range(self):
-
-
-        d = DownloadRequest.objects.create(
-            created_by=a,
-            spec={
-                'columns': ['A'],
-                'filters': [
-                    {
-                        'name': 'A',
-                        'operator': '>=',
-                        'value': 10,
-                    },
-                    {
-                        'name': 'B',
-                        'operator': '=',
-                        'value': 22,
-                    },
-
-                ],
-                'randomize_ratio': 1,
-            },
-            catalogue_item=self.ci)
-
-        est = DownloadRequest.objects.estimate_size(d.spec, self.ci.pk)
-
-        assert est
-
-    def test_estimate_size__filter_with_closed_range(self):
-        ci = ef.catalogue_item(
+        self.ci = ef.catalogue_item(
             spec=[
                 {
                     'name': 'A',
@@ -59,6 +28,52 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                 },
             ],
         )
+
+    def test_estimate_size__filter_with_open_range(self):
+        spec = {
+           'columns': ['A'],
+           'filters': [
+               {
+                   'name': 'A',
+                   'operator': '<',
+                   'value': 0,
+               },
+               {
+                   'name': 'A',
+                   'operator': '>',
+                   'value': 20,
+               },
+
+           ],
+           'randomize_ratio': 1,
+        }
+
+        ef.chunk_bulk(
+            chunks_borders=[
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 0,
+                        'maximum': 10,
+                    },
+                ],
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 20,
+                    },
+                ],
+            ],
+            catalogue_item=self.ci,
+            count=1,
+        )
+
+        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+
+        assert es == 0
+
+    def test_estimate_size__filter_with_closed_range(self):
 
         spec = {
            'columns': ['A'],
@@ -78,30 +93,97 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
            'randomize_ratio': 1,
         }
 
-        ef.chunk_bulk([
-            [
-                {
-                    'column': 'A',
-                    'minimum': 0,
-                    'maximum': 10,
-                },
+        ef.chunk_bulk(
+            chunks_borders=[
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 0,
+                        'maximum': 10,
+                    },
+                ],
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 20,
+                    },
+                ],
             ],
-            [
-                {
-                    'column': 'A',
-                    'minimum': 10,
-                    'maximum': 20,
-                },
-            ],
-        ])
+            catalogue_item=self.ci,
+            count=1,
 
-        es = DownloadRequest.objects.estimate_size(spec, ci.id)
+        )
 
+        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
         assert es == 8
 
+    def test_estimate_size__filters_is_empty(self):
+        spec = {
+            'columns': ['A'],
+            'filters': [],
+            'randomize_ratio': 1,
+        }
 
-    def test_estimate_size__filter_is_empty(self):
-        pass
+        ef.chunk_bulk(
+            chunks_borders=[
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 0,
+                        'maximum': 10,
+                    },
+                ],
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 20,
+                    },
+                ],
+            ],
+            catalogue_item=self.ci,
+
+        )
+
+    def test_estimate_size__filter_column_is_empty(self):
+        spec = {
+           'columns': [],
+           'filters': [
+               {
+                   'name': 'A',
+                   'operator': '>',
+                   'value': 5,
+               },
+               {
+                   'name': 'A',
+                   'operator': '<',
+                   'value': 15,
+               },
+
+           ],
+           'randomize_ratio': 1,
+        }
+
+        ef.chunk_bulk(
+            chunks_borders=[
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 0,
+                        'maximum': 10,
+                    },
+                ],
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 20,
+                    },
+                ],
+            ],
+            catalogue_item=self.ci,
+        )
 
     def test_estimate_size__filter_include_all(self):
         pass
@@ -113,4 +195,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
         pass
 
     def test_estimate_size__chunks_not_exist(self):
+        pass
+
+    def test_estimate_size__filters_exclude_themselves(self):
         pass

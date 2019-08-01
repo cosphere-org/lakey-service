@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 
 from lily.base.models import (
     array,
+    null_or,
     JSONSchemaField,
     number,
     object,
@@ -30,15 +31,37 @@ class Chunk(ValidatingModel):
                 column=string(),
                 minimum=one_of(number(), string()),
                 maximum=one_of(number(), string()),
-                required=['column', 'minimum', 'maximum'],
+                distribution=null_or(
+                    array(
+                        object(
+                            value_min=one_of(
+                                number(),
+                                string(),
+                            ),
+                            value_max=one_of(
+                                number(),
+                                string(),
+                            ),
+                            count=number(),
+                            required=['value_min', 'value_max', 'count'])
+                    )
+                ),
+                required=['column', 'minimum', 'maximum', 'distribution'],
             )
         )
     )
+    # ??? ask different types
 
     count = models.IntegerField(default=None)
 
+    def borders_per_column(self, column_name):
+        for chunk_border in list(self.borders):
+            if chunk_border['column'] == column_name:
+                return chunk_border
+
     def clean(self):
         self.validate_borders_in_context_of_catalogue_item()
+        pass
 
     def validate_borders_in_context_of_catalogue_item(self):
 

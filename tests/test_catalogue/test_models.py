@@ -370,7 +370,8 @@ class CatalogueItemTestCase(TestCase):
     # UPDATE_SAMPLES_AND_DISTRIBUTIONS
     #
     def test_update_samples_and_distributions(self):
-
+        # !!! fix me
+        # ??? ask: catalog item model min max???
         a = ef.account()
         ci = CatalogueItem.objects.create(
             maintained_by=a,

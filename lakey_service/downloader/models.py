@@ -24,6 +24,14 @@ from chunk.models import Chunk
 class DownloadRequestManager(models.Manager):
 
     def estimate_size(self, spec, catalogue_item_id):
+        if not spec['columns']:
+            raise ValidationError(
+                "column in spec filter can not be empty")
+
+        if not spec['filters']:
+            raise ValidationError(
+                "filters in spec filter can not be empty")
+
         catalogue_item = CatalogueItem.objects.get(id=catalogue_item_id)
         all_chunks = Chunk.objects.filter(catalogue_item=catalogue_item)
         max_size = 0
@@ -42,7 +50,7 @@ class DownloadRequestManager(models.Manager):
                 filter_value = spec_filter['value']
                 column_name = spec_filter['name']
 
-                border = chunk.borders_per_column[column_name]
+                border = chunk.borders_per_column(column_name)
                 b_min, b_max = border['minimum'], border['maximum']
 
                 if columns_type_by_name[column_name] == 'INTEGER':
@@ -70,10 +78,10 @@ class DownloadRequestManager(models.Manager):
                         if b_max < filter_value < b_min:
                             chunk_passed.append(True)
 
-            if all(chunk_passed):
+            if chunk_passed and all(chunk_passed):
                 for col in spec['columns']:
                     border_type = columns_type_by_name[col]
-                    border_count = border['count']
+                    border_count = chunk.count
 
                     if border_type == 'INTEGER':
                         max_size += 4 * border_count
