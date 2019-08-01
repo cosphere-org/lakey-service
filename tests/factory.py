@@ -129,13 +129,19 @@ class EntityFactory:
             ],
             count=count or faker.random_int(500, 100000))
 
-    def chunk_bulk(self, borders_chunk):
+    def chunk_bulk(
+            self,
+            chunks_borders=[],
+            catalogue_item=None,
+            count=None):
+
         chunks = []
-        for border in borders_chunk:
-            print(border)
+        for chunk_borders in chunks_borders:
             chunks.append(
                 self.chunk(
-                    borders=border
+                    borders=chunk_borders,
+                    catalogue_item=catalogue_item,
+                    count=count,
                 )
             )
         return chunks
