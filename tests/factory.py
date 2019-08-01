@@ -8,7 +8,9 @@ from account.models import (
     AuthRequest,
 )
 from catalogue.models import CatalogueItem
+from chunk.models import Chunk
 from downloader.models import DownloadRequest
+
 
 faker = Faker()
 
@@ -19,6 +21,7 @@ class EntityFactory:
         Account.objects.all().delete()
         AuthRequest.objects.all().delete()
         CatalogueItem.objects.all().delete()
+        Chunk.objects.all().delete()
         DownloadRequest.objects.all().delete()
 
     def account(self, email=None, type=None):
@@ -68,9 +71,9 @@ class EntityFactory:
                     'is_nullable': True,
                     'is_enum': False,
                     'distribution': [
-                        {'value': 18.0, 'count': 9},
-                        {'value': 19.1, 'count': 45},
-                        {'value': 21.2, 'count': 10},
+                        {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
+                        {'value_min': 22.0, 'value_max': 24.0, 'count': 21},
+                        {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
                     ],
                 },
             ],
@@ -99,3 +102,29 @@ class EntityFactory:
             catalogue_item=catalogue_item,
             is_cancelled=is_cancelled,
             executor_job_id=executor_job_id)
+
+    def chunk(
+            self,
+            created_datetime=None,
+            updated_datetime=None,
+            catalogue_item=None,
+            borders=None,
+            count=None):
+
+        return Chunk.objects.create(
+            created_datetime=created_datetime,
+            updated_datetime=updated_datetime,
+            catalogue_item=catalogue_item,
+            borders=borders or [
+                {
+                    'column': 'A',
+                    'minimum': 10,
+                    'maximum': 15,
+                },
+                {
+                    'column': 'B',
+                    'minimum': 20,
+                    'maximum': 25,
+                },
+            ],
+            count=faker.random_int(500, 100000))

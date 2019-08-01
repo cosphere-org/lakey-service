@@ -68,7 +68,7 @@ class AthenaExecutor:
                 SELECT
                     q.*
                 FROM ({query}) AS q
-                WHERE RAND() >= {randomize_ratio}
+                WHERE RAND() <= {randomize_ratio}
             '''
 
         return query
@@ -197,6 +197,7 @@ class AthenaExecutor:
 
         uri = self.execute_query(database, query)
 
+        # FIXME: test if range HEADER !!!! also works here!!!!
         response = requests.get(uri)
 
         return pd.read_csv(StringIO(response.content.decode('utf-8')))
@@ -216,15 +217,8 @@ class AthenaExecutor:
         bucket = settings.AWS_S3_BUCKET
         region = settings.AWS_LAKEY_REGION
 
-        uri = (
-            f'https://s3.{region}.amazonaws.com/{bucket}'
-            f'/results/{execution_id}.csv')
-
-        # -- FIXME: temp solution for making the url public
-        s3.put_object(
-            Key=f'/results/{execution_id}.csv',
-            Bucket=bucket,
-            ACL='public-read')
+        key = f'results/{execution_id}.csv'
+        s3.put_object(Key=key, Bucket=bucket, ACL='public-read')
 
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         # the URL should be created by extra method on DEMAND!!!!
@@ -232,11 +226,17 @@ class AthenaExecutor:
         # https://boto3.amazonaws.com/v1/documentation/api/latest/
         # reference/services/s3.html?highlight=s3#S3.
         # Client.generate_presigned_url
+        while True:
+            response = athena.get_query_execution(
+                QueryExecutionId=execution_id)
 
-        # FIXME: test if range HEADER !!!! also works here!!!!
+            state = response['QueryExecution']['Status']['State']
+            if state == 'SUCCEEDED':
+                break
 
-        # FIXME: make it smarter!!!
-        # -- wait some time till the results will be available
-        sleep(2)
+            else:
+                print(
+                    f'STATE[{state}] waiting 2 more seconds key: "{key}"')
+                sleep(2)
 
-        return uri
+        return f'https://s3.{region}.amazonaws.com/{bucket}/{key}'
