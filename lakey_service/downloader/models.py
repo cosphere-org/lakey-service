@@ -24,6 +24,14 @@ from chunk.models import Chunk
 class DownloadRequestManager(models.Manager):
 
     def estimate_size(self, spec, catalogue_item_id):
+        if not spec['columns']:
+            raise ValidationError(
+                "column in spec filter can not be empty")
+
+        if not spec['filters']:
+            raise ValidationError(
+                "filters in spec filter can not be empty")
+
         catalogue_item = CatalogueItem.objects.get(id=catalogue_item_id)
         all_chunks = Chunk.objects.filter(catalogue_item=catalogue_item)
         max_size = 0

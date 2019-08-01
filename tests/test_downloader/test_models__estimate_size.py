@@ -19,32 +19,60 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
         self.ci = ef.catalogue_item()
 
     def test_estimate_size__filter_with_open_range(self):
+        ci = ef.catalogue_item(
+            spec=[
+                {
+                    'name': 'A',
+                    'type': 'INTEGER',
+                    'size': 123,
+                    'is_nullable': False,
+                    'is_enum': False,
+                    'distribution': None,
+                },
+            ],
+        )
 
+        spec = {
+           'columns': ['A'],
+           'filters': [
+               {
+                   'name': 'A',
+                   'operator': '<',
+                   'value': 5,
+               },
+               {
+                   'name': 'A',
+                   'operator': '>',
+                   'value': 15,
+               },
 
-        d = DownloadRequest.objects.create(
-            created_by=a,
-            spec={
-                'columns': ['A'],
-                'filters': [
+           ],
+           'randomize_ratio': 1,
+        }
+
+        ef.chunk_bulk(
+            chunks_borders=[
+                [
                     {
-                        'name': 'A',
-                        'operator': '>=',
-                        'value': 10,
+                        'column': 'A',
+                        'minimum': 0,
+                        'maximum': 10,
                     },
-                    {
-                        'name': 'B',
-                        'operator': '=',
-                        'value': 22,
-                    },
-
                 ],
-                'randomize_ratio': 1,
-            },
-            catalogue_item=self.ci)
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 20,
+                    },
+                ],
+            ],
+            catalogue_item=ci,
 
-        est = DownloadRequest.objects.estimate_size(d.spec, self.ci.pk)
+        )
 
-        assert est
+        es = DownloadRequest.objects.estimate_size(spec, ci.id)
+        assert es == 0
 
     def test_estimate_size__filter_with_closed_range(self):
         ci = ef.catalogue_item(
@@ -78,30 +106,111 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
            'randomize_ratio': 1,
         }
 
-        ef.chunk_bulk([
-            [
-                {
-                    'column': 'A',
-                    'minimum': 0,
-                    'maximum': 10,
-                },
+        ef.chunk_bulk(
+            chunks_borders=[
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 0,
+                        'maximum': 10,
+                    },
+                ],
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 20,
+                    },
+                ],
             ],
-            [
-                {
-                    'column': 'A',
-                    'minimum': 10,
-                    'maximum': 20,
-                },
-            ],
-        ])
+            catalogue_item=ci,
+
+        )
 
         es = DownloadRequest.objects.estimate_size(spec, ci.id)
-
         assert es == 8
 
+    def test_estimate_size__filters_is_empty(self):
+        spec = {
+            'columns': ['A'],
+            'filters': [],
+            'randomize_ratio': 1,
+        }
 
-    def test_estimate_size__filter_is_empty(self):
-        pass
+        ef.chunk_bulk(
+            chunks_borders=[
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 0,
+                        'maximum': 10,
+                    },
+                ],
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 20,
+                    },
+                ],
+            ],
+            catalogue_item=self.ci,
+
+        )
+
+        with pytest.raises(ValidationError) as e:
+            DownloadRequest.objects.estimate_size(spec, self.ci.id)
+
+        assert e.value.message_dict == {
+            '__all__': ['filters in spec filter can not be empty']
+        }
+
+    def test_estimate_size__filter_column_is_empty(self):
+        spec = {
+           'columns': [],
+           'filters': [
+               {
+                   'name': 'A',
+                   'operator': '>',
+                   'value': 5,
+               },
+               {
+                   'name': 'A',
+                   'operator': '<',
+                   'value': 15,
+               },
+
+           ],
+           'randomize_ratio': 1,
+        }
+
+        ef.chunk_bulk(
+            chunks_borders=[
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 0,
+                        'maximum': 10,
+                    },
+                ],
+                [
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 20,
+                    },
+                ],
+            ],
+            catalogue_item=self.ci,
+
+        )
+
+        with pytest.raises(ValidationError) as e:
+            DownloadRequest.objects.estimate_size(spec, self.ci.id)
+
+        assert e.value.message_dict == {
+            '__all__': ['column in spec filter can not be empty']
+        }
 
     def test_estimate_size__filter_include_all(self):
         pass
@@ -113,4 +222,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
         pass
 
     def test_estimate_size__chunks_not_exist(self):
+        pass
+
+    def test_estimate_size__filters_exclude_themselves(self):
         pass
