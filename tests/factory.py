@@ -114,7 +114,7 @@ class EntityFactory:
         return Chunk.objects.create(
             created_datetime=created_datetime,
             updated_datetime=updated_datetime,
-            catalogue_item=catalogue_item,
+            catalogue_item=catalogue_item or self.catalogue_item(),
             borders=borders or [
                 {
                     'column': 'A',
@@ -127,4 +127,15 @@ class EntityFactory:
                     'maximum': 25,
                 },
             ],
-            count=faker.random_int(500, 100000))
+            count=count or faker.random_int(500, 100000))
+
+    def chunk_bulk(self, borders_chunk):
+        chunks = []
+        for border in borders_chunk:
+            print(border)
+            chunks.append(
+                self.chunk(
+                    borders=border
+                )
+            )
+        return chunks
