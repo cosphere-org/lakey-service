@@ -16,10 +16,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
     def setUp(self):
         ef.clear()
 
-        self.ci = ef.catalogue_item()
-
-    def test_estimate_size__filter_with_open_range(self):
-        ci = ef.catalogue_item(
+        self.ci = ef.catalogue_item(
             spec=[
                 {
                     'name': 'A',
@@ -32,18 +29,19 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             ],
         )
 
+    def test_estimate_size__filter_with_open_range(self):
         spec = {
            'columns': ['A'],
            'filters': [
                {
                    'name': 'A',
                    'operator': '<',
-                   'value': 5,
+                   'value': 0,
                },
                {
                    'name': 'A',
                    'operator': '>',
-                   'value': 15,
+                   'value': 20,
                },
 
            ],
@@ -67,26 +65,15 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                     },
                 ],
             ],
-            catalogue_item=ci,
-
+            catalogue_item=self.ci,
+            count=1,
         )
 
-        es = DownloadRequest.objects.estimate_size(spec, ci.id)
+        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+
         assert es == 0
 
     def test_estimate_size__filter_with_closed_range(self):
-        ci = ef.catalogue_item(
-            spec=[
-                {
-                    'name': 'A',
-                    'type': 'INTEGER',
-                    'size': 123,
-                    'is_nullable': False,
-                    'is_enum': False,
-                    'distribution': None,
-                },
-            ],
-        )
 
         spec = {
            'columns': ['A'],
@@ -123,11 +110,12 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                     },
                 ],
             ],
-            catalogue_item=ci,
+            catalogue_item=self.ci,
+            count=1,
 
         )
 
-        es = DownloadRequest.objects.estimate_size(spec, ci.id)
+        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
         assert es == 8
 
     def test_estimate_size__filters_is_empty(self):
@@ -157,13 +145,6 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             catalogue_item=self.ci,
 
         )
-
-        with pytest.raises(ValidationError) as e:
-            DownloadRequest.objects.estimate_size(spec, self.ci.id)
-
-        assert e.value.message_dict == {
-            '__all__': ['filters in spec filter can not be empty']
-        }
 
     def test_estimate_size__filter_column_is_empty(self):
         spec = {
@@ -202,15 +183,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                 ],
             ],
             catalogue_item=self.ci,
-
         )
-
-        with pytest.raises(ValidationError) as e:
-            DownloadRequest.objects.estimate_size(spec, self.ci.id)
-
-        assert e.value.message_dict == {
-            '__all__': ['column in spec filter can not be empty']
-        }
 
     def test_estimate_size__filter_include_all(self):
         pass

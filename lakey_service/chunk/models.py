@@ -37,6 +37,11 @@ class Chunk(ValidatingModel):
 
     count = models.IntegerField(default=None)
 
+    def borders_per_column(self, column_name):
+        for chunk_border in list(self.borders):
+            if chunk_border['column'] == column_name:
+                return chunk_border
+
     def clean(self):
         self.validate_borders_in_context_of_catalogue_item()
 
@@ -49,7 +54,7 @@ class Chunk(ValidatingModel):
                 border["column"]
                 for border in self.borders])
 
-            #??? ask: is that ok
+            # ??? ask: is that ok
             if not borders_columns.issubset(ci_columns):
                 raise ValidationError(
                     "borders columns do not match catalogue item")
