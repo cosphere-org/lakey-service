@@ -3,6 +3,7 @@ from enum import Enum, unique
 
 from django.core.exceptions import ValidationError
 from django.db import models
+import pandas
 from lily.base.models import (
     array,
     boolean,
@@ -19,10 +20,8 @@ from lily.base.models import (
 )
 
 from account.models import Account
-from downloader.executors.athena import AthenaExecutor
-
-import pandas
 from chunk.models import Chunk
+from downloader.executors.athena import AthenaExecutor
 
 
 def spec_validator(spec):

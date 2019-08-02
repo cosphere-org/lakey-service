@@ -1,3 +1,4 @@
+from enum import Enum, unique
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -10,9 +11,57 @@ from lily.base.models import (
     number,
     object,
     one_of,
+    enum,
     string,
     ValidatingModel,
 )
+
+
+def distribution_validator(borders):
+
+    for border in borders:
+
+        b_name = border.get('column')
+        b_type = border.get('type')
+        if not b_name or not b_type:
+            continue
+
+        distribution = border.get('distribution')
+        if not distribution:
+            continue
+
+        # -- values in distribution must has correct type
+        b_type_to_python_type = Chunk.column_type_to_python_type
+        expected_types = (b_type_to_python_type[b_type],)
+
+        if distribution:
+            for entry in distribution:
+                if not isinstance(entry['value_min'], expected_types):
+                    raise ValidationError(
+                        f"column type and distribution value type "  # noqa
+                        f"mismatch detected for column '{b_name}'")
+
+                if not isinstance(entry['value_max'], expected_types):
+                    raise ValidationError(
+                        f"column type and distribution value type "  # noqa
+                        f"mismatch detected for column '{b_name}'")
+
+        # -- values in distribution must be unique
+        values_min = [entry['value_min'] for entry in distribution]
+        values_max = [entry['value_max'] for entry in distribution]
+        all_values = values_min + values_max
+        if len(all_values) != len(set(all_values)):
+            raise ValidationError(
+                f"not unique distribution values for column '{b_name}' "
+                "detected")
+
+        # -- counts in distribution must be integers
+        counts_are_ints = [
+            isinstance(entry['count'], int) for entry in distribution]
+        if not all(counts_are_ints):
+            raise ValidationError(
+                f"not integers distribution counts for column '{b_name}' "
+                "detected")
 
 
 class Chunk(ValidatingModel):
@@ -26,10 +75,32 @@ class Chunk(ValidatingModel):
         on_delete=models.CASCADE,
         related_name='chunks')
 
+    @unique
+    class ColumnType(Enum):
+
+        INTEGER = 'INTEGER'
+
+        FLOAT = 'FLOAT'
+
+        STRING = 'STRING'
+
+        BOOLEAN = 'BOOLEAN'
+
+        DATETIME = 'DATETIME'
+
+    column_type_to_python_type = {
+        ColumnType.INTEGER.value: int,
+        ColumnType.FLOAT.value: float,
+        ColumnType.STRING.value: str,
+        ColumnType.DATETIME.value: str,
+        ColumnType.BOOLEAN.value: bool,
+    }
+
     borders = JSONSchemaField(
         schema=array(
             object(
                 column=string(),
+                type=enum(*[t.value for t in ColumnType]),
                 minimum=one_of(number(), string()),
                 maximum=one_of(number(), string()),
                 distribution=null_or(
@@ -51,9 +122,9 @@ class Chunk(ValidatingModel):
                 ),
                 required=['column', 'minimum', 'maximum', 'distribution'],
             )
-        )
+        ),
+        validators=[distribution_validator]
     )
-    # ??? ask different types
 
     count = models.IntegerField(default=None)
 
