@@ -4,6 +4,8 @@ from enum import Enum, unique
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save
 from django.db import models
+from django.db.models import Q
+
 from lily.base.models import (
     array,
     boolean,
@@ -33,25 +35,29 @@ class DownloadRequestManager(models.Manager):
                 "filters in spec filter can not be empty")
 
         catalogue_item = CatalogueItem.objects.get(id=catalogue_item_id)
+        all_chunks = Chunk.objects.filter(catalogue_item=catalogue_item)
+
+        test_chunks = Chunk.objects.filter(catalogue_item=catalogue_item,
+                                           borders__0__column='A',
+                                           borders__0__minimum__gte=0,
+                                           borders__0__maxiumum__lte=20)
+
         max_size = 0
 
         columns_type_by_name = {}
         for column in catalogue_item.spec:
             columns_type_by_name[column['name']] = column['type']
 
-        chunks_by_column = {}
-
-        for spec_filter in spec['filters']:
-            filter_operator = spec_filter['operator']
-            filter_value = spec_filter['value']
-            column_name = spec_filter['name']
+        # [PERFORMANCE-ISSUE]: here we iterate over all chunks for a given
+        # catalogue item.
+        for chunk in all_chunks:
             chunk_passed = []
 
-            if column_name not in chunks_by_column:
-                chunks_by_column[column_name] = Chunk.objects.filter(catalogue_item=catalogue_item,
-                                                                     borders__contains=[{'column': column_name}])
+            for spec_filter in spec['filters']:
+                filter_operator = spec_filter['operator']
+                filter_value = spec_filter['value']
+                column_name = spec_filter['name']
 
-            for chunk in chunks_by_column[column_name]:
                 border = chunk.borders_per_column(column_name)
                 b_min, b_max = border['minimum'], border['maximum']
 
@@ -80,13 +86,13 @@ class DownloadRequestManager(models.Manager):
                         if b_max < filter_value < b_min:
                             chunk_passed.append(True)
 
-                if chunk_passed and all(chunk_passed):
-                    for col in spec['columns']:
-                        border_type = columns_type_by_name[col]
-                        border_count = border.count
+            if chunk_passed and all(chunk_passed):
+                for col in spec['columns']:
+                    border_type = columns_type_by_name[col]
+                    border_count = chunk.count
 
-                        if border_type == 'INTEGER':
-                            max_size += 4 * border_count
+                    if border_type == 'INTEGER':
+                        max_size += 4 * border_count
 
         return max_size
 
