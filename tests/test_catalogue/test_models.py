@@ -370,8 +370,7 @@ class CatalogueItemTestCase(TestCase):
     # UPDATE_SAMPLES_AND_DISTRIBUTIONS
     #
     def test_update_samples_and_distributions(self):
-        # !!! fix me
-        # ??? ask: catalog item model min max???
+
         a = ef.account()
         ci = CatalogueItem.objects.create(
             maintained_by=a,
@@ -379,7 +378,7 @@ class CatalogueItemTestCase(TestCase):
             sample=[],
             spec=[
                 {
-                    'name': 'name',
+                    'name': 'surname',
                     'type': 'STRING',
                     'size': None,
                     'is_nullable': False,
@@ -387,7 +386,7 @@ class CatalogueItemTestCase(TestCase):
                     'distribution': None,
                 },
                 {
-                    'name': 'value',
+                    'name': 'price',
                     'type': 'INTEGER',
                     'size': None,
                     'is_nullable': False,
@@ -399,48 +398,48 @@ class CatalogueItemTestCase(TestCase):
 
         get_sample = self.mocker.patch.object(AthenaExecutor, 'get_sample')
         get_sample.return_value = [
-            {'name': 'temperature', 'value_min': 233, 'value_max': 273},
-            {'name': 'pressure', 'value_min': 40, 'value_max': 67},
+            {'surname': 'temperature', 'price': 381},
+            {'surname': 'pressure', 'price': 13},
         ]
         get_size = self.mocker.patch.object(AthenaExecutor, 'get_size')
         get_size.side_effect = [678, 789]
         get_distribution = self.mocker.patch.object(
             AthenaExecutor, 'get_distribution')
         get_distribution.side_effect = [
-            [{'value_min': 'temperature1',
-                'value_max': 'temperature2', 'count': 19}],
-            [{'value_min': 233, 'value_max': 273, 'count': 567},
-                {'value_min': 40, 'value_max': 67, 'count': 123}],
+            [{'value_min': 'temperature1', 'value_max': 'temperature2',
+                'count': 19}],
+            [{'value_min': 233, 'value_max': 345, 'count': 567},
+                {'value_min': 45, 'value_max': 145, 'count': 123}],
         ]
 
         ci.update_samples_and_distributions()
 
         ci.refresh_from_db()
         assert ci.sample == [
-            {'name': 'temperature', 'value_min': 233, 'value_max': 273},
-            {'name': 'pressure', 'value_min': 40, 'value_max': 67},
+            {'surname': 'temperature', 'price': 381},
+            {'surname': 'pressure', 'price': 13},
         ]
         assert ci.spec == [
             {
-                'name': 'name',
+                'name': 'surname',
                 'type': 'STRING',
                 'size': 678,
                 'is_nullable': False,
                 'is_enum': False,
                 'distribution': [
-                    {'value_min':
-                        'temperature1', 'value_max':
-                            'temperature2', 'count': 19}],
+                    {'value_min': 'temperature1', 'value_max': 'temperature2',
+                        'count': 19}
+                ],
             },
             {
-                'name': 'value',
+                'name': 'price',
                 'type': 'INTEGER',
                 'size': 789,
                 'is_nullable': False,
                 'is_enum': False,
                 'distribution': [
-                    {'value_min': 233, 'value_max': 273, 'count': 567},
-                    {'value_min': 40, 'value_max': 67, 'count': 123},
+                    {'value_min': 233, 'value_max': 345, 'count': 567},
+                    {'value_min': 45, 'value_max': 145, 'count': 123},
                 ],
             },
         ]

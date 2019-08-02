@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 import pytest
 
 from tests.factory import EntityFactory
+from chunk.models import Chunk
 
 
 ef = EntityFactory()
@@ -68,7 +69,10 @@ class ChunkTestCase(TestCase):
     def test_simple_creation(self):
 
         ci = self.ci()
+        assert Chunk.objects.count() == 0
         c = self.c(catalogue_item=ci)
+        assert Chunk.objects.count() == 1
+        c = Chunk.objects.first()
 
         assert c.created_datetime is not None
         assert c.updated_datetime is not None
@@ -88,8 +92,7 @@ class ChunkTestCase(TestCase):
             },
         ]
         assert c.count is not None
-        for border in c.borders:
-            assert border['distribution'] is None
+        assert all(border['distribution'] is None for border in c.borders)
 
     def test_count__correct_type(self):
 
@@ -97,16 +100,6 @@ class ChunkTestCase(TestCase):
         c = self.c(catalogue_item=ci)
 
         assert type(c.count).__name__ == 'int'
-
-    def test_catalog_item__is_not_none(self):
-
-        pass
-
-        # c = self.c()
-        # !!! fix me:
-        # ??? ask
-
-        # assert c.catalogue_item is not None
 
     def test_borders_validation__expect_array(self):
 
@@ -600,8 +593,3 @@ class ChunkTestCase(TestCase):
         assert e.value.message_dict == {
             '__all__': ["maximum has to be greater than minimum"],
         }
-
-    def test_distribution__is_consistent_with_catalogue_item_dist(self):
-
-        pass
-        # ??? ask

@@ -4,8 +4,9 @@ from django.core.exceptions import ValidationError
 
 from lily.base.models import (
     array,
-    null_or,
+    boolean,
     JSONSchemaField,
+    null_or,
     number,
     object,
     one_of,
@@ -37,10 +38,12 @@ class Chunk(ValidatingModel):
                             value_min=one_of(
                                 number(),
                                 string(),
+                                boolean(),
                             ),
                             value_max=one_of(
                                 number(),
                                 string(),
+                                boolean()
                             ),
                             count=number(),
                             required=['value_min', 'value_max', 'count'])
@@ -61,7 +64,6 @@ class Chunk(ValidatingModel):
 
     def clean(self):
         self.validate_borders_in_context_of_catalogue_item()
-        pass
 
     def validate_borders_in_context_of_catalogue_item(self):
 
@@ -82,49 +84,45 @@ class Chunk(ValidatingModel):
 
             for border in self.borders:
 
-                minimum = border['minimum']
-                maximum = border['maximum']
+                border_minimum = border['minimum']
+                border_maximum = border['maximum']
                 border_column_name = border["column"]
 
-                if minimum in [None, '']:
+                if border_minimum in [None, '']:
                     raise ValidationError("minimum can not be empty")
 
-                if isinstance(minimum, int):
-                    # !!! FIX ME different types np enum
-                    for col in self.catalogue_item.spec:
-                        if border_column_name == col["name"]:
+                for b_col in self.catalogue_item.spec:
+                    if border_column_name == b_col["name"]:
 
-                            if col["distribution"]:
-                                list_distribution = [
-                                    x["value_min"]
-                                    for x in col["distribution"]]
-                                catalogue_item_minimum = min(list_distribution)
+                        if b_col["distribution"]:
+                            dist_min_values = [
+                                x["value_min"]
+                                for x in b_col["distribution"]]
+                            catalogue_item_minimum = min(dist_min_values)
 
-                                if minimum < catalogue_item_minimum:
-                                    raise ValidationError(
-                                        'borders minimu has to be greater than'
-                                        ' catalogue_item minimum')
+                            if border_minimum < catalogue_item_minimum:
+                                raise ValidationError(
+                                    'borders minimu has to be greater than'
+                                    ' catalogue_item minimum')
 
-                if maximum in [None, '']:
+                if border_maximum in [None, '']:
                     raise ValidationError("maximum can not be empty")
 
-                if isinstance(maximum, int):
-                    # !!! FIX ME different types np enum
-                    for col in self.catalogue_item.spec:
-                        if border_column_name == col["name"]:
+                for b_col in self.catalogue_item.spec:
+                    if border_column_name == b_col["name"]:
 
-                            if col["distribution"]:
-                                list_distribution = [
-                                    x["value_max"]
-                                    for x in col["distribution"]]
-                                catalogue_item_maximum = max(list_distribution)
+                        if b_col["distribution"]:
+                            dist_min_values = [
+                                x["value_max"]
+                                for x in b_col["distribution"]]
+                            catalogue_item_maximum = max(dist_min_values)
 
-                                if maximum > catalogue_item_maximum:
-                                    raise ValidationError(
-                                        'borders maximum has to be greater '
-                                        'than catalogue_item maximum')
+                            if border_maximum > catalogue_item_maximum:
+                                raise ValidationError(
+                                    'borders maximum has to be greater '
+                                    'than catalogue_item maximum')
 
-                if minimum >= maximum:
+                if border_minimum >= border_maximum:
                     raise ValidationError(
                         "maximum has to be greater than minimum")
 
