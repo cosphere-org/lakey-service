@@ -143,7 +143,6 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                 ],
             ],
             catalogue_item=self.ci,
-
         )
 
     def test_estimate_size__filter_column_is_empty(self):
