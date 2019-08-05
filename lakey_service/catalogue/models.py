@@ -88,6 +88,10 @@ def spec_validator(spec):
                 f"not integers distribution counts for column '{col_name}' "
                 "detected")
 
+    # -- spec must be sorted by column name
+    if not all(spec[i]['name'] <= spec[i+1]['name'] for i in range(len(spec) - 1)):
+        raise ValidationError(
+            f"spec is not sorted by name column '{spec}' ")
 
 class CatalogueItem(ValidatingModel):
 

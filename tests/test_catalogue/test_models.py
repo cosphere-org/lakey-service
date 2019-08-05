@@ -343,6 +343,13 @@ class CatalogueItemTestCase(TestCase):
         assert ci.database == 'iot'
 
     #
+    # SPEC
+    #
+
+    def test_spec_is_sort_by_col_name(self):
+        pass
+
+    #
     # TABLE
     #
     def test_table(self):

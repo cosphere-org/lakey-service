@@ -4,7 +4,6 @@ from enum import Enum, unique
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save
 from django.db import models
-from django.db.models import Q
 
 from lily.base.models import (
     array,
@@ -26,75 +25,29 @@ from chunk.models import Chunk
 class DownloadRequestManager(models.Manager):
 
     def estimate_size(self, spec, catalogue_item_id):
-        if not spec['columns']:
-            raise ValidationError(
-                "column in spec filter can not be empty")
+        c_i = CatalogueItem.objects.get(id=catalogue_item_id)
+        c_i_cols = [col['name'] for col in c_i.spec]
 
-        if not spec['filters']:
-            raise ValidationError(
-                "filters in spec filter can not be empty")
+        filter_chunks = Chunk.objects.filter(catalogue_item_id=catalogue_item_id)
+        for spec_filter in spec['filters']:
+            border_index_by_col_name = c_i_cols.index(spec_filter['name'])
+            query = {}
 
-        catalogue_item = CatalogueItem.objects.get(id=catalogue_item_id)
-        all_chunks = Chunk.objects.filter(catalogue_item=catalogue_item)
+            if spec_filter['operator'] == '<':
+                query[f'borders__{border_index_by_col_name}__maximum__lt'] = spec_filter['value']
+            elif spec_filter['operator'] == '<=':
+                query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
+            elif spec_filter['operator'] == '>':
+                query[f'borders__{border_index_by_col_name}__minimum__gt'] = spec_filter['value']
+            elif spec_filter['operator'] == '>=':
+                query[f'borders__{border_index_by_col_name}__minimum__gte'] = spec_filter['value']
+            elif spec_filter['operator'] == '=':
+                query[f'borders__{border_index_by_col_name}__minimum__gte'] = spec_filter['value']
+                query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
 
-        test_chunks = Chunk.objects.filter(catalogue_item=catalogue_item,
-                                           borders__0__column='A',
-                                           borders__0__minimum__gte=0,
-                                           borders__0__maxiumum__lte=20)
+            filter_chunks = filter_chunks.filter(**query)
 
-        max_size = 0
-
-        columns_type_by_name = {}
-        for column in catalogue_item.spec:
-            columns_type_by_name[column['name']] = column['type']
-
-        # [PERFORMANCE-ISSUE]: here we iterate over all chunks for a given
-        # catalogue item.
-        for chunk in all_chunks:
-            chunk_passed = []
-
-            for spec_filter in spec['filters']:
-                filter_operator = spec_filter['operator']
-                filter_value = spec_filter['value']
-                column_name = spec_filter['name']
-
-                border = chunk.borders_per_column(column_name)
-                b_min, b_max = border['minimum'], border['maximum']
-
-                if columns_type_by_name[column_name] == 'INTEGER':
-                    if filter_operator == '>':
-                        if b_min > filter_value:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '<':
-                        if b_max < filter_value:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '>=':
-                        if b_min >= filter_value:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '<=':
-                        if b_max <= filter_value:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '=':
-                        if b_max > filter_value > b_min:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '!=':
-                        if b_max < filter_value < b_min:
-                            chunk_passed.append(True)
-
-            if chunk_passed and all(chunk_passed):
-                for col in spec['columns']:
-                    border_type = columns_type_by_name[col]
-                    border_count = chunk.count
-
-                    if border_type == 'INTEGER':
-                        max_size += 4 * border_count
-
-        return max_size
+        return 0
 
 
 class DownloadRequest(ValidatingModel):
