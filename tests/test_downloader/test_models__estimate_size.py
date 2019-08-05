@@ -26,6 +26,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                     'is_enum': False,
                     'distribution': None,
                 },
+
             ],
         )
 
