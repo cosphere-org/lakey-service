@@ -1,0 +1,46 @@
+{
+    "plan": [
+        [
+            "account",
+            "0002_auto_20190501_1030"
+        ],
+        [
+            "catalogue",
+            "0003_auto_20190501_1030"
+        ],
+        [
+            "chunk",
+            "0002_auto_20190729_0954"
+        ],
+        [
+            "downloader",
+            "0002_downloadrequest_normalized_spec"
+        ]
+    ],
+    "dependencies": {
+        "downloader.0002_downloadrequest_normalized_spec": [
+            [
+                "downloader",
+                "0001_initial"
+            ]
+        ],
+        "chunk.0002_auto_20190729_0954": [
+            [
+                "chunk",
+                "0001_initial"
+            ]
+        ],
+        "catalogue.0003_auto_20190501_1030": [
+            [
+                "catalogue",
+                "0002_auto_20190318_1202"
+            ]
+        ],
+        "account.0002_auto_20190501_1030": [
+            [
+                "account",
+                "0001_initial"
+            ]
+        ]
+    }
+}
