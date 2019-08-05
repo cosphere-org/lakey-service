@@ -292,12 +292,12 @@ class ChunkTestCase(TestCase):
         ci = self.ci([
             {
                 'distribution': [
-                    {'value_min': "temperature1.1", 'value_max':
-                        "temperature2.1", 'count': 9},
-                    {'value_min': "temperature1.2", 'value_max':
-                        "temperature2.2", 'count': 21},
-                    {'value_min': "temperature1.3", 'value_max':
-                        "temperature2.3", 'count': 49},
+                    {'value_min': "temperature1.1",
+                        'value_max': "temperature2.1", 'count': 9},
+                    {'value_min': "temperature1.2",
+                        'value_max': "temperature2.2", 'count': 21},
+                    {'value_min': "temperature1.3",
+                        'value_max': "temperature2.3", 'count': 49},
                 ],
             },
             {
@@ -412,7 +412,8 @@ class ChunkTestCase(TestCase):
             '__all__': ['maximum can not be empty'],
             'borders': [
                 "JSON did not validate. PATH: '1.maximum' REASON: None is not "
-                'valid under any of the given schemas']
+                'valid under any of the given schemas'
+            ]
         }
 
     def test_borders_validation__maximum_is_correct_type(self):
@@ -596,87 +597,83 @@ class ChunkTestCase(TestCase):
 
     def test_distribution__invalid_distribution_types(self):
 
+        ci = self.ci()
+
         with pytest.raises(ValidationError) as e:
+            self.c(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                        'type': 'FLOAT',
+                        'distribution': [
+                            {'value_min': 18, 'value_max': 20.0,
+                                'count': 9},
 
-            ci = self.ci()
+                            {'value_min': 19.0, 'value_max': 24.0,
+                                'count': 21},
 
-            with pytest.raises(ValidationError) as e:
-                self.c(
-                    catalogue_item=ci,
-                    borders=[
-                        {
-                            'column': 'A',
-                            'minimum': 10,
-                            'maximum': 15,
-                            'type': 'FLOAT',
-                            'distribution': [
-                                {'value_min': 18, 'value_max': 20.0,
-                                    'count': 9},
+                            {'value_min': 25.0, 'value_max': 32.0,
+                                'count': 49},
+                        ],
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'type': 'FLOAT',
+                        'distribution': None,
+                    },
+                ])
 
-                                {'value_min': 19.0, 'value_max': 24.0,
-                                    'count': 21},
-
-                                {'value_min': 25.0, 'value_max': 32.0,
-                                    'count': 49},
-                            ],
-                        },
-                        {
-                            'column': 'B',
-                            'minimum': 20,
-                            'maximum': 25,
-                            'type': 'FLOAT',
-                            'distribution': None,
-                        },
-                    ])
-            # !!! fix me:
             assert e.value.message_dict == {
-                # 'borders': [
-                #     "column type and distribution value "
-                #     "type mismatch detected for column 'A'"
-                # ]
+                'borders': [
+                    "column type and distribution value "
+                    "type mismatch detected for column 'A'"
+                ]
             }
 
     def test_distribution__values_not_unique(self):
 
+        ci = self.ci()
+
         with pytest.raises(ValidationError) as e:
+            self.c(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                        'type': 'FLOAT',
+                        'distribution': [
+                            {'value_min': 18.0, 'value_max': 20.0,
+                                'count': 9},
 
-            ci = self.ci()
+                            {'value_min': 18.0, 'value_max': 24.0,
+                                'count': 21},
 
-            with pytest.raises(ValidationError) as e:
-                self.c(
-                    catalogue_item=ci,
-                    borders=[
-                        {
-                            'column': 'A',
-                            'minimum': 10,
-                            'maximum': 15,
-                            'type': 'FLOAT',
-                            'distribution': [
-                                {'value_min': 18.0, 'value_max': 20.0,
-                                    'count': 9},
+                            {'value_min': 25.0, 'value_max': 32.0,
+                                'count': 49},
+                        ],
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'type': 'FLOAT',
+                        'distribution': None,
+                    },
+                ])
 
-                                {'value_min': 18.0, 'value_max': 24.0,
-                                    'count': 21},
-
-                                {'value_min': 25.0, 'value_max': 32.0,
-                                    'count': 49},
-                            ],
-                        },
-                        {
-                            'column': 'B',
-                            'minimum': 20,
-                            'maximum': 25,
-                            'type': 'FLOAT',
-                            'distribution': None,
-                        },
-                    ])
-            # !!! fix me:
-            assert e.value.message_dict == {
-                'borders':
-                [
-                    #"not unique distribution values for column 'A' detected"
-                ]
-            }
+        assert e.value.message_dict == {
+            'borders':
+            [
+                "not unique distribution values for column 'A' detected"
+            ]
+        }
 
     def test_distribution__counts_not_integers(self):
 
@@ -711,9 +708,44 @@ class ChunkTestCase(TestCase):
                     },
                 ])
         # !!! fix me:
+        # how do i slice this line
         assert e.value.message_dict == {
-            'borders':
-            [
-                
-            ]
+            'borders': ["JSON did not validate. PATH: '0.distribution' REASON: [{'value_min': 18.0, 'value_max': 20.0, 'count': '9'}, {'value_min': 19.0, 'value_max': 24.0, 'count': 21}, {'value_min': 25.0, 'value_max': 32.0, 'count': 49}] is not valid under any of the given schemas", "not integers distribution counts for column 'A' detected"] # noqa
+        }
+
+    def test_distribution__extremas_valid_with_chunk(self):
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            self.c(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                        'type': 'FLOAT',
+                        'distribution': [
+                            {'value_min': 3.0, 'value_max': 20.0,
+                                'count': 9},
+
+                            {'value_min': 19.0, 'value_max': 24.0,
+                                'count': 21},
+
+                            {'value_min': 25.0, 'value_max': 32.0,
+                                'count': 49},
+                        ],
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'type': 'FLOAT',
+                        'distribution': None,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            
         }
