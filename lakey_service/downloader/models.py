@@ -24,14 +24,37 @@ from chunk.models import Chunk
 
 class DownloadRequestManager(models.Manager):
 
+    def simplify_spec(self, spec):
+        filters_by_col = {}
+        for spec_filter in spec['filters']:
+            if spec_filter['name'] not in filters_by_col:
+                filters_by_col[spec_filter['name']] = []
+            filters_by_col[spec_filter['name']].append({'operator': spec_filter['operator'],
+                                                        'value': spec_filter['value']})
+
+        filters_operators_by_col = {}
+        for col_name in filters_by_col:
+            if filters_operators_by_col[col_name]['operator'] in filters_operators_by_col[col_name]:
+                filters_operators_by_col[col_name]['operator'] = []
+            filters_operators_by_col[col_name]['operator'].append(filters_operators_by_col[col_name]['value'])
+
+        s_s = {
+            'columns': spec['columns'],
+            'filters': [
+
+            ]
+        }
+
+        import pdb; pdb.set_trace()
+        return s_s
+
     def estimate_size(self, spec, catalogue_item_id):
         c_i = CatalogueItem.objects.get(id=catalogue_item_id)
         c_i_cols = [col['name'] for col in c_i.spec]
 
-        filter_chunks = Chunk.objects.filter(catalogue_item_id=catalogue_item_id)
-        for spec_filter in spec['filters']:
+        query = {}
+        for spec_filter in self.simplify_spec(spec)['filters']:
             border_index_by_col_name = c_i_cols.index(spec_filter['name'])
-            query = {}
 
             if spec_filter['operator'] == '<':
                 query[f'borders__{border_index_by_col_name}__maximum__lt'] = spec_filter['value']
@@ -45,7 +68,7 @@ class DownloadRequestManager(models.Manager):
                 query[f'borders__{border_index_by_col_name}__minimum__gte'] = spec_filter['value']
                 query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
 
-            filter_chunks = filter_chunks.filter(**query)
+        filter_chunks = Chunk.objects.filter(catalogue_item_id=catalogue_item_id, **query)
 
         return 0
 

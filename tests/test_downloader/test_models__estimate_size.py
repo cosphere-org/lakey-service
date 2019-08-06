@@ -199,3 +199,26 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
 
     def test_estimate_size__filters_exclude_themselves(self):
         pass
+
+    def test_simplify_spec(self):
+        spec = {
+           'columns': ['A'],
+           'filters': [
+               {
+                   'name': 'A',
+                   'operator': '<',
+                   'value': 0,
+               },
+               {
+                   'name': 'A',
+                   'operator': '<',
+                   'value': 20,
+               },
+
+           ],
+           'randomize_ratio': 1,
+        }
+
+        expected_spec = {'A': {'<': [0, 20]}}
+        s_s = DownloadRequest.objects.simplify_spec(spec)
+        assert s_s == expected_spec
