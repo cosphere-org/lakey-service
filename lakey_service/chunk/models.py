@@ -67,11 +67,9 @@ def distribution_validator(borders):
 
             # distribution min max betwean chunk min max
             if distribution:
-                if not border["minimum"] < border["distribution"]["value_min"] < border["maximum"]:
+                if not border["minimum"] < border["distribution"][0]["value_min"] < border["maximum"]: # noqa # fix me
                     raise ValidationError(
-                        f"not unique distribution values for column '{b_name}' "
-                        "detected")
-
+                        f"extremas_not_valid_with_chunk")
 
 
 class Chunk(ValidatingModel):

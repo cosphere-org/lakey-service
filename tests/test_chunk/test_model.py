@@ -747,5 +747,7 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
-            
+            'borders': [
+                'extremas_not_valid_with_chunk'
+            ]
         }
