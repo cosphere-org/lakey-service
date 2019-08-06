@@ -751,3 +751,120 @@ class ChunkTestCase(TestCase):
                 'extremas_not_valid_with_chunk'
             ]
         }
+
+    def test_distribution__counts_are_negative(self):
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            self.c(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': -100,
+                        'maximum': 150,
+                        'type': 'FLOAT',
+                        'distribution': [
+                            {'value_min': 3.0, 'value_max': 20.0,
+                                'count': 9},
+
+                            {'value_min': 19.0, 'value_max': 24.0,
+                                'count': -21},
+
+                            {'value_min': 25.0, 'value_max': 32.0,
+                                'count': 49},
+                        ],
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'type': 'FLOAT',
+                        'distribution': None,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            'borders': [
+                'counts has to be greater than 0'
+            ]
+        }
+
+    def test_distribution__min_is_not_first(self):
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            self.c(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 1,
+                        'maximum': 55,
+                        'type': 'FLOAT',
+                        'distribution': [
+                            {'value_min': 30.0, 'value_max': 20.0,
+                                'count': 9},
+
+                            {'value_min': 19.0, 'value_max': 24.0,
+                                'count': 21},
+
+                            {'value_min': 25.0, 'value_max': 32.0,
+                                'count': 49},
+                        ],
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'type': 'FLOAT',
+                        'distribution': None,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            'borders': [
+                'distribution min has to be first'
+            ]
+        }
+
+    def test_distribution__max_is_not_first(self):
+
+        ci = self.ci()
+
+        with pytest.raises(ValidationError) as e:
+            self.c(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 1,
+                        'maximum': 55,
+                        'type': 'FLOAT',
+                        'distribution': [
+                            {'value_min': 3.0, 'value_max': 20.0,
+                                'count': 9},
+
+                            {'value_min': 19.0, 'value_max': 34.0,
+                                'count': 21},
+
+                            {'value_min': 25.0, 'value_max': 22.0,
+                                'count': 49},
+                        ],
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'type': 'FLOAT',
+                        'distribution': None,
+                    },
+                ])
+
+        assert e.value.message_dict == {
+            'borders': [
+                'distribution max has to be last'
+            ]
+        }

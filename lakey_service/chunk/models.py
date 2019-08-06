@@ -71,6 +71,26 @@ def distribution_validator(borders):
                     raise ValidationError(
                         f"extremas_not_valid_with_chunk")
 
+            # distribution min is first
+            if border["distribution"][0]["value_min"] != min(
+                [x["value_min"]
+                    for x in border["distribution"]]):
+                raise ValidationError(
+                    "distribution min has to be first")
+
+            # distribution max is last
+            if border["distribution"][-1]["value_max"] != max(
+                [x["value_max"]
+                    for x in border["distribution"]]):
+                raise ValidationError(
+                    "distribution max has to be last")
+
+            # counts are positive
+            for b_d_count in border["distribution"]:
+                if b_d_count["count"] < 0:
+                    raise ValidationError(
+                        'counts has to be greater than 0')
+
 
 class Chunk(ValidatingModel):
 
