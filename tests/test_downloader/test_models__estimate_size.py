@@ -30,26 +30,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             ],
         )
 
-    def test_estimate_size__filter_with_open_range(self):
-        spec = {
-           'columns': ['A'],
-           'filters': [
-               {
-                   'name': 'A',
-                   'operator': '<',
-                   'value': 0,
-               },
-               {
-                   'name': 'A',
-                   'operator': '>',
-                   'value': 20,
-               },
-
-           ],
-           'randomize_ratio': 1,
-        }
-
-        ef.chunk_bulk(
+        self.chs = ef.chunk_bulk(
             chunks_borders=[
                 [
                     {
@@ -69,6 +50,25 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             catalogue_item=self.ci,
             count=1,
         )
+
+    def test_estimate_size__filter_with_open_range(self):
+        spec = {
+           'columns': ['A'],
+           'filters': [
+               {
+                   'name': 'A',
+                   'operator': '<',
+                   'value': 0,
+               },
+               {
+                   'name': 'A',
+                   'operator': '>',
+                   'value': 20,
+               },
+
+           ],
+           'randomize_ratio': 1,
+        }
 
         es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
@@ -94,29 +94,8 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
            'randomize_ratio': 1,
         }
 
-        ef.chunk_bulk(
-            chunks_borders=[
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 0,
-                        'maximum': 10,
-                    },
-                ],
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 20,
-                    },
-                ],
-            ],
-            catalogue_item=self.ci,
-            count=1,
-
-        )
-
         es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+
         assert es == 8
 
     def test_estimate_size__filters_is_empty(self):
@@ -125,26 +104,6 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             'filters': [],
             'randomize_ratio': 1,
         }
-
-        ef.chunk_bulk(
-            chunks_borders=[
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 0,
-                        'maximum': 10,
-                    },
-                ],
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 20,
-                    },
-                ],
-            ],
-            catalogue_item=self.ci,
-        )
 
     def test_estimate_size__filter_column_is_empty(self):
         spec = {
@@ -165,26 +124,6 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
            'randomize_ratio': 1,
         }
 
-        ef.chunk_bulk(
-            chunks_borders=[
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 0,
-                        'maximum': 10,
-                    },
-                ],
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 20,
-                    },
-                ],
-            ],
-            catalogue_item=self.ci,
-        )
-
     def test_estimate_size__filter_include_all(self):
         pass
 
@@ -197,28 +136,147 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
     def test_estimate_size__chunks_not_exist(self):
         pass
 
-    def test_estimate_size__filters_exclude_themselves(self):
-        pass
-
-    def test_simplify_spec(self):
+    def test_simplify_spec__many_equal_or_less_and_less_operator(self):
         spec = {
-           'columns': ['A'],
-           'filters': [
-               {
-                   'name': 'A',
-                   'operator': '<',
-                   'value': 0,
-               },
-               {
-                   'name': 'A',
-                   'operator': '<',
-                   'value': 20,
-               },
-
-           ],
-           'randomize_ratio': 1,
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '<=',
+                    'value': 20,
+                },
+            ]
         }
 
-        expected_spec = {'A': {'<': [0, 20]}}
-        s_s = DownloadRequest.objects.simplify_spec(spec)
-        assert s_s == expected_spec
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+            ]
+        }
+
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec
+
+    def test_simplify_spec__many_equal_or_greater_and_greater_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '>=',
+                    'value': 20,
+                },
+            ]
+        }
+
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 20,
+                },
+            ]
+        }
+
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec
+
+    def test_simplify_spec__many_equal_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '=',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '=',
+                    'value': 20,
+                },
+            ]
+        }
+
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '=',
+                    'value': 0,
+                },
+            ]
+        }
+
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec
+
+    def test_simplify_spec__many_less_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 20,
+                },
+            ]
+        }
+
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+            ]
+        }
+
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec
+
+    def test_simplify_spec__many_more_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 20,
+                },
+            ]
+        }
+
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 20,
+                },
+            ]
+        }
+
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec

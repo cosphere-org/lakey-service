@@ -22,35 +22,47 @@ from catalogue.models import CatalogueItem
 from chunk.models import Chunk
 
 
+
 class DownloadRequestManager(models.Manager):
 
     def simplify_spec(self, spec):
-        filters_by_col = {}
+        filters_values = {}
         for spec_filter in spec['filters']:
-            if spec_filter['name'] not in filters_by_col:
-                filters_by_col[spec_filter['name']] = []
-            filters_by_col[spec_filter['name']].append({'operator': spec_filter['operator'],
-                                                        'value': spec_filter['value']})
+            if spec_filter['name'] not in filters_values:
+                filters_values[spec_filter['name']] = {}
+            if spec_filter['operator'] not in filters_values[spec_filter['name']]:
+                filters_values[spec_filter['name']][spec_filter['operator']] = []
+            filters_values[spec_filter['name']][spec_filter['operator']].append(spec_filter['value'])
 
-        filters_operators_by_col = {}
-        for col_name in filters_by_col:
-            if filters_operators_by_col[col_name]['operator'] in filters_operators_by_col[col_name]:
-                filters_operators_by_col[col_name]['operator'] = []
-            filters_operators_by_col[col_name]['operator'].append(filters_operators_by_col[col_name]['value'])
+        for col_name in filters_values:
+            if '<' and '<=' in filters_values[col_name]:
+                filters_values[col_name]['<'].extend(filters_values[col_name]['<='])
+                del filters_values[col_name]['<=']
+            if '>' and '>=' in filters_values[col_name]:
+                filters_values[col_name]['>'].extend(filters_values[col_name]['>='])
+                del filters_values[col_name]['>=']
 
-        s_s = {
-            'columns': spec['columns'],
-            'filters': [
+        s_s = {**spec, 'filters': []}
+        for col_name in filters_values:
+            for operator_name in filters_values[col_name]:
+                values = filters_values[col_name][operator_name]
 
-            ]
-        }
+                if not len(values) > 0:
+                    s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': values[0]})
+                else:
+                    if operator_name == '=':
+                        s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': values[0]})
+                    elif operator_name == ('>' or '>='):
+                        s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': max(values)})
+                    elif operator_name == ('<' or '<='):
+                        s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': min(values)})
 
-        import pdb; pdb.set_trace()
         return s_s
 
     def estimate_size(self, spec, catalogue_item_id):
         c_i = CatalogueItem.objects.get(id=catalogue_item_id)
         c_i_cols = [col['name'] for col in c_i.spec]
+        spec = self.simplify_spec(spec)
 
         query = {}
         for spec_filter in self.simplify_spec(spec)['filters']:
@@ -69,6 +81,7 @@ class DownloadRequestManager(models.Manager):
                 query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
 
         filter_chunks = Chunk.objects.filter(catalogue_item_id=catalogue_item_id, **query)
+        col_types_by_name = {col['name']: col['type'] for col in c_i.spec}
 
         return 0
 

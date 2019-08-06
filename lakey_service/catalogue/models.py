@@ -93,6 +93,7 @@ def spec_validator(spec):
         raise ValidationError(
             f"spec is not sorted by name column '{spec}' ")
 
+
 class CatalogueItem(ValidatingModel):
 
     #
