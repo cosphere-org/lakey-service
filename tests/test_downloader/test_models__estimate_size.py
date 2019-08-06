@@ -210,18 +210,10 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             ]
         }
 
-        expected_spec = {
-            'filters': [
-                {
-                    'name': 'A',
-                    'operator': '=',
-                    'value': 0,
-                },
-            ]
-        }
+        with pytest.raises(ValueError) as e:
+            DownloadRequest.objects.simplify_spec(spec)
 
-        pull_spec = DownloadRequest.objects.simplify_spec(spec)
-        assert pull_spec == expected_spec
+        assert str(e.value) == f"spec filters can not have multiple equal operators '{spec}'"
 
     def test_simplify_spec__many_less_operator(self):
         spec = {

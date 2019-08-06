@@ -35,12 +35,17 @@ class DownloadRequestManager(models.Manager):
             filters_values[spec_filter['name']][spec_filter['operator']].append(spec_filter['value'])
 
         for col_name in filters_values:
-            if '<' and '<=' in filters_values[col_name]:
-                filters_values[col_name]['<'].extend(filters_values[col_name]['<='])
-                del filters_values[col_name]['<=']
-            if '>' and '>=' in filters_values[col_name]:
-                filters_values[col_name]['>'].extend(filters_values[col_name]['>='])
-                del filters_values[col_name]['>=']
+            if filters_values[col_name] == '=' and len(filters_values[col_name]['=']) > 0:
+                raise ValueError(
+                    f"spec filters can not have multiple equal operators '{spec}'"
+                )
+            else:
+                if '<' and '<=' in filters_values[col_name]:
+                    filters_values[col_name]['<'].extend(filters_values[col_name]['<='])
+                    del filters_values[col_name]['<=']
+                if '>' and '>=' in filters_values[col_name]:
+                    filters_values[col_name]['>'].extend(filters_values[col_name]['>='])
+                    del filters_values[col_name]['>=']
 
         s_s = {**spec, 'filters': []}
         for col_name in filters_values:
@@ -50,9 +55,7 @@ class DownloadRequestManager(models.Manager):
                 if not len(values) > 0:
                     s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': values[0]})
                 else:
-                    if operator_name == '=':
-                        s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': values[0]})
-                    elif operator_name == ('>' or '>='):
+                    if operator_name == ('>' or '>='):
                         s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': max(values)})
                     elif operator_name == ('<' or '<='):
                         s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': min(values)})
