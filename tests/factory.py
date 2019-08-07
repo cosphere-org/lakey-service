@@ -120,11 +120,13 @@ class EntityFactory:
                     'column': 'A',
                     'minimum': 10,
                     'maximum': 15,
+                    'distribution': None,
                 },
                 {
                     'column': 'B',
                     'minimum': 20,
                     'maximum': 25,
+                    'distribution': None,
                 },
             ],
             count=count or faker.random_int(500, 100000))
