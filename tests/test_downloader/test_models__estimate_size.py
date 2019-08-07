@@ -6,7 +6,7 @@ import pytest
 
 from downloader.models import DownloadRequest
 from tests.factory import EntityFactory
-from downloader.models import MutuallyExclusiveFiltersDetected
+from downloader.models import MutuallyExclusiveFiltersDetected, NoFiltersDetected
 
 
 ef = EntityFactory()
@@ -112,7 +112,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             'randomize_ratio': 1,
         }
 
-        with pytest.raises(MutuallyExclusiveFiltersDetected) as e:
+        with pytest.raises(NoFiltersDetected) as e:
             DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
         assert str(e.value) == f"spec must have at least one filter '{spec}'"

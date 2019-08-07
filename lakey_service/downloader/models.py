@@ -26,6 +26,9 @@ from catalogue.models import CatalogueItem
 class MutuallyExclusiveFiltersDetected(Exception):
     pass
 
+class NoFiltersDetected(Exception):
+    pass
+
 
 class DownloadRequestManager(models.Manager):
 
@@ -40,7 +43,7 @@ class DownloadRequestManager(models.Manager):
     def simplify_spec(self, spec):
 
         if not spec['filters']:
-            raise MutuallyExclusiveFiltersDetected(
+            raise NoFiltersDetected(
                 f"spec must have at least one filter '{spec}'"
             )
 
