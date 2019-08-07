@@ -97,7 +97,7 @@ class CatalogueItemCollectionCommands(HTTPCommands):
         elif not has_samples and has_samples is not None:
             items = items.filter(sample=[])
 
-        raise self.event.BulkRead({'items': items})
+        raise self.event.BulkRead({'items': items.order_by('id')})
 
 
 class CatalogueItemElementCommands(HTTPCommands):

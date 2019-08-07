@@ -22,12 +22,12 @@ TEST_COVERAGE_THRESHOLD := 90
 # LINTER & CODE QUALITY
 #
 .PHONY: lint
-lint:  ## lint the lakey_service & tests
+
+lint:  ## lint the lakey_service/ & tests
 	printf "\n>> [CHECKER] check if code fulfills quality criteria\n" && \
 	source env.sh && \
 	flake8 --ignore D100,D101,D102,D103,D104,D105,D106,D107,D202,D204,W504,W606 tests && \
-	flake8 --ignore D100,D101,D102,D103,D104,D105,D106,D107,D202,D204,W504,W606 lakey_service
-
+	flake8 --ignore D100,D101,D102,D103,D104,D105,D106,D107,D202,D204,W504,W606 lakey_service/
 #
 # TEST LIFECYCLE TARGETS
 #
@@ -57,7 +57,7 @@ assert_test_setup_was_run:
 lily_assistant_test:
 	printf "\n>> [CHECKER] check if chosen tests are passing\n" && \
 	source env.sh && \
-	py.test --cov=lakey_service --cov-fail-under=${TEST_COVERAGE_THRESHOLD} -r w -s -vv $(tests)
+	py.test --cov=lakey_service/ --cov-fail-under=${TEST_COVERAGE_THRESHOLD} -r w -s -vv $(tests)
 
 .PHONY: test
 test: assert_test_setup_was_run lily_assistant_test  ## run selected tests
@@ -72,7 +72,6 @@ lily_assistant_test_all:
 
 .PHONY: test_all
 test_all: test_setup lily_assistant_test_all test_teardown  ## run all available tests
-
 
 #
 # COVERAGE
@@ -91,8 +90,6 @@ inspect_coverage: lily_assistant_test_all_no_coverage_threshold  ## render html 
 	else open coverage_html/index.html; \
 	fi
 
-
-#
 # VERSION CONTROL LIFECYCLE
 #
 # NOTE: Those targets are only here as place-holders for

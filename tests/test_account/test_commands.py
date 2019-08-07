@@ -132,7 +132,7 @@ class AuthRequestAttachAccountCommandsTestCase(TestCase):
             '@type': 'error',
             'errors': {
                 'oauth_token': ['This field is required.'],
-                'request_uuid': ['"some-uuid" is not a valid UUID.'],
+                'request_uuid': ['Must be a valid UUID.'],
             },
         }
         assert Account.objects.count() == 0

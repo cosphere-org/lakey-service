@@ -1,8 +1,5 @@
 
 from django.test import TestCase
-from django.core.exceptions import ValidationError
-
-import pytest
 
 from downloader.models import DownloadRequest
 from tests.factory import EntityFactory
@@ -38,6 +35,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                         'column': 'A',
                         'minimum': 0,
                         'maximum': 10,
+                        'distribution': None,
                     },
                 ],
                 [
@@ -45,6 +43,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 20,
+                        'distribution': None,
                     },
                 ],
             ],
@@ -78,21 +77,20 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
     def test_estimate_size__filter_with_closed_range(self):
 
         spec = {
-           'columns': ['A'],
-           'filters': [
-               {
-                   'name': 'A',
-                   'operator': '>',
-                   'value': 5,
-               },
-               {
-                   'name': 'A',
-                   'operator': '<',
-                   'value': 15,
-               },
-
-           ],
-           'randomize_ratio': 1,
+            'columns': ['A'],
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 5,
+                },
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 15,
+                },
+            ],
+            'randomize_ratio': 1,
         }
 
         es = DownloadRequest.objects.estimate_size(spec, self.ci.id)

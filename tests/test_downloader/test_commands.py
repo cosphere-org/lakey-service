@@ -328,14 +328,17 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             content_type='application/json',
             **self.headers)
 
-        assert response.status_code == 404
+        assert response.status_code == 400
         assert DownloadRequest.objects.all().count() == 0
         assert response.json() == {
-            '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
-            '@type': 'error',
-            '@access': {
-                'account_id': self.account.id,
+            'errors': {
+                'catalogue_item': [
+                    'catalogue item instance with id 58495 does not exist.',
+                ],
             },
+            '@type': 'error',
+            '@event': 'BODY_JSON_DID_NOT_PARSE',
+            '@access': {'account_id': self.account.id},
         }
 
     #
