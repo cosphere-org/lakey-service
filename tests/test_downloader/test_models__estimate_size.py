@@ -99,11 +99,11 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
 
         assert es == 8
 
-    def test_estimate_size__filter_column_is_empty(self): pass
-    def test_estimate_size__filter_include_all(self): pass
-    def test_estimate_size__filter_with_offset(self): pass
-    def test_estimate_size__filter_without_offset(self): pass
-    def test_estimate_size__chunks_not_exist(self): pass
+    # def test_estimate_size__filter_column_is_empty(self): pass
+    # def test_estimate_size__filter_include_all(self): pass
+    # def test_estimate_size__filter_with_offset(self): pass
+    # def test_estimate_size__filter_without_offset(self): pass
+    # def test_estimate_size__chunks_not_exist(self): pass
 
     def test_simplify_spec__filters_is_empty(self):
         spec = {
