@@ -207,7 +207,6 @@ class ChunkTestCase(TestCase):
                 catalogue_item=ci,
             )
 
-        # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
             '__all__': ['minimum can not be empty'],
         }
@@ -220,7 +219,6 @@ class ChunkTestCase(TestCase):
                 catalogue_item=ci,
             )
 
-        # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
             '__all__': ['minimum can not be empty'],
             'borders': [
@@ -707,11 +705,9 @@ class ChunkTestCase(TestCase):
                         'distribution': None,
                     },
                 ])
-        # !!! fix me:
-        # how do i slice this line
-        assert e.value.message_dict == {
-            'borders': ["JSON did not validate. PATH: '0.distribution' REASON: [{'value_min': 18.0, 'value_max': 20.0, 'count': '9'}, {'value_min': 19.0, 'value_max': 24.0, 'count': 21}, {'value_min': 25.0, 'value_max': 32.0, 'count': 49}] is not valid under any of the given schemas", "not integers distribution counts for column 'A' detected"] # noqa
-        }
+
+        assert e.value.message_dict['borders'][0].startswith(
+            "JSON did not validate. PATH: '0.distribution' REASON:")
 
     def test_distribution__extremas_valid_with_chunk(self):
 
@@ -858,7 +854,7 @@ class ChunkTestCase(TestCase):
                         'column': 'B',
                         'minimum': 20,
                         'maximum': 25,
-                        'type': 'FLOAT',
+                        'type': 'FLOssAT',
                         'distribution': None,
                     },
                 ])

@@ -28,60 +28,64 @@ def distribution_validator(borders):
             if not b_name or not b_type:
                 continue
 
-            distribution = border.get('distribution')
-            if not distribution:
+            b_distribution = border.get('distribution')
+            if not b_distribution:
                 continue
+            b_minimum = border["minimum"]
+            b_maximum = border["maximum"]
 
-            # -- values in distribution must has correct type
+            # values in distribution must has correct type
             b_type_to_python_type = Chunk.column_type_to_python_type
             expected_types = (b_type_to_python_type[b_type],)
 
-            if distribution:
-                for entry in distribution:
+            if b_distribution:
+                for entry in b_distribution:
                     if not isinstance(entry['value_min'], expected_types):
                         raise ValidationError(
-                            f"column type and distribution value type "  # noqa
+                            f"column type and distribution value type "
                             f"mismatch detected for column '{b_name}'")
 
                     if not isinstance(entry['value_max'], expected_types):
                         raise ValidationError(
-                            f"column type and distribution value type "  # noqa
+                            f"column type and distribution value type "
                             f"mismatch detected for column '{b_name}'")
 
-            # -- values in distribution must be unique
-            values_min = [entry['value_min'] for entry in distribution]
-            values_max = [entry['value_max'] for entry in distribution]
+            # values in distribution must be unique
+            values_min = [entry['value_min'] for entry in b_distribution]
+            values_max = [entry['value_max'] for entry in b_distribution]
             all_values = values_min + values_max
             if len(all_values) != len(set(all_values)):
                 raise ValidationError(
                     f"not unique distribution values for column '{b_name}' "
                     "detected")
 
-            # -- counts in distribution must be integers
+            # counts in distribution must be integers
+            # fix me: w sumie to nie rozumiem czemu najperw all(...) i
+            # dopiero if not ...
             counts_are_ints = [
-                isinstance(entry['count'], int) for entry in distribution]
+                isinstance(entry['count'], int) for entry in b_distribution]
             if not all(counts_are_ints):
                 raise ValidationError(
                     f"not integers distribution counts for column '{b_name}' "
                     "detected")
 
             # distribution min max betwean chunk min max
-            if distribution:
-                if not border["minimum"] < border["distribution"][0]["value_min"] < border["maximum"]: # noqa # fix me
+            if b_distribution:
+                if not b_minimum < b_distribution[0]["value_min"] < b_maximum:
                     raise ValidationError(
                         f"extremas_not_valid_with_chunk")
 
             # distribution min is first
-            if border["distribution"][0]["value_min"] != min(
+            if b_distribution[0]["value_min"] != min(
                 [x["value_min"]
-                    for x in border["distribution"]]):
+                    for x in b_distribution]):
                 raise ValidationError(
                     "distribution min has to be first")
 
             # distribution max is last
-            if border["distribution"][-1]["value_max"] != max(
+            if b_distribution[-1]["value_max"] != max(
                 [x["value_max"]
-                    for x in border["distribution"]]):
+                    for x in b_distribution]):
                 raise ValidationError(
                     "distribution max has to be last")
 
@@ -168,11 +172,13 @@ class Chunk(ValidatingModel):
 
         if isinstance(self.borders, list):
 
+            # ci = catalog item
             ci_columns = set([col["name"] for col in self.catalogue_item.spec])
             borders_columns = set([
                 border["column"]
                 for border in self.borders])
 
+            # borders columns hat to be from catalogue item
             if not borders_columns.issubset(ci_columns):
                 raise ValidationError(
                     "borders columns do not match catalogue item")
@@ -187,25 +193,27 @@ class Chunk(ValidatingModel):
                 border_maximum = border['maximum']
                 border_column = border["column"]
 
+                # border minimu and max has to fulfill all criteria form ci
                 if border_minimum in [None, '']:
                     raise ValidationError("minimum can not be empty")
 
                 for ci_col in self.catalogue_item.spec:
                     if border_column == ci_col["name"]:
 
-                        if ci_col["distribution"]:
-                            catalogue_item_minimum = ci_col[
-                                "distribution"][0]["value_min"]
+                        # ci = catalog item
+                        ci_col_dist = ci_col["distribution"]
+                        if ci_col_dist:
+                            ci_minimum = ci_col_dist[0]["value_min"]
 
-                            if border_minimum < catalogue_item_minimum:
+                            if border_minimum < ci_minimum:
                                 raise ValidationError(
                                     'borders minimu has to be greater than'
                                     ' catalogue_item minimum')
 
-                            catalogue_item_maximum = ci_col[
+                            ci_maximum = ci_col[
                                 "distribution"][-1]["value_max"]
 
-                            if border_maximum > catalogue_item_maximum:
+                            if border_maximum > ci_maximum:
                                 raise ValidationError(
                                     'borders maximum has to be greater '
                                     'than catalogue_item maximum')
