@@ -378,16 +378,16 @@ class CatalogueItemTestCase(TestCase):
             sample=[],
             spec=[
                 {
-                    'name': 'surname',
-                    'type': 'STRING',
+                    'name': 'price',
+                    'type': 'INTEGER',
                     'size': None,
                     'is_nullable': False,
                     'is_enum': False,
                     'distribution': None,
                 },
                 {
-                    'name': 'price',
-                    'type': 'INTEGER',
+                    'name': 'surname',
+                    'type': 'STRING',
                     'size': None,
                     'is_nullable': False,
                     'is_enum': False,
@@ -402,14 +402,21 @@ class CatalogueItemTestCase(TestCase):
             {'surname': 'pressure', 'price': 13},
         ]
         get_size = self.mocker.patch.object(AthenaExecutor, 'get_size')
-        get_size.side_effect = [678, 789]
+        get_size.side_effect = [789, 678]
         get_distribution = self.mocker.patch.object(
             AthenaExecutor, 'get_distribution')
         get_distribution.side_effect = [
-            [{'value_min': 'temperature1', 'value_max': 'temperature2',
-                'count': 19}],
-            [{'value_min': 233, 'value_max': 345, 'count': 567},
-                {'value_min': 45, 'value_max': 145, 'count': 123}],
+            [
+                {'value_min': 233, 'value_max': 345, 'count': 567},
+                {'value_min': 45, 'value_max': 145, 'count': 123},
+            ],
+            [
+                {
+                    'value_min': 'temperature1',
+                    'value_max': 'temperature2',
+                    'count': 19,
+                },
+            ],
         ]
 
         ci.update_samples_and_distributions()
@@ -421,17 +428,6 @@ class CatalogueItemTestCase(TestCase):
         ]
         assert ci.spec == [
             {
-                'name': 'surname',
-                'type': 'STRING',
-                'size': 678,
-                'is_nullable': False,
-                'is_enum': False,
-                'distribution': [
-                    {'value_min': 'temperature1', 'value_max': 'temperature2',
-                        'count': 19}
-                ],
-            },
-            {
                 'name': 'price',
                 'type': 'INTEGER',
                 'size': 789,
@@ -440,6 +436,17 @@ class CatalogueItemTestCase(TestCase):
                 'distribution': [
                     {'value_min': 233, 'value_max': 345, 'count': 567},
                     {'value_min': 45, 'value_max': 145, 'count': 123},
+                ],
+            },
+            {
+                'name': 'surname',
+                'type': 'STRING',
+                'size': 678,
+                'is_nullable': False,
+                'is_enum': False,
+                'distribution': [
+                    {'value_min': 'temperature1', 'value_max': 'temperature2',
+                        'count': 19}
                 ],
             },
         ]

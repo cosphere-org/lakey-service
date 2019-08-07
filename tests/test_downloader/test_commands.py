@@ -78,8 +78,8 @@ class DownloadRequestRenderCommandsTestCase(TestCase):
             'columns_operators': [
                 {
                     '@type': 'column_operators',
-                    'name': 'product',
-                    'operators': ['>', '>=', '<', '<=', '=', '!='],
+                    'name': 'available',
+                    'operators': ['=', '!='],
                 },
                 {
                     '@type': 'column_operators',
@@ -88,8 +88,8 @@ class DownloadRequestRenderCommandsTestCase(TestCase):
                 },
                 {
                     '@type': 'column_operators',
-                    'name': 'available',
-                    'operators': ['=', '!='],
+                    'name': 'product',
+                    'operators': ['>', '>=', '<', '<=', '=', '!='],
                 },
             ],
         }

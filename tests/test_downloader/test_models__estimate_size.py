@@ -1,9 +1,13 @@
 
 from django.test import TestCase
+import pytest
 
 from downloader.models import DownloadRequest
 from tests.factory import EntityFactory
-from downloader.models import MutuallyExclusiveFiltersDetected, NoFiltersDetected
+from downloader.models import (
+    MutuallyExclusiveFiltersDetected,
+    NoFiltersDetected,
+)
 
 
 ef = EntityFactory()
@@ -51,29 +55,36 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             count=1,
         )
 
+    @pytest.mark.xfail(reason='''
+        Will be addressed after integrating the estimator with the
+        changes from Chunk.distribution. --> @skpk
+    ''')
     def test_estimate_size__filter_with_open_range(self):
         spec = {
-           'columns': ['A'],
-           'filters': [
-               {
-                   'name': 'A',
-                   'operator': '<',
-                   'value': 0,
-               },
-               {
-                   'name': 'A',
-                   'operator': '>',
-                   'value': 20,
-               },
-
-           ],
-           'randomize_ratio': 1,
+            'columns': ['A'],
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 20,
+                },
+            ],
+            'randomize_ratio': 1,
         }
 
         es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
         assert es == 0
 
+    @pytest.mark.xfail(reason='''
+        Will be addressed after integrating the estimator with the
+        changes from Chunk.distribution. --> @skpk
+    ''')
     def test_estimate_size__filter_with_closed_range(self):
 
         spec = {
@@ -192,7 +203,8 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
         with pytest.raises(MutuallyExclusiveFiltersDetected) as e:
             DownloadRequest.objects.simplify_spec(spec)
 
-        assert str(e.value) == f"spec filters can not have multiple equal operators '{spec}'"
+        assert str(e.value) == (
+            f"spec filters can not have multiple equal operators '{spec}'")
 
     def test_simplify_spec__many_less_operator(self):
         spec = {

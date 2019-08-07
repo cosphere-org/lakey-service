@@ -20,11 +20,11 @@ from lily.base.models import (
 from account.models import Account
 from catalogue.models import CatalogueItem
 from chunk.models import Chunk
-from catalogue.models import CatalogueItem
 
 
 class MutuallyExclusiveFiltersDetected(Exception):
     pass
+
 
 class NoFiltersDetected(Exception):
     pass
@@ -44,8 +44,7 @@ class DownloadRequestManager(models.Manager):
 
         if not spec['filters']:
             raise NoFiltersDetected(
-                f"spec must have at least one filter '{spec}'"
-            )
+                f"spec must have at least one filter '{spec}'")
 
         filters_values = {}
 
@@ -64,14 +63,17 @@ class DownloadRequestManager(models.Manager):
 
             if f_operator == '=' and len(f_values) > 1:
                 raise MutuallyExclusiveFiltersDetected(
-                    f"spec filters can not have multiple equal operators '{spec}'"
-                )
+                    f"spec filters can not have multiple equal operators "
+                    f"'{spec}'")
 
             if f_operator == '<' and ((f_name, '<=') in filters_values):
-                filters_values[(f_name, '<')].update(filters_values[(f_name, '<=')])
+                filters_values[(f_name, '<')].update(
+                    filters_values[(f_name, '<=')])
                 keys_to_delete.append((f_name, '<='))
+
             if f_operator == '>' and ((f_name, '>=') in filters_values):
-                filters_values[(f_name, '>')].update(filters_values[(f_name, '>=')])
+                filters_values[(f_name, '>')].update(
+                    filters_values[(f_name, '>=')])
                 keys_to_delete.append((f_name, '>='))
 
         for key in keys_to_delete:
@@ -83,12 +85,29 @@ class DownloadRequestManager(models.Manager):
             f_operator = f_spec[1]
 
             if f_values and len(f_values) == 1:
-                s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': f_values[0]})
+                s_s['filters'].append(
+                    {
+                        'name': f_name,
+                        'operator': f_operator,
+                        'value': list(f_values)[0],
+                    })
+
             else:
                 if f_operator in ['>', '>=']:
-                    s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': max(f_values)})
+                    s_s['filters'].append(
+                        {
+                            'name': f_name,
+                            'operator': f_operator,
+                            'value': max(f_values),
+                        })
+
                 elif f_operator in ['<', '<=']:
-                    s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': min(f_values)})
+                    s_s['filters'].append(
+                        {
+                            'name': f_name,
+                            'operator': f_operator,
+                            'value': min(f_values),
+                        })
 
         return s_s
 
@@ -99,27 +118,34 @@ class DownloadRequestManager(models.Manager):
 
         query = {}
         for spec_filter in self.simplify_spec(spec)['filters']:
-            border_index_by_col_name = c_i_cols.index(spec_filter['name'])
+            b_idx = c_i_cols.index(spec_filter['name'])
 
             if spec_filter['operator'] == '<':
-                query[f'borders__{border_index_by_col_name}__maximum__lt'] = spec_filter['value']
-            elif spec_filter['operator'] == '<=':
-                query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
-            elif spec_filter['operator'] == '>':
-                query[f'borders__{border_index_by_col_name}__minimum__gt'] = spec_filter['value']
-            elif spec_filter['operator'] == '>=':
-                query[f'borders__{border_index_by_col_name}__minimum__gte'] = spec_filter['value']
-            elif spec_filter['operator'] == '=':
-                query[f'borders__{border_index_by_col_name}__minimum__gte'] = spec_filter['value']
-                query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
+                query[f'borders__{b_idx}__maximum__lt'] = spec_filter['value']
 
-        filter_chunks = Chunk.objects.filter(catalogue_item_id=catalogue_item_id, **query)
+            elif spec_filter['operator'] == '<=':
+                query[f'borders__{b_idx}__maximum__lte'] = spec_filter['value']
+
+            elif spec_filter['operator'] == '>':
+                query[f'borders__{b_idx}__minimum__gt'] = spec_filter['value']
+
+            elif spec_filter['operator'] == '>=':
+                query[f'borders__{b_idx}__minimum__gte'] = spec_filter['value']
+
+            elif spec_filter['operator'] == '=':
+                query[f'borders__{b_idx}__minimum__gte'] = spec_filter['value']
+                query[f'borders__{b_idx}__maximum__lte'] = spec_filter['value']
+
+        filter_chunks = Chunk.objects.filter(
+            catalogue_item_id=catalogue_item_id, **query)
 
         size = 0
         for chunk in filter_chunks:
             for border in chunk.borders:
                 for dist in border['distribution']:
-                    size += dist['count'] * self.column_type_to_bit_size[border['type']]
+                    size += (
+                        dist['count'] *
+                        self.column_type_to_bit_size[border['type']])
 
         return size
 
