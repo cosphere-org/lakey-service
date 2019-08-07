@@ -1,5 +1,6 @@
 
 from enum import Enum, unique
+from operator import itemgetter
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -87,11 +88,6 @@ def spec_validator(spec):
             raise ValidationError(
                 f"not integers distribution counts for column '{col_name}' "
                 "detected")
-
-    # -- spec must be sorted by column name
-    if not all(spec[i]['name'] <= spec[i+1]['name'] for i in range(len(spec) - 1)):
-        raise ValidationError(
-            f"spec is not sorted by name column '{spec}' ")
 
 
 class CatalogueItem(ValidatingModel):
@@ -263,6 +259,13 @@ class CatalogueItem(ValidatingModel):
     @property
     def table(self):
         return self.name
+
+    def sort_spec(self):
+        self.spec = sorted(self.spec, key=itemgetter('name'))
+
+    def save(self, *args, **kwargs):
+        self.sort_spec()
+        super(CatalogueItem, self).save(*args, **kwargs)
 
     def update_samples_and_distributions(self):
 
