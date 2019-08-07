@@ -6,6 +6,7 @@ import pytest
 
 from downloader.models import DownloadRequest
 from tests.factory import EntityFactory
+from downloader.models import MutuallyExclusiveFiltersDetected
 
 
 ef = EntityFactory()
@@ -210,7 +211,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             ]
         }
 
-        with pytest.raises(ValueError) as e:
+        with pytest.raises(MutuallyExclusiveFiltersDetected) as e:
             DownloadRequest.objects.simplify_spec(spec)
 
         assert str(e.value) == f"spec filters can not have multiple equal operators '{spec}'"
@@ -244,7 +245,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
         pull_spec = DownloadRequest.objects.simplify_spec(spec)
         assert pull_spec == expected_spec
 
-    def test_simplify_spec__many_more_operator(self):
+    def test_simplify_spec__many_same_operator(self):
         spec = {
             'filters': [
                 {

@@ -22,43 +22,55 @@ from catalogue.models import CatalogueItem
 from chunk.models import Chunk
 
 
+class MutuallyExclusiveFiltersDetected(Exception):
+    pass
+
 
 class DownloadRequestManager(models.Manager):
 
     def simplify_spec(self, spec):
         filters_values = {}
-        for spec_filter in spec['filters']:
-            if spec_filter['name'] not in filters_values:
-                filters_values[spec_filter['name']] = {}
-            if spec_filter['operator'] not in filters_values[spec_filter['name']]:
-                filters_values[spec_filter['name']][spec_filter['operator']] = []
-            filters_values[spec_filter['name']][spec_filter['operator']].append(spec_filter['value'])
 
-        for col_name in filters_values:
-            if filters_values[col_name] == '=' and len(filters_values[col_name]['=']) > 0:
-                raise ValueError(
+        for spec_filter in spec['filters']:
+            f_name = spec_filter['name']
+            f_operator = spec_filter['operator']
+            f_value = spec_filter['value']
+
+            filters_values.setdefault((f_name, f_operator), set())
+            filters_values[(f_name, f_operator)].add(f_value)
+
+        keys_to_delete = []
+        for f_spec, f_values in filters_values.items():
+            f_name = f_spec[0]
+            f_operator = f_spec[1]
+
+            if f_operator == '=' and len(f_values) > 1:
+                raise MutuallyExclusiveFiltersDetected(
                     f"spec filters can not have multiple equal operators '{spec}'"
                 )
-            else:
-                if '<' and '<=' in filters_values[col_name]:
-                    filters_values[col_name]['<'].extend(filters_values[col_name]['<='])
-                    del filters_values[col_name]['<=']
-                if '>' and '>=' in filters_values[col_name]:
-                    filters_values[col_name]['>'].extend(filters_values[col_name]['>='])
-                    del filters_values[col_name]['>=']
+
+            if f_operator == '<' and ((f_name, '<=') in filters_values):
+                filters_values[(f_name, '<')].update(filters_values[(f_name, '<=')])
+                keys_to_delete.append((f_name, '<='))
+            if f_operator == '>' and ((f_name, '>=') in filters_values):
+                filters_values[(f_name, '>')].update(filters_values[(f_name, '>=')])
+                keys_to_delete.append((f_name, '>='))
+
+        for key in keys_to_delete:
+            del filters_values[key]
 
         s_s = {**spec, 'filters': []}
-        for col_name in filters_values:
-            for operator_name in filters_values[col_name]:
-                values = filters_values[col_name][operator_name]
+        for f_spec, f_values in filters_values.items():
+            f_name = f_spec[0]
+            f_operator = f_spec[1]
 
-                if not len(values) > 0:
-                    s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': values[0]})
-                else:
-                    if operator_name == ('>' or '>='):
-                        s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': max(values)})
-                    elif operator_name == ('<' or '<='):
-                        s_s['filters'].append({'name': col_name, 'operator': operator_name, 'value': min(values)})
+            if f_values and len(f_values) == 1:
+                s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': f_values[0]})
+            else:
+                if f_operator in ['>', '>=']:
+                    s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': max(f_values)})
+                elif f_operator in ['<', '<=']:
+                    s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': min(f_values)})
 
         return s_s
 
