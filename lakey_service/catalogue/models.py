@@ -1,5 +1,6 @@
 
 from enum import Enum, unique
+from operator import itemgetter
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -259,6 +260,13 @@ class CatalogueItem(ValidatingModel):
     @property
     def table(self):
         return self.name
+
+    def sort_spec(self):
+        self.spec = sorted(self.spec, key=itemgetter('name'))
+
+    def save(self, *args, **kwargs):
+        self.sort_spec()
+        super(CatalogueItem, self).save(*args, **kwargs)
 
     def update_samples_and_distributions(self):
 

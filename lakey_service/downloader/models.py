@@ -4,6 +4,7 @@ from enum import Enum, unique
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save
 from django.db import models
+
 from lily.base.models import (
     array,
     boolean,
@@ -19,62 +20,108 @@ from lily.base.models import (
 from account.models import Account
 from catalogue.models import CatalogueItem
 from chunk.models import Chunk
+from catalogue.models import CatalogueItem
+
+
+class MutuallyExclusiveFiltersDetected(Exception):
+    pass
+
+class NoFiltersDetected(Exception):
+    pass
 
 
 class DownloadRequestManager(models.Manager):
 
-    def estimate_size(self, spec, catalogue_item_id):
-        if not spec['columns']:
-            raise ValidationError(
-                "column in spec filter can not be empty")
+    column_type_to_bit_size = {
+        CatalogueItem.ColumnType.INTEGER.value: 4,
+        CatalogueItem.ColumnType.FLOAT.value: 8,
+        CatalogueItem.ColumnType.STRING.value: 16,
+        CatalogueItem.ColumnType.DATETIME.value: 8,
+        CatalogueItem.ColumnType.BOOLEAN.value: 1,
+    }
+
+    def simplify_spec(self, spec):
 
         if not spec['filters']:
-            raise ValidationError(
-                "filters in spec filter can not be empty")
+            raise NoFiltersDetected(
+                f"spec must have at least one filter '{spec}'"
+            )
 
-        catalogue_item = CatalogueItem.objects.get(id=catalogue_item_id)
-        all_chunks = Chunk.objects.filter(catalogue_item=catalogue_item)
-        max_size = 0
+        filters_values = {}
 
-        columns_type_by_name = {}
-        for column in catalogue_item.spec:
-            columns_type_by_name[column['name']] = column['type']
+        for spec_filter in spec['filters']:
+            f_name = spec_filter['name']
+            f_operator = spec_filter['operator']
+            f_value = spec_filter['value']
 
-        # [PERFORMANCE-ISSUE]: here we iterate over all chunks for a given
-        # catalogue item.
-        for chunk in all_chunks:
-            chunk_passed = []
+            filters_values.setdefault((f_name, f_operator), set())
+            filters_values[(f_name, f_operator)].add(f_value)
 
-            for spec_filter in spec['filters']:
-                filter_operator = spec_filter['operator']
-                filter_value = spec_filter['value']
-                column_name = spec_filter['name']
+        keys_to_delete = []
+        for f_spec, f_values in filters_values.items():
+            f_name = f_spec[0]
+            f_operator = f_spec[1]
 
-                border = chunk.borders_per_column(column_name)
-                b_min, b_max = border['minimum'], border['maximum']
+            if f_operator == '=' and len(f_values) > 1:
+                raise MutuallyExclusiveFiltersDetected(
+                    f"spec filters can not have multiple equal operators '{spec}'"
+                )
 
-                if columns_type_by_name[column_name] == 'INTEGER':
-                    op = filter_operator
-                    val = filter_value
-                    if (
-                            op == '>' and b_min > val or
-                            op == '<' and b_max < val or
-                            op == '>=' and b_min >= val or
-                            op == '<=' and b_max <= val or
-                            op == '=' and b_max > val > b_min or
-                            op == '!=' and b_max < val < b_min):
+            if f_operator == '<' and ((f_name, '<=') in filters_values):
+                filters_values[(f_name, '<')].update(filters_values[(f_name, '<=')])
+                keys_to_delete.append((f_name, '<='))
+            if f_operator == '>' and ((f_name, '>=') in filters_values):
+                filters_values[(f_name, '>')].update(filters_values[(f_name, '>=')])
+                keys_to_delete.append((f_name, '>='))
 
-                        chunk_passed.append(True)
+        for key in keys_to_delete:
+            del filters_values[key]
 
-            if chunk_passed and all(chunk_passed):
-                for col in spec['columns']:
-                    border_type = columns_type_by_name[col]
-                    border_count = chunk.count
+        s_s = {**spec, 'filters': []}
+        for f_spec, f_values in filters_values.items():
+            f_name = f_spec[0]
+            f_operator = f_spec[1]
 
-                    if border_type == 'INTEGER':
-                        max_size += 4 * border_count
+            if f_values and len(f_values) == 1:
+                s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': f_values[0]})
+            else:
+                if f_operator in ['>', '>=']:
+                    s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': max(f_values)})
+                elif f_operator in ['<', '<=']:
+                    s_s['filters'].append({'name': f_name, 'operator': f_operator, 'value': min(f_values)})
 
-        return max_size
+        return s_s
+
+    def estimate_size(self, spec, catalogue_item_id):
+        c_i = CatalogueItem.objects.get(id=catalogue_item_id)
+        c_i_cols = [col['name'] for col in c_i.spec]
+        spec = self.simplify_spec(spec)
+
+        query = {}
+        for spec_filter in self.simplify_spec(spec)['filters']:
+            border_index_by_col_name = c_i_cols.index(spec_filter['name'])
+
+            if spec_filter['operator'] == '<':
+                query[f'borders__{border_index_by_col_name}__maximum__lt'] = spec_filter['value']
+            elif spec_filter['operator'] == '<=':
+                query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
+            elif spec_filter['operator'] == '>':
+                query[f'borders__{border_index_by_col_name}__minimum__gt'] = spec_filter['value']
+            elif spec_filter['operator'] == '>=':
+                query[f'borders__{border_index_by_col_name}__minimum__gte'] = spec_filter['value']
+            elif spec_filter['operator'] == '=':
+                query[f'borders__{border_index_by_col_name}__minimum__gte'] = spec_filter['value']
+                query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
+
+        filter_chunks = Chunk.objects.filter(catalogue_item_id=catalogue_item_id, **query)
+
+        size = 0
+        for chunk in filter_chunks:
+            for border in chunk.borders:
+                for dist in border['distribution']:
+                    size += dist['count'] * self.column_type_to_bit_size[border['type']]
+
+        return size
 
 
 class DownloadRequest(ValidatingModel):

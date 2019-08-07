@@ -188,7 +188,6 @@ class Chunk(ValidatingModel):
                     "borders columns do not match catalogue item")
 
             for border in self.borders:
-
                 border_minimum = border['minimum']
                 border_maximum = border['maximum']
                 border_column = border["column"]

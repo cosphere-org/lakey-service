@@ -443,3 +443,52 @@ class CatalogueItemTestCase(TestCase):
                 ],
             },
         ]
+
+    def test_sort_spec(self):
+        a = ef.account()
+        spec = [
+            {
+                'name': 'value',
+                'type': 'FLOAT',
+                'size': 0,
+                'is_nullable': False,
+                'is_enum': False,
+                'distribution': [],
+            },
+            {
+                'name': 'location',
+                'type': 'STRING',
+                'size': 0,
+                'is_nullable': False,
+                'is_enum': False,
+                'distribution': [],
+            },
+        ]
+
+        expected_spec = [
+            {
+                'name': 'location',
+                'type': 'STRING',
+                'size': 0,
+                'is_nullable': False,
+                'is_enum': False,
+                'distribution': [],
+            },
+            {
+                'name': 'value',
+                'type': 'FLOAT',
+                'size': 0,
+                'is_nullable': False,
+                'is_enum': False,
+                'distribution': [],
+            },
+        ]
+
+        ci = CatalogueItem.objects.create(
+            maintained_by=a,
+            name='iot.events',
+            sample=[],
+            spec=spec,
+            executor_type='ATHENA')
+
+        assert expected_spec == ci.spec

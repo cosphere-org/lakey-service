@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from downloader.models import DownloadRequest
 from tests.factory import EntityFactory
+from downloader.models import MutuallyExclusiveFiltersDetected, NoFiltersDetected
 
 
 ef = EntityFactory()
@@ -23,28 +24,11 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                     'is_enum': False,
                     'distribution': None,
                 },
+
             ],
         )
 
-    def test_estimate_size__filter_with_open_range(self):
-        spec = {
-            'columns': ['A'],
-            'filters': [
-                {
-                    'name': 'A',
-                    'operator': '<',
-                    'value': 0,
-                },
-                {
-                    'name': 'A',
-                    'operator': '>',
-                    'value': 20,
-                },
-            ],
-            'randomize_ratio': 1,
-        }
-
-        ef.chunk_bulk(
+        self.chs = ef.chunk_bulk(
             chunks_borders=[
                 [
                     {
@@ -66,6 +50,25 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             catalogue_item=self.ci,
             count=1,
         )
+
+    def test_estimate_size__filter_with_open_range(self):
+        spec = {
+           'columns': ['A'],
+           'filters': [
+               {
+                   'name': 'A',
+                   'operator': '<',
+                   'value': 0,
+               },
+               {
+                   'name': 'A',
+                   'operator': '>',
+                   'value': 20,
+               },
+
+           ],
+           'randomize_ratio': 1,
+        }
 
         es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
@@ -90,92 +93,161 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             'randomize_ratio': 1,
         }
 
-        ef.chunk_bulk(
-            chunks_borders=[
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 0,
-                        'maximum': 10,
-                        'distribution': None,
-                    },
-                ],
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 20,
-                        'distribution': None,
-                    },
-                ],
-            ],
-            catalogue_item=self.ci,
-            count=1,
+        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-        )
+        assert es == 8
 
-        assert DownloadRequest.objects.estimate_size(spec, self.ci.id) == 8
+    # def test_estimate_size__filter_column_is_empty(self): pass
+    # def test_estimate_size__filter_include_all(self): pass
+    # def test_estimate_size__filter_with_offset(self): pass
+    # def test_estimate_size__filter_without_offset(self): pass
+    # def test_estimate_size__chunks_not_exist(self): pass
 
-    def test_estimate_size__filters_is_empty(self):
+    def test_simplify_spec__filters_is_empty(self):
+        spec = {
+            'columns': ['A'],
+            'filters': [],
+            'randomize_ratio': 1,
+        }
 
-        ef.chunk_bulk(
-            chunks_borders=[
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 0,
-                        'maximum': 10,
-                        'distribution': None,
-                    },
-                ],
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 20,
-                        'distribution': None,
-                    },
-                ],
-            ],
-            catalogue_item=self.ci,
+        with pytest.raises(NoFiltersDetected) as e:
+            DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-        )
+        assert str(e.value) == f"spec must have at least one filter '{spec}'"
 
-    def test_estimate_size__filter_column_is_empty(self):
+    def test_simplify_spec__many_equal_or_less_and_less_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '<=',
+                    'value': 20,
+                },
+            ]
+        }
 
-        ef.chunk_bulk(
-            chunks_borders=[
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 0,
-                        'maximum': 10,
-                        'distribution': None,
-                    },
-                ],
-                [
-                    {
-                        'column': 'A',
-                        'minimum': 10,
-                        'maximum': 20,
-                        'distribution': None,
-                    },
-                ],
-            ],
-            catalogue_item=self.ci,
-        )
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+            ]
+        }
 
-    def test_estimate_size__filter_include_all(self):
-        pass
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec
 
-    def test_estimate_size__filter_with_offset(self):
-        pass
+    def test_simplify_spec__many_equal_or_greater_and_greater_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '>=',
+                    'value': 20,
+                },
+            ]
+        }
 
-    def test_estimate_size__filter_without_offset(self):
-        pass
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 20,
+                },
+            ]
+        }
 
-    def test_estimate_size__chunks_not_exist(self):
-        pass
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec
 
-    def test_estimate_size__filters_exclude_themselves(self):
-        pass
+    def test_simplify_spec__many_equal_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '=',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '=',
+                    'value': 20,
+                },
+            ]
+        }
+
+        with pytest.raises(MutuallyExclusiveFiltersDetected) as e:
+            DownloadRequest.objects.simplify_spec(spec)
+
+        assert str(e.value) == f"spec filters can not have multiple equal operators '{spec}'"
+
+    def test_simplify_spec__many_less_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 20,
+                },
+            ]
+        }
+
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '<',
+                    'value': 0,
+                },
+            ]
+        }
+
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec
+
+    def test_simplify_spec__many_same_operator(self):
+        spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 20,
+                },
+            ]
+        }
+
+        expected_spec = {
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>',
+                    'value': 20,
+                },
+            ]
+        }
+
+        pull_spec = DownloadRequest.objects.simplify_spec(spec)
+        assert pull_spec == expected_spec
