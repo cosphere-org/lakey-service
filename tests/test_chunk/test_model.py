@@ -826,7 +826,7 @@ class ChunkTestCase(TestCase):
             ]
         }
 
-    def test_distribution__max_is_not_first(self):
+    def test_distribution__max_is_not_last(self):
 
         ci = self.ci()
 
@@ -854,7 +854,7 @@ class ChunkTestCase(TestCase):
                         'column': 'B',
                         'minimum': 20,
                         'maximum': 25,
-                        'type': 'FLOssAT',
+                        'type': 'FLOAT',
                         'distribution': None,
                     },
                 ])
