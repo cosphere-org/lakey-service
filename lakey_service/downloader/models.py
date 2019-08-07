@@ -20,6 +20,7 @@ from lily.base.models import (
 from account.models import Account
 from catalogue.models import CatalogueItem
 from chunk.models import Chunk
+from catalogue.models import CatalogueItem
 
 
 class MutuallyExclusiveFiltersDetected(Exception):
@@ -28,7 +29,21 @@ class MutuallyExclusiveFiltersDetected(Exception):
 
 class DownloadRequestManager(models.Manager):
 
+    column_type_to_bit_size = {
+        CatalogueItem.ColumnType.INTEGER.value: 4,
+        CatalogueItem.ColumnType.FLOAT.value: 8,
+        CatalogueItem.ColumnType.STRING.value: 16,
+        CatalogueItem.ColumnType.DATETIME.value: 8,
+        CatalogueItem.ColumnType.BOOLEAN.value: 1,
+    }
+
     def simplify_spec(self, spec):
+
+        if not spec['filters']:
+            raise MutuallyExclusiveFiltersDetected(
+                f"spec must have at least one filter '{spec}'"
+            )
+
         filters_values = {}
 
         for spec_filter in spec['filters']:
@@ -96,9 +111,14 @@ class DownloadRequestManager(models.Manager):
                 query[f'borders__{border_index_by_col_name}__maximum__lte'] = spec_filter['value']
 
         filter_chunks = Chunk.objects.filter(catalogue_item_id=catalogue_item_id, **query)
-        col_types_by_name = {col['name']: col['type'] for col in c_i.spec}
 
-        return 0
+        size = 0
+        for chunk in filter_chunks:
+            for border in chunk.borders:
+                for dist in border['distribution']:
+                    size += dist['count'] * self.column_type_to_bit_size[border['type']]
+
+        return size
 
 
 class DownloadRequest(ValidatingModel):

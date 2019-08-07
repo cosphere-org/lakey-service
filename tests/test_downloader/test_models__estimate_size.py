@@ -99,43 +99,23 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
 
         assert es == 8
 
-    def test_estimate_size__filters_is_empty(self):
+    def test_estimate_size__filter_column_is_empty(self): pass
+    def test_estimate_size__filter_include_all(self): pass
+    def test_estimate_size__filter_with_offset(self): pass
+    def test_estimate_size__filter_without_offset(self): pass
+    def test_estimate_size__chunks_not_exist(self): pass
+
+    def test_simplify_spec__filters_is_empty(self):
         spec = {
             'columns': ['A'],
             'filters': [],
             'randomize_ratio': 1,
         }
 
-    def test_estimate_size__filter_column_is_empty(self):
-        spec = {
-           'columns': [],
-           'filters': [
-               {
-                   'name': 'A',
-                   'operator': '>',
-                   'value': 5,
-               },
-               {
-                   'name': 'A',
-                   'operator': '<',
-                   'value': 15,
-               },
+        with pytest.raises(MutuallyExclusiveFiltersDetected) as e:
+            DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-           ],
-           'randomize_ratio': 1,
-        }
-
-    def test_estimate_size__filter_include_all(self):
-        pass
-
-    def test_estimate_size__filter_with_offset(self):
-        pass
-
-    def test_estimate_size__filter_without_offset(self):
-        pass
-
-    def test_estimate_size__chunks_not_exist(self):
-        pass
+        assert str(e.value) == f"spec must have at least one filter '{spec}'"
 
     def test_simplify_spec__many_equal_or_less_and_less_operator(self):
         spec = {
