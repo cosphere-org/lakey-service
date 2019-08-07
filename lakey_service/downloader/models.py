@@ -54,29 +54,17 @@ class DownloadRequestManager(models.Manager):
                 b_min, b_max = border['minimum'], border['maximum']
 
                 if columns_type_by_name[column_name] == 'INTEGER':
-                    if filter_operator == '>':
-                        if b_min > filter_value:
-                            chunk_passed.append(True)
+                    op = filter_operator
+                    val = filter_value
+                    if (
+                            op == '>' and b_min > val or
+                            op == '<' and b_max < val or
+                            op == '>=' and b_min >= val or
+                            op == '<=' and b_max <= val or
+                            op == '=' and b_max > val > b_min or
+                            op == '!=' and b_max < val < b_min):
 
-                    elif filter_operator == '<':
-                        if b_max < filter_value:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '>=':
-                        if b_min >= filter_value:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '<=':
-                        if b_max <= filter_value:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '=':
-                        if b_max > filter_value > b_min:
-                            chunk_passed.append(True)
-
-                    elif filter_operator == '!=':
-                        if b_max < filter_value < b_min:
-                            chunk_passed.append(True)
+                        chunk_passed.append(True)
 
             if chunk_passed and all(chunk_passed):
                 for col in spec['columns']:

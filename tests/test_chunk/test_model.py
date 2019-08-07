@@ -112,7 +112,6 @@ class ChunkTestCase(TestCase):
             )
 
         assert e.value.message_dict == {
-            '__all__': ['chunk - borders must be created and type list'],
             'borders': [
                 "JSON did not validate. PATH: '.' REASON: 'whatever' is "
                 "not of type 'array'"],
@@ -190,7 +189,6 @@ class ChunkTestCase(TestCase):
             )
 
         assert e.value.message_dict == {
-            '__all__': ['borders columns do not match catalogue item'],
             'borders': [
                 "JSON did not validate. PATH: '0.column' REASON: "
                 "True is not of type 'string'"
@@ -220,7 +218,6 @@ class ChunkTestCase(TestCase):
             )
 
         assert e.value.message_dict == {
-            '__all__': ['minimum can not be empty'],
             'borders': [
                 "JSON did not validate. PATH: '1.minimum' REASON: None "
                 "is not valid under any of the given schemas"
@@ -378,7 +375,6 @@ class ChunkTestCase(TestCase):
 
         # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
-            '__all__': ['maximum can not be empty'],
             'borders': [
                 "JSON did not validate. PATH: '0.maximum' REASON: "
                 'None is not valid under any of the given schemas'
@@ -407,7 +403,6 @@ class ChunkTestCase(TestCase):
 
         # ??? ask why validation function do not raise errors
         assert e.value.message_dict == {
-            '__all__': ['maximum can not be empty'],
             'borders': [
                 "JSON did not validate. PATH: '1.maximum' REASON: None is not "
                 'valid under any of the given schemas'
@@ -437,7 +432,6 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
-            '__all__': ['maximum has to be greater than minimum'],
             'borders': [
                 "JSON did not validate. PATH: '0.maximum' "
                 "REASON: True is not valid under any of the "
@@ -466,7 +460,6 @@ class ChunkTestCase(TestCase):
                 ])
 
         assert e.value.message_dict == {
-            '__all__': ['maximum has to be greater than minimum'],
             'borders': [
                 "JSON did not validate. PATH: '1.maximum' "
                 "REASON: True is not valid under any of the "
