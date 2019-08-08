@@ -30,15 +30,15 @@ class NoFiltersDetected(Exception):
     pass
 
 
-class DownloadRequestManager(models.Manager):
+class NoChunksDetected(Exception):
+    pass
 
-    column_type_to_bit_size = {
-        CatalogueItem.ColumnType.INTEGER.value: 4,
-        CatalogueItem.ColumnType.FLOAT.value: 8,
-        CatalogueItem.ColumnType.STRING.value: 16,
-        CatalogueItem.ColumnType.DATETIME.value: 8,
-        CatalogueItem.ColumnType.BOOLEAN.value: 1,
-    }
+
+class TooMuchDataRequestDetected(Exception):
+    pass
+
+
+class DownloadRequestManager(models.Manager):
 
     def simplify_spec(self, spec):
 
@@ -112,6 +112,12 @@ class DownloadRequestManager(models.Manager):
         return s_s
 
     def estimate_size(self, spec, catalogue_item_id):
+
+        if not Chunk.objects.filter(
+                catalogue_item_id=catalogue_item_id).exists():
+            raise NoChunksDetected(
+                f"chunks must exist for indicated catalogue item")
+
         c_i = CatalogueItem.objects.get(id=catalogue_item_id)
         c_i_cols = [col['name'] for col in c_i.spec]
         spec = self.simplify_spec(spec)
@@ -139,15 +145,28 @@ class DownloadRequestManager(models.Manager):
         filter_chunks = Chunk.objects.filter(
             catalogue_item_id=catalogue_item_id, **query)
 
-        size = 0
+        c_i_size_by_col = {col['name']: col['size'] for col in c_i.spec}
+        c_i_count_by_col = {
+            col['name']: sum(dist['count'] for dist in col['distribution'])
+            for col in c_i.spec
+        }
+        c_i_size = sum(size for size in c_i_size_by_col.values())
+
+        estimate_size = 0
         for chunk in filter_chunks:
             for border in chunk.borders:
-                for dist in border['distribution']:
-                    size += (
-                        dist['count'] *
-                        self.column_type_to_bit_size[border['type']])
+                border_count = \
+                    sum(dist['count'] for dist in border['distribution'])
+                c_i_col_size = c_i_size_by_col[border['column']]
+                c_i_col_count = c_i_count_by_col[border['column']]
 
-        return size
+                estimate_size += (border_count * c_i_col_size) / c_i_col_count
+
+        if estimate_size == c_i_size:
+            raise TooMuchDataRequestDetected(
+                f"specify filters to a smaller data area")
+
+        return {'size': estimate_size, 'chunks': filter_chunks}
 
 
 class DownloadRequest(ValidatingModel):

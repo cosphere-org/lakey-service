@@ -7,6 +7,8 @@ from tests.factory import EntityFactory
 from downloader.models import (
     MutuallyExclusiveFiltersDetected,
     NoFiltersDetected,
+    NoChunksDetected,
+    TooMuchDataRequestDetected,
 )
 
 
@@ -23,13 +25,26 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                 {
                     'name': 'A',
                     'type': 'INTEGER',
-                    'size': 123,
+                    'size': 120,  # sum(distribution.count) * type.size
                     'is_nullable': False,
                     'is_enum': False,
-                    'distribution': None,
+                    'distribution': [
+                        {'value_min': 0, 'value_max': 10, 'count': 20},
+                        {'value_min': 11, 'value_max': 20, 'count': 20},
+                    ],
                 },
-
-            ],
+                {
+                    'name': 'B',
+                    'type': 'INTEGER',
+                    'size': 120,  # sum(distribution.count) * type.size
+                    'is_nullable': False,
+                    'is_enum': False,
+                    'distribution': [
+                        {'value_min': 0, 'value_max': 10, 'count': 20},
+                        {'value_min': 11, 'value_max': 20, 'count': 20},
+                    ],
+                },
+            ]
         )
 
         self.chs = ef.chunk_bulk(
@@ -39,7 +54,19 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                         'column': 'A',
                         'minimum': 0,
                         'maximum': 10,
-                        'distribution': None,
+                        'distribution': [
+                            {'value_min': 18, 'value_max': 20, 'count': 10},
+                            {'value_min': 19, 'value_max': 24, 'count': 10},
+                        ],
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 0,
+                        'maximum': 10,
+                        'distribution': [
+                            {'value_min': 18, 'value_max': 20, 'count': 10},
+                            {'value_min': 19, 'value_max': 24, 'count': 10},
+                        ],
                     },
                 ],
                 [
@@ -47,7 +74,19 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                         'column': 'A',
                         'minimum': 10,
                         'maximum': 20,
-                        'distribution': None,
+                        'distribution': [
+                            {'value_min': 18, 'value_max': 20.0, 'count': 10},
+                            {'value_min': 19, 'value_max': 24, 'count': 10},
+                        ],
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 10,
+                        'maximum': 20,
+                        'distribution': [
+                            {'value_min': 18, 'value_max': 20, 'count': 10},
+                            {'value_min': 19, 'value_max': 24, 'count': 10},
+                        ],
                     },
                 ],
             ],
@@ -55,11 +94,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             count=1,
         )
 
-    @pytest.mark.xfail(reason='''
-        Will be addressed after integrating the estimator with the
-        changes from Chunk.distribution. --> @skpk
-    ''')
-    def test_estimate_size__filter_with_open_range(self):
+    def test_estimate_size__filters_with_open_range(self):
         spec = {
             'columns': ['A'],
             'filters': [
@@ -79,25 +114,66 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
 
         es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-        assert es == 0
+        assert es['size'] == 0
 
-    @pytest.mark.xfail(reason='''
-        Will be addressed after integrating the estimator with the
-        changes from Chunk.distribution. --> @skpk
-    ''')
-    def test_estimate_size__filter_with_closed_range(self):
+    def test_estimate_size__filters_with_closed_range(self):
 
         spec = {
             'columns': ['A'],
             'filters': [
                 {
                     'name': 'A',
-                    'operator': '>',
-                    'value': 5,
+                    'operator': '>=',
+                    'value': 0,
                 },
                 {
                     'name': 'A',
-                    'operator': '<',
+                    'operator': '<=',
+                    'value': 10,
+                },
+            ],
+            'randomize_ratio': 1,
+        }
+
+        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+
+        assert es['size'] == 120
+
+    def test_estimate_size__filters_include_too_much_data(self):
+        spec = {
+            'columns': ['A'],
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>=',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '<=',
+                    'value': 20,
+                },
+            ],
+            'randomize_ratio': 1,
+        }
+
+        with pytest.raises(TooMuchDataRequestDetected) as e:
+            DownloadRequest.objects.estimate_size(spec, self.ci.id)
+
+        assert str(e.value) == f"specify filters to a smaller data area"
+
+    def test_estimate_size__filters_with_offset(self):
+        spec = {
+            'columns': ['A'],
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>=',
+                    'value': 0,
+                },
+                {
+                    'name': 'A',
+                    'operator': '<=',
                     'value': 15,
                 },
             ],
@@ -106,13 +182,38 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
 
         es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-        assert es == 8
+        assert es['size'] == 120
 
-    # def test_estimate_size__filter_column_is_empty(self): pass
-    # def test_estimate_size__filter_include_all(self): pass
-    # def test_estimate_size__filter_with_offset(self): pass
-    # def test_estimate_size__filter_without_offset(self): pass
-    # def test_estimate_size__chunks_not_exist(self): pass
+    def test_estimate_size__filters_without_offset(self):
+        spec = {
+            'columns': ['A'],
+            'filters': [
+                {
+                    'name': 'A',
+                    'operator': '>=',
+                    'value': 10,
+                },
+                {
+                    'name': 'A',
+                    'operator': '<=',
+                    'value': 20,
+                },
+            ],
+            'randomize_ratio': 1,
+        }
+
+        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+
+        assert es['size'] == 120
+
+    def test_estimate_size__chunks_not_exist(self):
+        ef.clear()
+
+        with pytest.raises(NoChunksDetected) as e:
+            DownloadRequest.objects.estimate_size({}, self.ci.id)
+
+        assert str(e.value) == f"chunks must exist for " \
+                               f"indicated catalogue item"
 
     def test_simplify_spec__filters_is_empty(self):
         spec = {
