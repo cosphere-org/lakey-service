@@ -1,817 +1,4 @@
 {
-    "ESTIMATE_SIZE_OF_DOWNLOAD_REQUEST": {
-        "200 (SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED)": {
-            "method": "post",
-            "description": "SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED",
-            "request": {
-                "path": "/downloader/requests/estimate/",
-                "content": {
-                    "spec": {
-                        "columns": [
-                            "product",
-                            "price"
-                        ],
-                        "filters": [],
-                        "randomize_ratio": 0.9
-                    },
-                    "catalogue_item_id": 47
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.Fd_Oel7WDMQiAED4bUFnM5CTDwAnR-2jidimQEWY70M"
-                }
-            },
-            "response": {
-                "status": 200,
-                "content_type": "application/json",
-                "content": {
-                    "estimated_size": 1234,
-                    "@type": "download_request_estimated_size",
-                    "@event": "SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED"
-                }
-            }
-        }
-    },
-    "RENDER_DOWNLOAD_REQUEST_UI_DATA": {
-        "200 (DOWNLOAD_REQUEST_UI_DATA_RENDERED)": {
-            "method": "post",
-            "description": "DOWNLOAD_REQUEST_UI_DATA_RENDERED",
-            "request": {
-                "path": "/downloader/requests/render_ui_data/",
-                "content": {
-                    "catalogue_item_id": 48
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.GyjKyHAo35d2h34oBURaeT6w3XQ5DsYX5jFUuU8sxS4"
-                }
-            },
-            "response": {
-                "status": 200,
-                "content_type": "application/json",
-                "content": {
-                    "columns_operators": [
-                        {
-                            "name": "available",
-                            "operators": [
-                                "=",
-                                "!="
-                            ],
-                            "@type": "column_operators"
-                        },
-                        {
-                            "name": "price",
-                            "operators": [
-                                ">",
-                                ">=",
-                                "<",
-                                "<=",
-                                "=",
-                                "!="
-                            ],
-                            "@type": "column_operators"
-                        },
-                        {
-                            "name": "product",
-                            "operators": [
-                                ">",
-                                ">=",
-                                "<",
-                                "<=",
-                                "=",
-                                "!="
-                            ],
-                            "@type": "column_operators"
-                        }
-                    ],
-                    "@type": "download_request_render",
-                    "@event": "DOWNLOAD_REQUEST_UI_DATA_RENDERED"
-                }
-            }
-        }
-    },
-    "DELETE_DOWNLOADREQUEST": {
-        "404 (COULD_NOT_FIND_DOWNLOADREQUEST)": {
-            "method": "delete",
-            "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
-            "request": {
-                "path": "/downloader/requests/69506",
-                "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.4FBdzqytvrND2JswKZG9EPjlWioM1YH55LvSRf4tBpw"
-                }
-            },
-            "response": {
-                "status": 404,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "error",
-                    "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
-                    "@access": {
-                        "account_id": 30
-                    }
-                }
-            }
-        },
-        "200 (DOWNLOADREQUEST_DELETED)": {
-            "method": "delete",
-            "description": "DOWNLOADREQUEST_DELETED",
-            "request": {
-                "path": "/downloader/requests/10",
-                "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzMsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.fL10qCs5Zi6lNKSDr5Wm8swWDfLSwHnZTFTL9Rbw8l8"
-                }
-            },
-            "response": {
-                "status": 200,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "empty",
-                    "@event": "DOWNLOADREQUEST_DELETED"
-                }
-            }
-        }
-    },
-    "READ_DOWNLOADREQUEST": {
-        "200 (DOWNLOADREQUEST_READ)": {
-            "method": "get",
-            "description": "DOWNLOADREQUEST_READ",
-            "request": {
-                "path": "/downloader/requests/9",
-                "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzEsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.pIKso0vpTIQk91rZJG7S9WFdNgMUZYlJc46NiDskzDw"
-                }
-            },
-            "response": {
-                "status": 200,
-                "content_type": "application/json",
-                "content": {
-                    "spec": {
-                        "columns": [
-                            "product"
-                        ],
-                        "filters": [
-                            {
-                                "name": "price",
-                                "value": 78,
-                                "operator": ">="
-                            }
-                        ],
-                        "randomize_ratio": 1
-                    },
-                    "uri": null,
-                    "real_size": null,
-                    "estimated_size": null,
-                    "executor_job_id": null,
-                    "catalogue_item": {
-                        "id": 50,
-                        "name": "Esley Littel",
-                        "spec": [
-                            {
-                                "name": "price",
-                                "size": null,
-                                "type": "INTEGER",
-                                "is_enum": false,
-                                "is_nullable": false,
-                                "distribution": null
-                            },
-                            {
-                                "name": "product",
-                                "size": null,
-                                "type": "STRING",
-                                "is_enum": true,
-                                "is_nullable": true,
-                                "distribution": null
-                            }
-                        ],
-                        "sample": [],
-                        "executor_type": "DATABRICKS",
-                        "created_by": null,
-                        "updated_by": null,
-                        "maintained_by": null,
-                        "@type": "catalogue_item"
-                    },
-                    "created_by": {
-                        "id": 32,
-                        "email": "roxierenner@gleason-marks.com",
-                        "type": "RESEARCHER",
-                        "@type": "account"
-                    },
-                    "is_cancelled": false,
-                    "@type": "download_request",
-                    "@event": "DOWNLOADREQUEST_READ"
-                }
-            }
-        },
-        "404 (COULD_NOT_FIND_DOWNLOADREQUEST)": {
-            "method": "get",
-            "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
-            "request": {
-                "path": "/downloader/requests/69506",
-                "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzcsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.7US5PFov048zyGbNOjKV5llEnaw6SfDtw9qj5CNYR8k"
-                }
-            },
-            "response": {
-                "status": 404,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "error",
-                    "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
-                    "@access": {
-                        "account_id": 37
-                    }
-                }
-            }
-        }
-    },
-    "READ_OR_CREATE_DOWNLOADREQUEST": {
-        "400 (BODY_JSON_DID_NOT_PARSE)": {
-            "method": "post",
-            "description": "BODY_JSON_DID_NOT_PARSE",
-            "request": {
-                "path": "/downloader/requests/",
-                "content": {
-                    "spec": {
-                        "columns": [
-                            "product",
-                            "price"
-                        ],
-                        "filters": [],
-                        "randomize_ratio": 0.9
-                    },
-                    "catalogue_item_id": 58495
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzgsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.7aNiR-WzbFQb2Q3qnrkH3ZGdP-OEwURFSenMDW73cGw"
-                }
-            },
-            "response": {
-                "status": 400,
-                "content_type": "application/json",
-                "content": {
-                    "errors": {
-                        "catalogue_item": [
-                            "catalogue item instance with id 58495 does not exist."
-                        ]
-                    },
-                    "@type": "error",
-                    "@event": "BODY_JSON_DID_NOT_PARSE",
-                    "@access": {
-                        "account_id": 38
-                    }
-                }
-            }
-        },
-        "201 (DOWNLOADREQUEST_CREATED)": {
-            "method": "post",
-            "description": "DOWNLOADREQUEST_CREATED",
-            "request": {
-                "path": "/downloader/requests/",
-                "content": {
-                    "spec": {
-                        "columns": [
-                            "product",
-                            "price"
-                        ],
-                        "filters": [],
-                        "randomize_ratio": 0.9
-                    },
-                    "catalogue_item_id": 55
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzksImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.3NpP1ZubKQmIZPhOjc9l4q_TPVOrumqWl-rwZVPl7iw"
-                }
-            },
-            "response": {
-                "status": 201,
-                "content_type": "application/json",
-                "content": {
-                    "spec": {
-                        "columns": [
-                            "product",
-                            "price"
-                        ],
-                        "filters": [],
-                        "randomize_ratio": 0.9
-                    },
-                    "uri": "https://s3.this.region.amazonaws.com/buk.et/results/567.csv",
-                    "real_size": null,
-                    "estimated_size": null,
-                    "executor_job_id": null,
-                    "catalogue_item": {
-                        "id": 55,
-                        "name": "Esley Littel",
-                        "spec": [
-                            {
-                                "name": "price",
-                                "size": null,
-                                "type": "INTEGER",
-                                "is_enum": false,
-                                "is_nullable": false,
-                                "distribution": null
-                            },
-                            {
-                                "name": "product",
-                                "size": null,
-                                "type": "STRING",
-                                "is_enum": true,
-                                "is_nullable": true,
-                                "distribution": null
-                            }
-                        ],
-                        "sample": [],
-                        "executor_type": "DATABRICKS",
-                        "created_by": null,
-                        "updated_by": null,
-                        "maintained_by": null,
-                        "@type": "catalogue_item"
-                    },
-                    "created_by": {
-                        "id": 39,
-                        "email": "armanschuppe@corwin.com",
-                        "type": "ADMIN",
-                        "@type": "account"
-                    },
-                    "is_cancelled": false,
-                    "@type": "download_request",
-                    "@event": "DOWNLOADREQUEST_CREATED"
-                }
-            }
-        },
-        "200 (DOWNLOADREQUEST_READ)": {
-            "method": "post",
-            "description": "DOWNLOADREQUEST_READ",
-            "request": {
-                "path": "/downloader/requests/",
-                "content": {
-                    "spec": {
-                        "columns": [
-                            "product",
-                            "price"
-                        ],
-                        "filters": [
-                            {
-                                "name": "product",
-                                "operator": "=",
-                                "value": "jack"
-                            },
-                            {
-                                "name": "price",
-                                "operator": "=",
-                                "value": 23
-                            },
-                            {
-                                "name": "price",
-                                "operator": ">=",
-                                "value": 78
-                            }
-                        ],
-                        "randomize_ratio": 0.9
-                    },
-                    "catalogue_item_id": 56
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDAsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.zJHeeW8eFT6yiPcZek7iXYpjqYcj_1LCrejFpDUt6qw"
-                }
-            },
-            "response": {
-                "status": 200,
-                "content_type": "application/json",
-                "content": {
-                    "spec": {
-                        "columns": [
-                            "price",
-                            "product"
-                        ],
-                        "filters": [
-                            {
-                                "name": "price",
-                                "value": 78,
-                                "operator": ">="
-                            },
-                            {
-                                "name": "price",
-                                "value": 23,
-                                "operator": "="
-                            },
-                            {
-                                "name": "product",
-                                "value": "jack",
-                                "operator": "="
-                            }
-                        ],
-                        "randomize_ratio": 0.9
-                    },
-                    "uri": "https://s3.this.region.amazonaws.com/buk.et/results/567.csv",
-                    "real_size": null,
-                    "estimated_size": null,
-                    "executor_job_id": null,
-                    "catalogue_item": {
-                        "id": 56,
-                        "name": "Esley Littel",
-                        "spec": [
-                            {
-                                "name": "price",
-                                "size": null,
-                                "type": "INTEGER",
-                                "is_enum": false,
-                                "is_nullable": false,
-                                "distribution": null
-                            },
-                            {
-                                "name": "product",
-                                "size": null,
-                                "type": "STRING",
-                                "is_enum": true,
-                                "is_nullable": true,
-                                "distribution": null
-                            }
-                        ],
-                        "sample": [],
-                        "executor_type": "DATABRICKS",
-                        "created_by": null,
-                        "updated_by": null,
-                        "maintained_by": null,
-                        "@type": "catalogue_item"
-                    },
-                    "created_by": null,
-                    "is_cancelled": false,
-                    "@type": "download_request",
-                    "@event": "DOWNLOADREQUEST_READ"
-                }
-            }
-        },
-        "400 (BODY_DID_NOT_VALIDATE)": {
-            "method": "post",
-            "description": "BODY_DID_NOT_VALIDATE",
-            "request": {
-                "path": "/downloader/requests/",
-                "content": {
-                    "spec": {
-                        "columns": [
-                            "product",
-                            "price"
-                        ],
-                        "filters": [],
-                        "randomize_ratio": 0.9
-                    },
-                    "catalogue_item_id": "TEXT"
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDMsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzl9.nSBY0ODaSR3q1LBfAm1zm4TnsJlEIM5kgKU3MXITPkU"
-                }
-            },
-            "response": {
-                "status": 400,
-                "content_type": "application/json",
-                "content": {
-                    "errors": {
-                        "catalogue_item_id": [
-                            "A valid integer is required."
-                        ]
-                    },
-                    "@type": "error",
-                    "@event": "BODY_DID_NOT_VALIDATE",
-                    "@access": {
-                        "account_id": 43
-                    }
-                }
-            }
-        }
-    },
-    "BULK_READ_DOWNLOADREQUESTS": {
-        "200 (DOWNLOADREQUESTS_BULK_READ)": {
-            "method": "get",
-            "description": "DOWNLOADREQUESTS_BULK_READ",
-            "request": {
-                "path": "/downloader/requests/",
-                "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDEsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzh9.GaCyUKZpj13KVxNJb3UI-wzJBYwZw_mTu-r0wtlnPgU"
-                }
-            },
-            "response": {
-                "status": 200,
-                "content_type": "application/json",
-                "content": {
-                    "requests": [
-                        {
-                            "spec": {
-                                "columns": [
-                                    "product"
-                                ],
-                                "filters": [
-                                    {
-                                        "name": "price",
-                                        "value": 78,
-                                        "operator": ">="
-                                    }
-                                ],
-                                "randomize_ratio": 1
-                            },
-                            "uri": null,
-                            "real_size": null,
-                            "estimated_size": null,
-                            "executor_job_id": null,
-                            "catalogue_item": {
-                                "id": 57,
-                                "name": "Esley Littel",
-                                "spec": [
-                                    {
-                                        "name": "price",
-                                        "size": null,
-                                        "type": "INTEGER",
-                                        "is_enum": false,
-                                        "is_nullable": false,
-                                        "distribution": null
-                                    },
-                                    {
-                                        "name": "product",
-                                        "size": null,
-                                        "type": "STRING",
-                                        "is_enum": true,
-                                        "is_nullable": true,
-                                        "distribution": null
-                                    }
-                                ],
-                                "sample": [],
-                                "executor_type": "DATABRICKS",
-                                "created_by": null,
-                                "updated_by": null,
-                                "maintained_by": null,
-                                "@type": "catalogue_item"
-                            },
-                            "created_by": {
-                                "id": 42,
-                                "email": "roxierenner@gleason-marks.com",
-                                "type": "RESEARCHER",
-                                "@type": "account"
-                            },
-                            "is_cancelled": false,
-                            "@type": "download_request"
-                        },
-                        {
-                            "spec": {
-                                "columns": [
-                                    "product"
-                                ],
-                                "filters": [
-                                    {
-                                        "name": "price",
-                                        "value": 18,
-                                        "operator": "="
-                                    }
-                                ],
-                                "randomize_ratio": 0.8
-                            },
-                            "uri": null,
-                            "real_size": null,
-                            "estimated_size": null,
-                            "executor_job_id": null,
-                            "catalogue_item": {
-                                "id": 57,
-                                "name": "Esley Littel",
-                                "spec": [
-                                    {
-                                        "name": "price",
-                                        "size": null,
-                                        "type": "INTEGER",
-                                        "is_enum": false,
-                                        "is_nullable": false,
-                                        "distribution": null
-                                    },
-                                    {
-                                        "name": "product",
-                                        "size": null,
-                                        "type": "STRING",
-                                        "is_enum": true,
-                                        "is_nullable": true,
-                                        "distribution": null
-                                    }
-                                ],
-                                "sample": [],
-                                "executor_type": "DATABRICKS",
-                                "created_by": null,
-                                "updated_by": null,
-                                "maintained_by": null,
-                                "@type": "catalogue_item"
-                            },
-                            "created_by": {
-                                "id": 42,
-                                "email": "roxierenner@gleason-marks.com",
-                                "type": "RESEARCHER",
-                                "@type": "account"
-                            },
-                            "is_cancelled": false,
-                            "@type": "download_request"
-                        }
-                    ],
-                    "@type": "download_requests_list",
-                    "@event": "DOWNLOADREQUESTS_BULK_READ"
-                }
-            }
-        }
-    },
-    "ATTACH_ACCOUNT_TO_AUTH_REQUEST": {
-        "400 (BODY_DID_NOT_VALIDATE)": {
-            "method": "post",
-            "description": "BODY_DID_NOT_VALIDATE",
-            "request": {
-                "path": "/accounts/auth_requests/attach_account/",
-                "content": {
-                    "request_uuid": "some-uuid",
-                    "email": "jacky@somewhere.org"
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json"
-                }
-            },
-            "response": {
-                "status": 400,
-                "content_type": "application/json",
-                "content": {
-                    "errors": {
-                        "request_uuid": [
-                            "Must be a valid UUID."
-                        ],
-                        "oauth_token": [
-                            "This field is required."
-                        ]
-                    },
-                    "@type": "error",
-                    "@event": "BODY_DID_NOT_VALIDATE"
-                }
-            }
-        },
-        "404 (COULD_NOT_FIND_AUTHREQUEST)": {
-            "method": "post",
-            "description": "COULD_NOT_FIND_AUTHREQUEST",
-            "request": {
-                "path": "/accounts/auth_requests/attach_account/",
-                "content": {
-                    "request_uuid": "68772418-bc1e-11e9-83ab-4851b786c496",
-                    "oauth_token": "some-auth-token",
-                    "email": "jacky@somewhere.org"
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json"
-                }
-            },
-            "response": {
-                "status": 404,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "error",
-                    "@event": "COULD_NOT_FIND_AUTHREQUEST"
-                }
-            }
-        },
-        "200 (ACCOUNT_TO_AUTH_REQUEST_ATTACHED)": {
-            "method": "post",
-            "description": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED",
-            "request": {
-                "path": "/accounts/auth_requests/attach_account/",
-                "content": {
-                    "request_uuid": "68772419-bc1e-11e9-83ab-4851b786c496",
-                    "oauth_token": "some-oauth-token",
-                    "email": "jacky@somewhere.org"
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json"
-                }
-            },
-            "response": {
-                "status": 200,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "empty",
-                    "@event": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED"
-                }
-            }
-        }
-    },
-    "CREATE_AUTH_TOKEN": {
-        "201 (AUTH_TOKEN_CREATED)": {
-            "method": "post",
-            "description": "AUTH_TOKEN_CREATED",
-            "request": {
-                "path": "/accounts/auth_tokens/",
-                "content": {
-                    "request_uuid": "6877241a-bc1e-11e9-83ab-4851b786c496"
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json"
-                }
-            },
-            "response": {
-                "status": 201,
-                "content_type": "application/json",
-                "content": {
-                    "token": "fd78cd7d87f",
-                    "@type": "auth_token",
-                    "@event": "AUTH_TOKEN_CREATED"
-                }
-            }
-        },
-        "400 (EXPIRED_AUTH_REQUEST_DETECTED)": {
-            "method": "post",
-            "description": "EXPIRED_AUTH_REQUEST_DETECTED",
-            "request": {
-                "path": "/accounts/auth_tokens/",
-                "content": {
-                    "request_uuid": "f5e7e000-5074-11e4-843c-e47fb21a75c8"
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json"
-                }
-            },
-            "response": {
-                "status": 400,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "error",
-                    "@event": "EXPIRED_AUTH_REQUEST_DETECTED"
-                }
-            }
-        }
-    },
-    "RENDER_AUTH_REQUEST_AUTHENTICATE_UI": {
-        "200": {
-            "method": "get",
-            "description": null,
-            "request": {
-                "path": "/accounts/auth_requests/some-uuid/authenticate/ui/"
-            },
-            "response": {
-                "status": 200,
-                "content_type": "text/html; charset=utf-8",
-                "content": "<!DOCTYPE html>\n<html>\n    <head>\n        <title>Lakey Authentication</title>\n        <meta\n            name=\"google-signin-client_id\"\n            content=\"to.be.overwritten\">\n\n        <link\n            href=\"https://fonts.googleapis.com/css?family=IBM+Plex+Sans\"\n            rel=\"stylesheet\">\n        <style>\n            body {\n                background: #e4e4e4;\n            }\n\n            #main {\n                height: 200px;\n                width: 100%;\n                font-family: 'IBM Plex Sans', sans-serif;\n            }\n\n            h2 {\n                font-weight: normal;\n            }\n\n            #authenticate, #done, #wait {\n                display: flex;\n                flex-direction: column;\n                align-items: center;\n                justify-content: center;\n            }\n\n            #done, #wait {\n                display: none;\n            }\n        </style>\n        <script\n            type=\"text/javascript\">\n\n\n            function renderButton() {\n                gapi.signin2.render('google-auth-button', {\n                    'scope': 'profile email',\n                    'width': 240,\n                    'height': 50,\n                    'longtitle': true,\n                    'theme': 'dark',\n                    'onsuccess': onSuccess,\n                    'onfailure': onFailure\n              });\n            }\n\n            function onSuccess(googleUser) {\n                let $done = document.getElementById('done');\n                let $wait = document.getElementById('wait');\n                let $authenticate = document.getElementById('authenticate');\n\n                let authRequestUUID = 'some-uuid';\n                let profile = googleUser.getBasicProfile();\n\n                let xhr = new XMLHttpRequest();\n                xhr.open(\n                    'POST',\n                    '/accounts/auth_requests/attach_account/');\n\n                xhr.setRequestHeader(\n                    \"Content-Type\", \"application/json;charset=UTF-8\");\n\n                xhr.send(\n                    JSON.stringify({\n                        request_uuid: authRequestUUID,\n                        oauth_token: googleUser.getAuthResponse().id_token,\n                        email: profile.getEmail(),\n                    })\n                );\n\n                // -- hide AUTHENTICATE view and show WAIT view\n                $authenticate.style['display'] = 'none';\n                $wait.style['display'] = 'flex';\n\n                xhr.onload = () => {\n                    // -- hide WAIT view and show DONE view\n                    $wait.style['display'] = 'none';\n                    $done.style['display'] = 'flex';\n                };\n            }\n\n            function onFailure(error) {\n                console.error(error);\n            }\n\n        </script>\n        <script\n            src=\"https://apis.google.com/js/platform.js?onload=renderButton\"\n            async\n            defer>\n        </script>\n    </head>\n\n    <body>\n\n        <div\n            id=\"main\">\n            <div\n                id=\"authenticate\">\n\n                <h2>Sign In To Lakey</h2>\n                <div\n                    id=\"google-auth-button\"></div>\n            </div>\n\n            <div\n                id=\"wait\">\n\n                PLEASE WAIT ...\n            </div>\n\n            <div\n                id=\"done\">\n\n                DONE, PLEASE RUN AGAIN CODE THAT GOT YOU HERE.\n            </div>\n\n        </div>\n    </body>\n\n</html>\n"
-            }
-        }
-    },
-    "CREATE_AUTH_REQUEST": {
-        "201 (AUTH_REQUEST_CREATED)": {
-            "method": "post",
-            "description": "AUTH_REQUEST_CREATED",
-            "request": {
-                "path": "/accounts/auth_requests/"
-            },
-            "response": {
-                "status": 201,
-                "content_type": "application/json",
-                "content": {
-                    "authenticate_ui_uri": "/accounts/auth_requests/6877241b-bc1e-11e9-83ab-4851b786c496/authenticate/ui/",
-                    "request_uuid": "6877241b-bc1e-11e9-83ab-4851b786c496",
-                    "@type": "auth_request",
-                    "@event": "AUTH_REQUEST_CREATED"
-                }
-            }
-        }
-    },
-    "WITH_SAMPLE_AND_DISTRIBUTION_UPDATE_CATALOGUEITEM": {
-        "200 (CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED)": {
-            "method": "put",
-            "description": "CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED",
-            "request": {
-                "path": "/catalogue/items/95/samples_and_distributions/",
-                "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjksImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.WulNRlh5EiNUiP1GR-K01lp5-5apJOZfCjik2urqBpE"
-                }
-            },
-            "response": {
-                "status": 200,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "empty",
-                    "@event": "CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED"
-                }
-            }
-        },
-        "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
-            "method": "put",
-            "description": "COULD_NOT_FIND_CATALOGUEITEM",
-            "request": {
-                "path": "/catalogue/items/9022/samples_and_distributions/",
-                "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzIsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.XQbmH7zw92Sbgc4lXDGQEAae2gOAKeHyzACtB48Xxsw"
-                }
-            },
-            "response": {
-                "status": 404,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "error",
-                    "@event": "COULD_NOT_FIND_CATALOGUEITEM",
-                    "@access": {
-                        "account_id": 72
-                    }
-                }
-            }
-        }
-    },
     "UPDATE_CATALOGUEITEM": {
         "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
             "method": "put",
@@ -831,12 +18,12 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 74,
+                    "maintained_by_id": 26,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzMsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.NrHWGi2h3iBfQJA7oRJBv277rBuVE-ki3xBqR4BG8jU"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.uDBdqRFJWwjHxA7WHXaziN6WfdRTCdkEVwdNYm86e6w"
                 }
             },
             "response": {
@@ -846,7 +33,7 @@
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                     "@access": {
-                        "account_id": 73
+                        "account_id": 25
                     }
                 }
             }
@@ -855,7 +42,7 @@
             "method": "put",
             "description": "CATALOGUEITEM_UPDATED",
             "request": {
-                "path": "/catalogue/items/98",
+                "path": "/catalogue/items/20",
                 "content": {
                     "sample": [],
                     "spec": [
@@ -868,19 +55,19 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 79,
+                    "maintained_by_id": 28,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzgsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.IbSnE0cipNPUzSs8_aUjowe3INNppv5E0Y19Hyg5Dlo"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjcsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.0GLkAktOZZlBcB_D3Iu-3RjYJWMhV9q3Rgcv_f30bxw"
                 }
             },
             "response": {
                 "status": 200,
                 "content_type": "application/json",
                 "content": {
-                    "id": 98,
+                    "id": 20,
                     "name": "temperatures",
                     "spec": [
                         {
@@ -895,20 +82,20 @@
                     "sample": [],
                     "executor_type": "DATABRICKS",
                     "created_by": {
-                        "id": 80,
-                        "email": "hudsonevans@bartoletti.com",
+                        "id": 29,
+                        "email": "rbeier@gmail.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
                     "updated_by": {
-                        "id": 78,
-                        "email": "armanschuppe@corwin.com",
+                        "id": 27,
+                        "email": "mckenziemaggio@white-durgan.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
-                        "id": 79,
-                        "email": "corliss13@koch.com",
+                        "id": 28,
+                        "email": "schambergerkatharyn@hotmail.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -921,7 +108,7 @@
             "method": "put",
             "description": "BODY_DID_NOT_VALIDATE",
             "request": {
-                "path": "/catalogue/items/99",
+                "path": "/catalogue/items/21",
                 "content": {
                     "name": "iot_events",
                     "sample": [],
@@ -934,12 +121,12 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 82,
+                    "maintained_by_id": 32,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODEsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.GQEhs6UkzUksUOzO0iP7yexi4PpdAA1YpTpRBFu-_JQ"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzEsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.nuSemgyvn-k0Ln2LrD3wqaKTrYXqgsT9Dl2HBxByMzc"
                 }
             },
             "response": {
@@ -954,27 +141,48 @@
                     "@type": "error",
                     "@event": "BODY_DID_NOT_VALIDATE",
                     "@access": {
-                        "account_id": 81
+                        "account_id": 31
                     }
                 }
             }
         }
     },
     "READ_CATALOGUEITEM": {
+        "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
+            "method": "get",
+            "description": "COULD_NOT_FIND_CATALOGUEITEM",
+            "request": {
+                "path": "/catalogue/items/69506",
+                "headers": {
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.irfICGmViGUOP6KBGCDD5kzdMb33Cb2i3CoR7uonq1w"
+                }
+            },
+            "response": {
+                "status": 404,
+                "content_type": "application/json",
+                "content": {
+                    "@type": "error",
+                    "@event": "COULD_NOT_FIND_CATALOGUEITEM",
+                    "@access": {
+                        "account_id": 30
+                    }
+                }
+            }
+        },
         "200 (CATALOGUEITEM_READ)": {
             "method": "get",
             "description": "CATALOGUEITEM_READ",
             "request": {
-                "path": "/catalogue/items/96",
+                "path": "/catalogue/items/24",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzUsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.G-2lZoNHVcsdHAstNd7cGxsJFXCfDo9zhOnfv_I5Jcc"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzUsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MX0.CDNVKpSxc5W3_FcUmmJWNy1e5kiiKOG-hzhKwZTibdM"
                 }
             },
             "response": {
                 "status": 200,
                 "content_type": "application/json",
                 "content": {
-                    "id": 96,
+                    "id": 24,
                     "name": "temperatures",
                     "spec": [
                         {
@@ -1019,27 +227,6 @@
                     "@event": "CATALOGUEITEM_READ"
                 }
             }
-        },
-        "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
-            "method": "get",
-            "description": "COULD_NOT_FIND_CATALOGUEITEM",
-            "request": {
-                "path": "/catalogue/items/69506",
-                "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzYsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.mwz_xe2P7B0wlAU4brCkzOpLeQmZC5CqtH1BiXJyZAk"
-                }
-            },
-            "response": {
-                "status": 404,
-                "content_type": "application/json",
-                "content": {
-                    "@type": "error",
-                    "@event": "COULD_NOT_FIND_CATALOGUEITEM",
-                    "@access": {
-                        "account_id": 76
-                    }
-                }
-            }
         }
     },
     "DELETE_CATALOGUEITEM": {
@@ -1049,7 +236,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzcsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.WNf5Z5DO0oeHWCFqqm1f54N8ktnXnuVyX9ASS4H1U0U"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzMsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.TZhPjIiW0kFT4_NiX2t97g0tR6q8xzIJa4jBAzV4NQA"
                 }
             },
             "response": {
@@ -1059,7 +246,7 @@
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                     "@access": {
-                        "account_id": 77
+                        "account_id": 33
                     }
                 }
             }
@@ -1068,9 +255,9 @@
             "method": "delete",
             "description": "CATALOGUEITEM_DELETED",
             "request": {
-                "path": "/catalogue/items/100",
+                "path": "/catalogue/items/22",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODMsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.z1PPZsZA-qFY4SuhLcDfQNATcvtQzRqQ6XBk_xE7Hig"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzQsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.hwyCKT37kLHvHDCMFD2oQItBzW0D_5VKyHFg3Ss55R4"
                 }
             },
             "response": {
@@ -1086,21 +273,59 @@
             "method": "delete",
             "description": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
             "request": {
-                "path": "/catalogue/items/102",
+                "path": "/catalogue/items/26",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODQsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.1yPVad2moSvWfoHguY6EjKdYLWj-gnU4mA6-XMILiaE"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzYsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MX0.3fXwVWlaap31FhdVlVB5hwO_tJqnR7NwDp_pxo2c5-I"
                 }
             },
             "response": {
                 "status": 400,
                 "content_type": "application/json",
                 "content": {
-                    "item_id": 102,
+                    "item_id": 26,
                     "not_cancelled_count": 1,
                     "@type": "error",
                     "@event": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
                     "@access": {
-                        "account_id": 84
+                        "account_id": 36
+                    }
+                }
+            }
+        },
+        "400 (BODY_DID_NOT_VALIDATE)": {
+            "method": "post",
+            "description": "BODY_DID_NOT_VALIDATE",
+            "request": {
+                "path": "/downloader/requests/",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [],
+                        "randomize_ratio": 0.9
+                    },
+                    "catalogue_item_id": "TEXT"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDMsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzl9.nSBY0ODaSR3q1LBfAm1zm4TnsJlEIM5kgKU3MXITPkU"
+                }
+            },
+            "response": {
+                "status": 400,
+                "content_type": "application/json",
+                "content": {
+                    "errors": {
+                        "catalogue_item_id": [
+                            "A valid integer is required."
+                        ]
+                    },
+                    "@type": "error",
+                    "@event": "BODY_DID_NOT_VALIDATE",
+                    "@access": {
+                        "account_id": 43
                     }
                 }
             }
@@ -1111,9 +336,9 @@
             "method": "get",
             "description": "CATALOGUEITEMS_BULK_READ",
             "request": {
-                "path": "/catalogue/items/?query=IoT",
+                "path": "/catalogue/items/?query=feature+tempera",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTUsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.pqzBSy9xkaMdQJ5Ea6LzqHHDxK0jPAkfnvt90J54C2A"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2Mn0.VKev2OH7XcPhRm7NzAZID2_45YgJVWkn7HZXYFmtT6g"
                 }
             },
             "response": {
@@ -1122,7 +347,7 @@
                 "content": {
                     "items": [
                         {
-                            "id": 120,
+                            "id": 44,
                             "name": "iot_features",
                             "spec": [
                                 {
@@ -1166,8 +391,8 @@
                             "@type": "catalogue_item"
                         },
                         {
-                            "id": 122,
-                            "name": "iot_events",
+                            "id": 45,
+                            "name": "temperatures",
                             "spec": [
                                 {
                                     "name": "location",
@@ -1240,7 +465,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODYsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.7r1IJ6d4469AFE2GE0EZNpsWnLM8WlngpAnk2_dQIaA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzksImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MX0.6tH18GhVDsdKFaaLGDqoyNCu5chPqooZXhhekYlmOSE"
                 }
             },
             "response": {
@@ -1255,48 +480,7 @@
                     "@type": "error",
                     "@event": "BODY_JSON_DID_NOT_PARSE",
                     "@access": {
-                        "account_id": 86
-                    }
-                }
-            }
-        },
-        "400 (BODY_DID_NOT_VALIDATE)": {
-            "method": "post",
-            "description": "BODY_DID_NOT_VALIDATE",
-            "request": {
-                "path": "/catalogue/items/",
-                "content": {
-                    "name": "iot_events",
-                    "sample": [],
-                    "spec": [
-                        {
-                            "name": "value",
-                            "size": 19203,
-                            "is_nullable": false,
-                            "distribution": null
-                        }
-                    ],
-                    "maintained_by_id": 89,
-                    "executor_type": "DATABRICKS"
-                },
-                "headers": {
-                    "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.nikTDdAmkizy469jbXG40jy5lHuOoLXwEh40nIZ6sy0"
-                }
-            },
-            "response": {
-                "status": 400,
-                "content_type": "application/json",
-                "content": {
-                    "errors": {
-                        "spec": [
-                            "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
-                        ]
-                    },
-                    "@type": "error",
-                    "@event": "BODY_DID_NOT_VALIDATE",
-                    "@access": {
-                        "account_id": 88
+                        "account_id": 39
                     }
                 }
             }
@@ -1319,19 +503,19 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 91,
+                    "maintained_by_id": 44,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTAsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0NDB9.PDACaRQqT6_lu7IqSPkqrfBnRLfgT2xslre5awQqjDw"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDMsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MX0.qcqYZg8fDEW49fzK-jY_sfLUcN9wE6xbBSYM1oUTI74"
                 }
             },
             "response": {
-                "status": 201,
+                "status": 404,
                 "content_type": "application/json",
                 "content": {
-                    "id": 110,
+                    "id": 43,
                     "name": "iot_events",
                     "spec": [
                         {
@@ -1346,26 +530,885 @@
                     "sample": [],
                     "executor_type": "DATABRICKS",
                     "created_by": {
-                        "id": 90,
-                        "email": "armanschuppe@corwin.com",
+                        "id": 43,
+                        "email": "mckenziemaggio@white-durgan.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "updated_by": {
-                        "id": 90,
-                        "email": "armanschuppe@corwin.com",
+                        "id": 43,
+                        "email": "mckenziemaggio@white-durgan.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
-                        "id": 91,
-                        "email": "corliss13@koch.com",
+                        "id": 44,
+                        "email": "schambergerkatharyn@hotmail.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
                     "@type": "catalogue_item",
                     "@event": "CATALOGUEITEM_CREATED"
                 }
+            }
+        },
+        "400 (BODY_DID_NOT_VALIDATE)": {
+            "method": "post",
+            "description": "BODY_DID_NOT_VALIDATE",
+            "request": {
+                "path": "/catalogue/items/",
+                "content": {
+                    "name": "iot_events",
+                    "sample": [],
+                    "spec": [
+                        {
+                            "name": "value",
+                            "size": 19203,
+                            "is_nullable": false,
+                            "distribution": null
+                        }
+                    ],
+                    "maintained_by_id": 47,
+                    "executor_type": "DATABRICKS"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2Mn0.TxKEkiYgzgRMMkNdK0P4VbjktmaOKqhNyvpqDFClw2k"
+                }
+            },
+            "response": {
+                "status": 400,
+                "content_type": "application/json",
+                "content": {
+                    "errors": {
+                        "spec": [
+                            "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
+                        ]
+                    },
+                    "@type": "error",
+                    "@event": "BODY_DID_NOT_VALIDATE",
+                    "@access": {
+                        "account_id": 46
+                    }
+                }
+            }
+        }
+    },
+    "WITH_SAMPLE_AND_DISTRIBUTION_UPDATE_CATALOGUEITEM": {
+        "200 (CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED)": {
+            "method": "put",
+            "description": "CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED",
+            "request": {
+                "path": "/catalogue/items/47/samples_and_distributions/",
+                "headers": {
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2Mn0.cDm3hXEfWWnLE-B9Rg7X3M6nf_Zrtk1Oj03GYEgyzuA"
+                }
+            },
+            "response": {
+                "status": 200,
+                "content_type": "application/json",
+                "content": {
+                    "@type": "empty",
+                    "@event": "CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED"
+                }
+            }
+        },
+        "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
+            "method": "put",
+            "description": "COULD_NOT_FIND_CATALOGUEITEM",
+            "request": {
+                "path": "/catalogue/items/9022/samples_and_distributions/",
+                "headers": {
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2Mn0.kxQA26EHIr5uznmqvbSeBEQ7AUaHXK8nEiZulWp09_E"
+                }
+            },
+            "response": {
+                "status": 404,
+                "content_type": "application/json",
+                "content": {
+                    "@type": "error",
+                    "@event": "COULD_NOT_FIND_CATALOGUEITEM",
+                    "@access": {
+                        "account_id": 51
+                    }
+                }
+            }
+        }
+    },
+    "ESTIMATE_SIZE_OF_DOWNLOAD_REQUEST": {
+        "200 (SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED)": {
+            "method": "post",
+            "description": "SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED",
+            "request": {
+                "path": "/downloader/requests/estimate/",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [],
+                        "randomize_ratio": 0.9
+                    },
+                    "catalogue_item_id": 61
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTcsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.ANQcyy4hprRiWY7eikU5kDA8n2_24wiaqzj5Pv-fCIY"
+                }
+            },
+            "response": {
+                "status": 200,
+                "content_type": "application/json",
+                "content": {
+                    "estimated_size": 1234,
+                    "@type": "download_request_estimated_size",
+                    "@event": "SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED"
+                }
+            }
+        }
+    },
+    "RENDER_DOWNLOAD_REQUEST_UI_DATA": {
+        "200 (DOWNLOAD_REQUEST_UI_DATA_RENDERED)": {
+            "method": "post",
+            "description": "DOWNLOAD_REQUEST_UI_DATA_RENDERED",
+            "request": {
+                "path": "/downloader/requests/render_ui_data/",
+                "content": {
+                    "catalogue_item_id": 62
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTgsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.8g4LA6G7yn2Dzsp4djl5v0yWflz0mz1aZEHQGproHkw"
+                }
+            },
+            "response": {
+                "status": 200,
+                "content_type": "application/json",
+                "content": {
+                    "columns_operators": [
+                        {
+                            "name": "available",
+                            "operators": [
+                                "=",
+                                "!="
+                            ],
+                            "@type": "column_operators"
+                        },
+                        {
+                            "name": "price",
+                            "operators": [
+                                ">",
+                                ">=",
+                                "<",
+                                "<=",
+                                "=",
+                                "!="
+                            ],
+                            "@type": "column_operators"
+                        },
+                        {
+                            "name": "product",
+                            "operators": [
+                                ">",
+                                ">=",
+                                "<",
+                                "<=",
+                                "=",
+                                "!="
+                            ],
+                            "@type": "column_operators"
+                        }
+                    ],
+                    "@type": "download_request_render",
+                    "@event": "DOWNLOAD_REQUEST_UI_DATA_RENDERED"
+                }
+            }
+        }
+    },
+    "READ_DOWNLOADREQUEST": {
+        "200 (DOWNLOADREQUEST_READ)": {
+            "method": "get",
+            "description": "DOWNLOADREQUEST_READ",
+            "request": {
+                "path": "/downloader/requests/11",
+                "headers": {
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTksImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.bJKakDhKFI3idYu22pjBJtF9kNdcMHb2GxgmEdGjmGA"
+                }
+            },
+            "response": {
+                "status": 200,
+                "content_type": "application/json",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product"
+                        ],
+                        "filters": [
+                            {
+                                "name": "price",
+                                "value": 78,
+                                "operator": ">="
+                            }
+                        ],
+                        "randomize_ratio": 1
+                    },
+                    "uri": null,
+                    "real_size": null,
+                    "estimated_size": null,
+                    "executor_job_id": null,
+                    "catalogue_item": {
+                        "id": 63,
+                        "name": "Aaliyah Schamberger",
+                        "spec": [
+                            {
+                                "name": "price",
+                                "size": null,
+                                "type": "INTEGER",
+                                "is_enum": false,
+                                "is_nullable": false,
+                                "distribution": null
+                            },
+                            {
+                                "name": "product",
+                                "size": null,
+                                "type": "STRING",
+                                "is_enum": true,
+                                "is_nullable": true,
+                                "distribution": null
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "DATABRICKS",
+                        "created_by": null,
+                        "updated_by": null,
+                        "maintained_by": null,
+                        "@type": "catalogue_item"
+                    },
+                    "created_by": {
+                        "id": 60,
+                        "email": "rbeier@gmail.com",
+                        "type": "RESEARCHER",
+                        "@type": "account"
+                    },
+                    "is_cancelled": false,
+                    "@type": "download_request",
+                    "@event": "DOWNLOADREQUEST_READ"
+                }
+            }
+        },
+        "404 (COULD_NOT_FIND_DOWNLOADREQUEST)": {
+            "method": "get",
+            "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
+            "request": {
+                "path": "/downloader/requests/13",
+                "headers": {
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjUsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.u5COwOIQkJ9IQ03wiNlESlLcONRuYBAoE_qW2Y_DgJ0"
+                }
+            },
+            "response": {
+                "status": 404,
+                "content_type": "application/json",
+                "content": {
+                    "@type": "error",
+                    "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
+                    "@access": {
+                        "account_id": 65
+                    }
+                }
+            }
+        }
+    },
+    "DELETE_DOWNLOADREQUEST": {
+        "404 (COULD_NOT_FIND_DOWNLOADREQUEST)": {
+            "method": "delete",
+            "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
+            "request": {
+                "path": "/downloader/requests/69506",
+                "headers": {
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjEsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.r4PJoRyTwGUAUv0iJcQlZePnvmioNhMnaWTkL-wSf_M"
+                }
+            },
+            "response": {
+                "status": 404,
+                "content_type": "application/json",
+                "content": {
+                    "@type": "error",
+                    "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
+                    "@access": {
+                        "account_id": 61
+                    }
+                }
+            }
+        },
+        "200 (DOWNLOADREQUEST_DELETED)": {
+            "method": "delete",
+            "description": "DOWNLOADREQUEST_DELETED",
+            "request": {
+                "path": "/downloader/requests/12",
+                "headers": {
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjMsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.s56wg--jgKrwNiYEPwJ455c9A0yg8k7-nZgxck4BMbo"
+                }
+            },
+            "response": {
+                "status": 200,
+                "content_type": "application/json",
+                "content": {
+                    "@type": "empty",
+                    "@event": "DOWNLOADREQUEST_DELETED"
+                }
+            }
+        }
+    },
+    "READ_OR_CREATE_DOWNLOADREQUEST": {
+        "200 (DOWNLOADREQUEST_READ)": {
+            "method": "post",
+            "description": "DOWNLOADREQUEST_READ",
+            "request": {
+                "path": "/downloader/requests/",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [
+                            {
+                                "name": "product",
+                                "operator": "=",
+                                "value": "jack"
+                            },
+                            {
+                                "name": "price",
+                                "operator": "=",
+                                "value": 23
+                            },
+                            {
+                                "name": "price",
+                                "operator": ">=",
+                                "value": 78
+                            }
+                        ],
+                        "randomize_ratio": 0.9
+                    },
+                    "catalogue_item_id": 68
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjcsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.B4zLm-158Wk3YWHsqvtapse7FjQjNQKXGA_GF5w1YCQ"
+                }
+            },
+            "response": {
+                "status": 200,
+                "content_type": "application/json",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "price",
+                            "product"
+                        ],
+                        "filters": [
+                            {
+                                "name": "price",
+                                "value": 78,
+                                "operator": ">="
+                            },
+                            {
+                                "name": "price",
+                                "value": 23,
+                                "operator": "="
+                            },
+                            {
+                                "name": "product",
+                                "value": "jack",
+                                "operator": "="
+                            }
+                        ],
+                        "randomize_ratio": 0.9
+                    },
+                    "uri": "https://s3.this.region.amazonaws.com/buk.et/results/567.csv",
+                    "real_size": null,
+                    "estimated_size": null,
+                    "executor_job_id": null,
+                    "catalogue_item": {
+                        "id": 68,
+                        "name": "Aaliyah Schamberger",
+                        "spec": [
+                            {
+                                "name": "price",
+                                "size": null,
+                                "type": "INTEGER",
+                                "is_enum": false,
+                                "is_nullable": false,
+                                "distribution": null
+                            },
+                            {
+                                "name": "product",
+                                "size": null,
+                                "type": "STRING",
+                                "is_enum": true,
+                                "is_nullable": true,
+                                "distribution": null
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "DATABRICKS",
+                        "created_by": null,
+                        "updated_by": null,
+                        "maintained_by": null,
+                        "@type": "catalogue_item"
+                    },
+                    "created_by": null,
+                    "is_cancelled": false,
+                    "@type": "download_request",
+                    "@event": "DOWNLOADREQUEST_READ"
+                }
+            }
+        },
+        "201 (DOWNLOADREQUEST_CREATED)": {
+            "method": "post",
+            "description": "DOWNLOADREQUEST_CREATED",
+            "request": {
+                "path": "/downloader/requests/",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [],
+                        "randomize_ratio": 0.9
+                    },
+                    "catalogue_item_id": 69
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjgsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2NH0.QQZpB9hdXOLK5bSUyvflMJIDi3fd8rW9eY2siiLM9Co"
+                }
+            },
+            "response": {
+                "status": 201,
+                "content_type": "application/json",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [],
+                        "randomize_ratio": 0.9
+                    },
+                    "uri": "https://s3.this.region.amazonaws.com/buk.et/results/567.csv",
+                    "real_size": null,
+                    "estimated_size": null,
+                    "executor_job_id": null,
+                    "catalogue_item": {
+                        "id": 69,
+                        "name": "Aaliyah Schamberger",
+                        "spec": [
+                            {
+                                "name": "price",
+                                "size": null,
+                                "type": "INTEGER",
+                                "is_enum": false,
+                                "is_nullable": false,
+                                "distribution": null
+                            },
+                            {
+                                "name": "product",
+                                "size": null,
+                                "type": "STRING",
+                                "is_enum": true,
+                                "is_nullable": true,
+                                "distribution": null
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "DATABRICKS",
+                        "created_by": null,
+                        "updated_by": null,
+                        "maintained_by": null,
+                        "@type": "catalogue_item"
+                    },
+                    "created_by": {
+                        "id": 68,
+                        "email": "mckenziemaggio@white-durgan.com",
+                        "type": "ADMIN",
+                        "@type": "account"
+                    },
+                    "is_cancelled": false,
+                    "@type": "download_request",
+                    "@event": "DOWNLOADREQUEST_CREATED"
+                }
+            }
+        },
+        "400 (BODY_JSON_DID_NOT_PARSE)": {
+            "method": "post",
+            "description": "BODY_JSON_DID_NOT_PARSE",
+            "request": {
+                "path": "/downloader/requests/",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [],
+                        "randomize_ratio": 0.9
+                    },
+                    "catalogue_item_id": 58495
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjksImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2NX0.i9eLVHsLijzxAC_XRRunGYcAmQbcdN4a7zogqahNUMA"
+                }
+            },
+            "response": {
+                "status": 400,
+                "content_type": "application/json",
+                "content": {
+                    "errors": {
+                        "catalogue_item": [
+                            "catalogue item instance with id 58495 does not exist."
+                        ]
+                    },
+                    "@type": "error",
+                    "@event": "BODY_JSON_DID_NOT_PARSE",
+                    "@access": {
+                        "account_id": 69
+                    }
+                }
+            }
+        },
+        "400 (BODY_DID_NOT_VALIDATE)": {
+            "method": "post",
+            "description": "BODY_DID_NOT_VALIDATE",
+            "request": {
+                "path": "/downloader/requests/",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [],
+                        "randomize_ratio": 0.9
+                    },
+                    "catalogue_item_id": "TEXT"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzAsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2NX0.XWQuhq7mEbComophnuFJzjb6fffjYlS-k51E0ptuUHM"
+                }
+            },
+            "response": {
+                "status": 400,
+                "content_type": "application/json",
+                "content": {
+                    "errors": {
+                        "catalogue_item_id": [
+                            "A valid integer is required."
+                        ]
+                    },
+                    "@type": "error",
+                    "@event": "BODY_DID_NOT_VALIDATE",
+                    "@access": {
+                        "account_id": 70
+                    }
+                }
+            }
+        }
+    },
+    "BULK_READ_DOWNLOADREQUESTS": {
+        "200 (DOWNLOADREQUESTS_BULK_READ)": {
+            "method": "get",
+            "description": "DOWNLOADREQUESTS_BULK_READ",
+            "request": {
+                "path": "/downloader/requests/",
+                "headers": {
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzEsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2NX0.JPQw7qY0QXgYB9xz4YkXRf3THkATPegCv1fIGKqLOwQ"
+                }
+            },
+            "response": {
+                "status": 200,
+                "content_type": "application/json",
+                "content": {
+                    "requests": [
+                        {
+                            "spec": {
+                                "columns": [
+                                    "product"
+                                ],
+                                "filters": [
+                                    {
+                                        "name": "price",
+                                        "value": 78,
+                                        "operator": ">="
+                                    }
+                                ],
+                                "randomize_ratio": 1
+                            },
+                            "uri": null,
+                            "real_size": null,
+                            "estimated_size": null,
+                            "executor_job_id": null,
+                            "catalogue_item": {
+                                "id": 72,
+                                "name": "Aaliyah Schamberger",
+                                "spec": [
+                                    {
+                                        "name": "price",
+                                        "size": null,
+                                        "type": "INTEGER",
+                                        "is_enum": false,
+                                        "is_nullable": false,
+                                        "distribution": null
+                                    },
+                                    {
+                                        "name": "product",
+                                        "size": null,
+                                        "type": "STRING",
+                                        "is_enum": true,
+                                        "is_nullable": true,
+                                        "distribution": null
+                                    }
+                                ],
+                                "sample": [],
+                                "executor_type": "DATABRICKS",
+                                "created_by": null,
+                                "updated_by": null,
+                                "maintained_by": null,
+                                "@type": "catalogue_item"
+                            },
+                            "created_by": {
+                                "id": 72,
+                                "email": "rbeier@gmail.com",
+                                "type": "RESEARCHER",
+                                "@type": "account"
+                            },
+                            "is_cancelled": false,
+                            "@type": "download_request"
+                        },
+                        {
+                            "spec": {
+                                "columns": [
+                                    "product"
+                                ],
+                                "filters": [
+                                    {
+                                        "name": "price",
+                                        "value": 18,
+                                        "operator": "="
+                                    }
+                                ],
+                                "randomize_ratio": 0.8
+                            },
+                            "uri": null,
+                            "real_size": null,
+                            "estimated_size": null,
+                            "executor_job_id": null,
+                            "catalogue_item": {
+                                "id": 72,
+                                "name": "Aaliyah Schamberger",
+                                "spec": [
+                                    {
+                                        "name": "price",
+                                        "size": null,
+                                        "type": "INTEGER",
+                                        "is_enum": false,
+                                        "is_nullable": false,
+                                        "distribution": null
+                                    },
+                                    {
+                                        "name": "product",
+                                        "size": null,
+                                        "type": "STRING",
+                                        "is_enum": true,
+                                        "is_nullable": true,
+                                        "distribution": null
+                                    }
+                                ],
+                                "sample": [],
+                                "executor_type": "DATABRICKS",
+                                "created_by": null,
+                                "updated_by": null,
+                                "maintained_by": null,
+                                "@type": "catalogue_item"
+                            },
+                            "created_by": {
+                                "id": 72,
+                                "email": "rbeier@gmail.com",
+                                "type": "RESEARCHER",
+                                "@type": "account"
+                            },
+                            "is_cancelled": false,
+                            "@type": "download_request"
+                        }
+                    ],
+                    "@type": "download_requests_list",
+                    "@event": "DOWNLOADREQUESTS_BULK_READ"
+                }
+            }
+        }
+    },
+    "CREATE_AUTH_TOKEN": {
+        "201 (AUTH_TOKEN_CREATED)": {
+            "method": "post",
+            "description": "AUTH_TOKEN_CREATED",
+            "request": {
+                "path": "/accounts/auth_tokens/",
+                "content": {
+                    "request_uuid": "590e01ae-b8f9-11e9-a216-34f64bbaddd0"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json"
+                }
+            },
+            "response": {
+                "status": 201,
+                "content_type": "application/json",
+                "content": {
+                    "token": "fd78cd7d87f",
+                    "@type": "auth_token",
+                    "@event": "AUTH_TOKEN_CREATED"
+                }
+            }
+        },
+        "400 (EXPIRED_AUTH_REQUEST_DETECTED)": {
+            "method": "post",
+            "description": "EXPIRED_AUTH_REQUEST_DETECTED",
+            "request": {
+                "path": "/accounts/auth_tokens/",
+                "content": {
+                    "request_uuid": "f5e7e000-5074-11e4-b08c-0242b022d386"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json"
+                }
+            },
+            "response": {
+                "status": 400,
+                "content_type": "application/json",
+                "content": {
+                    "@type": "error",
+                    "@event": "EXPIRED_AUTH_REQUEST_DETECTED"
+                }
+            }
+        }
+    },
+    "CREATE_AUTH_REQUEST": {
+        "201 (AUTH_REQUEST_CREATED)": {
+            "method": "post",
+            "description": "AUTH_REQUEST_CREATED",
+            "request": {
+                "path": "/accounts/auth_requests/"
+            },
+            "response": {
+                "status": 201,
+                "content_type": "application/json",
+                "content": {
+                    "authenticate_ui_uri": "/accounts/auth_requests/590e01af-b8f9-11e9-a216-34f64bbaddd0/authenticate/ui/",
+                    "request_uuid": "590e01af-b8f9-11e9-a216-34f64bbaddd0",
+                    "@type": "auth_request",
+                    "@event": "AUTH_REQUEST_CREATED"
+                }
+            }
+        }
+    },
+    "ATTACH_ACCOUNT_TO_AUTH_REQUEST": {
+        "400 (BODY_DID_NOT_VALIDATE)": {
+            "method": "post",
+            "description": "BODY_DID_NOT_VALIDATE",
+            "request": {
+                "path": "/accounts/auth_requests/attach_account/",
+                "content": {
+                    "request_uuid": "some-uuid",
+                    "email": "jacky@somewhere.org"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json"
+                }
+            },
+            "response": {
+                "status": 400,
+                "content_type": "application/json",
+                "content": {
+                    "errors": {
+                        "request_uuid": [
+                            "Must be a valid UUID."
+                        ],
+                        "oauth_token": [
+                            "This field is required."
+                        ]
+                    },
+                    "@type": "error",
+                    "@event": "BODY_DID_NOT_VALIDATE"
+                }
+            }
+        },
+        "404 (COULD_NOT_FIND_AUTHREQUEST)": {
+            "method": "post",
+            "description": "COULD_NOT_FIND_AUTHREQUEST",
+            "request": {
+                "path": "/accounts/auth_requests/attach_account/",
+                "content": {
+                    "request_uuid": "590e01b0-b8f9-11e9-a216-34f64bbaddd0",
+                    "oauth_token": "some-auth-token",
+                    "email": "jacky@somewhere.org"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json"
+                }
+            },
+            "response": {
+                "status": 400,
+                "content_type": "application/json",
+                "content": {
+                    "errors": {
+                        "maintained_by": [
+                            "account instance with id 932039 does not exist."
+                        ]
+                    },
+                    "@type": "error",
+                    "@event": "COULD_NOT_FIND_AUTHREQUEST"
+                }
+            }
+        },
+        "200 (ACCOUNT_TO_AUTH_REQUEST_ATTACHED)": {
+            "method": "post",
+            "description": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED",
+            "request": {
+                "path": "/accounts/auth_requests/attach_account/",
+                "content": {
+                    "request_uuid": "590e01b1-b8f9-11e9-a216-34f64bbaddd0",
+                    "oauth_token": "some-oauth-token",
+                    "email": "jacky@somewhere.org"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json"
+                }
+            },
+            "response": {
+                "status": 200,
+                "content_type": "application/json",
+                "content": {
+                    "@type": "empty",
+                    "@event": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED"
+                }
+            }
+        }
+    },
+    "RENDER_AUTH_REQUEST_AUTHENTICATE_UI": {
+        "200": {
+            "method": "get",
+            "description": null,
+            "request": {
+                "path": "/accounts/auth_requests/some-uuid/authenticate/ui/"
+            },
+            "response": {
+                "status": 200,
+                "content_type": "text/html; charset=utf-8",
+                "content": "<!DOCTYPE html>\n<html>\n    <head>\n        <title>Lakey Authentication</title>\n        <meta\n            name=\"google-signin-client_id\"\n            content=\"961918528927-12heq0l9f1tep1igb29tatkf2pr2p5f7.apps.googleusercontent.com\">\n\n        <link\n            href=\"https://fonts.googleapis.com/css?family=IBM+Plex+Sans\"\n            rel=\"stylesheet\">\n        <style>\n            body {\n                background: #e4e4e4;\n            }\n\n            #main {\n                height: 200px;\n                width: 100%;\n                font-family: 'IBM Plex Sans', sans-serif;\n            }\n\n            h2 {\n                font-weight: normal;\n            }\n\n            #authenticate, #done, #wait {\n                display: flex;\n                flex-direction: column;\n                align-items: center;\n                justify-content: center;\n            }\n\n            #done, #wait {\n                display: none;\n            }\n        </style>\n        <script\n            type=\"text/javascript\">\n\n\n            function renderButton() {\n                gapi.signin2.render('google-auth-button', {\n                    'scope': 'profile email',\n                    'width': 240,\n                    'height': 50,\n                    'longtitle': true,\n                    'theme': 'dark',\n                    'onsuccess': onSuccess,\n                    'onfailure': onFailure\n              });\n            }\n\n            function onSuccess(googleUser) {\n                let $done = document.getElementById('done');\n                let $wait = document.getElementById('wait');\n                let $authenticate = document.getElementById('authenticate');\n\n                let authRequestUUID = 'some-uuid';\n                let profile = googleUser.getBasicProfile();\n\n                let xhr = new XMLHttpRequest();\n                xhr.open(\n                    'POST',\n                    '/accounts/auth_requests/attach_account/');\n\n                xhr.setRequestHeader(\n                    \"Content-Type\", \"application/json;charset=UTF-8\");\n\n                xhr.send(\n                    JSON.stringify({\n                        request_uuid: authRequestUUID,\n                        oauth_token: googleUser.getAuthResponse().id_token,\n                        email: profile.getEmail(),\n                    })\n                );\n\n                // -- hide AUTHENTICATE view and show WAIT view\n                $authenticate.style['display'] = 'none';\n                $wait.style['display'] = 'flex';\n\n                xhr.onload = () => {\n                    // -- hide WAIT view and show DONE view\n                    $wait.style['display'] = 'none';\n                    $done.style['display'] = 'flex';\n                };\n            }\n\n            function onFailure(error) {\n                console.error(error);\n            }\n\n        </script>\n        <script\n            src=\"https://apis.google.com/js/platform.js?onload=renderButton\"\n            async\n            defer>\n        </script>\n    </head>\n\n    <body>\n\n        <div\n            id=\"main\">\n            <div\n                id=\"authenticate\">\n\n                <h2>Sign In To Lakey</h2>\n                <div\n                    id=\"google-auth-button\"></div>\n            </div>\n\n            <div\n                id=\"wait\">\n\n                PLEASE WAIT ...\n            </div>\n\n            <div\n                id=\"done\">\n\n                DONE, PLEASE RUN AGAIN CODE THAT GOT YOU HERE.\n            </div>\n\n        </div>\n    </body>\n\n</html>\n"
             }
         }
     }
