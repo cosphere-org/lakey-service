@@ -142,7 +142,7 @@ class DownloadRequestManager(models.Manager):
                 query[f'borders__{b_idx}__minimum__gte'] = spec_filter['value']
                 query[f'borders__{b_idx}__maximum__lte'] = spec_filter['value']
 
-        filter_chunks = Chunk.objects.filter(
+        chunks = Chunk.objects.filter(
             catalogue_item_id=catalogue_item_id, **query)
 
         c_i_size_by_col = {col['name']: col['size'] for col in c_i.spec}
@@ -152,21 +152,21 @@ class DownloadRequestManager(models.Manager):
         }
         c_i_size = sum(size for size in c_i_size_by_col.values())
 
-        estimate_size = 0
-        for chunk in filter_chunks:
+        estimated_size = 0
+        for chunk in chunks:
             for border in chunk.borders:
                 border_count = \
                     sum(dist['count'] for dist in border['distribution'])
                 c_i_col_size = c_i_size_by_col[border['column']]
                 c_i_col_count = c_i_count_by_col[border['column']]
 
-                estimate_size += (border_count * c_i_col_size) / c_i_col_count
+                estimated_size += (border_count * c_i_col_size) / c_i_col_count
 
-        if estimate_size == c_i_size:
+        if estimated_size == c_i_size:
             raise TooMuchDataRequestDetected(
                 f"specify filters to a smaller data area")
 
-        return {'size': estimate_size, 'chunks': filter_chunks}
+        return estimated_size, chunks
 
 
 class DownloadRequest(ValidatingModel):
