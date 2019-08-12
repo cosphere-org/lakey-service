@@ -112,9 +112,9 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             'randomize_ratio': 1,
         }
 
-        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+        es_size, es_chunks = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-        assert es['size'] == 0
+        assert es_size == 0
 
     def test_estimate_size__filters_with_closed_range(self):
 
@@ -135,9 +135,9 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             'randomize_ratio': 1,
         }
 
-        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+        es_size, es_chunks = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-        assert es['size'] == 120
+        assert es_size == 120
 
     def test_estimate_size__filters_include_too_much_data(self):
         spec = {
@@ -180,9 +180,9 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             'randomize_ratio': 1,
         }
 
-        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+        es_size, es_chunks = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-        assert es['size'] == 120
+        assert es_size == 120
 
     def test_estimate_size__filters_without_offset(self):
         spec = {
@@ -202,9 +202,9 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
             'randomize_ratio': 1,
         }
 
-        es = DownloadRequest.objects.estimate_size(spec, self.ci.id)
+        es_size, es_chunks = DownloadRequest.objects.estimate_size(spec, self.ci.id)
 
-        assert es['size'] == 120
+        assert es_size == 120
 
     def test_estimate_size__chunks_not_exist(self):
         ef.clear()
