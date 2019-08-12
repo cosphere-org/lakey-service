@@ -291,6 +291,44 @@
                     }
                 }
             }
+        },
+        "400 (BODY_DID_NOT_VALIDATE)": {
+            "method": "post",
+            "description": "BODY_DID_NOT_VALIDATE",
+            "request": {
+                "path": "/downloader/requests/",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [],
+                        "randomize_ratio": 0.9
+                    },
+                    "catalogue_item_id": "TEXT"
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDMsImVtYWlsIjoiYXJtYW5zY2h1cHBlQGNvcndpbi5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjYzODE0Mzl9.nSBY0ODaSR3q1LBfAm1zm4TnsJlEIM5kgKU3MXITPkU"
+                }
+            },
+            "response": {
+                "status": 400,
+                "content_type": "application/json",
+                "content": {
+                    "errors": {
+                        "catalogue_item_id": [
+                            "A valid integer is required."
+                        ]
+                    },
+                    "@type": "error",
+                    "@event": "BODY_DID_NOT_VALIDATE",
+                    "@access": {
+                        "account_id": 43
+                    }
+                }
+            }
         }
     },
     "BULK_READ_CATALOGUEITEMS": {
@@ -474,7 +512,7 @@
                 }
             },
             "response": {
-                "status": 201,
+                "status": 404,
                 "content_type": "application/json",
                 "content": {
                     "id": 43,
@@ -1323,9 +1361,14 @@
                 }
             },
             "response": {
-                "status": 404,
+                "status": 400,
                 "content_type": "application/json",
                 "content": {
+                    "errors": {
+                        "maintained_by": [
+                            "account instance with id 932039 does not exist."
+                        ]
+                    },
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_AUTHREQUEST"
                 }

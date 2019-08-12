@@ -133,17 +133,23 @@ class EntityFactory:
 
     def chunk_bulk(
             self,
-            chunks_borders=[],
+            chunks_borders,
+            created_datetime=None,
+            updated_datetime=None,
             catalogue_item=None,
             count=None):
 
         chunks = []
         for chunk_borders in chunks_borders:
             chunks.append(
-                self.chunk(
+                Chunk(
+                    created_datetime=created_datetime,
+                    updated_datetime=updated_datetime,
+                    catalogue_item=catalogue_item or self.catalogue_item(),
                     borders=chunk_borders,
-                    catalogue_item=catalogue_item,
                     count=count,
                 )
             )
+        Chunk.objects.bulk_create(chunks)
+
         return chunks
