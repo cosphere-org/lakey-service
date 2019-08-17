@@ -11,13 +11,22 @@ spec:
     is_nullable: false
     is_enum: false
     distribution:
-      - value: jacky.1
+      - value_min: jacky.1
         count: 1342
 
-      - value: johnny.12
+      - value_max: jacky.2
+        count: 1342
+
+      - value_min: johnny.121
         count: 6789
 
-      - value: bobby.4
+      - value_max: johnny.122
+        count: 6789
+
+      - value_min: bobby.41
+        count: 567
+
+      - value_max: bobby.42
         count: 567
 
   - name: paid
@@ -27,19 +36,34 @@ spec:
     is_nullable: true
     is_enum: false
     distribution:
-      - value: 1.0
+      - value_min: 1.01
         count: 56
 
-      - value: 2.0
+      - value_max: 1.02
+        count: 56
+
+      - value_min: 2.01
         count: 567
 
-      - value: 4.0
+      - value_max: 2.02
         count: 567
 
-      - value: 34.0
+      - value_min: 4.01
+        count: 567
+
+      - value_max: 4.02
+        count: 567
+
+      - value_min: 34.01
         count: 1235
 
-      - value: 45.0
+      - value_max: 34.02
+        count: 1235
+
+      - value_min: 45.01
+        count: 8799
+
+      - value_max: 45.02
         count: 8799
 
   - name: currency
@@ -49,24 +73,33 @@ spec:
     is_nullable: true
     is_enum: false
     distribution:
-      - value: EUR
+      - value_min: EUR1
         count: 563
 
-      - value: USD
+      - value_max: EUR2
+        count: 563
+
+      - value_min: USD1
         count: 567
 
-      - value: PLN
+      - value_max: USD2
+        count: 567
+
+      - value_min: PLN1
+        count: 567
+
+      - value_max: PLN2
         count: 567
 
 sample:
   - client_id: jacky.2
     paid: 112.25
-    currency: EUR
+    currency: EUR1
 
   - client_id: alice.2
     paid: 4500.0
-    currency: PLN
+    currency: PLN1
 
   - client_id: john.567
     paid: 56.78
-    currency: USD
+    currency: USD1
