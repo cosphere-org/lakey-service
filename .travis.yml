@@ -3,6 +3,7 @@ python:
   - "3.6.5"
 install:
   - make install
+  - touch env_private.sh
 script:
   - make create_db
   - make start_db
