@@ -109,6 +109,7 @@ class EntityFactory:
             updated_datetime=None,
             catalogue_item=None,
             borders=None,
+            requested_count=None,
             count=None):
 
         return Chunk.objects.create(
@@ -129,6 +130,7 @@ class EntityFactory:
                     'distribution': None,
                 },
             ],
+            requested_count=requested_count or faker.random_int(0, 300),
             count=count or faker.random_int(500, 100000))
 
     def chunk_bulk(

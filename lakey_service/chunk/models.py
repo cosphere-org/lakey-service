@@ -17,6 +17,25 @@ from lily.base.models import (
 )
 
 
+class NoChunksDetected(Exception):
+    pass
+
+
+class ChunkManager(models.Manager):
+
+    def exploration_map(self, catalogue_item_id):
+        
+        if not Chunk.objects.filter(
+                catalogue_item_id=catalogue_item_id).exists():
+            raise NoChunksDetected(
+                f"chunks must exist for indicated catalogue item")
+
+        ci_chunks = Chunk.objects.get(id=catalogue_item_id)
+        not_explored_chunks = ci_chunks.objects.filter(requested_count=0)
+
+        return not_explored_chunks
+
+
 def distribution_validator(borders):
 
     # temporary in liny validators before schema:
@@ -60,8 +79,6 @@ def distribution_validator(borders):
                     "detected")
 
             # counts in distribution must be integers
-            # fix me: w sumie to nie rozumiem czemu najperw all(...) i
-            # dopiero if not ...
             counts_are_ints = [
                 isinstance(entry['count'], int) for entry in b_distribution]
             if not all(counts_are_ints):
@@ -158,6 +175,8 @@ class Chunk(ValidatingModel):
         validators=[distribution_validator]
     )
 
+    requested_count = models.IntegerField(default=0)
+
     count = models.IntegerField(default=None)
 
     def borders_per_column(self, column_name):
@@ -166,7 +185,20 @@ class Chunk(ValidatingModel):
                 return chunk_border
 
     def clean(self):
+        self.validate_fields()
         self.validate_borders_in_context_of_catalogue_item()
+    
+    def validate_fields(self):
+        
+        # counts have to be positive
+
+        if self.count < 0:
+            raise ValidationError(
+                    "count has to be greater than 0")
+
+        if self.requested_count < 0:
+            raise ValidationError(
+                    "requested_count has to be greater than 0")
 
     def validate_borders_in_context_of_catalogue_item(self):
 
