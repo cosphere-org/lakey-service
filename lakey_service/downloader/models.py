@@ -212,6 +212,9 @@ class DownloadRequestManager(models.Manager):
 
         return estimated_size, chunks
 
+    def estimate_size(self, spec, c_i_id):
+        return self.estimate_size_and_chunks(spec, c_i_id)[0]
+
 
 class DownloadRequest(ValidatingModel):
 
