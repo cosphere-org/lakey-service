@@ -289,6 +289,7 @@ class CatalogueItem(ValidatingModel):
 
         self.save()
 
+    # TODO: Distribution, research
     def create_chunks(self, m_c):
         global_df = pandas.DataFrame(self.sample)
         chunks_borders = []

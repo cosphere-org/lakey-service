@@ -117,72 +117,39 @@ class DownloadRequestManager(models.Manager):
         c_i_cols = [col['name'] for col in c_i.spec]
         spec = self.simplify_spec(spec)
 
+        operators_to_b_vars = {
+            '<=': ['maximum__lte'],
+            '>=': ['minimum__gte'],
+            '<': ['maximum__lt'],
+            '>': ['minimum__gt'],
+            '=': ['minimum__gte', 'maximum__lte']
+        }
+
+        def get_border_query(b_idx, b_names, value):
+            q = []
+            for b_name in b_names:
+                q.append(
+                    Q(**{
+                        f'borders__{b_idx}__{b_name}': value
+                    }) | Q(
+                        Q(**{
+                            f'borders__{b_idx}__minimum__lte': value
+                        }) &
+                        Q(**{
+                            f'borders__{b_idx}__maximum__gte': value
+                        })
+                    )
+                )
+            return q
+
         query = []
         for spec_filter in spec['filters']:
-            b_idx = c_i_cols.index(spec_filter['name'])
-            operator = spec_filter['operator']
+            query.append(
+                *get_border_query(c_i_cols.index(spec_filter['name']),
+                                  operators_to_b_vars[spec_filter['operator']],
+                                  spec_filter['value'])
+            )
 
-            if operator == '<=':
-                query.append((
-                    Q(**{
-                        f'borders__{b_idx}__maximum__lte': spec_filter['value']
-                    }) | Q(
-                        Q(**{
-                            f'borders__{b_idx}__minimum__lte': spec_filter['value']
-                        }) &
-                        Q(**{
-                            f'borders__{b_idx}__maximum__gte': spec_filter['value']
-                        })
-                    )
-                ))
-            elif operator == '>=':
-                query.append((
-                    Q(**{
-                        f'borders__{b_idx}__minimum__gte': spec_filter['value']
-                    }) | Q(
-                        Q(**{
-                            f'borders__{b_idx}__minimum__lte': spec_filter['value']
-                        }) &
-                        Q(**{
-                            f'borders__{b_idx}__maximum__gte': spec_filter['value']
-                        })
-                    )
-                ))
-            elif operator == '<':
-                query.append((
-                    Q(**{
-                        f'borders__{b_idx}__maximum__lt': spec_filter['value']
-                    }) | Q(
-                        Q(**{
-                            f'borders__{b_idx}__minimum__lte': spec_filter['value']
-                        }) &
-                        Q(**{
-                            f'borders__{b_idx}__maximum__gte': spec_filter['value']
-                        })
-                    )
-                ))
-            elif operator == '>':
-                query.append((
-                    Q(**{
-                        f'borders__{b_idx}__minimum__gt': spec_filter['value']
-                    }) | Q(
-                        Q(**{
-                            f'borders__{b_idx}__minimum__lte': spec_filter['value']
-                        }) &
-                        Q(**{
-                            f'borders__{b_idx}__maximum__gte': spec_filter['value']
-                        })
-                    )
-                ))
-            elif operator == '=':
-                query.append((
-                    Q(**{
-                        f'borders__{b_idx}__minimum__gte': spec_filter['value'],
-                        f'borders__{b_idx}__maximum__lte': spec_filter['value']
-                    })
-                ))
-
-        # import pdb; pdb.set_trace()
         return Chunk.objects.filter(catalogue_item_id=c_i_id, *query)
 
     def estimate_size_and_chunks(self, spec, c_i_id):
