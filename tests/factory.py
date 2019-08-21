@@ -82,6 +82,7 @@ class EntityFactory:
     def download_request(
             self,
             created_by=None,
+            # chunks=None,
             spec=None,
             uri=None,
             real_size=None,
@@ -95,6 +96,7 @@ class EntityFactory:
 
         return DownloadRequest.objects.create(
             created_by=created_by,
+            # chunks=chunks,
             spec=spec,
             uri=uri,
             real_size=real_size,
@@ -109,7 +111,6 @@ class EntityFactory:
             updated_datetime=None,
             catalogue_item=None,
             borders=None,
-            requested_count=None,
             count=None):
 
         return Chunk.objects.create(
@@ -130,7 +131,6 @@ class EntityFactory:
                     'distribution': None,
                 },
             ],
-            requested_count=requested_count or faker.random_int(0, 300),
             count=count or faker.random_int(500, 100000))
 
     def chunk_bulk(

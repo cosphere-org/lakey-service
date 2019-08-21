@@ -198,6 +198,11 @@ class DownloadRequest(ValidatingModel):
         related_name='download_requests_as_waiter')
 
     #
+    # Chunks
+    #
+    chunks = models.ManyToManyField(Chunk)
+
+    #
     # Data Related Fields
     #
     @unique

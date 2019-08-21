@@ -1,6 +1,7 @@
 from enum import Enum, unique
 
 from django.db import models
+from django.db.models import Count
 from django.core.exceptions import ValidationError
 
 from lily.base.models import (
@@ -23,17 +24,20 @@ class NoChunksDetected(Exception):
 
 class ChunkManager(models.Manager):
 
-    def exploration_map(self, catalogue_item_id):
+    def filter_not_explored_chunks(self, catalogue_item_id):
         
-        if not Chunk.objects.filter(
-                catalogue_item_id=catalogue_item_id).exists():
+        ci_chunks = Chunk.objects.filter(
+            downloadrequest__catalogue_item_id=catalogue_item_id)
+        
+        if not ci_chunks:
             raise NoChunksDetected(
                 f"chunks must exist for indicated catalogue item")
+        
+        excluded_chunks_ids = []
+        for ch in ci_chunks.annotate(Count('downloadrequest')).values():
+            excluded_chunks_ids.append(ch['id'])
 
-        ci_chunks = Chunk.objects.get(id=catalogue_item_id)
-        not_explored_chunks = ci_chunks.objects.filter(requested_count=0)
-
-        return not_explored_chunks
+        return ci_chunks.exclude(id__in=excluded_chunks_ids)
 
 
 def distribution_validator(borders):
@@ -115,6 +119,8 @@ def distribution_validator(borders):
 
 class Chunk(ValidatingModel):
 
+    objects = ChunkManager()
+
     created_datetime = models.DateTimeField(auto_now_add=True)
 
     updated_datetime = models.DateTimeField(auto_now=True)
@@ -175,8 +181,6 @@ class Chunk(ValidatingModel):
         validators=[distribution_validator]
     )
 
-    requested_count = models.IntegerField(default=0)
-
     count = models.IntegerField(default=None)
 
     def borders_per_column(self, column_name):
@@ -196,9 +200,9 @@ class Chunk(ValidatingModel):
             raise ValidationError(
                     "count has to be greater than 0")
 
-        if self.requested_count < 0:
-            raise ValidationError(
-                    "requested_count has to be greater than 0")
+        # if self.requested_count < 0:
+        #     raise ValidationError(
+        #             "requested_count has to be greater than 0")
 
     def validate_borders_in_context_of_catalogue_item(self):
 

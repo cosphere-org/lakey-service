@@ -8,7 +8,7 @@ urlpatterns = [
 
     url(
         r'chunk/render_exploration_map',
-        commands.DownloadRequestRenderCommands.as_view(),
+        commands.ChunkRenderCommands.as_view(),
         name='chunk.render_exploration_map'
     )
 ]

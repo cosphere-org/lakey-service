@@ -23,6 +23,12 @@ urlpatterns = [
             namespace='downloader')),
 
     url(
+        r'^chunk/',
+        include(
+            ('chunk.urls', 'chunk'),
+            namespace='chunk')),
+
+    url(
         r'^',
         include(
             ('lily.entrypoint.urls', 'entrypoint'),
