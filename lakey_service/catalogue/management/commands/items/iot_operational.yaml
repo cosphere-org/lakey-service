@@ -11,22 +11,40 @@ spec:
     is_nullable: false
     is_enum: true
     distribution:
-      - value: outside.temperature/value
+      - value_min: outside.temperature/value1
         count: 134
 
-      - value: inside.temperature/value
+      - value_max: outside.temperature/value2
+        count: 134
+
+      - value_min: inside.temperature/value1
         count: 6789
 
-      - value: super.pressure/value
+      - value_max: inside.temperature/value2
+        count: 6789
+
+      - value_min: super.pressure/value1
         count: 567
 
-      - value: normal.pressure/value
+      - value_max: super.pressure/value2
+        count: 567
+
+      - value_min: normal.pressure/value1
         count: 12
 
-      - value: wifi.strength/value
+      - value_max: normal.pressure/value2
+        count: 12
+
+      - value_min: wifi.strength/value1
         count: 671
 
-      - value: wifi.weakness/value
+      - value_max: wifi.strength/value2
+        count: 671
+
+      - value_min: wifi.weakness/value1
+        count: 12
+
+      - value_max: wifi.weakness/value2
         count: 12
 
   - name: value
@@ -36,36 +54,51 @@ spec:
     is_nullable: true
     is_enum: false
     distribution:
-      - value: 1.0
+      - value_min: 1.1
         count: 56
 
-      - value: 2.0
+      - value_max: 1.0
+        count: 56
+
+      - value_min: 2.1
         count: 567
 
-      - value: 4.0
+      - value_max: 2.0
         count: 567
 
-      - value: 34.0
+      - value_min: 4.1
+        count: 567
+
+      - value_max: 4.0
+        count: 567
+
+      - value_min: 34.1
         count: 1235
 
-      - value: 45.0
+      - value_max: 34.0
+        count: 1235
+
+      - value_min: 45.1
+        count: 8799
+
+      - value_max: 45.0
         count: 8799
 
 sample:
-  - property: wifi.strength/value
+  - property: wifi.strength/value1
     value: 1.2
 
-  - property: normal.pressure/value
+  - property: normal.pressure/value1
     value: 48.1
 
-  - property: inside.temperature/value
+  - property: inside.temperature/value1
     value: 56.6
 
-  - property: inside.temperature/value
+  - property: inside.temperature/value1
     value: 345.1
 
-  - property: inside.temperature/value
+  - property: inside.temperature/value1
     value: 1.21
 
-  - property: normal.pressure/value
+  - property: normal.pressure/value1
     value: 19.1
