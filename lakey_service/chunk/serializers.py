@@ -14,9 +14,15 @@ class ChunkSerializer(serializers.ModelSerializer):
 
         fields = (
             # -- model fields
-            'created_datatime',
-            'updated_datatime',
+            'created_datetime',
+            'updated_datetime',
             'borders',
-            'requested_time',
             'count',
         )
+
+
+class ChunksNotExploredSerializer(serializers.Serializer):
+
+    _type = 'not_explored_chunks'
+
+    not_explored_chunks = ChunkSerializer(many=True)

@@ -25,30 +25,16 @@ class NoChunksDetected(Exception):
 class ChunkManager(models.Manager):
 
     def filter_not_explored_chunks(self, catalogue_item_id):
-        
-        # ci_chunks = Chunk.objects.filter(
-        #     downloadrequest__catalogue_item_id=catalogue_item_id)
 
-        ci_chunks = Chunk.objects.filter(
+        chunks = Chunk.objects.filter(
             catalogue_item_id=catalogue_item_id)
-        
-        if not ci_chunks:
+
+        if not chunks:
             raise NoChunksDetected(
-                f"chunks must exist for indicated catalogue item")
+                f"chunks must exist for indicated catalogue item")  # noqa
 
-        excluded_chunks_ids = Chunk.objects.filter(
-            downloadrequest__catalogue_item_id=catalogue_item_id).values()
-
-        result = []
-        for ch in excluded_chunks_ids:
-            result.append(ch['id'])
-        
-        # excluded_chunks_ids = []
-        # for ch in ci_chunks.annotate(Count('downloadrequest')).values():
-        #     excluded_chunks_ids.append(ch['id'])
-
-        #return ci_chunks.exclude(id__in=excluded_chunks_ids)
-        return ci_chunks.exclude(id__in=result)
+        return chunks.exclude(
+            downloadrequest__catalogue_item_id=catalogue_item_id)
 
 
 def distribution_validator(borders):
@@ -202,14 +188,14 @@ class Chunk(ValidatingModel):
     def clean(self):
         self.validate_fields()
         self.validate_borders_in_context_of_catalogue_item()
-    
+
     def validate_fields(self):
-        
+
         # counts have to be positive
 
         if self.count < 0:
             raise ValidationError(
-                    "count has to be greater than 0")
+                "count has to be greater than 0")
 
         # if self.requested_count < 0:
         #     raise ValidationError(

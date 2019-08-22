@@ -1,7 +1,6 @@
 
 from lily import (
     command,
-    Input,
     Meta,
     name,
     Output,
@@ -11,31 +10,26 @@ from lily import (
 
 from .domains import CHUNKS
 from .models import Chunk
-from .parsers import ChunkParser
-from .serializers import ChunkSerializer
+from .serializers import ChunksNotExploredSerializer
 from account.models import Account
 
 
-class ChunkRenderCommands(HTTPCommands):
+class ChunksNotExploredCommands(HTTPCommands):
 
     @command(
-        name=name.Execute('RENDER', 'CHUNK_EXPLORATION_MAP'),
+        name=name.BulkRead('NOT_EXPLORED_CHUNKS'),
 
         meta=Meta(
-            title=(
-                "render map which shows what part of chunk_map have not"
-                "been explored yet"),
+            title='Filter and read all not explored yet chunks',
             domain=CHUNKS),
-
-        input=Input(body_parser=ChunkParser),
 
         access=Access(access_list=Account.AccountType.ANY),
 
-        output=Output(serializer=ChunkSerializer),
+        output=Output(serializer=ChunksNotExploredSerializer),
     )
-    def post(self, request):
+    def get(self, request, catalogue_item_id):
 
-        raise self.event.Executed({
-            'chunk_exploration_map': Chunk.objects.exploration_map(
-                **request.input.body)
+        raise self.event.BulkRead({
+            'not_explored_chunks': Chunk.objects.filter_not_explored_chunks(
+                catalogue_item_id)
         })

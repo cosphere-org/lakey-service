@@ -11,22 +11,22 @@ urlpatterns = [
             namespace='account')),
 
     url(
-        r'^catalogue/',
+        r'^catalogue/items/',
         include(
             ('catalogue.urls', 'catalogue'),
             namespace='catalogue')),
 
     url(
-        r'^downloader/',
-        include(
-            ('downloader.urls', 'downloader'),
-            namespace='downloader')),
-
-    url(
-        r'^chunk/',
+        r'^catalogue/items/(?P<catalogue_item_id>\d+)/chunks/',
         include(
             ('chunk.urls', 'chunk'),
             namespace='chunk')),
+
+    url(
+        r'^downloader/requests/',
+        include(
+            ('downloader.urls', 'downloader'),
+            namespace='downloader')),
 
     url(
         r'^',

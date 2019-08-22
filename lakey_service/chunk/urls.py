@@ -7,8 +7,8 @@ from . import commands
 urlpatterns = [
 
     url(
-        r'chunk/render_exploration_map',
-        commands.ChunkRenderCommands.as_view(),
-        name='chunk.render_exploration_map'
+        r'not_explored/',
+        commands.ChunksNotExploredCommands.as_view(),
+        name='chunks.not_explored'
     )
 ]
