@@ -4,6 +4,10 @@ from django.test import TestCase
 from tests.factory import EntityFactory
 
 from chunk.models import Chunk
+##########################################
+from catalogue.models import CatalogueItem
+from downloader.models import DownloadRequest
+##########################################
 from chunk.models import NoChunksDetected
 
 ef = EntityFactory()
@@ -129,6 +133,60 @@ class ChunkManagerTestCase(TestCase):
             ],
         )
         d = self.d(catalogue_item=ci)
-        d.chunks.add(c1, c2)
-        not_explored_chunks = Chunk.objects.filter_not_explored_chunks(1)
-        import ipdb; ipdb.set_trace()
+        d.chunks.add(c1, c3)
+        # print(d.chunks.all())
+        assert d.chunks.first() == c1
+        assert d.chunks.last() == c3
+
+    def test_download_request_chunks_filter_not_explored(self):
+        ci = self.ci()
+        c1 = self.c(catalogue_item=ci)
+        c2 = self.c(
+            catalogue_item=ci,
+            borders= [
+                {
+                    'column': 'A',
+                    'minimum': 30,
+                    'maximum': 35,
+                    'distribution': None,
+                },
+                {
+                    'column': 'B',
+                    'minimum': 40,
+                    'maximum': 45,
+                    'distribution': None,
+                },
+            ],
+        )
+        c3 = self.c(
+            catalogue_item=ci,
+            borders= [
+                {
+                    'column': 'A',
+                    'minimum': 50,
+                    'maximum': 55,
+                    'distribution': None,
+                },
+                {
+                    'column': 'B',
+                    'minimum': 60,
+                    'maximum': 65,
+                    'distribution': None,
+                },
+            ],
+        )
+        d = self.d(catalogue_item=ci)
+        d.chunks.add(c1, c3)
+        assert Chunk.objects.filter_not_explored_chunks(ci.id) == c2
+
+    def test_download_request_chunks_filter_not_explored_no_chunks(self):
+        pass
+
+    def test_download_request_chunks_filter_not_explored_all_not_included(self):
+        pass
+
+    def test_download_request_chunks_filter_not_explored_all_included(self):
+        pass
+
+    def test_download_request_chunks_filter_not_explored_included_not_corect(self):
+        pass

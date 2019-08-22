@@ -26,18 +26,29 @@ class ChunkManager(models.Manager):
 
     def filter_not_explored_chunks(self, catalogue_item_id):
         
+        # ci_chunks = Chunk.objects.filter(
+        #     downloadrequest__catalogue_item_id=catalogue_item_id)
+
         ci_chunks = Chunk.objects.filter(
-            downloadrequest__catalogue_item_id=catalogue_item_id)
+            catalogue_item_id=catalogue_item_id)
         
         if not ci_chunks:
             raise NoChunksDetected(
                 f"chunks must exist for indicated catalogue item")
-        
-        excluded_chunks_ids = []
-        for ch in ci_chunks.annotate(Count('downloadrequest')).values():
-            excluded_chunks_ids.append(ch['id'])
 
-        return ci_chunks.exclude(id__in=excluded_chunks_ids)
+        excluded_chunks_ids = Chunk.objects.filter(
+            downloadrequest__catalogue_item_id=catalogue_item_id).values()
+
+        result = []
+        for ch in excluded_chunks_ids:
+            result.append(ch['id'])
+        
+        # excluded_chunks_ids = []
+        # for ch in ci_chunks.annotate(Count('downloadrequest')).values():
+        #     excluded_chunks_ids.append(ch['id'])
+
+        #return ci_chunks.exclude(id__in=excluded_chunks_ids)
+        return ci_chunks.exclude(id__in=result)
 
 
 def distribution_validator(borders):
