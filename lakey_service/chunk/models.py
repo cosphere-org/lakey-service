@@ -179,6 +179,12 @@ class Chunk(ValidatingModel):
 
     count = models.IntegerField(default=None)
 
+    data_path = models.CharField(
+        max_length=256,
+        unique=True,
+        null=True,
+        blank=True)
+
     def borders_per_column(self, column_name):
         for chunk_border in list(self.borders):
             if chunk_border['column'] == column_name:

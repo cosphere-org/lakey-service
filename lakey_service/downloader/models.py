@@ -20,6 +20,7 @@ from lily.base.models import (
 from account.models import Account
 from catalogue.models import CatalogueItem
 from chunk.models import Chunk
+from django.db.models import Q
 
 
 class MutuallyExclusiveFiltersDetected(Exception):
@@ -44,7 +45,7 @@ class DownloadRequestManager(models.Manager):
 
         if not spec['filters']:
             raise NoFiltersDetected(
-                f"spec must have at least one filter '{spec}'")
+                f"spec must have at least one filter '{spec}'")  # noqa
 
         filters_values = {}
 
@@ -111,46 +112,60 @@ class DownloadRequestManager(models.Manager):
 
         return s_s
 
-    def estimate_size(self, spec, catalogue_item_id):
-
-        if not Chunk.objects.filter(
-                catalogue_item_id=catalogue_item_id).exists():
-            raise NoChunksDetected(
-                f"chunks must exist for indicated catalogue item")
-
-        c_i = CatalogueItem.objects.get(id=catalogue_item_id)
+    def get_chunks(self, spec, c_i_id):
+        c_i = CatalogueItem.objects.get(id=c_i_id)
         c_i_cols = [col['name'] for col in c_i.spec]
         spec = self.simplify_spec(spec)
 
-        query = {}
-        for spec_filter in self.simplify_spec(spec)['filters']:
-            b_idx = c_i_cols.index(spec_filter['name'])
+        operators_to_b_vars = {
+            '<=': ['maximum__lte'],
+            '>=': ['minimum__gte'],
+            '<': ['maximum__lt'],
+            '>': ['minimum__gt'],
+            '=': ['minimum__gte', 'maximum__lte']
+        }
 
-            if spec_filter['operator'] == '<':
-                query[f'borders__{b_idx}__maximum__lt'] = spec_filter['value']
+        def get_border_query(b_idx, b_names, value):
+            q = []
+            for b_name in b_names:
+                q.append(
+                    Q(**{
+                        f'borders__{b_idx}__{b_name}': value
+                    }) | Q(
+                        Q(**{
+                            f'borders__{b_idx}__minimum__lte': value
+                        }) &
+                        Q(**{
+                            f'borders__{b_idx}__maximum__gte': value
+                        })
+                    )
+                )
+            return q
 
-            elif spec_filter['operator'] == '<=':
-                query[f'borders__{b_idx}__maximum__lte'] = spec_filter['value']
+        query = []
+        for spec_filter in spec['filters']:
+            query.append(
+                *get_border_query(c_i_cols.index(spec_filter['name']),
+                                  operators_to_b_vars[spec_filter['operator']],
+                                  spec_filter['value'])
+            )
 
-            elif spec_filter['operator'] == '>':
-                query[f'borders__{b_idx}__minimum__gt'] = spec_filter['value']
+        return Chunk.objects.filter(catalogue_item_id=c_i_id, *query)
 
-            elif spec_filter['operator'] == '>=':
-                query[f'borders__{b_idx}__minimum__gte'] = spec_filter['value']
+    def estimate_size_and_chunks(self, spec, c_i_id):
+        if not Chunk.objects.filter(
+                catalogue_item_id=c_i_id).exists():
+            raise NoChunksDetected(
+                f"chunks must exist for indicated catalogue item")
 
-            elif spec_filter['operator'] == '=':
-                query[f'borders__{b_idx}__minimum__gte'] = spec_filter['value']
-                query[f'borders__{b_idx}__maximum__lte'] = spec_filter['value']
-
-        chunks = Chunk.objects.filter(
-            catalogue_item_id=catalogue_item_id, **query)
+        chunks = self.get_chunks(spec, c_i_id)
+        c_i = CatalogueItem.objects.get(id=c_i_id)
 
         c_i_size_by_col = {col['name']: col['size'] for col in c_i.spec}
         c_i_count_by_col = {
             col['name']: sum(dist['count'] for dist in col['distribution'])
             for col in c_i.spec
         }
-        c_i_size = sum(size for size in c_i_size_by_col.values())
 
         estimated_size = 0
         for chunk in chunks:
@@ -163,11 +178,13 @@ class DownloadRequestManager(models.Manager):
 
                 estimated_size += (border_count * c_i_col_size) / c_i_col_count
 
-        if estimated_size == c_i_size:
-            raise TooMuchDataRequestDetected(
-                f"specify filters to a smaller data area")
-
         return estimated_size, chunks
+
+    def estimate_size(self, spec, catalogue_item_id):
+
+        return self.estimate_size_and_chunks(
+            spec,
+            catalogue_item_id)[0]
 
 
 class DownloadRequest(ValidatingModel):
