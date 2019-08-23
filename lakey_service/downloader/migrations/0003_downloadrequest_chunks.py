@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('chunk', '0003_auto_20190823_0938'),
+        ('chunk', '0003_auto_20190809_0538'),
         ('downloader', '0002_downloadrequest_normalized_spec'),
     ]
 

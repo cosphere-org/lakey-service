@@ -2,10 +2,11 @@ import os
 
 import djclick as click
 import pandas
-from numpy import histogram
+# from numpy import histogram
 
 from chunk.models import Chunk
 from catalogue.models import CatalogueItem
+
 
 # TODO: Distribution, research
 #
@@ -15,7 +16,7 @@ def command(catalogue_item_name):
     c_i = CatalogueItem.objects.get(name=catalogue_item_name)
     global_df = pandas.read_csv(c_i.data_path)
 
-    pandas_types_to_lakey_types = {
+    types = {
         'int64': 'INTEGER'
     }
     partional_data_path = '/home/skpk/PycharmProjects/' \
@@ -41,10 +42,10 @@ def command(catalogue_item_name):
             borders = []
             for col_name in local_df:
                 col = local_df[col_name]
-                hist = histogram(local_df)
+                # hist = histogram(local_df)
                 borders.append({
                     'column': col_name,
-                    'type': pandas_types_to_lakey_types[global_df.dtypes[col_name].name],
+                    'type': types[global_df.dtypes[col_name].name],
                     'minimum': col.min(),
                     'maximum': col.max(),
                     'distribution': [
@@ -56,16 +57,15 @@ def command(catalogue_item_name):
                     ]
                 })
 
-            chunk_data_path = f'{partional_data_path}/{raw_data_name}/{len(chunks)}.parquet'
+            chunk_data_path = (
+                f'{partional_data_path}/{raw_data_name}/{len(chunks)}.parquet')  # noqa
             chunk = Chunk(
-                    catalogue_item=c_i,
-                    borders=borders,
-                    data_path=chunk_data_path
-                )
+                catalogue_item=c_i,
+                borders=borders,
+                data_path=chunk_data_path)
             chunks.append(chunk)
 
             loc_df.to_parquet(chunk_data_path, engine='pyarrow')
-            return
 
     os.mkdir(f'{partional_data_path}/{raw_data_name}')
     division(global_df, 125000)

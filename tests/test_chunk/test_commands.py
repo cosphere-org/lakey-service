@@ -2,7 +2,6 @@
 from django.test import TestCase
 from django.urls import reverse
 from lily.base.test import Client
-import pytest
 
 from account.models import Account
 from account.token import AuthToken

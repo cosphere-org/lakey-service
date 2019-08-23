@@ -45,7 +45,7 @@ class DownloadRequestManager(models.Manager):
 
         if not spec['filters']:
             raise NoFiltersDetected(
-                f"spec must have at least one filter '{spec}'")
+                f"spec must have at least one filter '{spec}'")  # noqa
 
         filters_values = {}
 
@@ -180,8 +180,11 @@ class DownloadRequestManager(models.Manager):
 
         return estimated_size, chunks
 
-    def estimate_size(self, spec, c_i_id):
-        return self.estimate_size_and_chunks(spec, c_i_id)[0]
+    def estimate_size(self, spec, catalogue_item_id):
+
+        return self.estimate_size_and_chunks(
+            spec,
+            catalogue_item_id)[0]
 
 
 class DownloadRequest(ValidatingModel):

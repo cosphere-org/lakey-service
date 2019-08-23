@@ -3,7 +3,6 @@ from enum import Enum, unique
 
 from django.core.exceptions import ValidationError
 from django.db import models
-import pandas
 from lily.base.models import (
     array,
     boolean,
@@ -20,7 +19,6 @@ from lily.base.models import (
 )
 
 from account.models import Account
-from chunk.models import Chunk
 from downloader.executors.athena import AthenaExecutor
 
 
@@ -192,7 +190,11 @@ class CatalogueItem(ValidatingModel):
         schema=SPEC_SCHEMA,
         validators=[spec_validator])
 
-    data_path = models.CharField(max_length=256, unique=True, null=True, blank=True)
+    data_path = models.CharField(
+        max_length=256,
+        unique=True,
+        null=True,
+        blank=True)
 
     #
     # EXECUTOR
@@ -291,5 +293,5 @@ class CatalogueItem(ValidatingModel):
 
         self.save()
 
-    def __str__(self):
+    def __str__(self):  # noqa
         return self.name

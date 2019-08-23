@@ -8,7 +8,6 @@ from downloader.models import (
     MutuallyExclusiveFiltersDetected,
     NoFiltersDetected,
     NoChunksDetected,
-    TooMuchDataRequestDetected,
 )
 
 
@@ -25,7 +24,7 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
                 {
                     'name': 'A',
                     'type': 'INTEGER',
-                    'size': 480,  # sum(distribution.count) * type.size(int, 4 bit), (60 + 60) * 4
+                    'size': 480,  # noqa sum(distribution.count) * type.size(int, 4 bit), (60 + 60) * 4
                     'is_nullable': False,
                     'is_enum': False,
                     'distribution': [
@@ -164,8 +163,8 @@ class DownloadRequestEstimateSizeTestCase(TestCase):
         with pytest.raises(NoChunksDetected) as e:
             DownloadRequest.objects.estimate_size_and_chunks({}, self.ci.id)
 
-        assert str(e.value) == f"chunks must exist for " \
-                               f"indicated catalogue item"
+        assert str(e.value) == (
+            f"chunks must exist for indicated catalogue item")  # noqa
 
     def test_simplify_spec__filters_is_empty(self):
         spec = {
