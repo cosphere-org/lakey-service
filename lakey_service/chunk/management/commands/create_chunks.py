@@ -2,6 +2,7 @@ import os
 
 import djclick as click
 import pandas
+from numpy import histogram
 
 from chunk.models import Chunk
 from catalogue.models import CatalogueItem
@@ -9,16 +10,20 @@ from catalogue.models import CatalogueItem
 # TODO: Distribution, research
 #
 @click.command()
-@click.argument('filename')
-@click.argument('max_count')
-@click.argument('catalogue_item_id')
-def command(filename, max_count, catalogue_item_id):
-    items_path = os.path.dirname(os.path.abspath(__file__))
-    global_df = pandas.read_csv(f'{items_path}/raw_data/{filename}')
+@click.argument('catalogue_item_name')
+def command(catalogue_item_name):
+    c_i = CatalogueItem.objects.get(name=catalogue_item_name)
+    global_df = pandas.read_csv(c_i.data_path)
 
-    c_i = CatalogueItem.objects.all().first()
+    pandas_types_to_lakey_types = {
+        'int64': 'INTEGER'
+    }
+    partional_data_path = '/home/skpk/PycharmProjects/' \
+                          'lakey-service/lakey_service/chunk/' \
+                          'management/commands/partional_data'
+    raw_data_name = c_i.data_path.split("/")[-1].split(".")[0]
 
-    chunks_borders = []
+    chunks = []
 
     def division(loc_df, max_c):
         col_to_slice = loc_df.var().idxmax()
@@ -33,46 +38,34 @@ def command(filename, max_count, catalogue_item_id):
             right_half_df = local_df.iloc[median:]
             division(right_half_df, max_c)
         else:
-            border = []
+            borders = []
             for col_name in local_df:
                 col = local_df[col_name]
-                border.append([col.min(), col.max(), count, col_name])
-            chunks_borders.append(border)
+                hist = histogram(local_df)
+                borders.append({
+                    'column': col_name,
+                    'type': pandas_types_to_lakey_types[global_df.dtypes[col_name].name],
+                    'minimum': col.min(),
+                    'maximum': col.max(),
+                    'distribution': [
+                        # {
+                        #     'value_min': value_min,
+                        #     'value_max': value_max,
+                        #     'count': count
+                        # } for value_min, value_max, count in local_df.hist(column=col_name, bins=10)
+                    ]
+                })
+
+            chunk_data_path = f'{partional_data_path}/{raw_data_name}/{len(chunks)}.parquet'
+            chunk = Chunk(
+                    catalogue_item=c_i,
+                    borders=borders,
+                    data_path=chunk_data_path
+                )
+            chunks.append(chunk)
+
+            loc_df.to_parquet(chunk_data_path, engine='pyarrow')
             return
 
-    division(global_df, int(max_count))
-
-    chunks = []
-    # for chunk_borders in chunks_borders:
-    #     chunks.append(
-    #         Chunk(
-    #             catalogue_item=c_i,
-    #             borders=[
-    #                 {
-    #                     'column': chunk_borders[3],
-    #                     'type': 'INTEGER',
-    #                     'minimum': 0,
-    #                     'maximum': 100,
-    #                     ''
-    #                 }
-    #             ],
-    #             count=chunk_borders[2],
-    #         )
-    #     )
-    # Chunk.objects.bulk_create(chunks)
-
-
-    for chunk_borders in chunks_borders:
-        chunks.append(
-            Chunk(
-                catalogue_item=c_i,
-                borders=[
-                    {
-                        'column': col,
-                        'count': count,
-                        'minimum': int(min_),
-                        'maximum': int(max_),
-                    }
-                    for min_, max_, count, col in chunk_borders
-                ]))
-    Chunk.objects.bulk_create(chunks)
+    os.mkdir(f'{partional_data_path}/{raw_data_name}')
+    division(global_df, 125000)

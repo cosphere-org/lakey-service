@@ -192,6 +192,8 @@ class CatalogueItem(ValidatingModel):
         schema=SPEC_SCHEMA,
         validators=[spec_validator])
 
+    data_path = models.CharField(max_length=256, unique=True, null=True, blank=True)
+
     #
     # EXECUTOR
     #
