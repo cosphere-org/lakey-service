@@ -5,8 +5,8 @@ install:
   - touch env_private.sh
   - make install
 script:
-  - migrations_create
-  - migrations_apply_current
   - make create_db
   - make start_db
+  - migrations_create
+  - migrations_apply_current
   - make test_all
