@@ -52,7 +52,7 @@ def command(catalogue_item_name):
                         #     'value_min': value_min,
                         #     'value_max': value_max,
                         #     'count': count
-                        # } for value_min, value_max, count in local_df.hist(column=col_name, bins=10)
+                        # } for value_min, value_max, count in hist,
                     ]
                 })
 
