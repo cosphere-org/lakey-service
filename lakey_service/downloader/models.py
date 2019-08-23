@@ -154,6 +154,7 @@ class DownloadRequestManager(models.Manager):
 
         estimated_size = 0
         for chunk in chunks:
+            # update requested count
             for border in chunk.borders:
                 border_count = \
                     sum(dist['count'] for dist in border['distribution'])
