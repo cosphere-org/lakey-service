@@ -169,6 +169,7 @@ class DownloadRequestManager(models.Manager):
 
         estimated_size = 0
         for chunk in chunks:
+            # update requested count
             for border in chunk.borders:
                 border_count = \
                     sum(dist['count'] for dist in border['distribution'])
@@ -209,6 +210,11 @@ class DownloadRequest(ValidatingModel):
     waiters = models.ManyToManyField(
         Account,
         related_name='download_requests_as_waiter')
+
+    #
+    # Chunks
+    #
+    chunks = models.ManyToManyField(Chunk)
 
     #
     # Data Related Fields

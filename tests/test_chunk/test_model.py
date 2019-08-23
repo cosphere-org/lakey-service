@@ -96,10 +96,119 @@ class ChunkTestCase(TestCase):
 
     def test_count__correct_type(self):
 
-        ci = self.ci()
-        c = self.c(catalogue_item=ci)
+        ci = self.ci([{}, {}])
 
-        assert type(c.count).__name__ == 'int'
+        with pytest.raises(ValidationError) as e:
+
+            ef.chunk(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                        'distribution': None,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'distribution': None,
+                    },
+                ],
+                count='fd1d2'
+            )
+    
+        assert e.value.message_dict == {
+            'count': ["'fd1d2' value must be an integer."]
+        }
+
+    def test_count__greater_than_zero(self):
+
+        ci = self.ci([{}, {}])
+
+        with pytest.raises(ValidationError) as e:
+
+            ef.chunk(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                        'distribution': None,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'distribution': None,
+                    },
+                ],
+                count=-1
+            )
+
+        assert e.value.message_dict == {
+            '__all__': ['count has to be greater than 0']
+        }
+
+    def test_requested_count_correct_type(self):
+
+        ci = self.ci([{}, {}])
+
+        with pytest.raises(ValidationError) as e:
+
+            ef.chunk(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                        'distribution': None,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'distribution': None,
+                    },
+                ],
+                requested_count='3g43'
+            )
+
+        assert e.value.message_dict == {
+            'requested_count': ["'3g43' value must be an integer."]
+        }
+
+    def test_requested_greater_than_zero(self):
+
+        ci = self.ci([{}, {}])
+
+        with pytest.raises(ValidationError) as e:
+
+            ef.chunk(
+                catalogue_item=ci,
+                borders=[
+                    {
+                        'column': 'A',
+                        'minimum': 10,
+                        'maximum': 15,
+                        'distribution': None,
+                    },
+                    {
+                        'column': 'B',
+                        'minimum': 20,
+                        'maximum': 25,
+                        'distribution': None,
+                    },
+                ],
+                requested_count=-1
+            )
+
+        assert e.value.message_dict == {
+            '__all__': ['requested_count has to be greater than 0']
+        }
 
     def test_borders_validation__expect_array(self):
 
