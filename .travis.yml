@@ -1,0 +1,12 @@
+language: python
+python:
+  - "3.6.5"
+install:
+  - touch env_private.sh
+  - make install
+script:
+  - make create_db
+  - make start_db
+  - make migrations_create
+  - make migrations_apply_current
+  - make test_all

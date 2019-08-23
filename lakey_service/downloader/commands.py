@@ -76,9 +76,10 @@ class DownloadRequestEstimateCommands(HTTPCommands):
     )
     def post(self, request):
 
+        estimated_size, _ = DownloadRequest.objects.estimate_size(
+                **request.input.body)
         raise self.event.Executed({
-            'estimated_size': DownloadRequest.objects.estimate_size(
-                **request.input.body),
+            'estimated_size': estimated_size,
         })
 
 

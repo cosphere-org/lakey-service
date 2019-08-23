@@ -18,12 +18,12 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 26,
+                    "maintained_by_id": 33,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjUsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.uDBdqRFJWwjHxA7WHXaziN6WfdRTCdkEVwdNYm86e6w"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzIsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI0fQ.M4k6JVy6MdcBlkdNCRl46SpVn5doRT7rqjlbCD0Y5ng"
                 }
             },
             "response": {
@@ -33,7 +33,7 @@
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                     "@access": {
-                        "account_id": 25
+                        "account_id": 32
                     }
                 }
             }
@@ -42,7 +42,7 @@
             "method": "put",
             "description": "CATALOGUEITEM_UPDATED",
             "request": {
-                "path": "/catalogue/items/20",
+                "path": "/catalogue/items/37",
                 "content": {
                     "sample": [],
                     "spec": [
@@ -55,19 +55,19 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 28,
+                    "maintained_by_id": 24,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjcsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.0GLkAktOZZlBcB_D3Iu-3RjYJWMhV9q3Rgcv_f30bxw"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjMsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjIzfQ.86arVwhiOleElY1trrjfILcP8V9wHvC67xT_gGyeDdk"
                 }
             },
             "response": {
                 "status": 200,
                 "content_type": "application/json",
                 "content": {
-                    "id": 20,
+                    "id": 37,
                     "name": "temperatures",
                     "spec": [
                         {
@@ -82,20 +82,20 @@
                     "sample": [],
                     "executor_type": "DATABRICKS",
                     "created_by": {
-                        "id": 29,
-                        "email": "rbeier@gmail.com",
+                        "id": 25,
+                        "email": "parkerquentin@hotmail.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
                     "updated_by": {
-                        "id": 27,
-                        "email": "mckenziemaggio@white-durgan.com",
+                        "id": 23,
+                        "email": "klingmargarette@roberts.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
-                        "id": 28,
-                        "email": "schambergerkatharyn@hotmail.com",
+                        "id": 24,
+                        "email": "destiney95@gutkowski.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -108,7 +108,7 @@
             "method": "put",
             "description": "BODY_DID_NOT_VALIDATE",
             "request": {
-                "path": "/catalogue/items/21",
+                "path": "/catalogue/items/42",
                 "content": {
                     "name": "iot_events",
                     "sample": [],
@@ -121,12 +121,12 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 32,
+                    "maintained_by_id": 30,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzEsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.nuSemgyvn-k0Ln2LrD3wqaKTrYXqgsT9Dl2HBxByMzc"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI0fQ.HGH6uXfSRnPJ5Re8qvHoqG8i9moKdI8TychTrPGZIDs"
                 }
             },
             "response": {
@@ -141,7 +141,7 @@
                     "@type": "error",
                     "@event": "BODY_DID_NOT_VALIDATE",
                     "@access": {
-                        "account_id": 31
+                        "account_id": 29
                     }
                 }
             }
@@ -154,7 +154,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.irfICGmViGUOP6KBGCDD5kzdMb33Cb2i3CoR7uonq1w"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzEsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI0fQ.AzCYiSnC7TEzZbtIq489fecAbf24yrppu0aYyZwE7wk"
                 }
             },
             "response": {
@@ -164,7 +164,7 @@
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                     "@access": {
-                        "account_id": 30
+                        "account_id": 31
                     }
                 }
             }
@@ -173,16 +173,16 @@
             "method": "get",
             "description": "CATALOGUEITEM_READ",
             "request": {
-                "path": "/catalogue/items/24",
+                "path": "/catalogue/items/35",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzUsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MX0.CDNVKpSxc5W3_FcUmmJWNy1e5kiiKOG-hzhKwZTibdM"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjIzfQ.5Q7yOH6EyhV7ZG79WhQrBAjKJDw7slKgE5Y2xbkD66w"
                 }
             },
             "response": {
                 "status": 200,
                 "content_type": "application/json",
                 "content": {
-                    "id": 24,
+                    "id": 35,
                     "name": "temperatures",
                     "spec": [
                         {
@@ -236,7 +236,7 @@
             "request": {
                 "path": "/catalogue/items/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzMsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.TZhPjIiW0kFT4_NiX2t97g0tR6q8xzIJa4jBAzV4NQA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjYsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjIzfQ.hnM7_03sEjtm0ooKZxZO3dm7oLpbSwbruzowDjtKVLU"
                 }
             },
             "response": {
@@ -246,7 +246,7 @@
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                     "@access": {
-                        "account_id": 33
+                        "account_id": 26
                     }
                 }
             }
@@ -255,9 +255,9 @@
             "method": "delete",
             "description": "CATALOGUEITEM_DELETED",
             "request": {
-                "path": "/catalogue/items/22",
+                "path": "/catalogue/items/40",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzQsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MH0.hwyCKT37kLHvHDCMFD2oQItBzW0D_5VKyHFg3Ss55R4"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjgsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI0fQ.0xKtXt0vFUJg8vDwW3dtqkSXS5nF36tQ-1z_NsVglLo"
                 }
             },
             "response": {
@@ -273,21 +273,21 @@
             "method": "delete",
             "description": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
             "request": {
-                "path": "/catalogue/items/26",
+                "path": "/catalogue/items/38",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzYsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MX0.3fXwVWlaap31FhdVlVB5hwO_tJqnR7NwDp_pxo2c5-I"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjcsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjIzfQ.abuEbHYJJk9S6MS7cvnkjV6k4GtcDCX5R16fjVXn-T0"
                 }
             },
             "response": {
                 "status": 400,
                 "content_type": "application/json",
                 "content": {
-                    "item_id": 26,
+                    "item_id": 38,
                     "not_cancelled_count": 1,
                     "@type": "error",
                     "@event": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
                     "@access": {
-                        "account_id": 36
+                        "account_id": 27
                     }
                 }
             }
@@ -338,7 +338,7 @@
             "request": {
                 "path": "/catalogue/items/?query=feature+tempera",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2Mn0.VKev2OH7XcPhRm7NzAZID2_45YgJVWkn7HZXYFmtT6g"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjIzfQ.8sJJjeYeEa5AgE97Qr-l1NGJr0nUva5crWN9Q75gYHk"
                 }
             },
             "response": {
@@ -347,7 +347,7 @@
                 "content": {
                     "items": [
                         {
-                            "id": 44,
+                            "id": 31,
                             "name": "iot_features",
                             "spec": [
                                 {
@@ -391,7 +391,7 @@
                             "@type": "catalogue_item"
                         },
                         {
-                            "id": 45,
+                            "id": 32,
                             "name": "temperatures",
                             "spec": [
                                 {
@@ -465,7 +465,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzksImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MX0.6tH18GhVDsdKFaaLGDqoyNCu5chPqooZXhhekYlmOSE"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTEsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjIxfQ.POaCat6chHGM1KFc1yISgJzimsvhfBoH7-j4fnw38OM"
                 }
             },
             "response": {
@@ -480,7 +480,7 @@
                     "@type": "error",
                     "@event": "BODY_JSON_DID_NOT_PARSE",
                     "@access": {
-                        "account_id": 39
+                        "account_id": 11
                     }
                 }
             }
@@ -503,19 +503,19 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 44,
+                    "maintained_by_id": 21,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDMsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2MX0.qcqYZg8fDEW49fzK-jY_sfLUcN9wE6xbBSYM1oUTI74"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjIzfQ.HgSbcPC-LWVMp7jvOADPzJthlivdxqJEKcQIHmdKthQ"
                 }
             },
             "response": {
-                "status": 404,
+                "status": 201,
                 "content_type": "application/json",
                 "content": {
-                    "id": 43,
+                    "id": 34,
                     "name": "iot_events",
                     "spec": [
                         {
@@ -530,20 +530,20 @@
                     "sample": [],
                     "executor_type": "DATABRICKS",
                     "created_by": {
-                        "id": 43,
-                        "email": "mckenziemaggio@white-durgan.com",
+                        "id": 20,
+                        "email": "klingmargarette@roberts.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "updated_by": {
-                        "id": 43,
-                        "email": "mckenziemaggio@white-durgan.com",
+                        "id": 20,
+                        "email": "klingmargarette@roberts.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
                     "maintained_by": {
-                        "id": 44,
-                        "email": "schambergerkatharyn@hotmail.com",
+                        "id": 21,
+                        "email": "destiney95@gutkowski.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -568,12 +568,12 @@
                             "distribution": null
                         }
                     ],
-                    "maintained_by_id": 47,
+                    "maintained_by_id": 15,
                     "executor_type": "DATABRICKS"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2Mn0.TxKEkiYgzgRMMkNdK0P4VbjktmaOKqhNyvpqDFClw2k"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjIyfQ.Gw40LQfkkLnXX7zKgMmDYze7w91IeaIZeIqAt7i6qOk"
                 }
             },
             "response": {
@@ -588,7 +588,7 @@
                     "@type": "error",
                     "@event": "BODY_DID_NOT_VALIDATE",
                     "@access": {
-                        "account_id": 46
+                        "account_id": 14
                     }
                 }
             }
@@ -599,9 +599,9 @@
             "method": "put",
             "description": "CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED",
             "request": {
-                "path": "/catalogue/items/47/samples_and_distributions/",
+                "path": "/catalogue/items/43/samples_and_distributions/",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2Mn0.cDm3hXEfWWnLE-B9Rg7X3M6nf_Zrtk1Oj03GYEgyzuA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzUsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI0fQ.ElZzH5zGr5J8Uoi0twMwvubGaIUrAkGX_aGeOdSJghM"
                 }
             },
             "response": {
@@ -619,7 +619,7 @@
             "request": {
                 "path": "/catalogue/items/9022/samples_and_distributions/",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2Mn0.kxQA26EHIr5uznmqvbSeBEQ7AUaHXK8nEiZulWp09_E"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzQsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI0fQ.-8XwCmKpt7vghHSlQH0E-QGZ-NZd1mykazoqbh6awGM"
                 }
             },
             "response": {
@@ -629,7 +629,7 @@
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                     "@access": {
-                        "account_id": 51
+                        "account_id": 34
                     }
                 }
             }
@@ -666,6 +666,42 @@
                     "@event": "SIZE_OF_DOWNLOAD_REQUEST_ESTIMATED"
                 }
             }
+        },
+        "500 (GENERIC_ERROR_OCCURRED)": {
+            "method": "post",
+            "description": "GENERIC_ERROR_OCCURRED",
+            "request": {
+                "path": "/downloader/requests/estimate/",
+                "content": {
+                    "spec": {
+                        "columns": [
+                            "product",
+                            "price"
+                        ],
+                        "filters": [],
+                        "randomize_ratio": 0.9
+                    },
+                    "catalogue_item_id": 50
+                },
+                "headers": {
+                    "CONTENT-TYPE": "application/json",
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDcsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI1fQ.jMwp_sQBPJUOqLjRgpzZij_uy8U-UoRapMLxzmOTAt0"
+                }
+            },
+            "response": {
+                "status": 500,
+                "content_type": "application/json",
+                "content": {
+                    "errors": [
+                        "'int' object is not iterable"
+                    ],
+                    "@type": "error",
+                    "@event": "GENERIC_ERROR_OCCURRED",
+                    "@access": {
+                        "account_id": 47
+                    }
+                }
+            }
         }
     },
     "RENDER_DOWNLOAD_REQUEST_UI_DATA": {
@@ -675,11 +711,11 @@
             "request": {
                 "path": "/downloader/requests/render_ui_data/",
                 "content": {
-                    "catalogue_item_id": 62
+                    "catalogue_item_id": 44
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTgsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.8g4LA6G7yn2Dzsp4djl5v0yWflz0mz1aZEHQGproHkw"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzgsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI0fQ.1W16o7JK6nVxk2vnbCgus4N_z8H7nCTo93Pjdh-AUjo"
                 }
             },
             "response": {
@@ -731,9 +767,9 @@
             "method": "get",
             "description": "DOWNLOADREQUEST_READ",
             "request": {
-                "path": "/downloader/requests/11",
+                "path": "/downloader/requests/13",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTksImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.bJKakDhKFI3idYu22pjBJtF9kNdcMHb2GxgmEdGjmGA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI1fQ.bxfSSH6oeKc7kuUHKCg779NLOZFOuBEwogkARsdprFI"
                 }
             },
             "response": {
@@ -758,8 +794,8 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "id": 63,
-                        "name": "Aaliyah Schamberger",
+                        "id": 48,
+                        "name": "Hideo Mann",
                         "spec": [
                             {
                                 "name": "price",
@@ -786,8 +822,8 @@
                         "@type": "catalogue_item"
                     },
                     "created_by": {
-                        "id": 60,
-                        "email": "rbeier@gmail.com",
+                        "id": 45,
+                        "email": "mikealrenner@yahoo.com",
                         "type": "RESEARCHER",
                         "@type": "account"
                     },
@@ -801,9 +837,9 @@
             "method": "get",
             "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
             "request": {
-                "path": "/downloader/requests/13",
+                "path": "/downloader/requests/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjUsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.u5COwOIQkJ9IQ03wiNlESlLcONRuYBAoE_qW2Y_DgJ0"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI1fQ.vlhfsBZPhPHttPSgtJFqWjfceLTi566KwKSYLAVOqJg"
                 }
             },
             "response": {
@@ -813,7 +849,7 @@
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
                     "@access": {
-                        "account_id": 65
+                        "account_id": 46
                     }
                 }
             }
@@ -826,7 +862,7 @@
             "request": {
                 "path": "/downloader/requests/69506",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjEsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.r4PJoRyTwGUAUv0iJcQlZePnvmioNhMnaWTkL-wSf_M"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDMsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI1fQ.Yy9hvgjeraZrPhTVp-lZ2RoNf61yJubMm_GMKn2a4AQ"
                 }
             },
             "response": {
@@ -836,7 +872,7 @@
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
                     "@access": {
-                        "account_id": 61
+                        "account_id": 43
                     }
                 }
             }
@@ -847,7 +883,7 @@
             "request": {
                 "path": "/downloader/requests/12",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjMsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.s56wg--jgKrwNiYEPwJ455c9A0yg8k7-nZgxck4BMbo"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDEsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI1fQ.dgIcUH83yuAx0gcnpS8U4rZ0e7WMi1LyTg9XomTOiI4"
                 }
             },
             "response": {
@@ -891,11 +927,11 @@
                         ],
                         "randomize_ratio": 0.9
                     },
-                    "catalogue_item_id": 68
+                    "catalogue_item_id": 54
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjcsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2M30.B4zLm-158Wk3YWHsqvtapse7FjQjNQKXGA_GF5w1YCQ"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTIsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI3fQ.7RtEM0C0idM7g4VkvwrjK3MOsaWBoMB33a1dCecu_l0"
                 }
             },
             "response": {
@@ -931,8 +967,8 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "id": 68,
-                        "name": "Aaliyah Schamberger",
+                        "id": 54,
+                        "name": "Hideo Mann",
                         "spec": [
                             {
                                 "name": "price",
@@ -979,11 +1015,11 @@
                         "filters": [],
                         "randomize_ratio": 0.9
                     },
-                    "catalogue_item_id": 69
+                    "catalogue_item_id": 55
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjgsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2NH0.QQZpB9hdXOLK5bSUyvflMJIDi3fd8rW9eY2siiLM9Co"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI4fQ.bCFC0xyKCN7JW4-0NwHrplvRNDFeFsDl8M6kBH4Rel0"
                 }
             },
             "response": {
@@ -1003,8 +1039,8 @@
                     "estimated_size": null,
                     "executor_job_id": null,
                     "catalogue_item": {
-                        "id": 69,
-                        "name": "Aaliyah Schamberger",
+                        "id": 55,
+                        "name": "Hideo Mann",
                         "spec": [
                             {
                                 "name": "price",
@@ -1031,8 +1067,8 @@
                         "@type": "catalogue_item"
                     },
                     "created_by": {
-                        "id": 68,
-                        "email": "mckenziemaggio@white-durgan.com",
+                        "id": 53,
+                        "email": "klingmargarette@roberts.com",
                         "type": "ADMIN",
                         "@type": "account"
                     },
@@ -1060,7 +1096,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjksImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2NX0.i9eLVHsLijzxAC_XRRunGYcAmQbcdN4a7zogqahNUMA"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI2fQ.agO7Q8vM9am3CQZn355tJnVbxRFUjKyngNETrrArAow"
                 }
             },
             "response": {
@@ -1075,7 +1111,7 @@
                     "@type": "error",
                     "@event": "BODY_JSON_DID_NOT_PARSE",
                     "@access": {
-                        "account_id": 69
+                        "account_id": 48
                     }
                 }
             }
@@ -1098,7 +1134,7 @@
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json",
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzAsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2NX0.XWQuhq7mEbComophnuFJzjb6fffjYlS-k51E0ptuUHM"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTEsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI2fQ.Kwl_9Wm2Vukqp_oW5KDDqFz7E6YSWWZwne0U4I6144E"
                 }
             },
             "response": {
@@ -1113,7 +1149,7 @@
                     "@type": "error",
                     "@event": "BODY_DID_NOT_VALIDATE",
                     "@access": {
-                        "account_id": 70
+                        "account_id": 51
                     }
                 }
             }
@@ -1126,7 +1162,7 @@
             "request": {
                 "path": "/downloader/requests/",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzEsImVtYWlsIjoibWNrZW56aWVtYWdnaW9Ad2hpdGUtZHVyZ2FuLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NTI1ODA2NX0.JPQw7qY0QXgYB9xz4YkXRf3THkATPegCv1fIGKqLOwQ"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjI2fQ.lKosCBnVVwMGxyINQyGeFyDP5-kly8pgLPuH6hdvt3I"
                 }
             },
             "response": {
@@ -1153,8 +1189,8 @@
                             "estimated_size": null,
                             "executor_job_id": null,
                             "catalogue_item": {
-                                "id": 72,
-                                "name": "Aaliyah Schamberger",
+                                "id": 52,
+                                "name": "Hideo Mann",
                                 "spec": [
                                     {
                                         "name": "price",
@@ -1181,8 +1217,8 @@
                                 "@type": "catalogue_item"
                             },
                             "created_by": {
-                                "id": 72,
-                                "email": "rbeier@gmail.com",
+                                "id": 50,
+                                "email": "mikealrenner@yahoo.com",
                                 "type": "RESEARCHER",
                                 "@type": "account"
                             },
@@ -1208,8 +1244,8 @@
                             "estimated_size": null,
                             "executor_job_id": null,
                             "catalogue_item": {
-                                "id": 72,
-                                "name": "Aaliyah Schamberger",
+                                "id": 52,
+                                "name": "Hideo Mann",
                                 "spec": [
                                     {
                                         "name": "price",
@@ -1236,8 +1272,8 @@
                                 "@type": "catalogue_item"
                             },
                             "created_by": {
-                                "id": 72,
-                                "email": "rbeier@gmail.com",
+                                "id": 50,
+                                "email": "mikealrenner@yahoo.com",
                                 "type": "RESEARCHER",
                                 "@type": "account"
                             },
@@ -1258,7 +1294,7 @@
             "request": {
                 "path": "/accounts/auth_tokens/",
                 "content": {
-                    "request_uuid": "590e01ae-b8f9-11e9-a216-34f64bbaddd0"
+                    "request_uuid": "0df5f550-c58a-11e9-8c6a-34f64bbaddd0"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json"
@@ -1280,7 +1316,7 @@
             "request": {
                 "path": "/accounts/auth_tokens/",
                 "content": {
-                    "request_uuid": "f5e7e000-5074-11e4-b08c-0242b022d386"
+                    "request_uuid": "f5e7e000-5074-11e4-bb91-02425a3b74d1"
                 },
                 "headers": {
                     "CONTENT-TYPE": "application/json"
@@ -1307,8 +1343,8 @@
                 "status": 201,
                 "content_type": "application/json",
                 "content": {
-                    "authenticate_ui_uri": "/accounts/auth_requests/590e01af-b8f9-11e9-a216-34f64bbaddd0/authenticate/ui/",
-                    "request_uuid": "590e01af-b8f9-11e9-a216-34f64bbaddd0",
+                    "authenticate_ui_uri": "/accounts/auth_requests/0df5f551-c58a-11e9-8c6a-34f64bbaddd0/authenticate/ui/",
+                    "request_uuid": "0df5f551-c58a-11e9-8c6a-34f64bbaddd0",
                     "@type": "auth_request",
                     "@event": "AUTH_REQUEST_CREATED"
                 }
@@ -1352,7 +1388,7 @@
             "request": {
                 "path": "/accounts/auth_requests/attach_account/",
                 "content": {
-                    "request_uuid": "590e01b0-b8f9-11e9-a216-34f64bbaddd0",
+                    "request_uuid": "0df5f54f-c58a-11e9-8c6a-34f64bbaddd0",
                     "oauth_token": "some-auth-token",
                     "email": "jacky@somewhere.org"
                 },
@@ -1361,14 +1397,9 @@
                 }
             },
             "response": {
-                "status": 400,
+                "status": 404,
                 "content_type": "application/json",
                 "content": {
-                    "errors": {
-                        "maintained_by": [
-                            "account instance with id 932039 does not exist."
-                        ]
-                    },
                     "@type": "error",
                     "@event": "COULD_NOT_FIND_AUTHREQUEST"
                 }
@@ -1380,7 +1411,7 @@
             "request": {
                 "path": "/accounts/auth_requests/attach_account/",
                 "content": {
-                    "request_uuid": "590e01b1-b8f9-11e9-a216-34f64bbaddd0",
+                    "request_uuid": "0df5f54e-c58a-11e9-8c6a-34f64bbaddd0",
                     "oauth_token": "some-oauth-token",
                     "email": "jacky@somewhere.org"
                 },
@@ -1417,9 +1448,9 @@
             "method": "get",
             "description": "NOT_EXPLORED_CHUNKS_BULK_READ",
             "request": {
-                "path": "/catalogue/items/1/chunks/not_explored/",
+                "path": "/catalogue/items/119/chunks/not_explored/",
                 "headers": {
-                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJnYWxpbGVhMThAYmVyZ2UtYmVja2VyLm5ldCIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU2NjU1NDE3N30.VNJzFut-kjsH6ErpaIfyWr52SMYvkRgUW6_U46NA3Ik"
+                    "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTIsImVtYWlsIjoia2xpbmdtYXJnYXJldHRlQHJvYmVydHMuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTY2NjM5NjM1fQ.nrpDJTtp6tkSyYw2gqIdF3sNcc0PS8EcLScTdHM51Co"
                 }
             },
             "response": {
@@ -1428,8 +1459,8 @@
                 "content": {
                     "not_explored_chunks": [
                         {
-                            "created_datetime": "2019-08-22T09:56:17.563349Z",
-                            "updated_datetime": "2019-08-22T09:56:17.563428Z",
+                            "created_datetime": "2019-08-23T09:40:35.178104Z",
+                            "updated_datetime": "2019-08-23T09:40:35.178184Z",
                             "borders": [
                                 {
                                     "column": "A",
@@ -1438,7 +1469,7 @@
                                     "distribution": null
                                 }
                             ],
-                            "count": 31294,
+                            "count": 69013,
                             "@type": "chunk"
                         }
                     ],

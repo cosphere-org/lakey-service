@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/cosphere-org/lakey-service.svg?branch=internship)](https://travis-ci.org/cosphere-org/lakey-service)
 
 # Lakey-Service
 
