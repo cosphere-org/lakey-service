@@ -7,6 +7,6 @@ install:
 script:
   - make create_db
   - make start_db
-  - migrations_create
-  - migrations_apply_current
+  - make migrations_create
+  - make migrations_apply_current
   - make test_all
