@@ -82,7 +82,6 @@ class EntityFactory:
     def download_request(
             self,
             created_by=None,
-            # chunks=None,
             spec=None,
             uri=None,
             real_size=None,
@@ -96,7 +95,6 @@ class EntityFactory:
 
         return DownloadRequest.objects.create(
             created_by=created_by,
-            # chunks=chunks,
             spec=spec,
             uri=uri,
             real_size=real_size,

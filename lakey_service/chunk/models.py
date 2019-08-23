@@ -1,7 +1,6 @@
 from enum import Enum, unique
 
 from django.db import models
-from django.db.models import Count
 from django.core.exceptions import ValidationError
 
 from lily.base.models import (
@@ -192,14 +191,9 @@ class Chunk(ValidatingModel):
     def validate_fields(self):
 
         # counts have to be positive
-
         if self.count < 0:
             raise ValidationError(
                 "count has to be greater than 0")
-
-        # if self.requested_count < 0:
-        #     raise ValidationError(
-        #             "requested_count has to be greater than 0")
 
     def validate_borders_in_context_of_catalogue_item(self):
 

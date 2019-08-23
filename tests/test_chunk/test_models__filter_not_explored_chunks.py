@@ -4,79 +4,43 @@ from django.test import TestCase
 from tests.factory import EntityFactory
 
 from chunk.models import Chunk
-##########################################
-from catalogue.models import CatalogueItem
-from downloader.models import DownloadRequest
-##########################################
-from chunk.models import NoChunksDetected
 
 ef = EntityFactory()
+
 
 class ChunkManagerTestCase(TestCase):
 
     def setUp(self):
         ef.clear()
-
-    def ci(self, overrides=None):
-
-        if overrides is None:
-            overrides = [{}, {}]
-
-        return ef.catalogue_item(spec=[
-            {
-                'name': 'A',
-                'type': 'INTEGER',
-                'is_nullable': True,
-                'is_enum': True,
-                'size': None,
-                'distribution': None,
-                **overrides[0],
-            },
-            {
-                'name': 'B',
-                'type': 'INTEGER',
-                'is_nullable': False,
-                'is_enum': False,
-                'size': None,
-                'distribution': None,
-                **overrides[1],
-            },
-        ])
-
-    def c(self, overrides=None, catalogue_item=None, borders=None):
-
-        if overrides is None:
-            overrides = [{}, {}]
-
-        return ef.chunk(
-            catalogue_item=catalogue_item,
-            borders=borders or [
+        
+        self.ci_0 = ef.catalogue_item(
+            name='temperatures',
+            spec=[
                 {
-                    'column': 'A',
-                    'minimum': 10,
-                    'maximum': 15,
+                    'name': 'A',
+                    'type': 'INTEGER',
+                    'is_nullable': True,
+                    'is_enum': True,
+                    'size': None,
                     'distribution': None,
-                    **overrides[0],
                 },
-                {
-                    'column': 'B',
-                    'minimum': 20,
-                    'maximum': 25,
-                    'distribution': None,
-                    **overrides[1],
-                },
-            ],
-        )
+            ])
 
-    def d(self, overrides=None, spec=None, catalogue_item=None):
+        self.borders = [
+            {
+                'column': 'A',
+                'minimum': 10,
+                'maximum': 15,
+                'distribution': None,
+            },
+        ]
+        self.ch_0 = ef.chunk(catalogue_item=self.ci_0, borders=self.borders)
+        self.ch_1 = ef.chunk(catalogue_item=self.ci_0, borders=self.borders)
+        self.ch_2 = ef.chunk(catalogue_item=self.ci_0, borders=self.borders)  # noqa
 
-        if overrides is None:
-            overrides = [{}, {}]
-
-        return ef.download_request(
-            created_by=ef.account(),
-            # chunks=,
-            spec=spec or {
+        self.d_0 = ef.download_request(
+            catalogue_item=self.ci_0,
+            spec={
                 'columns': ['A'],
                 'filters': [
                     {
@@ -86,107 +50,46 @@ class ChunkManagerTestCase(TestCase):
                     },
                 ],
                 'randomize_ratio': 1,
-            },
-            catalogue_item=catalogue_item,
-        )
+            })
 
     def test_simple_creation(self):
-        ci = self.ci()
-        c = self.c(catalogue_item=ci)
-        d = self.d(catalogue_item=ci)
+
+        ci = self.ci_0
+        c = self.ch_0
+        d = self.d_0
+
+        assert ci == self.ci_0
+        assert c == self.ch_0
+        assert d == self.d_0
 
     def test_download_request_chunks(self):
-        ci = self.ci()
-        c1 = self.c(catalogue_item=ci)
-        c2 = self.c(
-            catalogue_item=ci,
-            borders= [
-                {
-                    'column': 'A',
-                    'minimum': 30,
-                    'maximum': 35,
-                    'distribution': None,
-                },
-                {
-                    'column': 'B',
-                    'minimum': 40,
-                    'maximum': 45,
-                    'distribution': None,
-                },
-            ],
-        )
-        c3 = self.c(
-            catalogue_item=ci,
-            borders= [
-                {
-                    'column': 'A',
-                    'minimum': 50,
-                    'maximum': 55,
-                    'distribution': None,
-                },
-                {
-                    'column': 'B',
-                    'minimum': 60,
-                    'maximum': 65,
-                    'distribution': None,
-                },
-            ],
-        )
-        d = self.d(catalogue_item=ci)
+
+        ci = self.ci_0
+        c1 = self.c_0
+        c2 = self.c_1
+        c3 = self.c_2
+        d = self.d_0
         d.chunks.add(c1, c3)
-        # print(d.chunks.all())
+
         assert d.chunks.first() == c1
         assert d.chunks.last() == c3
 
     def test_download_request_chunks_filter_not_explored(self):
-        ci = self.ci()
-        c1 = self.c(catalogue_item=ci)
-        c2 = self.c(
-            catalogue_item=ci,
-            borders= [
-                {
-                    'column': 'A',
-                    'minimum': 30,
-                    'maximum': 35,
-                    'distribution': None,
-                },
-                {
-                    'column': 'B',
-                    'minimum': 40,
-                    'maximum': 45,
-                    'distribution': None,
-                },
-            ],
-        )
-        c3 = self.c(
-            catalogue_item=ci,
-            borders= [
-                {
-                    'column': 'A',
-                    'minimum': 50,
-                    'maximum': 55,
-                    'distribution': None,
-                },
-                {
-                    'column': 'B',
-                    'minimum': 60,
-                    'maximum': 65,
-                    'distribution': None,
-                },
-            ],
-        )
-        d = self.d(catalogue_item=ci)
+
+        ci = self.ci_0
+        c1 = self.c_1
+        c2 = self.c_2
+        c3 = self.c_3
+        d = self.d_0
         d.chunks.add(c1, c3)
+
         assert Chunk.objects.filter_not_explored_chunks(ci.id) == c2
 
-    def test_download_request_chunks_filter_not_explored_no_chunks(self):
+    def test_d_r_chunks_filter_not_explored_all_not_included(self):
         pass
 
-    def test_download_request_chunks_filter_not_explored_all_not_included(self):
+    def test_d_r_chunks_filter_not_explored_all_included(self):
         pass
 
-    def test_download_request_chunks_filter_not_explored_all_included(self):
-        pass
-
-    def test_download_request_chunks_filter_not_explored_included_not_corect(self):
+    def test_d_r_chunks_filter_not_explored_included_not_corect(self):
         pass
