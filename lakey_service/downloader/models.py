@@ -217,7 +217,7 @@ class DownloadRequest(ValidatingModel):
     #
     # Chunks
     #
-    chunks = models.ManyToManyField(Chunk)
+    chunks = models.ManyToManyField(Chunk, blank=True, null=True)
 
     #
     # Data Related Fields

@@ -110,13 +110,8 @@ class DownloadRequestCollectionCommands(HTTPCommands):
     def post(self, request):
 
         spec = request.input.body['spec']
-        # FIXME: !!! @pszp: korzystając z django signals --> poczytaj
-        # jakie chunki powinny być doklejone do danego DownloadRequesta
-        # --> upewnij się, że lista tych chunków zostanie zwrócona
-        # do klienta
+        chunks = DownloadRequest.objects.get_chunks(spec, request.input.body['catalogue_item_id'])
 
-        # FIXME: !!! dodaj gdzie strzał do estimate_size żeby się opewnić
-        # że nie tworzymy downloadrequest jeżeli jest on za duży.
         r, created = DownloadRequest.objects.get_or_create(
             normalized_spec=DownloadRequest.normalize_spec(spec),
             catalogue_item_id=request.input.body['catalogue_item_id'],
@@ -125,10 +120,12 @@ class DownloadRequestCollectionCommands(HTTPCommands):
                 'spec': spec,
             })
 
+        r.chunks.add(*chunks)
+
         r.waiters.add(request.access['account'])
 
         if created:
-            r.uri = AthenaExecutor().execute(r)
+            # r.uri = AthenaExecutor().execute(r)
             r.save()
 
             raise self.event.Created(r)

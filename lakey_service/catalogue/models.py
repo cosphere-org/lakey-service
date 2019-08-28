@@ -20,6 +20,7 @@ from lily.base.models import (
 
 from account.models import Account
 from downloader.executors.athena import AthenaExecutor
+from downloader.executors.local import LocalExecutor
 
 
 def spec_validator(spec):
@@ -68,14 +69,14 @@ def spec_validator(spec):
                         f"column type and distribution value type "  # noqa
                         f"mismatch detected for column '{col_name}'")
 
-        # -- values in distribution must be unique
-        values_min = [entry['value_min'] for entry in distribution]
-        values_max = [entry['value_max'] for entry in distribution]
-        all_values = values_min + values_max
-        if len(all_values) != len(set(all_values)):
-            raise ValidationError(
-                f"not unique distribution values for column '{col_name}' "
-                "detected")
+        # # -- values in distribution must be unique
+        # values_min = [entry['value_min'] for entry in distribution]
+        # values_max = [entry['value_max'] for entry in distribution]
+        # all_values = values_min + values_max
+        # if len(all_values) != len(set(all_values)):
+        #     raise ValidationError(
+        #         f"not unique distribution values for column '{col_name}' "
+        #         "detected")
 
         # -- counts in distribution must be integers
         counts_are_ints = [
@@ -206,6 +207,8 @@ class CatalogueItem(ValidatingModel):
 
         ATHENA = 'ATHENA'
 
+        LOCAL = 'LOCAL'
+
     executor_type = EnumChoiceField(max_length=256, enum=Executor)
 
     def clean(self):
@@ -271,13 +274,23 @@ class CatalogueItem(ValidatingModel):
         self.sort_spec()
         super(CatalogueItem, self).save(*args, **kwargs)
 
-    def update_samples_and_distributions(self):
-
+    def _get_executor(self):
         if self.executor_type == self.Executor.ATHENA.value:
             executor = AthenaExecutor()
-
+        elif self.executor_type == self.Executor.LOCAL.value:
+            executor = LocalExecutor()
         else:
             raise NotImplementedError()
+
+        return executor
+
+    def update_spec(self):
+        executor = self._get_executor()
+        self.spec = executor.get_spec(self)
+        self.save()
+
+    def update_samples_and_distributions(self):
+        executor = self._get_executor()
 
         # -- sample
         self.sample = executor.get_sample(self)

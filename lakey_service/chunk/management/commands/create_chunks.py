@@ -2,26 +2,22 @@ import os
 
 import djclick as click
 import pandas
-# from numpy import histogram
+from numpy import histogram
 
 from chunk.models import Chunk
 from catalogue.models import CatalogueItem
+from downloader.executors.local import numpy_type_to_column_type
 
-
-# TODO: Distribution, research
-#
 @click.command()
 @click.argument('catalogue_item_name')
 def command(catalogue_item_name):
     c_i = CatalogueItem.objects.get(name=catalogue_item_name)
     global_df = pandas.read_csv(c_i.data_path)
 
-    types = {
-        'int64': 'INTEGER'
-    }
-    partional_data_path = '/home/skpk/PycharmProjects/' \
-                          'lakey-service/lakey_service/chunk/' \
-                          'management/commands/partional_data'
+
+    partional_data_path = (f'/home/skpk/PycharmProjects/lakey-service/'
+                           f'lakey_service/chunk/'
+                           f'management/commands/partional_data')
     raw_data_name = c_i.data_path.split("/")[-1].split(".")[0]
 
     chunks = []
@@ -42,30 +38,33 @@ def command(catalogue_item_name):
             borders = []
             for col_name in local_df:
                 col = local_df[col_name]
-                # hist = histogram(local_df)
+                hist_bins = 10
+                hist = histogram(local_df[col_name], bins=hist_bins)
+                hist_count = hist[0]
+                hist_value_range = hist[1]
+
                 borders.append({
                     'column': col_name,
-                    'type': types[global_df.dtypes[col_name].name],
-                    'minimum': col.min(),
-                    'maximum': col.max(),
+                    'type': numpy_type_to_column_type[global_df.dtypes[col_name].name],  # noqa
+                    'minimum': int(col.min()),
+                    'maximum': int(col.max()),
                     'distribution': [
-                        # {
-                        #     'value_min': value_min,
-                        #     'value_max': value_max,
-                        #     'count': count
-                        # } for value_min, value_max, count in hist,
+                        {
+                            'value_min': int(hist_value_range[hist_idx]),
+                            'value_max': int(hist_value_range[hist_idx + 1]),
+                            'count': int(hist_count[hist_idx])
+                        } for hist_idx in range(hist_bins)
                     ]
                 })
 
             chunk_data_path = (
-                f'{partional_data_path}/{raw_data_name}/{len(chunks)}.parquet')  # noqa
-            chunk = Chunk(
-                catalogue_item=c_i,
-                borders=borders,
-                data_path=chunk_data_path)
+                f'{partional_data_path}/{raw_data_name}/{len(chunks)}.parquet')
+            chunk = Chunk(catalogue_item=c_i, borders=borders,
+                          data_path=chunk_data_path, count=0)
             chunks.append(chunk)
-
             loc_df.to_parquet(chunk_data_path, engine='pyarrow')
+            return
 
     os.mkdir(f'{partional_data_path}/{raw_data_name}')
     division(global_df, 125000)
+    Chunk.objects.bulk_create(chunks)
