@@ -16,8 +16,8 @@ class ChunkSerializer(serializers.ModelSerializer):
             # -- model fields
             'created_datetime',
             'updated_datetime',
-            'borders',
-            'count',
+            'catalogue_item',
+            'data_path',
         )
 
 

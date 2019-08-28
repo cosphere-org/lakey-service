@@ -4,6 +4,7 @@ from lily import serializers
 from .models import DownloadRequest
 from account.serializers import AccountSerializer
 from catalogue.serializers import CatalogueItemSerializer
+from chunk.serializers import ChunkSerializer
 
 
 class OperatorsPerColumnSerializer(serializers.Serializer):
@@ -37,6 +38,8 @@ class DownloadRequestSerializer(serializers.ModelSerializer):
 
     catalogue_item = CatalogueItemSerializer()
 
+    chunks = ChunkSerializer(many=True)
+
     class Meta:
         model = DownloadRequest
 
@@ -50,6 +53,7 @@ class DownloadRequestSerializer(serializers.ModelSerializer):
             'catalogue_item',
             'created_by',
             'is_cancelled',
+            'chunks',
         )
 
 

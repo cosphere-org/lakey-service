@@ -9,4 +9,5 @@ script:
   - make start_db
   - make migrations_create
   - make migrations_apply_current
+  - make lint
   - make test_all
