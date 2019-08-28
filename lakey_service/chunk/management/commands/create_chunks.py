@@ -39,7 +39,7 @@ def division(loc_df, max_c, chunks_path, catalogue_item):
 
             borders.append({
                 'column': col_name,
-                'type': numpy_type_to_column_type[global_df.dtypes[col_name].name],  # noqa
+                'type': numpy_type_to_column_type[local_df.dtypes[col_name].name],  # noqa
                 'minimum': int(col.min()),
                 'maximum': int(col.max()),
                 'distribution': [
