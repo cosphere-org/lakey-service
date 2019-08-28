@@ -11,7 +11,7 @@ class DownloadRequestRenderParser(parsers.BodyParser):
 
 class DownloadRequestParser(parsers.ModelParser):
 
-    catalogue_item_id = parsers.IntegerField()
+    catalogue_item_name = parsers.CharField()
 
     class Meta:
         model = DownloadRequest
@@ -19,5 +19,5 @@ class DownloadRequestParser(parsers.ModelParser):
         fields = (
             # -- model fields
             'spec',
-            'catalogue_item_id',
+            'catalogue_item_name',
         )

@@ -184,7 +184,6 @@ class CatalogueItem(ValidatingModel):
 
     data_path = models.CharField(
         max_length=256,
-        unique=True,
         null=True,
         blank=True)
 
@@ -278,7 +277,6 @@ class CatalogueItem(ValidatingModel):
     def update_spec(self):
         executor = self._get_executor()
         self.spec = executor.get_spec(self)
-        self.save()
 
     def update_samples_and_distributions(self):
         executor = self._get_executor()

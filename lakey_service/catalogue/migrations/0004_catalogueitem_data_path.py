@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='catalogueitem',
             name='data_path',
-            field=models.CharField(default='', max_length=256, unique=True),
+            field=models.CharField(default='', max_length=256),
             preserve_default=False,
         ),
     ]

@@ -75,8 +75,11 @@ class DownloadRequestEstimateCommands(HTTPCommands):
     )
     def post(self, request):
 
+        ci = CatalogueItem.objects.get(
+            name=request.input.body['catalogue_item_name'])
+
         estimated_size = DownloadRequest.objects.estimate_size(
-            catalogue_item_id=request.input.body['catalogue_item_id'],
+            catalogue_item_id=ci.id,
             spec=request.input.body['spec'])
 
         raise self.event.Executed({
@@ -109,12 +112,15 @@ class DownloadRequestCollectionCommands(HTTPCommands):
     def post(self, request):
 
         spec = request.input.body['spec']
-        chunks = DownloadRequest.objects.get_chunks(
-            spec, request.input.body['catalogue_item_id'])
+
+        ci = CatalogueItem.objects.get(
+            name=request.input.body['catalogue_item_name'])
+
+        chunks = DownloadRequest.objects.get_chunks(spec, ci.id)
 
         r, created = DownloadRequest.objects.get_or_create(
             normalized_spec=DownloadRequest.normalize_spec(spec),
-            catalogue_item_id=request.input.body['catalogue_item_id'],
+            catalogue_item_id=ci.id,
             defaults={
                 'created_by': request.access['account'],
                 'spec': spec,

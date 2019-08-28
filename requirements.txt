@@ -16,3 +16,6 @@ google-auth==1.6.3
 
 # -- communication with AWS ATHENA
 boto3==1.4.4
+
+# -- parquet format support for Pandas
+pyarrow==0.14.1

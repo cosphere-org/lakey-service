@@ -43,17 +43,17 @@ create_fake_catalogue_items_with_overwrite:  ## create fake catalogue items with
 #
 # CHUNKS
 #
-
 .PHONY: create_chunks
 create_chunks:  ## create chunks
 	source env.sh && \
 	python lakey_service/manage.py create_chunks $(catalogue_item_name)
 
-.PHONY: create_ci_and_chunks
-create_ci_and_chunks:  ## create_ci_and_chunks
+
+.PHONY: create_catalogue_item_and_chunks
+create_catalogue_item_and_chunks:  ## create_catalogue_item_and_chunks
 	source env.sh && \
-	python lakey_service/manage.py create_ci_and_chunks && \
-	python lakey_service/manage.py create_chunks "ci_0"
+	python lakey_service/manage.py create_catalogue_item $(catalogue_item_name) && \
+	python lakey_service/manage.py create_chunks $(catalogue_item_name)
 
 #
 # ADMIN

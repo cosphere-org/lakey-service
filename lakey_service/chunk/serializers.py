@@ -18,6 +18,7 @@ class ChunkSerializer(serializers.ModelSerializer):
             'updated_datetime',
             'catalogue_item',
             'data_path',
+            'borders',
         )
 
 

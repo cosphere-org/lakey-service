@@ -45,6 +45,7 @@ class DownloadRequestSerializer(serializers.ModelSerializer):
 
         fields = (
             # -- model fields
+            'id',
             'spec',
             'uri',
             'real_size',
