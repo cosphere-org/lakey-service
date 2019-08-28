@@ -144,11 +144,11 @@ class DownloadRequestManager(models.Manager):
 
         query = []
         for spec_filter in spec['filters']:
-            query.append(
-                *get_border_query(c_i_cols.index(spec_filter['name']),
-                                  operators_to_b_vars[spec_filter['operator']],
-                                  spec_filter['value'])
-            )
+            query.extend(
+                get_border_query(
+                    c_i_cols.index(spec_filter['name']),
+                    operators_to_b_vars[spec_filter['operator']],
+                    spec_filter['value']))
 
         return Chunk.objects.filter(catalogue_item_id=c_i_id, *query)
 
@@ -217,7 +217,7 @@ class DownloadRequest(ValidatingModel):
     #
     # Chunks
     #
-    chunks = models.ManyToManyField(Chunk, blank=True, null=True)
+    chunks = models.ManyToManyField(Chunk)
 
     #
     # Data Related Fields

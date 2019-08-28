@@ -21,7 +21,6 @@ from .serializers import (
     DownloadRequestListSerializer,
 )
 from .parsers import DownloadRequestParser, DownloadRequestRenderParser
-from .executors.athena import AthenaExecutor
 
 
 class DownloadRequestRenderCommands(HTTPCommands):
@@ -110,7 +109,8 @@ class DownloadRequestCollectionCommands(HTTPCommands):
     def post(self, request):
 
         spec = request.input.body['spec']
-        chunks = DownloadRequest.objects.get_chunks(spec, request.input.body['catalogue_item_id'])
+        chunks = DownloadRequest.objects.get_chunks(
+            spec, request.input.body['catalogue_item_id'])
 
         r, created = DownloadRequest.objects.get_or_create(
             normalized_spec=DownloadRequest.normalize_spec(spec),

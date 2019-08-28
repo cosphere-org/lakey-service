@@ -69,15 +69,6 @@ def spec_validator(spec):
                         f"column type and distribution value type "  # noqa
                         f"mismatch detected for column '{col_name}'")
 
-        # # -- values in distribution must be unique
-        # values_min = [entry['value_min'] for entry in distribution]
-        # values_max = [entry['value_max'] for entry in distribution]
-        # all_values = values_min + values_max
-        # if len(all_values) != len(set(all_values)):
-        #     raise ValidationError(
-        #         f"not unique distribution values for column '{col_name}' "
-        #         "detected")
-
         # -- counts in distribution must be integers
         counts_are_ints = [
             isinstance(entry['count'], int) for entry in distribution]

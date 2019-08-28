@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='downloadrequest',
             name='chunks',
-            field=models.ManyToManyField(blank=True, null=True, to='chunk.Chunk'),
+            field=models.ManyToManyField(to='chunk.Chunk'),
         ),
     ]

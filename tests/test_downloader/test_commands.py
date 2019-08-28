@@ -1,5 +1,4 @@
 
-from unittest.mock import call
 import json
 
 from django.test import TestCase
@@ -213,7 +212,9 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             data=json.dumps({
                 'spec': {
                     'columns': ['product', 'price'],
-                    'filters': [],
+                    'filters': [
+                        {'name': 'price', 'operator': '>=', 'value': 78},
+                    ],
                     'randomize_ratio': 0.9,
                 },
                 'catalogue_item_id': self.ci.id,
@@ -230,9 +231,6 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             **DownloadRequestSerializer(r).data,
         }
         assert r.created_by == self.account
-        assert r.uri == (
-            'https://s3.this.region.amazonaws.com/buk.et/results/567.csv')
-        assert execute.call_args_list == [call(r)]
 
     def test_post_200__read(self):
 
@@ -311,7 +309,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             },
         }
 
-    def test_post_400__catalogue_item_does_not_exist(self):
+    def test_post_404__catalogue_item_does_not_exist(self):
 
         assert DownloadRequest.objects.all().count() == 0
 
@@ -328,16 +326,11 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             content_type='application/json',
             **self.headers)
 
-        assert response.status_code == 400
+        assert response.status_code == 404
         assert DownloadRequest.objects.all().count() == 0
         assert response.json() == {
-            'errors': {
-                'catalogue_item': [
-                    'catalogue item instance with id 58495 does not exist.',
-                ],
-            },
+            '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            '@event': 'BODY_JSON_DID_NOT_PARSE',
             '@access': {'account_id': self.account.id},
         }
 

@@ -1,12 +1,14 @@
-import pandas
-import numpy
 
-numpy_type_to_column_type = {
+import pandas  # pragma: no cover
+import numpy  # pragma: no cover
+
+
+numpy_type_to_column_type = {  # pragma: no cover
     'int64': 'INTEGER',
 }
 
 
-def normalize_hist(hist, col_type):
+def normalize_hist(hist, col_type):  # pragma: no cover
     from catalogue.models import CatalogueItem
     python_type = CatalogueItem.column_type_to_python_type[
         numpy_type_to_column_type[col_type]
@@ -20,7 +22,7 @@ def normalize_hist(hist, col_type):
     ]
 
 
-class LocalExecutor:
+class LocalExecutor:  # pragma: no cover
 
     glob_df = None
 
@@ -58,7 +60,3 @@ class LocalExecutor:
         hist = numpy.histogram(df[col_name])
         norm_hist = normalize_hist(hist, df[col_name].dtype.name)
         return norm_hist
-
-
-
-

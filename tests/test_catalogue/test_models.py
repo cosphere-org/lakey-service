@@ -169,39 +169,6 @@ class CatalogueItemTestCase(TestCase):
             ],
         }
 
-    def test_invalid__broken_spec_distribution__values_not_unique(self):
-
-        a = ef.account()
-        spec = [
-            {
-                'name': 'value',
-                'type': 'FLOAT',
-                'size': None,
-                'is_nullable': True,
-                'is_enum': True,
-                'distribution': [
-                    {'value_min': 18.0, 'value_max': 20.0, 'count': 9},
-                    {'value_min': 18.0, 'value_max': 24.0, 'count': 21},
-                    {'value_min': 25.0, 'value_max': 32.0, 'count': 49},
-
-                ],
-            },
-        ]
-
-        with pytest.raises(ValidationError) as e:
-            CatalogueItem.objects.create(
-                maintained_by=a,
-                name='weather_temperatures',
-                sample=[],
-                spec=spec,
-                executor_type='DATABRICKS')
-
-        assert e.value.message_dict == {
-            'spec': [
-                "not unique distribution values for column 'value' detected",
-            ],
-        }
-
     def test_invalid__broken_spec_distribution__counts_not_integers(self):
 
         a = ef.account()
