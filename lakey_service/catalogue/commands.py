@@ -47,6 +47,8 @@ class CatalogueItemCollectionCommands(HTTPCommands):
 
         query = parsers.CharField(default=None)
 
+        name = parsers.CharField(default=None)
+
         has_samples = parsers.BooleanField(default=None)
 
     @command(
@@ -65,6 +67,8 @@ class CatalogueItemCollectionCommands(HTTPCommands):
     def get(self, request):
 
         query = request.input.query['query']
+
+        name = request.input.query['name']
 
         has_samples = request.input.query['has_samples']
 
@@ -90,6 +94,9 @@ class CatalogueItemCollectionCommands(HTTPCommands):
 
         else:
             items = CatalogueItem.objects.all()
+
+        if name:
+            items = items.filter(name=name)
 
         if has_samples:
             items = items.exclude(sample=[])
