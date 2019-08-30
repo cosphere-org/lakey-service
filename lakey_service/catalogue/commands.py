@@ -95,6 +95,7 @@ class CatalogueItemCollectionCommands(HTTPCommands):
         else:
             items = CatalogueItem.objects.all()
 
+        print('>>>>>>>> QUERY', request.input.query)
         if name:
             items = items.filter(name=name)
 

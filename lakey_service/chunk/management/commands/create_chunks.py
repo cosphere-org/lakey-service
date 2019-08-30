@@ -64,7 +64,8 @@ def division(loc_df, max_c, chunks_path, catalogue_item):
 
 @click.command()
 @click.argument('catalogue_item_name')
-def command(catalogue_item_name):
+@click.argument('chunk_count')
+def command(catalogue_item_name, chunk_count):
 
     base_path = os.path.dirname(__file__)
 
@@ -81,5 +82,9 @@ def command(catalogue_item_name):
 
     global chunks
     chunks = []
-    division(pandas.read_csv(c_i.data_path), 125000, chunks_path, c_i)
+    division(
+        pandas.read_csv(c_i.data_path),
+        int(chunk_count),
+        chunks_path,
+        c_i)
     Chunk.objects.bulk_create(chunks)

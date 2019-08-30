@@ -53,7 +53,7 @@ create_chunks:  ## create chunks
 create_catalogue_item_and_chunks:  ## create_catalogue_item_and_chunks
 	source env.sh && \
 	python lakey_service/manage.py create_catalogue_item $(catalogue_item_name) && \
-	python lakey_service/manage.py create_chunks $(catalogue_item_name)
+	python lakey_service/manage.py create_chunks $(catalogue_item_name) $(chunk_count)
 
 #
 # ADMIN
