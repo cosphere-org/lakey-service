@@ -11,7 +11,7 @@ include .lily/lily.makefile
 create_db:  ## create dockerized postgres db server
 	source env.sh && \
 	docker run -d --name lakey-service-db \
-		--env-file (env | grep POSTGRES) \
+		--env-file <(env | grep POSTGRES) \
 		-p 5433:5432 \
 		postgres
 
