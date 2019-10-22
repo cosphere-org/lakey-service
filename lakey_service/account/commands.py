@@ -64,7 +64,7 @@ class AuthRequestAuthenticateUICommands(HTTPCommands):
 
 class AuthRequestAttachAccountCommands(HTTPCommands):
 
-    class BodyParser(parsers.BodyParser):
+    class BodyParser(parsers.Parser):
 
         request_uuid = parsers.UUIDField()
 
@@ -96,7 +96,7 @@ class AuthRequestAttachAccountCommands(HTTPCommands):
 
 class AuthTokenCommands(HTTPCommands):
 
-    class BodyParser(parsers.BodyParser):
+    class BodyParser(parsers.Parser):
 
         request_uuid = parsers.UUIDField()
 

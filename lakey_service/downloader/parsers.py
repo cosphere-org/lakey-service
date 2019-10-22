@@ -4,7 +4,7 @@ from lily import parsers
 from .models import DownloadRequest
 
 
-class DownloadRequestRenderParser(parsers.BodyParser):
+class DownloadRequestRenderParser(parsers.Parser):
 
     catalogue_item_id = parsers.IntegerField()
 
