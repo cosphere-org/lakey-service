@@ -43,7 +43,7 @@ class CatalogueItemCollectionCommands(HTTPCommands):
                 updated_by=request.access['account'],
                 **request.input.body))
 
-    class QueryParser(parsers.QueryParser):
+    class QueryParser(parsers.Parser):
 
         query = parsers.CharField(default=None)
 
