@@ -45,7 +45,7 @@ class AuthRequestCommands(HTTPCommands):
 class AuthRequestAuthenticateUICommands(HTTPCommands):
 
     @command(
-        name=name.Execute('RENDER', 'AUTH_REQUEST_AUTHENTICATE_UI'),
+        name=name.Execute('RENDER',  'AUTH_REQUEST_AUTHENTICATE_UI'),
 
         meta=Meta(
             title='Render Auth Request Authentication UI',
