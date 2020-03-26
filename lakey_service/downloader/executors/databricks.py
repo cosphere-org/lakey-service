@@ -6,7 +6,7 @@ from datetime import datetime
 from django.conf import settings
 
 
-class DataBricksExecutor:
+class DatabricksExecutor:
 
     def __init__(self):
         self.db = DatabricksAPI(
