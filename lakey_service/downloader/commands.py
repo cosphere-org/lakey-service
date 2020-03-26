@@ -120,18 +120,10 @@ class DownloadRequestCollectionCommands(HTTPCommands):
         r.waiters.add(request.access['account'])
 
         if created:
-            # TODO Move logic to CatalogueItem model
-            # item.executor.execute(r) (@property/getter)
-            # see: update_samples_and_distributions
-            item = CatalogueItem.objects.get(id=r.catalogue_item_id)
-            if item.executor_type == CatalogueItem.Executor.ATHENA.value:
-                r.uri = AthenaExecutor().execute(r)
-            elif item.executor_type == CatalogueItem.Executor.DATABRICKS.value:
-                r.uri = DatabricksExecutor().execute(r)
-            else:
-                raise NotImplementedError()
-
+            c_item = CatalogueItem.objects.get(id=r.catalogue_item_id)
+            r.uri = c_item.executor.execute(r)
             r.save()
+
             raise self.event.Created(r)
 
         else:
