@@ -11,7 +11,7 @@ export GOOGLE_OAUTH2_CLIENT_SECRET=to.be.overwritten
 #
 export AUTH_TOKEN_SECRET_KEY=to.be.overwritten
 
-export AUTH_TOKEN_EXPIRATION_SECONDS=864000
+export AUTH_TOKEN_EXPIRATION_SECONDS=86400
 
 export AUTH_REQUEST_EXPIRATION_SECONDS=600
 
@@ -42,6 +42,18 @@ export AWS_LAKEY_RESULTS_LOCATION=to.be.overwritten
 
 export AWS_S3_BUCKET=to.be.overwritten
 
+#
+# DATABRICKS
+#
+export DATABRICKS_TOKEN=to.be.overwritten
+
+export DATABRICKS_HOST=to.be.overwritten
+
+export DATABRICKS_CLUSTER_ID=to.be.overwritten
+
+export DATABRICKS_RESULTS_LOCATION=to.be.overwritten
+
+export DATABRICKS_SCRIPT_LOCATION=to.be.overwritten
 
 #
 # CATALOGUE ITEMS

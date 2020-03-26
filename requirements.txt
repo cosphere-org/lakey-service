@@ -22,3 +22,6 @@ google-auth==1.6.3
 
 # -- communication with AWS ATHENA
 boto3==1.4.4
+
+# -- Databricks API
+databricks-api==0.3.0

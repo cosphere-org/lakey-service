@@ -22,6 +22,7 @@ from .serializers import (
 )
 from .parsers import DownloadRequestParser, DownloadRequestRenderParser
 from .executors.athena import AthenaExecutor
+from .executors.databricks import DataBricksExecutor
 
 
 class DownloadRequestRenderCommands(HTTPCommands):
@@ -119,9 +120,18 @@ class DownloadRequestCollectionCommands(HTTPCommands):
         r.waiters.add(request.access['account'])
 
         if created:
-            r.uri = AthenaExecutor().execute(r)
-            r.save()
+            # Move logic to CatalogueItem model
+            # item.executor.execute(r) (@property/getter)
+            # see: update_samples_and_distributions
+            item = CatalogueItem.objects.get(id=r.catalogue_item_id)
+            if item.executor_type == CatalogueItem.Executor.ATHENA.value:
+                r.uri = AthenaExecutor().execute(r)
+            elif item.executor_type == CatalogueItem.Executor.DATABRICKS.value:
+                r.uri = DataBricksExecutor().execute(r)
+            else:
+                raise NotImplementedError()
 
+            r.save()
             raise self.event.Created(r)
 
         else:
