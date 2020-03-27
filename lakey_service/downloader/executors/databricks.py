@@ -5,10 +5,10 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils import crypto
 
-from .base import Base
+from .base import BaseExecutor
 
 
-class DatabricksExecutor(Base):
+class DatabricksExecutor(BaseExecutor):
 
     def __init__(self):
         self.db = DatabricksAPI(
