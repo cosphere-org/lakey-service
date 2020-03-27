@@ -3,19 +3,13 @@
 -e git+https://github.com/cosphere-org/lily-assistant.git#egg=lily-assistant
 
 # -- lily - API framework
--e git+https://github.com/cosphere-org/lily.git#egg=lily
+lily==1.2.13
 
 # -- cryptography
 itsdangerous==0.24
 
 # -- http client
 requests==2.21.0
-
-# -- for serving requests
-gunicorn==19.9.0
-
-# -- async worker for gunicorn
-gevent==1.4.0
 
 # -- google based authentication
 google-auth==1.6.3
