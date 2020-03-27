@@ -21,7 +21,6 @@ from .serializers import (
     DownloadRequestListSerializer,
 )
 from .parsers import DownloadRequestParser, DownloadRequestRenderParser
-from .executors.athena import AthenaExecutor
 
 
 class DownloadRequestRenderCommands(HTTPCommands):
@@ -119,9 +118,7 @@ class DownloadRequestCollectionCommands(HTTPCommands):
         r.waiters.add(request.access['account'])
 
         if created:
-            r.uri = AthenaExecutor().execute(r)
-            r.save()
-
+            r.execute()
             raise self.event.Created(r)
 
         else:

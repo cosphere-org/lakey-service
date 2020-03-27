@@ -143,6 +143,10 @@ class DownloadRequest(ValidatingModel):
 
     is_cancelled = models.BooleanField(default=False)
 
+    def execute(self):
+        self.uri = self.catalogue_item.executor.execute(self)
+        self.save()
+
     def clean(self):
         self.validate_spec_in_context_of_catalogue_item_spec()
 

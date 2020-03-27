@@ -20,6 +20,7 @@ from lily.base.models import (
 
 from account.models import Account
 from downloader.executors.athena import AthenaExecutor
+from downloader.executors.databricks import DatabricksExecutor
 
 
 def spec_validator(spec):
@@ -186,6 +187,15 @@ class CatalogueItem(ValidatingModel):
         ATHENA = 'ATHENA'
 
     executor_type = EnumChoiceField(max_length=256, enum=Executor)
+
+    @property
+    def executor(self):
+        if self.executor_type == CatalogueItem.Executor.ATHENA.value:
+            return AthenaExecutor()
+        elif self.executor_type == CatalogueItem.Executor.DATABRICKS.value:
+            return DatabricksExecutor()
+        else:
+            raise NotImplementedError()
 
     def clean(self):
         self.validate_samples_in_context_of_spec()
