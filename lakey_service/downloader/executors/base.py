@@ -1,5 +1,5 @@
 
-class BaseExecutor:
+class Base:
 
     def execute(self, download_request):
         raise NotImplementedError()

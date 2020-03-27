@@ -7,7 +7,7 @@ import boto3
 import requests
 import pandas as pd
 
-from .baseexecutor import BaseExecutor
+from .base import Base
 
 athena = boto3.client(
     'athena',
@@ -23,7 +23,7 @@ s3 = boto3.client(
     aws_secret_access_key=settings.AWS_LAKEY_KEY_SECRET)
 
 
-class AthenaExecutor(BaseExecutor):
+class AthenaExecutor(Base):
 
     def execute(self, download_request):
 

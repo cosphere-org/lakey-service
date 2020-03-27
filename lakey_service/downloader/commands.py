@@ -21,8 +21,6 @@ from .serializers import (
     DownloadRequestListSerializer,
 )
 from .parsers import DownloadRequestParser, DownloadRequestRenderParser
-from .executors.athena import AthenaExecutor
-from .executors.databricks import DatabricksExecutor
 
 
 class DownloadRequestRenderCommands(HTTPCommands):
@@ -120,10 +118,7 @@ class DownloadRequestCollectionCommands(HTTPCommands):
         r.waiters.add(request.access['account'])
 
         if created:
-            c_item = CatalogueItem.objects.get(id=r.catalogue_item_id)
-            r.uri = c_item.executor.execute(r)
-            r.save()
-
+            r.execute()
             raise self.event.Created(r)
 
         else:

@@ -1,11 +1,14 @@
+import os
+
 from databricks_api import DatabricksAPI
-from datetime import datetime
 from django.conf import settings
+from django.utils import timezone
+from django.utils import crypto
 
-from .baseexecutor import BaseExecutor
+from .base import Base
 
 
-class DatabricksExecutor(BaseExecutor):
+class DatabricksExecutor(Base):
 
     def __init__(self):
         self.db = DatabricksAPI(
@@ -13,13 +16,14 @@ class DatabricksExecutor(BaseExecutor):
             token=settings.DATABRICKS_TOKEN
         )
 
-    def __generate_file_path(self):
-        """ Return path of output file """
-        now = datetime.now()
-        output_location = settings.DATABRICKS_RESULTS_LOCATION
-        filename = now.strftime("%Y%m%d-%H%M%S")
+    def __get_output_file_path(self):
 
-        return output_location+filename+"_output.csv"
+        filename = '_'.join([timezone.now().strftime("%Y%m%d-%H%M%S"),
+                            crypto.get_random_string(length=4),
+                            "output.csv"])
+
+        return os.path.join(settings.DATABRICKS_RESULTS_LOCATION,
+                            filename)
 
     def execute(self, download_request):
 
@@ -28,7 +32,8 @@ class DatabricksExecutor(BaseExecutor):
         return self.execute_query(query)
 
     def execute_query(self, query):
-        output_file = self.__generate_file_path()
+
+        output_file = self.__get_output_file_path()
 
         self.db.jobs.submit_run(
             run_name='Lakey get data',
