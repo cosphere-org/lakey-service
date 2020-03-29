@@ -13,7 +13,7 @@ pytest-mock==0.10.1
 
 # -- human friendly testing of http requests to external APIs
 # DOCS: https://httpretty.readthedocs.io/en/latest/
-httpretty==0.9.5
+httpretty==1.0.2
 
 # -- fake data
 fake-factory==0.5.6

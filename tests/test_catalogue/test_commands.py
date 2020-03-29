@@ -108,7 +108,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
                     "required property",
                 ],
             },
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -145,7 +145,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
                 'maintained_by': [
                     'account instance with id 932039 does not exist.'],
             },
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
             '@type': 'error',
@@ -348,7 +348,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -442,7 +442,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
                     "required property",
                 ],
             },
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -474,7 +474,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -542,7 +542,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         assert CatalogueItem.objects.all().count() == 2
         assert response.status_code == 400
         assert response.json() == {
-            '@access': {'account_id': self.account.id},
+            '@authorizer': {'account_id': self.account.id},
             '@event': 'NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED',
             '@type': 'error',
             'item_id': ci_0.id,
@@ -559,7 +559,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -623,7 +623,7 @@ class CatalogueItemSampleAndDistributionsCommandsTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
             '@type': 'error',
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
