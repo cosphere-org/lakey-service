@@ -232,11 +232,8 @@ class DownloadRequestTestCase(TestCase):
                     'randomize_ratio': 1.2,
                 },
                 catalogue_item=self.ci)
-
+        
         assert e.value.message_dict == {
-            '__all__': [
-                "operator '>>' not allowed for column 'price' detected",
-            ],
             'spec': [
                 "JSON did not validate. PATH: 'filters.0.operator' REASON: "
                 "'>>' is not one of ['>', '>=', '<', '<=', '=', '!=']",

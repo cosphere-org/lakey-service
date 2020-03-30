@@ -191,7 +191,8 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
                     'size': None,
                     'distribution': None,
                 },
-            ])
+            ],
+            executor_type='ATHENA')
 
         token = AuthToken.encode(self.account)
         self.headers = {
@@ -214,7 +215,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
                 'spec': {
                     'columns': ['product', 'price'],
                     'filters': [],
-                    'randomize_ratio': 0.9,
+                     'randomize_ratio': 0.9,
                 },
                 'catalogue_item_id': self.ci.id,
             }),
@@ -306,7 +307,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             'errors': {
                 'catalogue_item_id': ['A valid integer is required.'],
             },
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -328,12 +329,16 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             content_type='application/json',
             **self.headers)
 
-        assert response.status_code == 404
+        assert response.status_code == 400
         assert DownloadRequest.objects.all().count() == 0
         assert response.json() == {
-            '@event': 'COULD_NOT_FIND_CATALOGUEITEM',
+            'errors': {
+                    'catalogue_item': 
+                        ['catalogue item instance with id 58495 does not exist.']
+                      },
+            '@event': 'BODY_JSON_DID_NOT_PARSE',
             '@type': 'error',
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -470,7 +475,7 @@ class DownloadRequestElementCommandsTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_DOWNLOADREQUEST',
             '@type': 'error',
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -485,7 +490,7 @@ class DownloadRequestElementCommandsTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_DOWNLOADREQUEST',
             '@type': 'error',
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
@@ -531,7 +536,7 @@ class DownloadRequestElementCommandsTestCase(TestCase):
         assert response.json() == {
             '@event': 'COULD_NOT_FIND_DOWNLOADREQUEST',
             '@type': 'error',
-            '@access': {
+            '@authorizer': {
                 'account_id': self.account.id,
             },
         }
