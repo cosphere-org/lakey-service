@@ -1,22 +1,15 @@
 
-# import re
 from unittest.mock import Mock, call
 
 from databricks_api import DatabricksAPI
 from django.test import TestCase, override_settings
-# import httpretty
 import pytest
 
-# from downloader.models import DownloadRequest
 from downloader.executors.databricks import DatabricksExecutor
 from tests.factory import EntityFactory
 
 
 ef = EntityFactory()
-
-
-# def normalize_query(q):
-#     return re.sub(r'\s+', ' ', q).strip()
 
 
 class DatabricksExecutorTestCase(TestCase):
