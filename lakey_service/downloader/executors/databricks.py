@@ -16,7 +16,7 @@ class DatabricksExecutor(BaseExecutor):
             token=settings.DATABRICKS_TOKEN
         )
 
-    def __get_output_file_path(self):
+    def get_output_file_path(self):
 
         filename = '_'.join([timezone.now().strftime("%Y%m%d-%H%M%S"),
                             crypto.get_random_string(length=4),
@@ -33,7 +33,7 @@ class DatabricksExecutor(BaseExecutor):
 
     def execute_query(self, query):
 
-        output_file = self.__get_output_file_path()
+        output_file = self.get_output_file_path()
 
         self.db.jobs.submit_run(
             run_name='Lakey get data',
