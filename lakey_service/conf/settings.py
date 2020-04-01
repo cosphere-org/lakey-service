@@ -140,7 +140,10 @@ INSTALLED_APPS = (
 
     'django.contrib.postgres',
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.staticfiles',
     'rest_framework',
 
     # -- service's apps
@@ -152,6 +155,8 @@ INSTALLED_APPS = (
 
 MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
 
 
@@ -159,3 +164,8 @@ ROOT_URLCONF = 'conf.urls'
 
 
 WSGI_APPLICATION = 'conf.wsgi.application'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.0/howto/static-files/
+
+STATIC_URL = '/static/'
