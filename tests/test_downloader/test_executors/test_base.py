@@ -6,7 +6,7 @@ from django.test import TestCase
 import pytest
 
 from downloader.models import DownloadRequest
-from downloader.executors.athena import AthenaExecutor
+from downloader.executors.base import BaseExecutor
 from tests.factory import EntityFactory
 
 
@@ -23,12 +23,10 @@ class BaseExecutorTestCase(TestCase):
     def initfixtures(self, mocker):
         self.mocker = mocker
 
-        self.mocker.patch('downloader.executors.athena.sleep')
-
     def setUp(self):
         ef.clear()
 
-        self.executor = AthenaExecutor()
+        self.executor = BaseExecutor()
 
         self.ci = ef.catalogue_item(
             name='lakey.shopping',
@@ -73,13 +71,15 @@ class BaseExecutorTestCase(TestCase):
     def test_compile_to_query__columns_select(self):
 
         a = ef.account()
-        d = DownloadRequest.objects.create(
+
+        d = ef.download_request(
             created_by=a,
             spec={
                 'columns': ['product', 'available'],
                 'filters': [],
             },
-            catalogue_item=self.ci)
+            catalogue_item=self.ci,
+        )
 
         assert normalize_query(self.executor.compile_to_query(d)) == (
             'SELECT product, available FROM lakey.shopping')
@@ -87,7 +87,7 @@ class BaseExecutorTestCase(TestCase):
     def test_compile_to_query__numerical_filters(self):
 
         a = ef.account()
-        d = DownloadRequest.objects.create(
+        d = ef.download_request(
             created_by=a,
             spec={
                 'columns': ['product', 'quantity'],
@@ -99,7 +99,8 @@ class BaseExecutorTestCase(TestCase):
                     },
                 ],
             },
-            catalogue_item=self.ci)
+            catalogue_item=self.ci
+        )
 
         assert self.executor.compile_to_query(d) == (
             'SELECT product, quantity FROM lakey.shopping '
@@ -108,7 +109,7 @@ class BaseExecutorTestCase(TestCase):
     def test_compile_to_query__categorical_filters(self):
 
         a = ef.account()
-        d = DownloadRequest.objects.create(
+        d = ef.download_request(
             created_by=a,
             spec={
                 'columns': ['product', 'quantity'],
@@ -120,7 +121,8 @@ class BaseExecutorTestCase(TestCase):
                     },
                 ],
             },
-            catalogue_item=self.ci)
+            catalogue_item=self.ci
+        )
 
         assert self.executor.compile_to_query(d) == (
             'SELECT product, quantity FROM lakey.shopping '
@@ -129,7 +131,7 @@ class BaseExecutorTestCase(TestCase):
     def test_compile_to_query__many_filters(self):
 
         a = ef.account()
-        d = DownloadRequest.objects.create(
+        d = ef.download_request(
             created_by=a,
             spec={
                 'columns': ['product', 'available'],
@@ -146,7 +148,8 @@ class BaseExecutorTestCase(TestCase):
                     },
                 ],
             },
-            catalogue_item=self.ci)
+            catalogue_item=self.ci
+        )
 
         assert self.executor.compile_to_query(d) == (
             'SELECT product, available FROM lakey.shopping '
@@ -155,14 +158,15 @@ class BaseExecutorTestCase(TestCase):
     def test_compile_to_query__radomization_filters(self):
 
         a = ef.account()
-        d = DownloadRequest.objects.create(
+        d = ef.download_request(
             created_by=a,
             spec={
                 'columns': ['product', 'available'],
                 'filters': [],
                 'randomize_ratio': 0.9,
             },
-            catalogue_item=self.ci)
+            catalogue_item=self.ci
+        )
 
         assert normalize_query(self.executor.compile_to_query(d)) == (
             'SELECT q.* FROM ('
