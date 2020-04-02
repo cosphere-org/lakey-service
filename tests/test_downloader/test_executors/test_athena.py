@@ -6,7 +6,6 @@ from django.test import TestCase, override_settings
 import httpretty
 import pytest
 
-from downloader.models import DownloadRequest
 from downloader.executors.athena import AthenaExecutor
 from tests.factory import EntityFactory
 

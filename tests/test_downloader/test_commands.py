@@ -215,7 +215,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
                 'spec': {
                     'columns': ['product', 'price'],
                     'filters': [],
-                     'randomize_ratio': 0.9,
+                    'randomize_ratio': 0.9,
                 },
                 'catalogue_item_id': self.ci.id,
             }),
@@ -333,9 +333,10 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
         assert DownloadRequest.objects.all().count() == 0
         assert response.json() == {
             'errors': {
-                    'catalogue_item': 
-                        ['catalogue item instance with id 58495 does not exist.']
-                      },
+                'catalogue_item': [
+                    'catalogue item instance with id 58495 does not exist.'
+                ]
+            },
             '@event': 'BODY_JSON_DID_NOT_PARSE',
             '@type': 'error',
             '@authorizer': {
