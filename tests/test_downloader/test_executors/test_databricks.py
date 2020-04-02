@@ -1,7 +1,6 @@
 
-from unittest.mock import Mock, call
+from unittest.mock import call
 
-from databricks_api import DatabricksAPI
 from django.test import TestCase, override_settings
 import pytest
 

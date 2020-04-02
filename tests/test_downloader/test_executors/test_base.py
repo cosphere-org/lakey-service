@@ -1,11 +1,9 @@
 
 import re
-from unittest.mock import Mock, call
 
 from django.test import TestCase
 import pytest
 
-from downloader.models import DownloadRequest
 from downloader.executors.base import BaseExecutor
 from tests.factory import EntityFactory
 

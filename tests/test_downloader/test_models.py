@@ -232,7 +232,7 @@ class DownloadRequestTestCase(TestCase):
                     'randomize_ratio': 1.2,
                 },
                 catalogue_item=self.ci)
-        
+
         assert e.value.message_dict == {
             'spec': [
                 "JSON did not validate. PATH: 'filters.0.operator' REASON: "

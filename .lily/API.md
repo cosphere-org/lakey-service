@@ -13,7 +13,7 @@ CONTENT-TYPE: application/json
 {
     "email": "jacky@somewhere.org",
     "oauth_token": "some-oauth-token",
-    "request_uuid": "bb7a881a-9c34-11e9-9152-0028f8484bd5"
+    "request_uuid": "9c0ca337-74ef-11ea-9373-0028f8484bd5"
 }
 ```
 Respone:
@@ -43,7 +43,7 @@ Respone:
             "This field is required."
         ],
         "request_uuid": [
-            "\"some-uuid\" is not a valid UUID."
+            "Must be a valid UUID."
         ]
     }
 }
@@ -56,7 +56,7 @@ CONTENT-TYPE: application/json
 {
     "email": "jacky@somewhere.org",
     "oauth_token": "some-auth-token",
-    "request_uuid": "bb7a881b-9c34-11e9-9152-0028f8484bd5"
+    "request_uuid": "9c0ca338-74ef-11ea-9373-0028f8484bd5"
 }
 ```
 Respone:
@@ -79,8 +79,8 @@ Respone:
 {
     "@event": "AUTH_REQUEST_CREATED",
     "@type": "auth_request",
-    "authenticate_ui_uri": "/accounts/auth_requests/bb7a881c-9c34-11e9-9152-0028f8484bd5/authenticate/ui/",
-    "request_uuid": "bb7a881c-9c34-11e9-9152-0028f8484bd5"
+    "authenticate_ui_uri": "/accounts/auth_requests/9c0ca336-74ef-11ea-9373-0028f8484bd5/authenticate/ui/",
+    "request_uuid": "9c0ca336-74ef-11ea-9373-0028f8484bd5"
 }
 ```
 ### CREATE_AUTH_TOKEN: POST /accounts/auth_tokens/
@@ -92,7 +92,7 @@ Request:
 POST /accounts/auth_tokens/ HTTP/1.1
 CONTENT-TYPE: application/json
 {
-    "request_uuid": "bb7a881d-9c34-11e9-9152-0028f8484bd5"
+    "request_uuid": "9c0ca339-74ef-11ea-9373-0028f8484bd5"
 }
 ```
 Respone:
@@ -109,7 +109,7 @@ Request:
 POST /accounts/auth_tokens/ HTTP/1.1
 CONTENT-TYPE: application/json
 {
-    "request_uuid": "f5e7e000-5074-11e4-8de0-02424488ad3e"
+    "request_uuid": "f5e7e000-5074-11e4-9e4c-024270a96ad7"
 }
 ```
 Respone:
@@ -138,8 +138,8 @@ None
 #### 200 (CATALOGUEITEMS_BULK_READ)
 Request:
 ```http
-GET /catalogue/items/?has_samples=False HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzUsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.fh57XVsWv0oKZBqxhkIxsIGiBK6bwI6eHRicop6A8zA
+GET /catalogue/items/?query=feature+tempera HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.LBR_2QW9i1fz9KIBezMF4hurIGjnDdN5XfqxgYLffIE
 ```
 Respone:
 ```json
@@ -150,8 +150,8 @@ Respone:
         {
             "@type": "catalogue_item",
             "created_by": null,
-            "executor_type": "DATABRICKS",
-            "id": 68,
+            "executor_type": "ATHENA",
+            "id": 30,
             "maintained_by": null,
             "name": "iot_features",
             "sample": [],
@@ -192,9 +192,9 @@ Respone:
             "@type": "catalogue_item",
             "created_by": null,
             "executor_type": "DATABRICKS",
-            "id": 70,
+            "id": 31,
             "maintained_by": null,
-            "name": "iot_events",
+            "name": "temperatures",
             "sample": [],
             "spec": [
                 {
@@ -239,11 +239,11 @@ None
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzEsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkxfQ.UUTgIqu4oB_6w_jIVKsmsBKRrxxoSXiDkqCA1QunVtw
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzAsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.qEubCE4rtAl2Ck_uAFMtF55qWszGiY0DtR3TN1WeSnQ
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 72,
+    "maintained_by_id": 31,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -265,16 +265,16 @@ Respone:
     "@type": "catalogue_item",
     "created_by": {
         "@type": "account",
-        "email": "donitacrist@mertz.com",
-        "id": 71,
+        "email": "kortneyshanahan@yahoo.com",
+        "id": 30,
         "type": "ADMIN"
     },
     "executor_type": "DATABRICKS",
-    "id": 61,
+    "id": 33,
     "maintained_by": {
         "@type": "account",
-        "email": "rabernathy@gerhold.info",
-        "id": 72,
+        "email": "gstracke@gmail.com",
+        "id": 31,
         "type": "RESEARCHER"
     },
     "name": "iot_events",
@@ -291,8 +291,8 @@ Respone:
     ],
     "updated_by": {
         "@type": "account",
-        "email": "donitacrist@mertz.com",
-        "id": 71,
+        "email": "kortneyshanahan@yahoo.com",
+        "id": 30,
         "type": "ADMIN"
     }
 }
@@ -301,11 +301,11 @@ Respone:
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzYsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.XG9gsWM2CEA0moc4zgaYGr--PAktAwS64EkWYlz-eV8
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzIsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.ak1FgOiN8vfd8eF6LKRXLxak3rOm7zs2W9DnPKfBplM
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 77,
+    "maintained_by_id": 33,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -321,8 +321,8 @@ CONTENT-TYPE: application/json
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 76
+    "@authorizer": {
+        "account_id": 32
     },
     "@event": "BODY_DID_NOT_VALIDATE",
     "@type": "error",
@@ -337,7 +337,7 @@ Respone:
 Request:
 ```http
 POST /catalogue/items/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjcsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkxfQ.dRvpyMLbmA5IAYyYzaDLW1nV-kroaFMHl5ron0YUeRs
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjQsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.L2r78CCUFlBp__HeWm2m43WtJ2nssQMkuR09onrCAMA
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
@@ -359,8 +359,8 @@ CONTENT-TYPE: application/json
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 67
+    "@authorizer": {
+        "account_id": 24
     },
     "@event": "BODY_JSON_DID_NOT_PARSE",
     "@type": "error",
@@ -377,8 +377,8 @@ None
 #### 200 (CATALOGUEITEM_DELETED)
 Request:
 ```http
-DELETE /catalogue/items/72 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODIsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.n_aHo0asRQTpVm2_fqOpEX3MhwHuSGNlDyZZsf_oCKo
+DELETE /catalogue/items/6 HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OSwiZW1haWwiOiJrb3J0bmV5c2hhbmFoYW5AeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTg1OTI0NzAzfQ.ZXFW2OPlg8WrWxMCMqZZRclaodrNg3GevMfCiekNGTU
 ```
 Respone:
 ```json
@@ -390,18 +390,18 @@ Respone:
 #### 400 (NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED)
 Request:
 ```http
-DELETE /catalogue/items/74 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODMsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.Uo_7ygsYu09vSCT_LASjpHoJiLpTxUorH6-dP7kw3Hw
+DELETE /catalogue/items/11 HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTQsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.7owA4sE9cGqoa9lX6GSjgZ5ANDlQSXeOx12C1NxEVHo
 ```
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 83
+    "@authorizer": {
+        "account_id": 14
     },
     "@event": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
     "@type": "error",
-    "item_id": 74,
+    "item_id": 11,
     "not_cancelled_count": 1
 }
 ```
@@ -409,13 +409,13 @@ Respone:
 Request:
 ```http
 DELETE /catalogue/items/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTEsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.IKJaZ6hlfhm8wHfd6xW7FABsIl1mYwwhMTdEvcKXSvo
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTMsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.4hMTeHDAbASc_EtCqR4bzBZak2NYUY4xnniRouV7kFI
 ```
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 91
+    "@authorizer": {
+        "account_id": 13
     },
     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
     "@type": "error"
@@ -427,8 +427,8 @@ None
 #### 200 (CATALOGUEITEM_READ)
 Request:
 ```http
-GET /catalogue/items/77 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTAsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.WtKBY-gGMFP3Ko-dpKFy2lz1W9hpIcUC7A5pD28S8wQ
+GET /catalogue/items/9 HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTIsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.YMFY--y3YYohxr-6FP4yeY4su1phsGWVB0X38et1EhU
 ```
 Respone:
 ```json
@@ -436,8 +436,8 @@ Respone:
     "@event": "CATALOGUEITEM_READ",
     "@type": "catalogue_item",
     "created_by": null,
-    "executor_type": "DATABRICKS",
-    "id": 77,
+    "executor_type": "ATHENA",
+    "id": 9,
     "maintained_by": null,
     "name": "temperatures",
     "sample": [],
@@ -479,13 +479,13 @@ Respone:
 Request:
 ```http
 GET /catalogue/items/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODksImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.b4OfUcf17fY1z2p44elx8ycvKSVnzKDS8jPWBHTO_yE
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.IIwFefZS3XHIt7U1L0nCGx5tQgE8m80rFkM_fMiQBbI
 ```
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 89
+    "@authorizer": {
+        "account_id": 18
     },
     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
     "@type": "error"
@@ -497,12 +497,12 @@ None
 #### 200 (CATALOGUEITEM_UPDATED)
 Request:
 ```http
-PUT /catalogue/items/76 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODQsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.xISMhCQFzlI5VJfdyG9M6AvfnrYMOBKOqqaZAfh5E1w
+PUT /catalogue/items/13 HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.0etxTwW7DMbiMHcOQo0cpteG7-TchbmUkp1L6JYGvbE
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 85,
+    "maintained_by_id": 16,
     "sample": [],
     "spec": [
         {
@@ -523,16 +523,16 @@ Respone:
     "@type": "catalogue_item",
     "created_by": {
         "@type": "account",
-        "email": "dsawayn@hotmail.com",
-        "id": 86,
+        "email": "stokesjeri@oconnell-swift.com",
+        "id": 17,
         "type": "RESEARCHER"
     },
     "executor_type": "DATABRICKS",
-    "id": 76,
+    "id": 13,
     "maintained_by": {
         "@type": "account",
-        "email": "rabernathy@gerhold.info",
-        "id": 85,
+        "email": "gstracke@gmail.com",
+        "id": 16,
         "type": "RESEARCHER"
     },
     "name": "temperatures",
@@ -549,8 +549,8 @@ Respone:
     ],
     "updated_by": {
         "@type": "account",
-        "email": "donitacrist@mertz.com",
-        "id": 84,
+        "email": "kortneyshanahan@yahoo.com",
+        "id": 15,
         "type": "ADMIN"
     }
 }
@@ -558,12 +558,12 @@ Respone:
 #### 400 (BODY_DID_NOT_VALIDATE)
 Request:
 ```http
-PUT /catalogue/items/79 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTIsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.oXRSWGSUwlYt7WUwDyRVU-T7n1lTK3tsHPNw4oqDt-w
+PUT /catalogue/items/8 HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.dgu2laJfHHryjamXp3ETAD9MjpvQjXjxWm77daaWbgY
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 93,
+    "maintained_by_id": 11,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -580,8 +580,8 @@ CONTENT-TYPE: application/json
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 92
+    "@authorizer": {
+        "account_id": 10
     },
     "@event": "BODY_DID_NOT_VALIDATE",
     "@type": "error",
@@ -596,11 +596,11 @@ Respone:
 Request:
 ```http
 PUT /catalogue/items/9022 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODcsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.GiwvOZNVHpCLPauE05R-zTxGmKQdYgZ7e3ijjaCadZU
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NywiZW1haWwiOiJrb3J0bmV5c2hhbmFoYW5AeWFob28uY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTg1OTI0NzAzfQ.JqlO_XLcDEVziW0WDR_x48K-LBHIJdF8Hdu6_wyzgt4
 CONTENT-TYPE: application/json
 {
     "executor_type": "DATABRICKS",
-    "maintained_by_id": 88,
+    "maintained_by_id": 8,
     "name": "iot_events",
     "sample": [],
     "spec": [
@@ -618,8 +618,8 @@ CONTENT-TYPE: application/json
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 87
+    "@authorizer": {
+        "account_id": 7
     },
     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
     "@type": "error"
@@ -631,8 +631,8 @@ None
 #### 200 (CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED)
 Request:
 ```http
-PUT /catalogue/items/71/samples_and_distributions/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzksImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.4huhIbo5OW0Hj3AYKOI9DXUMIyVpZ5I_-eYcLjFC2gM
+PUT /catalogue/items/14/samples_and_distributions/ HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.CHPPV-bJBzwHASl2EdOxJkf_Iqv3KII85mYp6n_SdZM
 ```
 Respone:
 ```json
@@ -645,13 +645,13 @@ Respone:
 Request:
 ```http
 PUT /catalogue/items/9022/samples_and_distributions/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzgsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkyfQ.17WwlPQChru8aObVEccZmwfBr2ZJIJFbEVJO5fyXTC8
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTksImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwM30.as3eGA-GOUYi-bWoZdef2RZq108UM7iL8R98qrNNbcg
 ```
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 78
+    "@authorizer": {
+        "account_id": 19
     },
     "@event": "COULD_NOT_FIND_CATALOGUEITEM",
     "@type": "error"
@@ -666,7 +666,7 @@ None
 Request:
 ```http
 GET /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OSwiZW1haWwiOiJkb25pdGFjcmlzdEBtZXJ0ei5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjIwOTQ5ODl9.0o8wfmy-sKcIFW3HAE5-wmYWEoe9vJRf9sG55BtLEPg
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.cESsGvs0U93xXpTV-RBaCRTITVCKvC1ipJcIfOl9Zts
 ```
 Respone:
 ```json
@@ -679,10 +679,10 @@ Respone:
             "catalogue_item": {
                 "@type": "catalogue_item",
                 "created_by": null,
-                "executor_type": "DATABRICKS",
-                "id": 8,
+                "executor_type": "ATHENA",
+                "id": 54,
                 "maintained_by": null,
-                "name": "Jarrod Abernathy",
+                "name": "Dr. Rylan Bruen MD",
                 "sample": [],
                 "spec": [
                     {
@@ -706,8 +706,8 @@ Respone:
             },
             "created_by": {
                 "@type": "account",
-                "email": "lafayetteboyer@yahoo.com",
-                "id": 10,
+                "email": "stokesjeri@oconnell-swift.com",
+                "id": 51,
                 "type": "RESEARCHER"
             },
             "estimated_size": null,
@@ -734,10 +734,10 @@ Respone:
             "catalogue_item": {
                 "@type": "catalogue_item",
                 "created_by": null,
-                "executor_type": "DATABRICKS",
-                "id": 8,
+                "executor_type": "ATHENA",
+                "id": 54,
                 "maintained_by": null,
-                "name": "Jarrod Abernathy",
+                "name": "Dr. Rylan Bruen MD",
                 "sample": [],
                 "spec": [
                     {
@@ -761,8 +761,8 @@ Respone:
             },
             "created_by": {
                 "@type": "account",
-                "email": "lafayetteboyer@yahoo.com",
-                "id": 10,
+                "email": "stokesjeri@oconnell-swift.com",
+                "id": 51,
                 "type": "RESEARCHER"
             },
             "estimated_size": null,
@@ -793,8 +793,8 @@ None
 #### 200 (DOWNLOADREQUEST_DELETED)
 Request:
 ```http
-DELETE /downloader/requests/7 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTYsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkwfQ.j5grtotAyogt7VuN3RGDVC0FpfVwLdB1Hi4rEXO3b_w
+DELETE /downloader/requests/10 HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDQsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.F8ha0-omyfcf714gRvVkROAooM4A0jmDsxRBiiW_y-U
 ```
 Respone:
 ```json
@@ -807,13 +807,13 @@ Respone:
 Request:
 ```http
 DELETE /downloader/requests/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkwfQ.iX2Ht7p4rLqetkrRKqb1xX-sicZJKQQowc6tgBbMHZY
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzgsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.aeQ_9MGjOPv7-06M1F4nNoEUXujNmJolYJ81f89n7CE
 ```
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 20
+    "@authorizer": {
+        "account_id": 38
     },
     "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
     "@type": "error"
@@ -826,10 +826,10 @@ None
 Request:
 ```http
 POST /downloader/requests/estimate/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTEsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTg5fQ.udC4oIx99iuQ42IT1XX7Igl_HfRDOqhIBWLgSmq_dE8
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTIsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.SlqVezM2nZU4vrhOLZxMrZh_2boSvF9ci-qhlyrGqvo
 CONTENT-TYPE: application/json
 {
-    "catalogue_item_id": 9,
+    "catalogue_item_id": 55,
     "spec": {
         "columns": [
             "product",
@@ -854,8 +854,8 @@ None
 #### 200 (DOWNLOADREQUEST_READ)
 Request:
 ```http
-GET /downloader/requests/8 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTgsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkwfQ.gyYpKZFb7ogUFI2js4Swcb2gtKcMbuRJQkiw_ANOFj8
+GET /downloader/requests/9 HTTP/1.1
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDIsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.4bjXf6C4k4WpBHXkDR6IEUuZZAmPWzlcVTJsMNQ-9Nk
 ```
 Respone:
 ```json
@@ -865,10 +865,10 @@ Respone:
     "catalogue_item": {
         "@type": "catalogue_item",
         "created_by": null,
-        "executor_type": "DATABRICKS",
-        "id": 14,
+        "executor_type": "ATHENA",
+        "id": 48,
         "maintained_by": null,
-        "name": "Jarrod Abernathy",
+        "name": "Dr. Rylan Bruen MD",
         "sample": [],
         "spec": [
             {
@@ -892,8 +892,8 @@ Respone:
     },
     "created_by": {
         "@type": "account",
-        "email": "lafayetteboyer@yahoo.com",
-        "id": 19,
+        "email": "stokesjeri@oconnell-swift.com",
+        "id": 43,
         "type": "RESEARCHER"
     },
     "estimated_size": null,
@@ -920,13 +920,13 @@ Respone:
 Request:
 ```http
 GET /downloader/requests/69506 HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkwfQ.kZcqazB-yTBPXy4bjKCClrr7Ju15hN6C1bE8TK0lNjE
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDEsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.l_5mHvKbRa2u-i7hENrM2RsgQc-wMMAdjqLlD-0XOTk
 ```
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 15
+    "@authorizer": {
+        "account_id": 41
     },
     "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
     "@type": "error"
@@ -939,10 +939,10 @@ Create a Download Request in a smart way meaning that: - if same `DownloadReques
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NywiZW1haWwiOiJkb25pdGFjcmlzdEBtZXJ0ei5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjIwOTQ5ODl9.GnkZaFVcWJhZ4TXenMZ2964gWiN6FerNtILzitN-JZ4
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDcsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.s2dWKuhVVc0LAjH-jg5kYskjMZduEc9sigJlipk2OG4
 CONTENT-TYPE: application/json
 {
-    "catalogue_item_id": 6,
+    "catalogue_item_id": 51,
     "spec": {
         "columns": [
             "product",
@@ -977,10 +977,10 @@ Respone:
     "catalogue_item": {
         "@type": "catalogue_item",
         "created_by": null,
-        "executor_type": "DATABRICKS",
-        "id": 6,
+        "executor_type": "ATHENA",
+        "id": 51,
         "maintained_by": null,
-        "name": "Jarrod Abernathy",
+        "name": "Dr. Rylan Bruen MD",
         "sample": [],
         "spec": [
             {
@@ -1038,10 +1038,10 @@ Respone:
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OCwiZW1haWwiOiJkb25pdGFjcmlzdEBtZXJ0ei5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjIwOTQ5ODl9.nx2TzT2lWMWEaX345H27tRzi6CmFy4P6gUvpt8HAZAs
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.AfzuC1SBnowrak5fFy0yJn-EUGPtN6_OFTJWf612fXM
 CONTENT-TYPE: application/json
 {
-    "catalogue_item_id": 7,
+    "catalogue_item_id": 52,
     "spec": {
         "columns": [
             "product",
@@ -1060,10 +1060,10 @@ Respone:
     "catalogue_item": {
         "@type": "catalogue_item",
         "created_by": null,
-        "executor_type": "DATABRICKS",
-        "id": 7,
+        "executor_type": "ATHENA",
+        "id": 52,
         "maintained_by": null,
-        "name": "Jarrod Abernathy",
+        "name": "Dr. Rylan Bruen MD",
         "sample": [],
         "spec": [
             {
@@ -1087,8 +1087,8 @@ Respone:
     },
     "created_by": {
         "@type": "account",
-        "email": "donitacrist@mertz.com",
-        "id": 8,
+        "email": "kortneyshanahan@yahoo.com",
+        "id": 48,
         "type": "ADMIN"
     },
     "estimated_size": null,
@@ -1110,7 +1110,7 @@ Respone:
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwiZW1haWwiOiJkb25pdGFjcmlzdEBtZXJ0ei5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjIwOTQ5ODl9.oUblan-XSu9g_9C8CWF5U3Up_2wkVe9rSy0arfqwldA
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDYsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.So6tZP9PORdsCBvY5KYLPjaAs3_F1FqSIeEWWPaz6T0
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": "TEXT",
@@ -1127,8 +1127,8 @@ CONTENT-TYPE: application/json
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 6
+    "@authorizer": {
+        "account_id": 46
     },
     "@event": "BODY_DID_NOT_VALIDATE",
     "@type": "error",
@@ -1139,11 +1139,11 @@ Respone:
     }
 }
 ```
-#### 404 (COULD_NOT_FIND_CATALOGUEITEM)
+#### 400 (BODY_JSON_DID_NOT_PARSE)
 Request:
 ```http
 POST /downloader/requests/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NSwiZW1haWwiOiJkb25pdGFjcmlzdEBtZXJ0ei5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1NjIwOTQ5ODl9.e-DNJNPih_NFAmIIqAUFUHACOAdzc28N9dI4G_R5fyc
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.kaOkgovJJwf2WLl4xUcwupdaNoGV84eE2JyCGrB1bz0
 CONTENT-TYPE: application/json
 {
     "catalogue_item_id": 58495,
@@ -1160,11 +1160,16 @@ CONTENT-TYPE: application/json
 Respone:
 ```json
 {
-    "@access": {
-        "account_id": 5
+    "@authorizer": {
+        "account_id": 49
     },
-    "@event": "COULD_NOT_FIND_CATALOGUEITEM",
-    "@type": "error"
+    "@event": "BODY_JSON_DID_NOT_PARSE",
+    "@type": "error",
+    "errors": {
+        "catalogue_item": [
+            "catalogue item instance with id 58495 does not exist."
+        ]
+    }
 }
 ```
 ### RENDER_DOWNLOAD_REQUEST_UI_DATA: POST /downloader/requests/render_ui_data/
@@ -1174,10 +1179,10 @@ None
 Request:
 ```http
 POST /downloader/requests/render_ui_data/ HTTP/1.1
-AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTIsImVtYWlsIjoiZG9uaXRhY3Jpc3RAbWVydHouY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTYyMDk0OTkwfQ.1WOX5CQ4zX9dqnF6XATTL8Nd_80sEJVFYwp-m00PNLk
+AUTHORIZATION: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTMsImVtYWlsIjoia29ydG5leXNoYW5haGFuQHlhaG9vLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NTkyNDcwNH0.GHivx7ZrVUwX8EiUjubmqrqbJ606wgzf6Q4M_dsmA44
 CONTENT-TYPE: application/json
 {
-    "catalogue_item_id": 10
+    "catalogue_item_id": 56
 }
 ```
 Respone:
