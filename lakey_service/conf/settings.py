@@ -140,9 +140,9 @@ INSTALLED_APPS = (
 
     'django.contrib.postgres',
     'django.contrib.auth',
-    # 'django.contrib.admin',
-    'material.admin',
-    'material.admin.default',
+    'django.contrib.admin',
+    # 'material.admin',
+    # 'material.admin.default',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
@@ -172,24 +172,24 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 
 STATIC_URL = '/static/'
 
-MATERIAL_ADMIN_SITE = {
-    'HEADER':  ('Lakey-service admin panel'),  # Admin site header
-    'TITLE':  ('Lakey-service'),  # Admin site title
-    # 'FAVICON':  'path/to/favicon',  # Admin site favicon (path to static should be specified)
-    # 'MAIN_BG_COLOR':  'black',  # Admin site main color, css color should be specified
-    # 'MAIN_HOVER_COLOR':  'red',  # Admin site main hover color, css color should be specified
-    # 'PROFILE_PICTURE':  'path/to/image',  # Admin site profile picture (path to static should be specified)
-    # 'PROFILE_BG':  'path/to/image',  # Admin site profile background (path to static should be specified)
-    # 'LOGIN_LOGO':  'path/to/image',  # Admin site logo on login page (path to static should be specified)
-    # 'LOGOUT_BG':  'path/to/image',  # Admin site background on login/logout pages (path to static should be specified)
-    'SHOW_THEMES':  True,  #  Show default admin themes button
-    'TRAY_REVERSE': False,  # Hide object-tools and additional-submit-line by default
-    'NAVBAR_REVERSE': False,  # Hide side navbar by default
-    'SHOW_COUNTS': True, # Show instances counts for each model
-    # 'APP_ICONS': {  # Set icons for applications(lowercase), including 3rd party apps, {'application_name': 'material_icon_name', ...}
-    #     'sites': 'send',
-    # },
-    # 'MODEL_ICONS': {  # Set icons for models(lowercase), including 3rd party models, {'model_name': 'material_icon_name', ...}
-    #     'site': 'contact_mail',
-    # }
-}
+# MATERIAL_ADMIN_SITE = {
+#     'HEADER':  ('Lakey-service admin panel'),  # Admin site header
+#     'TITLE':  ('Lakey-service'),  # Admin site title
+#     # 'FAVICON':  'path/to/favicon',  # Admin site favicon (path to static should be specified)
+#     # 'MAIN_BG_COLOR':  'black',  # Admin site main color, css color should be specified
+#     # 'MAIN_HOVER_COLOR':  'red',  # Admin site main hover color, css color should be specified
+#     # 'PROFILE_PICTURE':  'path/to/image',  # Admin site profile picture (path to static should be specified)
+#     # 'PROFILE_BG':  'path/to/image',  # Admin site profile background (path to static should be specified)
+#     # 'LOGIN_LOGO':  'path/to/image',  # Admin site logo on login page (path to static should be specified)
+#     # 'LOGOUT_BG':  'path/to/image',  # Admin site background on login/logout pages (path to static should be specified)
+#     'SHOW_THEMES':  True,  #  Show default admin themes button
+#     'TRAY_REVERSE': False,  # Hide object-tools and additional-submit-line by default
+#     'NAVBAR_REVERSE': False,  # Hide side navbar by default
+#     'SHOW_COUNTS': True, # Show instances counts for each model
+#     # 'APP_ICONS': {  # Set icons for applications(lowercase), including 3rd party apps, {'application_name': 'material_icon_name', ...}
+#     #     'sites': 'send',
+#     # },
+#     # 'MODEL_ICONS': {  # Set icons for models(lowercase), including 3rd party models, {'model_name': 'material_icon_name', ...}
+#     #     'site': 'contact_mail',
+#     # }
+# }
