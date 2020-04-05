@@ -1,11 +1,18 @@
 {% extends "admin/change_form.html" %}
+{% load catalogue_tags %}
 {% load static %}
 {% block content %}
 
-<h2>Insert distribution chart here</h2>
-<h2>Insert table with sample here</h2>
+<h2>{{ original.name|title }} summary statistics:</h2>
 
+<h3>[Insert distribution chart here]</h3>
 
+{% if original.sample %}
+<h3>Sample data:</h3>
+{% sample_table original.sample %}
+{% endif %}
+
+<h2> {{ original.name|title }} fields: </h2> 
 <!-- Render the rest of the ChangeList view by calling block.super -->
 {{ block.super }}
 {% endblock %}
