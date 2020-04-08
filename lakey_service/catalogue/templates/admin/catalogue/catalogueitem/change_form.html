@@ -5,7 +5,15 @@
 
 <h2>{{ original.name|title }} summary statistics:</h2>
 
-<h3>[Insert distribution chart here]</h3>
+{% if original.spec %}
+    {% distribution_chart original.spec %}
+
+{% comment %} Plan for final implementation {% endcomment %}
+{% comment %} {% for distribution in original.spec.items %}
+  {% distribution_chart column %}<br />
+{% endfor %} {% endcomment %}
+
+{% endif %}
 
 {% if original.sample %}
 <h3>Sample data:</h3>
