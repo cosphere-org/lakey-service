@@ -6,7 +6,7 @@
 <h2>{{ original.name|title }} summary statistics:</h2>
 
 {% if original.spec %}
-    {% distribution_chart original.spec %}
+    {% distribution_chart_2 original.spec %}
 
 {% comment %} Plan for final implementation {% endcomment %}
 {% comment %} {% for distribution in original.spec.items %}
