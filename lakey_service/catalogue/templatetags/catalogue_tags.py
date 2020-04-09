@@ -60,8 +60,8 @@ def distribution_chart_2(spec):
             )
             col_nr += 1
 
-    fig.update_layout(height=600,
-                      width=no_of_charts*600,
+    fig.update_layout(height=400,
+                      width=no_of_charts*400,
                       showlegend=False)
     graph_html = '<div style ="overflow-x: auto;" >'
     graph_html += fig.to_html(full_html=False)
