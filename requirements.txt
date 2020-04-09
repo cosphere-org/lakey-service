@@ -20,6 +20,5 @@ boto3==1.4.4
 # -- Databricks API
 databricks-api==0.3.0
 
-django-material-admin==1.6.44
-
+# -- distribution charts
 plotly==4.6.0
