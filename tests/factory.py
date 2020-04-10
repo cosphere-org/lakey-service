@@ -80,7 +80,7 @@ class EntityFactory:
             self,
             created_by=None,
             spec=None,
-            uri=None,
+            blob_name=None,
             real_size=None,
             estimated_size=None,
             catalogue_item=None,
@@ -93,7 +93,7 @@ class EntityFactory:
         return DownloadRequest.objects.create(
             created_by=created_by,
             spec=spec,
-            uri=uri,
+            blob_name=blob_name,
             real_size=real_size,
             estimated_size=estimated_size,
             catalogue_item=catalogue_item,

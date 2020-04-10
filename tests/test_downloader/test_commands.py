@@ -18,83 +18,6 @@ from tests.factory import EntityFactory
 ef = EntityFactory()
 
 
-class DownloadRequestRenderCommandsTestCase(TestCase):
-
-    uri = reverse('downloader:requests.render_ui_data')
-
-    def setUp(self):
-        ef.clear()
-
-        self.app = Client()
-        self.account = ef.account(type=Account.AccountType.ADMIN)
-
-        token = AuthToken.encode(self.account)
-        self.headers = {
-            'HTTP_AUTHORIZATION': f'Bearer {token}'  # noqa
-        }
-
-    def test_post_200(self):
-
-        ci = ef.catalogue_item(
-            spec=[
-                {
-                    'name': 'product',
-                    'type': 'STRING',
-                    'is_nullable': True,
-                    'is_enum': True,
-                    'size': None,
-                    'distribution': None,
-                },
-                {
-                    'name': 'price',
-                    'type': 'INTEGER',
-                    'is_nullable': False,
-                    'is_enum': False,
-                    'size': None,
-                    'distribution': None,
-                },
-                {
-                    'name': 'available',
-                    'type': 'BOOLEAN',
-                    'is_nullable': False,
-                    'is_enum': False,
-                    'size': None,
-                    'distribution': None,
-                }
-            ])
-
-        response = self.app.post(
-            self.uri,
-            data=json.dumps({
-                'catalogue_item_id': ci.id,
-            }),
-            content_type='application/json',
-            **self.headers)
-
-        assert response.status_code == 200
-        assert response.json() == {
-            '@event': 'DOWNLOAD_REQUEST_UI_DATA_RENDERED',
-            '@type': 'download_request_render',
-            'columns_operators': [
-                {
-                    '@type': 'column_operators',
-                    'name': 'product',
-                    'operators': ['>', '>=', '<', '<=', '=', '!='],
-                },
-                {
-                    '@type': 'column_operators',
-                    'name': 'price',
-                    'operators': ['>', '>=', '<', '<=', '=', '!='],
-                },
-                {
-                    '@type': 'column_operators',
-                    'name': 'available',
-                    'operators': ['=', '!='],
-                },
-            ],
-        }
-
-
 class DownloadRequestEstimateCommandsTestCase(TestCase):
 
     uri = reverse('downloader:requests.estimate')
@@ -231,7 +154,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
             **DownloadRequestSerializer(r).data,
         }
         assert r.created_by == self.account
-        assert r.uri == (
+        assert r.blob_name == (
             'https://s3.this.region.amazonaws.com/buk.et/results/567.csv')
         assert execute.call_args_list == [call(r)]
 
@@ -249,7 +172,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
                 ],
                 'randomize_ratio': 0.9,
             },
-            uri=(
+            blob_name=(
                 'https://s3.this.region.amazonaws.com/buk.et/results/567.csv'),
             catalogue_item=self.ci)
 

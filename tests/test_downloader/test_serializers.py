@@ -2,7 +2,6 @@
 from django.test import TestCase
 
 from downloader.serializers import (
-    DownloadRequestRenderSerializer,
     DownloadRequestEstimateSerializer,
     DownloadRequestSerializer,
     DownloadRequestListSerializer,
@@ -13,41 +12,6 @@ from tests.factory import EntityFactory
 
 
 ef = EntityFactory()
-
-
-class DownloadRequestRenderSerializerTestCase(TestCase):
-
-    def setUp(self):
-        ef.clear()
-
-    def test_serialize(self):
-
-        assert DownloadRequestRenderSerializer({
-            'columns_operators': [
-                {
-                    'name': 'price',
-                    'operators': ['>=', '='],
-                },
-                {
-                    'name': 'available',
-                    'operators': ['='],
-                },
-            ],
-        }).data == {
-            '@type': 'download_request_render',
-            'columns_operators': [
-                {
-                    '@type': 'column_operators',
-                    'name': 'price',
-                    'operators': ['>=', '='],
-                },
-                {
-                    '@type': 'column_operators',
-                    'name': 'available',
-                    'operators': ['='],
-                },
-            ],
-        }
 
 
 class DownloadRequestEstimateSerializerTestCase(TestCase):
@@ -106,7 +70,7 @@ class DownloadRequestSerializerTestCase(TestCase):
                 ],
                 'randomize_ratio': 0.9,
             },
-            uri=None,
+            blob_name=None,
             real_size=1829,
             estimated_size=1933,
             catalogue_item=ci,
@@ -126,7 +90,8 @@ class DownloadRequestSerializerTestCase(TestCase):
                 ],
                 'randomize_ratio': 0.9,
             },
-            'uri': None,
+            'blob_name': None,
+            'download_uri': None,
             'real_size': 1829,
             'estimated_size': 1933,
             'catalogue_item': CatalogueItemSerializer(ci).data,
@@ -178,7 +143,7 @@ class DownloadRequestListSerializerTestCase(TestCase):
                 ],
                 'randomize_ratio': 0.9,
             },
-            uri=None,
+            blob_name=None,
             real_size=1829,
             estimated_size=1933,
             catalogue_item=ci,
@@ -190,7 +155,7 @@ class DownloadRequestListSerializerTestCase(TestCase):
                 'filters': [],
                 'randomize_ratio': 1,
             },
-            uri=None,
+            blob_name=None,
             real_size=1829,
             estimated_size=1933,
             catalogue_item=ci,

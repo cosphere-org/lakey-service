@@ -11,51 +11,14 @@ from lily import (
 )
 
 from account.models import Account
-from catalogue.models import CatalogueItem
 from .domains import DOWNLOAD_REQUESTS
 from .models import DownloadRequest
 from .serializers import (
-    DownloadRequestRenderSerializer,
     DownloadRequestEstimateSerializer,
     DownloadRequestSerializer,
     DownloadRequestListSerializer,
 )
-from .parsers import DownloadRequestParser, DownloadRequestRenderParser
-
-
-class DownloadRequestRenderCommands(HTTPCommands):
-
-    @command(
-        name=name.Execute('RENDER', 'DOWNLOAD_REQUEST_UI_DATA'),
-
-        meta=Meta(
-            title=(
-                'Render data needed for the built up of the '
-                'download request form on client side'),
-            domain=DOWNLOAD_REQUESTS),
-
-        input=Input(body_parser=DownloadRequestRenderParser),
-
-        access=Access(access_list=Account.AccountType.ANY),
-
-        output=Output(serializer=DownloadRequestRenderSerializer),
-    )
-    def post(self, request):
-
-        ci = CatalogueItem.objects.get(
-            id=request.input.body['catalogue_item_id'])
-
-        columns_operators = []
-        for column in ci.spec:
-            columns_operators.append({
-                'name': column['name'],
-                'operators': (
-                    DownloadRequest.column_type_to_operators[column['type']]),
-            })
-
-        raise self.event.Executed({
-            'columns_operators': columns_operators,
-        })
+from .parsers import DownloadRequestParser
 
 
 class DownloadRequestEstimateCommands(HTTPCommands):

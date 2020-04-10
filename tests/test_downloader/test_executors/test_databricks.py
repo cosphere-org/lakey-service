@@ -76,16 +76,14 @@ class DatabricksExecutorTestCase(TestCase):
             'submit_run'
         )
 
-        get_output_file_path = self.mocker.patch.object(
+        self.mocker.patch.object(
             self.executor,
             'get_output_file_path'
-        )
-
-        get_output_file_path.return_value = 'dbfs://output_file.csv'
+        ).return_value = '/dbfs/mnt/output_file.csv'
 
         assert self.executor.execute_query(
             'SELECT * from everywhere'
-        ) == 'https:/databricks.com'
+        ) == 'output_file.csv'
 
         assert submit_run.call_args_list == [
             call(
@@ -95,7 +93,7 @@ class DatabricksExecutorTestCase(TestCase):
                     'python_file': 'dbfs://scripts',
                     'parameters': [
                         'SELECT * from everywhere',
-                        'dbfs://output_file.csv'
+                        '/dbfs/mnt/output_file.csv'
                     ]
                 }
             )
