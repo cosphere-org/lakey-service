@@ -14,7 +14,6 @@ register = template.Library()
 
 @register.simple_tag
 def sample_table(sample):
-    print(f"sample: {sample}")
     df = pd.DataFrame(sample)
     df_html = df.to_html(index=False).replace('\n', '')
     return mark_safe(df_html)
