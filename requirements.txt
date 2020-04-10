@@ -23,3 +23,6 @@ databricks-api==0.3.0
 # -- Azure Blob Storage
 azure-storage-common==2.1.0
 azure-storage-blob==12.3.0
+
+# -- distribution charts
+plotly==4.6.0
