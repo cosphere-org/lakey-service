@@ -61,8 +61,8 @@
                     "status": 201,
                     "content_type": "application/json",
                     "content": {
-                        "authenticate_ui_uri": "/accounts/auth_requests/674b68ab-7b32-11ea-83d0-4485007e7d04/authenticate/ui/",
-                        "request_uuid": "674b68ab-7b32-11ea-83d0-4485007e7d04",
+                        "authenticate_ui_uri": "/accounts/auth_requests/88ba07db-7bf0-11ea-83d0-4485007e7d04/authenticate/ui/",
+                        "request_uuid": "88ba07db-7bf0-11ea-83d0-4485007e7d04",
                         "@type": "auth_request",
                         "@event": "AUTH_REQUEST_CREATED"
                     }
@@ -198,37 +198,13 @@
             }
         },
         "examples": {
-            "404 (COULD_NOT_FIND_AUTHREQUEST)": {
-                "method": "post",
-                "description": "COULD_NOT_FIND_AUTHREQUEST",
-                "request": {
-                    "path": "/accounts/auth_requests/attach_account/",
-                    "content": {
-                        "request_uuid": "674b68ac-7b32-11ea-83d0-4485007e7d04",
-                        "oauth_token": "some-auth-token",
-                        "email": "jacky@somewhere.org"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 404,
-                    "content_type": "application/json",
-                    "content": {
-                        "@type": "error",
-                        "@event": "COULD_NOT_FIND_AUTHREQUEST"
-                    }
-                }
-            },
             "200 (ACCOUNT_TO_AUTH_REQUEST_ATTACHED)": {
                 "method": "post",
                 "description": "ACCOUNT_TO_AUTH_REQUEST_ATTACHED",
                 "request": {
                     "path": "/accounts/auth_requests/attach_account/",
                     "content": {
-                        "request_uuid": "674b68ad-7b32-11ea-83d0-4485007e7d04",
+                        "request_uuid": "88ba07dc-7bf0-11ea-83d0-4485007e7d04",
                         "oauth_token": "some-oauth-token",
                         "email": "jacky@somewhere.org"
                     },
@@ -274,6 +250,30 @@
                         },
                         "@type": "error",
                         "@event": "BODY_DID_NOT_VALIDATE"
+                    }
+                }
+            },
+            "404 (COULD_NOT_FIND_AUTHREQUEST)": {
+                "method": "post",
+                "description": "COULD_NOT_FIND_AUTHREQUEST",
+                "request": {
+                    "path": "/accounts/auth_requests/attach_account/",
+                    "content": {
+                        "request_uuid": "88ba07dd-7bf0-11ea-83d0-4485007e7d04",
+                        "oauth_token": "some-auth-token",
+                        "email": "jacky@somewhere.org"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 404,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "error",
+                        "@event": "COULD_NOT_FIND_AUTHREQUEST"
                     }
                 }
             }
@@ -346,7 +346,7 @@
                 "request": {
                     "path": "/accounts/auth_tokens/",
                     "content": {
-                        "request_uuid": "f5e7e000-5074-11e4-b796-507b9deb8705"
+                        "request_uuid": "f5e7e000-5074-11e4-9515-507b9deb8705"
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json"
@@ -368,7 +368,7 @@
                 "request": {
                     "path": "/accounts/auth_tokens/",
                     "content": {
-                        "request_uuid": "674b68aa-7b32-11ea-83d0-4485007e7d04"
+                        "request_uuid": "88ba07da-7bf0-11ea-83d0-4485007e7d04"
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json"
@@ -744,6 +744,48 @@
             }
         },
         "examples": {
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "post",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/catalogue/items/",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 27,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjYsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.k5SCQVoo3ECScMucwl_bSOONbt_i8qhgg1ZK-6CaDLw"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "spec": [
+                                "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE",
+                        "@authorizer": {
+                            "account_id": 26
+                        }
+                    }
+                }
+            },
             "201 (CATALOGUEITEM_CREATED)": {
                 "method": "post",
                 "description": "CATALOGUEITEM_CREATED",
@@ -762,12 +804,12 @@
                                 "distribution": null
                             }
                         ],
-                        "maintained_by_id": 66,
+                        "maintained_by_id": 30,
                         "executor_type": "DATABRICKS"
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjUsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDF9.qrsYongQQwM35T3g0QGdIrgwO8QmwE4cEiILog4NbmQ"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.E6fws4k6li8M28AQhDA4mRfFRpsAwY3tn6bzgKyRkHs"
                     },
                     "parameters": {}
                 },
@@ -775,7 +817,7 @@
                     "status": 201,
                     "content_type": "application/json",
                     "content": {
-                        "id": 50,
+                        "id": 19,
                         "name": "iot_events",
                         "spec": [
                             {
@@ -790,20 +832,20 @@
                         "sample": [],
                         "executor_type": "DATABRICKS",
                         "created_by": {
-                            "id": 65,
-                            "email": "kuvalisxander@gmail.com",
+                            "id": 29,
+                            "email": "gerardwiegand@hotmail.com",
                             "type": "ADMIN",
                             "@type": "account"
                         },
                         "updated_by": {
-                            "id": 65,
-                            "email": "kuvalisxander@gmail.com",
+                            "id": 29,
+                            "email": "gerardwiegand@hotmail.com",
                             "type": "ADMIN",
                             "@type": "account"
                         },
                         "maintained_by": {
-                            "id": 66,
-                            "email": "russelnormand@bailey.com",
+                            "id": 30,
+                            "email": "trinidadhuel@yahoo.com",
                             "type": "RESEARCHER",
                             "@type": "account"
                         },
@@ -835,7 +877,7 @@
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjksImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDF9.cU6ngm8oAA1DY8PmxeTaQvHn0REPazlXSojDRv0mmOg"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzIsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.lGrOoReOgsZqxv08Ipnp9eu2D6vo1w4Q6CPdVtNeRi0"
                     },
                     "parameters": {}
                 },
@@ -851,49 +893,7 @@
                         "@type": "error",
                         "@event": "BODY_JSON_DID_NOT_PARSE",
                         "@authorizer": {
-                            "account_id": 69
-                        }
-                    }
-                }
-            },
-            "400 (BODY_DID_NOT_VALIDATE)": {
-                "method": "post",
-                "description": "BODY_DID_NOT_VALIDATE",
-                "request": {
-                    "path": "/catalogue/items/",
-                    "content": {
-                        "name": "iot_events",
-                        "sample": [],
-                        "spec": [
-                            {
-                                "name": "value",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "distribution": null
-                            }
-                        ],
-                        "maintained_by_id": 75,
-                        "executor_type": "DATABRICKS"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzQsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.U_-bqvyniuaKG2x1LSzn06CFzMSRrwkbXv8ZDU3_bBM"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "errors": {
-                            "spec": [
-                                "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
-                            ]
-                        },
-                        "@type": "error",
-                        "@event": "BODY_DID_NOT_VALIDATE",
-                        "@authorizer": {
-                            "account_id": 74
+                            "account_id": 32
                         }
                     }
                 }
@@ -1165,9 +1165,9 @@
                 "method": "get",
                 "description": "CATALOGUEITEMS_BULK_READ",
                 "request": {
-                    "path": "/catalogue/items/?query=feature+tempera",
+                    "path": "/catalogue/items/?query=IoT",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzMsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDF9.ajcPb7GUt-sR2kEBaC_PbSMii3DgFf0fac-eRpVtZlA"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzYsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.5XxK6iQxnhbTsdtaO94F_x5C-_0ol6_eBpNljNLpHpQ"
                     },
                     "parameters": {}
                 },
@@ -1177,7 +1177,7 @@
                     "content": {
                         "items": [
                             {
-                                "id": 66,
+                                "id": 32,
                                 "name": "iot_features",
                                 "spec": [
                                     {
@@ -1218,8 +1218,8 @@
                                 "@type": "catalogue_item"
                             },
                             {
-                                "id": 67,
-                                "name": "temperatures",
+                                "id": 34,
+                                "name": "iot_events",
                                 "spec": [
                                     {
                                         "name": "location",
@@ -1510,19 +1510,19 @@
                 "method": "get",
                 "description": "CATALOGUEITEM_READ",
                 "request": {
-                    "path": "/catalogue/items/70",
+                    "path": "/catalogue/items/37",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODIsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.PNipRbbJWpzu_X4JmzRaSGFJ7x0husPyqieZi-cdftA"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzksImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.iZFE2daIrmF6CurVC7oDqodL_z9N7gnFBMzw74XjeMs"
                     },
                     "parameters": {
-                        "item_id": "70"
+                        "item_id": "37"
                     }
                 },
                 "response": {
                     "status": 200,
                     "content_type": "application/json",
                     "content": {
-                        "id": 70,
+                        "id": 37,
                         "name": "temperatures",
                         "spec": [
                             {
@@ -1571,7 +1571,7 @@
                 "request": {
                     "path": "/catalogue/items/69506",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODksImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.J0XhmOKagjVJsMRyCjQEzg3Kuxv0b2sHUb4Pj3AqV74"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDgsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2M30.2Vz8H8fmnf2S_Lp-4gbwcXzpGBuXBwuGabq2jnL9Tfk"
                     },
                     "parameters": {
                         "item_id": "69506"
@@ -1584,7 +1584,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                         "@authorizer": {
-                            "account_id": 89
+                            "account_id": 48
                         }
                     }
                 }
@@ -1942,6 +1942,120 @@
             }
         },
         "examples": {
+            "200 (CATALOGUEITEM_UPDATED)": {
+                "method": "put",
+                "description": "CATALOGUEITEM_UPDATED",
+                "request": {
+                    "path": "/catalogue/items/39",
+                    "content": {
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "is_enum": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 41,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDAsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.djTKEc7l_sLOCvQC8HFYDuwF2Uc9cWxGz-zFNCmo5cQ"
+                    },
+                    "parameters": {
+                        "item_id": "39"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "id": 39,
+                        "name": "temperatures",
+                        "spec": [
+                            {
+                                "name": "value",
+                                "type": "FLOAT",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "is_enum": false,
+                                "distribution": null
+                            }
+                        ],
+                        "sample": [],
+                        "executor_type": "DATABRICKS",
+                        "created_by": {
+                            "id": 42,
+                            "email": "heaneyzelda@yundt.com",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "updated_by": {
+                            "id": 40,
+                            "email": "gerardwiegand@hotmail.com",
+                            "type": "ADMIN",
+                            "@type": "account"
+                        },
+                        "maintained_by": {
+                            "id": 41,
+                            "email": "trinidadhuel@yahoo.com",
+                            "type": "RESEARCHER",
+                            "@type": "account"
+                        },
+                        "@type": "catalogue_item",
+                        "@event": "CATALOGUEITEM_UPDATED"
+                    }
+                }
+            },
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "put",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/catalogue/items/40",
+                    "content": {
+                        "name": "iot_events",
+                        "sample": [],
+                        "spec": [
+                            {
+                                "name": "value",
+                                "size": 19203,
+                                "is_nullable": false,
+                                "is_enum": false,
+                                "distribution": null
+                            }
+                        ],
+                        "maintained_by_id": 44,
+                        "executor_type": "DATABRICKS"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDMsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.ky54LzCXJ_86ASJvctdJUlN5ISAqdIgGwWfSfj36p6Q"
+                    },
+                    "parameters": {
+                        "item_id": "40"
+                    }
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "spec": [
+                                "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE",
+                        "@authorizer": {
+                            "account_id": 43
+                        }
+                    }
+                }
+            },
             "404 (COULD_NOT_FIND_CATALOGUEITEM)": {
                 "method": "put",
                 "description": "COULD_NOT_FIND_CATALOGUEITEM",
@@ -1960,12 +2074,12 @@
                                 "distribution": null
                             }
                         ],
-                        "maintained_by_id": 81,
+                        "maintained_by_id": 46,
                         "executor_type": "DATABRICKS"
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODAsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.Zf5N4_oHCE5bB5OQVgZxHvpFR3PO7ASobmX9XEenRVo"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDUsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.WvHizcPYeM9eKe45lhf1SZB80C__L7wBbKLMU1NkuBQ"
                     },
                     "parameters": {
                         "item_id": "9022"
@@ -1978,121 +2092,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                         "@authorizer": {
-                            "account_id": 80
-                        }
-                    }
-                }
-            },
-            "200 (CATALOGUEITEM_UPDATED)": {
-                "method": "put",
-                "description": "CATALOGUEITEM_UPDATED",
-                "request": {
-                    "path": "/catalogue/items/76",
-                    "content": {
-                        "sample": [],
-                        "spec": [
-                            {
-                                "name": "value",
-                                "type": "FLOAT",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "is_enum": false,
-                                "distribution": null
-                            }
-                        ],
-                        "maintained_by_id": 87,
-                        "executor_type": "DATABRICKS"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODYsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.awpl6zi7ger-c6u730KrAA6W1LPZuz06GrXd15WqhlQ"
-                    },
-                    "parameters": {
-                        "item_id": "76"
-                    }
-                },
-                "response": {
-                    "status": 200,
-                    "content_type": "application/json",
-                    "content": {
-                        "id": 76,
-                        "name": "temperatures",
-                        "spec": [
-                            {
-                                "name": "value",
-                                "type": "FLOAT",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "is_enum": false,
-                                "distribution": null
-                            }
-                        ],
-                        "sample": [],
-                        "executor_type": "DATABRICKS",
-                        "created_by": {
-                            "id": 88,
-                            "email": "mheidenreich@yahoo.com",
-                            "type": "RESEARCHER",
-                            "@type": "account"
-                        },
-                        "updated_by": {
-                            "id": 86,
-                            "email": "kuvalisxander@gmail.com",
-                            "type": "ADMIN",
-                            "@type": "account"
-                        },
-                        "maintained_by": {
-                            "id": 87,
-                            "email": "russelnormand@bailey.com",
-                            "type": "RESEARCHER",
-                            "@type": "account"
-                        },
-                        "@type": "catalogue_item",
-                        "@event": "CATALOGUEITEM_UPDATED"
-                    }
-                }
-            },
-            "400 (BODY_DID_NOT_VALIDATE)": {
-                "method": "put",
-                "description": "BODY_DID_NOT_VALIDATE",
-                "request": {
-                    "path": "/catalogue/items/77",
-                    "content": {
-                        "name": "iot_events",
-                        "sample": [],
-                        "spec": [
-                            {
-                                "name": "value",
-                                "size": 19203,
-                                "is_nullable": false,
-                                "is_enum": false,
-                                "distribution": null
-                            }
-                        ],
-                        "maintained_by_id": 91,
-                        "executor_type": "DATABRICKS"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OTAsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.HpIZUg3t-VXjXfhTzdAVSu4bk6ODWxJQAyY1ZM3V8CE"
-                    },
-                    "parameters": {
-                        "item_id": "77"
-                    }
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "errors": {
-                            "spec": [
-                                "JSON did not validate. PATH: '0' REASON: 'type' is a required property"
-                            ]
-                        },
-                        "@type": "error",
-                        "@event": "BODY_DID_NOT_VALIDATE",
-                        "@authorizer": {
-                            "account_id": 90
+                            "account_id": 45
                         }
                     }
                 }
@@ -2148,42 +2148,16 @@
             }
         },
         "examples": {
-            "400 (NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED)": {
-                "method": "delete",
-                "description": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
-                "request": {
-                    "path": "/catalogue/items/72",
-                    "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODMsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.T0ZOjJB4B6kGKQlPjncN42VEUP0ApIvrIFMkquhhpDk"
-                    },
-                    "parameters": {
-                        "item_id": "72"
-                    }
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "item_id": 72,
-                        "not_cancelled_count": 1,
-                        "@type": "error",
-                        "@event": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
-                        "@authorizer": {
-                            "account_id": 83
-                        }
-                    }
-                }
-            },
             "200 (CATALOGUEITEM_DELETED)": {
                 "method": "delete",
                 "description": "CATALOGUEITEM_DELETED",
                 "request": {
-                    "path": "/catalogue/items/74",
+                    "path": "/catalogue/items/35",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODQsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.O2mNT6VoAuF9dS-noQOlJNoWY-rTyCXFDcbSecZ7yqo"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzcsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.jdwBAV5MGn3_6m2YT8n5vnvNk_tC-ndr-1aF8fLWJws"
                     },
                     "parameters": {
-                        "item_id": "74"
+                        "item_id": "35"
                     }
                 },
                 "response": {
@@ -2201,7 +2175,7 @@
                 "request": {
                     "path": "/catalogue/items/69506",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODUsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.cJJ87E3sZeb1cU94WhUo_A6Kf_siXpfQUt3JUHoI3G4"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzgsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.7IvMoE7VmagxAifgBe9M02N28vM-hfG6VG_GUY2RFto"
                     },
                     "parameters": {
                         "item_id": "69506"
@@ -2214,7 +2188,33 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                         "@authorizer": {
-                            "account_id": 85
+                            "account_id": 38
+                        }
+                    }
+                }
+            },
+            "400 (NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED)": {
+                "method": "delete",
+                "description": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
+                "request": {
+                    "path": "/catalogue/items/41",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDcsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2Mn0.ztCRa7v-F9fCt3XplljqBhc038-rt6gb0Ecl0_YCmsU"
+                    },
+                    "parameters": {
+                        "item_id": "41"
+                    }
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "item_id": 41,
+                        "not_cancelled_count": 1,
+                        "@type": "error",
+                        "@event": "NOT_CANCELLED_DOWNLOAD_REQEUSTS_DETECTED",
+                        "@authorizer": {
+                            "account_id": 47
                         }
                     }
                 }
@@ -2276,7 +2276,7 @@
                 "request": {
                     "path": "/catalogue/items/9022/samples_and_distributions/",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzYsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.Y1vxjrIRdzaHrDUdC2K8uFrdgmWviXNhKMycNHbybfQ"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDksImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2M30.J3IrmcdC_gKLg3sIETKIuBKxH_xxdx2SQxAa4WURReA"
                     },
                     "parameters": {
                         "item_id": "9022"
@@ -2289,7 +2289,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_CATALOGUEITEM",
                         "@authorizer": {
-                            "account_id": 76
+                            "account_id": 49
                         }
                     }
                 }
@@ -2298,12 +2298,12 @@
                 "method": "put",
                 "description": "CATALOGUEITEM_WITH_SAMPLE_AND_DISTRIBUTION_UPDATED",
                 "request": {
-                    "path": "/catalogue/items/69/samples_and_distributions/",
+                    "path": "/catalogue/items/43/samples_and_distributions/",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzcsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMxMDJ9.ivEneYA3pU9TWqjmrNLCUMWpcbZp5VkiJXj6u2F2E6Y"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2M30.0xaABGczD4EWqNn8cgqA3caMupw6xv920EghjjUAW_c"
                     },
                     "parameters": {
-                        "item_id": "69"
+                        "item_id": "43"
                     }
                 },
                 "response": {
@@ -2456,11 +2456,11 @@
                             "filters": [],
                             "randomize_ratio": 0.9
                         },
-                        "catalogue_item_id": 38
+                        "catalogue_item_id": 6
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDMsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTl9.glHr8cYn3A3cSh2yaSOEJjVFb_DTNqANmF9mKiNcqzo"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTAsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2MX0.iuGDOZfqZlMHmuOJt3bppiZKKKDnkABQjejAsgMWDjk"
                     },
                     "parameters": {}
                 },
@@ -2904,84 +2904,6 @@
             }
         },
         "examples": {
-            "400 (BODY_DID_NOT_VALIDATE)": {
-                "method": "post",
-                "description": "BODY_DID_NOT_VALIDATE",
-                "request": {
-                    "path": "/downloader/requests/",
-                    "content": {
-                        "spec": {
-                            "columns": [
-                                "product",
-                                "price"
-                            ],
-                            "filters": [],
-                            "randomize_ratio": 0.9
-                        },
-                        "catalogue_item_id": "TEXT"
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzcsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.eXsD8qM1Pa4cNxVTQViA9UW_Xc1PTrGuDdUbvleEpuo"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "errors": {
-                            "catalogue_item_id": [
-                                "A valid integer is required."
-                            ]
-                        },
-                        "@type": "error",
-                        "@event": "BODY_DID_NOT_VALIDATE",
-                        "@authorizer": {
-                            "account_id": 37
-                        }
-                    }
-                }
-            },
-            "400 (BODY_JSON_DID_NOT_PARSE)": {
-                "method": "post",
-                "description": "BODY_JSON_DID_NOT_PARSE",
-                "request": {
-                    "path": "/downloader/requests/",
-                    "content": {
-                        "spec": {
-                            "columns": [
-                                "product",
-                                "price"
-                            ],
-                            "filters": [],
-                            "randomize_ratio": 0.9
-                        },
-                        "catalogue_item_id": 58495
-                    },
-                    "headers": {
-                        "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzgsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.h-1yEorqxGcl6PcqgCyumOAYrr_F9X5Rgtk6nDibksY"
-                    },
-                    "parameters": {}
-                },
-                "response": {
-                    "status": 400,
-                    "content_type": "application/json",
-                    "content": {
-                        "errors": {
-                            "catalogue_item": [
-                                "catalogue item instance with id 58495 does not exist."
-                            ]
-                        },
-                        "@type": "error",
-                        "@event": "BODY_JSON_DID_NOT_PARSE",
-                        "@authorizer": {
-                            "account_id": 38
-                        }
-                    }
-                }
-            },
             "200 (DOWNLOADREQUEST_READ)": {
                 "method": "post",
                 "description": "DOWNLOADREQUEST_READ",
@@ -3012,11 +2934,11 @@
                             ],
                             "randomize_ratio": 0.9
                         },
-                        "catalogue_item_id": 36
+                        "catalogue_item_id": 1
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDEsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.kkPpe-1_pNbPpHrwNPNVBlGU9YFfsxAV9Fj1s-AkaZ8"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NCwiZW1haWwiOiJnZXJhcmR3aWVnYW5kQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTg2Njk0NzYwfQ.L_jbtNTA0t-NBxCrrrI6SR64GYO8IXBwl8ZtkZcON_U"
                     },
                     "parameters": {}
                 },
@@ -3053,8 +2975,8 @@
                         "estimated_size": null,
                         "executor_job_id": null,
                         "catalogue_item": {
-                            "id": 36,
-                            "name": "Ancil Russel",
+                            "id": 1,
+                            "name": "Denice Jacobi",
                             "spec": [
                                 {
                                     "name": "product",
@@ -3101,11 +3023,11 @@
                             "filters": [],
                             "randomize_ratio": 0.9
                         },
-                        "catalogue_item_id": 37
+                        "catalogue_item_id": 3
                     },
                     "headers": {
                         "CONTENT-TYPE": "application/json",
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDIsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.-OiSMdVe_8yKuP6s7lT4LuXPd_K6afaaa6oWIr7Uxaw"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NywiZW1haWwiOiJnZXJhcmR3aWVnYW5kQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTg2Njk0NzYwfQ.own2ZaIfezhUYB7VwGpUcdoBC0PPHvUOWkNeVh2E658"
                     },
                     "parameters": {}
                 },
@@ -3126,8 +3048,8 @@
                         "estimated_size": null,
                         "executor_job_id": null,
                         "catalogue_item": {
-                            "id": 37,
-                            "name": "Ancil Russel",
+                            "id": 3,
+                            "name": "Denice Jacobi",
                             "spec": [
                                 {
                                     "name": "product",
@@ -3154,14 +3076,92 @@
                             "@type": "catalogue_item"
                         },
                         "created_by": {
-                            "id": 42,
-                            "email": "kuvalisxander@gmail.com",
+                            "id": 7,
+                            "email": "gerardwiegand@hotmail.com",
                             "type": "ADMIN",
                             "@type": "account"
                         },
                         "is_cancelled": false,
                         "@type": "download_request",
                         "@event": "DOWNLOADREQUEST_CREATED"
+                    }
+                }
+            },
+            "400 (BODY_DID_NOT_VALIDATE)": {
+                "method": "post",
+                "description": "BODY_DID_NOT_VALIDATE",
+                "request": {
+                    "path": "/downloader/requests/",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "catalogue_item_id": "TEXT"
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OCwiZW1haWwiOiJnZXJhcmR3aWVnYW5kQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTg2Njk0NzYwfQ.NwiZnr-l52HHNdneR6QirIkc5Lhk2C3GGEs3mL2KN-0"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "catalogue_item_id": [
+                                "A valid integer is required."
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_DID_NOT_VALIDATE",
+                        "@authorizer": {
+                            "account_id": 8
+                        }
+                    }
+                }
+            },
+            "400 (BODY_JSON_DID_NOT_PARSE)": {
+                "method": "post",
+                "description": "BODY_JSON_DID_NOT_PARSE",
+                "request": {
+                    "path": "/downloader/requests/",
+                    "content": {
+                        "spec": {
+                            "columns": [
+                                "product",
+                                "price"
+                            ],
+                            "filters": [],
+                            "randomize_ratio": 0.9
+                        },
+                        "catalogue_item_id": 58495
+                    },
+                    "headers": {
+                        "CONTENT-TYPE": "application/json",
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6OSwiZW1haWwiOiJnZXJhcmR3aWVnYW5kQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTg2Njk0NzYwfQ.xjtqiOo2ZUue0JBoKoCwDm9K0D4qMInMu7XOP2nNQWQ"
+                    },
+                    "parameters": {}
+                },
+                "response": {
+                    "status": 400,
+                    "content_type": "application/json",
+                    "content": {
+                        "errors": {
+                            "catalogue_item": [
+                                "catalogue item instance with id 58495 does not exist."
+                            ]
+                        },
+                        "@type": "error",
+                        "@event": "BODY_JSON_DID_NOT_PARSE",
+                        "@authorizer": {
+                            "account_id": 9
+                        }
                     }
                 }
             }
@@ -3538,7 +3538,7 @@
                 "request": {
                     "path": "/downloader/requests/",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzksImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.VS-4vHlW3Hnjlvj9BZoNiUiODdgGGnv4B6AmmAtBUgo"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NSwiZW1haWwiOiJnZXJhcmR3aWVnYW5kQGhvdG1haWwuY29tIiwidHlwZSI6IkFETUlOIiwiZXhwIjoxNTg2Njk0NzYwfQ.4-ebQdsO7eLF2mgFfE5CD9fh6wdcAO_vkfMI-eXgKU4"
                     },
                     "parameters": {}
                 },
@@ -3567,8 +3567,8 @@
                                 "estimated_size": null,
                                 "executor_job_id": null,
                                 "catalogue_item": {
-                                    "id": 35,
-                                    "name": "Ancil Russel",
+                                    "id": 2,
+                                    "name": "Denice Jacobi",
                                     "spec": [
                                         {
                                             "name": "product",
@@ -3595,8 +3595,8 @@
                                     "@type": "catalogue_item"
                                 },
                                 "created_by": {
-                                    "id": 40,
-                                    "email": "bednarclaudie@gmail.com",
+                                    "id": 6,
+                                    "email": "keely20@yahoo.com",
                                     "type": "RESEARCHER",
                                     "@type": "account"
                                 },
@@ -3623,8 +3623,8 @@
                                 "estimated_size": null,
                                 "executor_job_id": null,
                                 "catalogue_item": {
-                                    "id": 35,
-                                    "name": "Ancil Russel",
+                                    "id": 2,
+                                    "name": "Denice Jacobi",
                                     "spec": [
                                         {
                                             "name": "product",
@@ -3651,8 +3651,8 @@
                                     "@type": "catalogue_item"
                                 },
                                 "created_by": {
-                                    "id": 40,
-                                    "email": "bednarclaudie@gmail.com",
+                                    "id": 6,
+                                    "email": "keely20@yahoo.com",
                                     "type": "RESEARCHER",
                                     "@type": "account"
                                 },
@@ -4030,12 +4030,12 @@
                 "method": "get",
                 "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
                 "request": {
-                    "path": "/downloader/requests/69506",
+                    "path": "/downloader/requests/6",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzMsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.ORY8xjceWlq9l40G3_vvGKAvmkUK8ihFG_cAYpZy16c"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTMsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2MX0.A9I7uxFOzPyXHiaaLBXvpyRtLJCxm4Vx0j0oCLHqevM"
                     },
                     "parameters": {
-                        "request_id": "69506"
+                        "request_id": "6"
                     }
                 },
                 "response": {
@@ -4045,7 +4045,7 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
                         "@authorizer": {
-                            "account_id": 33
+                            "account_id": 13
                         }
                     }
                 }
@@ -4054,12 +4054,12 @@
                 "method": "get",
                 "description": "DOWNLOADREQUEST_READ",
                 "request": {
-                    "path": "/downloader/requests/10",
+                    "path": "/downloader/requests/8",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzQsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.1RppSY2_FJ2NQhBbpnqnyGsKA4qxs86V7-taW_ikPIk"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTcsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2MX0.ksP_1HNADv6TiPX5icLkqNvgl8bIgpSZpLrv4MiD54U"
                     },
                     "parameters": {
-                        "request_id": "10"
+                        "request_id": "8"
                     }
                 },
                 "response": {
@@ -4085,8 +4085,8 @@
                         "estimated_size": null,
                         "executor_job_id": null,
                         "catalogue_item": {
-                            "id": 31,
-                            "name": "Ancil Russel",
+                            "id": 11,
+                            "name": "Denice Jacobi",
                             "spec": [
                                 {
                                     "name": "product",
@@ -4113,8 +4113,8 @@
                             "@type": "catalogue_item"
                         },
                         "created_by": {
-                            "id": 35,
-                            "email": "bednarclaudie@gmail.com",
+                            "id": 18,
+                            "email": "keely20@yahoo.com",
                             "type": "RESEARCHER",
                             "@type": "account"
                         },
@@ -4176,34 +4176,13 @@
             }
         },
         "examples": {
-            "200 (DOWNLOADREQUEST_DELETED)": {
-                "method": "delete",
-                "description": "DOWNLOADREQUEST_DELETED",
-                "request": {
-                    "path": "/downloader/requests/8",
-                    "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjksImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.DDvyODRnL2aQJRd6-JEIcX5kalpHk9rkaMKHAIGJIVQ"
-                    },
-                    "parameters": {
-                        "request_id": "8"
-                    }
-                },
-                "response": {
-                    "status": 200,
-                    "content_type": "application/json",
-                    "content": {
-                        "@type": "empty",
-                        "@event": "DOWNLOADREQUEST_DELETED"
-                    }
-                }
-            },
             "404 (COULD_NOT_FIND_DOWNLOADREQUEST)": {
                 "method": "delete",
                 "description": "COULD_NOT_FIND_DOWNLOADREQUEST",
                 "request": {
                     "path": "/downloader/requests/69506",
                     "headers": {
-                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzYsImVtYWlsIjoia3V2YWxpc3hhbmRlckBnbWFpbC5jb20iLCJ0eXBlIjoiQURNSU4iLCJleHAiOjE1ODY2MTMwOTh9.XEXV9FqZJI93zfd7vBvXok7YcYcrLhBYcyQMhwpRM0w"
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTIsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2MX0.f_wuijgv7wvJAXvuIkwJlvyed1hhHm2WEatsubijWVI"
                     },
                     "parameters": {
                         "request_id": "69506"
@@ -4216,8 +4195,29 @@
                         "@type": "error",
                         "@event": "COULD_NOT_FIND_DOWNLOADREQUEST",
                         "@authorizer": {
-                            "account_id": 36
+                            "account_id": 12
                         }
+                    }
+                }
+            },
+            "200 (DOWNLOADREQUEST_DELETED)": {
+                "method": "delete",
+                "description": "DOWNLOADREQUEST_DELETED",
+                "request": {
+                    "path": "/downloader/requests/7",
+                    "headers": {
+                        "AUTHORIZATION": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTUsImVtYWlsIjoiZ2VyYXJkd2llZ2FuZEBob3RtYWlsLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTU4NjY5NDc2MX0.TYNKo2K3NmMmM_uibTm5AMdpwTzQAPk1kYoJMkm347U"
+                    },
+                    "parameters": {
+                        "request_id": "7"
+                    }
+                },
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "content": {
+                        "@type": "empty",
+                        "@event": "DOWNLOADREQUEST_DELETED"
                     }
                 }
             }
