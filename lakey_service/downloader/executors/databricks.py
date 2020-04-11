@@ -1,3 +1,4 @@
+
 import os
 
 from databricks_api import DatabricksAPI
@@ -22,8 +23,8 @@ class DatabricksExecutor(BaseExecutor):
                             crypto.get_random_string(length=4),
                             "output.csv"])
 
-        return os.path.join(settings.DATABRICKS_RESULTS_LOCATION,
-                            filename)
+        return os.path.join(
+            settings.DATABRICKS_RESULTS_LOCATION, filename)
 
     def execute(self, download_request):
 
@@ -44,5 +45,4 @@ class DatabricksExecutor(BaseExecutor):
             }
         )
 
-        # TODO return proper location of output file
-        return settings.DATABRICKS_HOST
+        return output_file.replace('/dbfs/mnt/', '')

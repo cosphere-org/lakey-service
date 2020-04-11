@@ -1,6 +1,10 @@
 
 from enum import Enum, unique
+from datetime import timedelta
 
+from azure.storage.blob import generate_blob_sas
+from django.conf import settings
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save
 from django.db import models
@@ -122,7 +126,7 @@ class DownloadRequest(ValidatingModel):
 
     normalized_spec = models.TextField(default='', blank=True)
 
-    uri = models.URLField(null=True, blank=True)
+    blob_name = models.CharField(null=True, blank=True, max_length=256)
 
     real_size = models.IntegerField(null=True, blank=True)
 
@@ -144,7 +148,7 @@ class DownloadRequest(ValidatingModel):
     is_cancelled = models.BooleanField(default=False)
 
     def execute(self):
-        self.uri = self.catalogue_item.executor.execute(self)
+        self.blob_name = self.catalogue_item.executor.execute(self)
         self.save()
 
     def clean(self):
@@ -262,6 +266,29 @@ class DownloadRequest(ValidatingModel):
             f'{self.id} - '
             f'{self.created_by.email}: '
             f'requested {self.catalogue_item.name}')
+
+    @property
+    def download_uri(self):
+
+        if not self.blob_name:
+            return
+
+        account_name = settings.AZURE_BLOB_STORAGE_ACCOUNT_NAME
+
+        container_name = settings.AZURE_BLOB_STORAGE_CONTAINER
+
+        sas = generate_blob_sas(
+            account_name=account_name,
+            account_key=settings.AZURE_BLOB_STORAGE_ACCOUNT_KEY,
+            container=container_name,
+            blob=self.blob_name,
+            permission='r',
+            start=timezone.now(),
+            expiry=timezone.now() + timedelta(seconds=3600))
+
+        return (
+            f'https://{account_name}.blob.core.windows.net/'
+            f'{container_name}/{self.blob_name}?{sas}')
 
 
 def pre_save_flow(sender, instance, **kwargs):

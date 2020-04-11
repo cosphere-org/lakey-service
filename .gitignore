@@ -1,4 +1,5 @@
 
+.ipynb_checkpoints
 env_private.sh
 ngrok_private.yaml
 *.py[cod]

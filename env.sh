@@ -43,6 +43,15 @@ export AWS_LAKEY_RESULTS_LOCATION=to.be.overwritten
 export AWS_S3_BUCKET=to.be.overwritten
 
 #
+# AZURE BLOB STORAGE
+#
+export AZURE_BLOB_STORAGE_ACCOUNT_NAME=to.be.overwritten
+
+export AZURE_BLOB_STORAGE_ACCOUNT_KEY=to.be.overwritten
+
+export AZURE_BLOB_STORAGE_CONTAINER=to.be.overwritten
+
+#
 # DATABRICKS
 #
 export DATABRICKS_TOKEN=to.be.overwritten

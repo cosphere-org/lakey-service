@@ -15,13 +15,6 @@ class OperatorsPerColumnSerializer(serializers.Serializer):
     operators = serializers.ListField(child=serializers.CharField())
 
 
-class DownloadRequestRenderSerializer(serializers.Serializer):
-
-    _type = 'download_request_render'
-
-    columns_operators = OperatorsPerColumnSerializer(many=True)
-
-
 class DownloadRequestEstimateSerializer(serializers.Serializer):
 
     _type = 'download_request_estimated_size'
@@ -43,7 +36,8 @@ class DownloadRequestSerializer(serializers.ModelSerializer):
         fields = (
             # -- model fields
             'spec',
-            'uri',
+            'download_uri',
+            'blob_name',
             'real_size',
             'estimated_size',
             'executor_job_id',

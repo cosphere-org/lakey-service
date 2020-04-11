@@ -1,8 +1,9 @@
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.core.exceptions import ValidationError
 
 import pytest
+from freezegun import freeze_time
 
 from downloader.models import DownloadRequest
 from tests.factory import EntityFactory
@@ -12,6 +13,10 @@ ef = EntityFactory()
 
 
 class DownloadRequestTestCase(TestCase):
+
+    @pytest.fixture(autouse=True)
+    def initfixtures(self, mocker):
+        self.mocker = mocker
 
     def setUp(self):
         ef.clear()
@@ -345,6 +350,62 @@ class DownloadRequestTestCase(TestCase):
             'columns': ['price', 'amount'],
             'filters': [{'name': 'price', 'operator': '>=', 'value': 78}],
         }) == 'columns:amount,price|filters:price>=78|randomize_ratio:1'
+
+    #
+    # DOWNLOAD URI
+    #
+    def test_download_uri__no_uri(self):
+
+        a = ef.account()
+        d = DownloadRequest.objects.create(
+            created_by=a,
+            blob_name=None,
+            spec={
+                'columns': ['product'],
+                'filters': [
+                    {
+                        'name': 'price',
+                        'operator': '>=',
+                        'value': 78,
+                    },
+                ],
+                'randomize_ratio': 1,
+            },
+            catalogue_item=self.ci)
+
+        assert d.download_uri is None
+
+    @freeze_time('10.04.2020 13:34:12')
+    @override_settings(
+        AZURE_BLOB_STORAGE_ACCOUNT_NAME='dl1storage',
+        AZURE_BLOB_STORAGE_CONTAINER='lakey',
+        AZURE_BLOB_STORAGE_ACCOUNT_KEY='secret')
+    def test_download_uri__existing_uri(self):
+
+        generate_blob_sas = self.mocker.patch(
+            'downloader.models.generate_blob_sas')
+        generate_blob_sas.return_value = 'v=6576&sig=4637e6dsd76'
+
+        a = ef.account()
+        d = DownloadRequest.objects.create(
+            created_by=a,
+            blob_name='7/8/9/data.csv',
+            spec={
+                'columns': ['product'],
+                'filters': [
+                    {
+                        'name': 'price',
+                        'operator': '>=',
+                        'value': 78,
+                    },
+                ],
+                'randomize_ratio': 1,
+            },
+            catalogue_item=self.ci)
+
+        assert d.download_uri == (
+            'https://dl1storage.blob.core.windows.net/lakey/7/8/9/data.csv'
+            '?v=6576&sig=4637e6dsd76')
 
     #
     # PRE_SAVE FLOW

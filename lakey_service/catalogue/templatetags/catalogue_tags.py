@@ -43,10 +43,12 @@ def distribution_chart(spec):
             )
             col_nr += 1
 
-    fig.update_layout(height=400,
-                      width=no_of_charts*400,
-                      showlegend=False)
+    fig.update_layout(
+        height=400,
+        width=no_of_charts * 400,
+        showlegend=False)
 
-    return mark_safe('<div style ="overflow-x: auto;" >'
-                     + fig.to_html(full_html=False)
-                     + '</div>')
+    return mark_safe(
+        '<div style ="overflow-x: auto;" >' +
+        fig.to_html(full_html=False) +
+        '</div>')
