@@ -9,7 +9,7 @@ Lakey was built and designed with one goal in mind: "to free up the data, which 
 
 To learn more read high level overview regarding the [Big Data Myths](https://github.com/cosphere-org/lakey-service/blob/master/LAKEY.md)
 
-Before one starts working with `Lakey-Service` two files must be obtained over secured channel: `ngrok_private.yaml` and `env_private.sh` (please reach author for them).
+Before one starts working with `Lakey-Service` one file must be obtained over secured channel: `env_private.sh` (please reach author for them).
 
 ## Setting Up for the Development
 
@@ -49,15 +49,43 @@ make start_db
 make start_dev_server port=8889
 ```
 
-### Running grok
+### Testing authentication locally
 
-In order to test the authentication while still developing locally one can use `ngrok` proxy which will expose the locally running service over the web.
+Our local testing flow is based on a special domain `lvh.me` which is exposing your localhost (locally) so that google sees it correctly during the oauth2 dance.
 
-In order to start such a process one can run:
+To make a quick run of the authentication flow go though the following steps:
 
+1. Start local server, run the the console:
 ```bash
-source env.sh && \
-ngrok start --config ngrok_private.yaml --region eu lakey-<your-name>
+make start_dev_server
+```
+
+2. Create auth request, run in ipython:
+```python
+import requests
+
+# -- create auth request first
+response = requests.post('http://lvh.me:8887/accounts/auth_requests/')
+data = response.json()
+
+# -- this will be needed later
+request_uuid = data['request_uuid']
+print('go to: ', 'http://lvh.me:8887' + data['authenticate_ui_uri'])
+```
+
+3. Visit the url and go through the flow
+4. Get the token. Run in ipython:
+
+```python
+import requests
+
+# -- create auth request first
+response = requests.post(
+    'http://lvh.me:8887/accounts/auth_tokens/',
+    # -- here us the value from step 2!
+    json={'request_uuid': request_uuid})
+
+print(response.json()['token'])
 ```
 
 ## Setting up Accounts and Tokens
