@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Get Lakey Token</title>
+        <meta
+            name="google-signin-client_id"
+            content="{{ client_id }}">
+
+        <link
+            href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans"
+            rel="stylesheet">
+        <style>
+            body {
+                background: #e4e4e4;
+            }
+
+            #main {
+                height: 200px;
+                width: 100%;
+                font-family: 'IBM Plex Sans', sans-serif;
+            }
+
+            h2 {
+                font-weight: normal;
+            }
+
+            #authenticate, #done, #wait {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #done, #wait {
+                display: none;
+            }
+        </style>
+        <script
+            type="text/javascript">
+
+
+            function renderButton() {
+                gapi.signin2.render('google-auth-button', {
+                    'scope': 'profile email',
+                    'width': 240,
+                    'height': 50,
+                    'longtitle': true,
+                    'theme': 'dark',
+                    'onsuccess': onSuccess,
+                    'onfailure': onFailure
+              });
+            }
+
+            function onSuccess(googleUser) {
+                let $done = document.getElementById('done');
+                let $wait = document.getElementById('wait');
+                let $authenticate = document.getElementById('authenticate');
+
+                let profile = googleUser.getBasicProfile();
+                if(googleUser.getHostedDomain() != 'viessmann.com') {
+                    console.error("Wrong domain!")
+                    $done.innerHTML = "Wrong domain!"
+                    $done.style['display'] = 'flex';
+                }
+                else {
+                    let xhr = new XMLHttpRequest();
+                    xhr.open(
+                        'POST',
+                        '/accounts/generate_token/');
+
+                    xhr.setRequestHeader(
+                        "Content-Type", "application/json;charset=UTF-8");
+
+                    xhr.send(
+                        JSON.stringify({
+                            oauth_token: googleUser.getAuthResponse().id_token,
+                            email: profile.getEmail(),
+                        })
+                    );
+
+                    // -- hide AUTHENTICATE view and show WAIT view
+                    $authenticate.style['display'] = 'none';
+                    $wait.style['display'] = 'flex';
+
+                    xhr.onload = () => {
+                        // -- hide WAIT view and show DONE view
+                        $wait.style['display'] = 'none';
+                        $done.style['display'] = 'flex';
+                        $done.innerHTML = "Your token: " + JSON.parse(xhr.response).token;
+                    };
+                }
+            }
+
+            function onFailure(error) {
+                console.error(error);
+            }
+
+        </script>
+        <script
+            src="https://apis.google.com/js/platform.js?onload=renderButton"
+            async
+            defer>
+        </script>
+    </head>
+
+    <body>
+
+        <div
+            id="main">
+            <div
+                id="authenticate">
+
+                <h2>Sign in to Lakey to obtain token</h2>
+                <div
+                    id="google-auth-button"></div>
+            </div>
+
+            <div
+                id="wait">
+
+                PLEASE WAIT ...
+            </div>
+
+            <div
+                id="done">
+            </div>
+
+        </div>
+    </body>
+
+</html>

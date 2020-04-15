@@ -12,11 +12,13 @@ from lily import (
     serializers,
     HTTPCommands,
 )
+from lily.base.events import EventFactory
 from django.template.loader import render_to_string
 
 from .domains import ACCOUNT_AUTHENTICATION
-from .models import AuthRequest
+from .models import AuthRequest, Account
 from .serializers import AuthTokenSerializer, AuthRequestSerializer
+from .token import AuthToken
 
 
 class AuthRequestCommands(HTTPCommands):
@@ -118,3 +120,58 @@ class AuthTokenCommands(HTTPCommands):
             account__isnull=False)
 
         raise self.event.Created({'token': r.get_token_and_delete()})
+
+
+class GetTokenUICommands(HTTPCommands):
+
+    @command(
+        name=name.Execute('RENDER', 'GET_TOKEN_UI'),
+
+        meta=Meta(
+            title='Get Token UI',
+            domain=ACCOUNT_AUTHENTICATION),
+    )
+    def get(self, request):
+        return HttpResponse(render_to_string(
+            'get_token.html',
+            {
+                'client_id': settings.GOOGLE_OAUTH2_CLIENT_ID,
+            }))
+
+
+class GenerateTokenCommands(HTTPCommands):
+
+    class BodyParser(parsers.Parser):
+
+        oauth_token = parsers.CharField()
+
+        email = parsers.EmailField()
+
+    @command(
+        name=name.Execute('GENERATE', 'TOKEN'),
+
+        meta=Meta(
+            title='Generate Token',
+            domain=ACCOUNT_AUTHENTICATION),
+
+        input=Input(body_parser=BodyParser),
+
+        output=Output(serializer=serializers.ObjectSerializer),
+    )
+    def post(self, request):
+
+        # validate google token
+        gmail = AuthRequest.get_oauth2_email(request.input.body['oauth_token'])
+        if request.input.body['email'] != gmail:
+            raise EventFactory.BrokenRequest('EMAIL_MISMATCH_DETECTED')
+
+        # validate domain
+        domain = gmail.split('@')[1]
+        if domain != 'viessmann.com':
+            raise EventFactory.AuthError('WRONG_EMAIL_DOMAIN')
+
+        # generate jwt token
+        account, _ = Account.objects.get_or_create(email=gmail)
+        token = AuthToken.encode(account)
+
+        raise self.event.Executed({'token': token})
