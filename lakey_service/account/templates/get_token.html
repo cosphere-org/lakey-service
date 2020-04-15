@@ -57,38 +57,32 @@
                 let $authenticate = document.getElementById('authenticate');
 
                 let profile = googleUser.getBasicProfile();
-                if(googleUser.getHostedDomain() != 'viessmann.com') {
-                    console.error("Wrong domain!")
-                    $done.innerHTML = "Wrong domain!"
+            
+                let xhr = new XMLHttpRequest();
+                xhr.open(
+                    'POST',
+                    '/accounts/generate_token/');
+
+                xhr.setRequestHeader(
+                    "Content-Type", "application/json;charset=UTF-8");
+
+                xhr.send(
+                    JSON.stringify({
+                        oauth_token: googleUser.getAuthResponse().id_token,
+                        email: profile.getEmail(),
+                    })
+                );
+
+                // -- hide AUTHENTICATE view and show WAIT view
+                $authenticate.style['display'] = 'none';
+                $wait.style['display'] = 'flex';
+
+                xhr.onload = () => {
+                    // -- hide WAIT view and show DONE view
+                    $wait.style['display'] = 'none';
                     $done.style['display'] = 'flex';
-                }
-                else {
-                    let xhr = new XMLHttpRequest();
-                    xhr.open(
-                        'POST',
-                        '/accounts/generate_token/');
-
-                    xhr.setRequestHeader(
-                        "Content-Type", "application/json;charset=UTF-8");
-
-                    xhr.send(
-                        JSON.stringify({
-                            oauth_token: googleUser.getAuthResponse().id_token,
-                            email: profile.getEmail(),
-                        })
-                    );
-
-                    // -- hide AUTHENTICATE view and show WAIT view
-                    $authenticate.style['display'] = 'none';
-                    $wait.style['display'] = 'flex';
-
-                    xhr.onload = () => {
-                        // -- hide WAIT view and show DONE view
-                        $wait.style['display'] = 'none';
-                        $done.style['display'] = 'flex';
-                        $done.innerHTML = "Your token: " + JSON.parse(xhr.response).token;
-                    };
-                }
+                    $done.innerHTML = "Your token: " + JSON.parse(xhr.response).token;
+                };
             }
 
             function onFailure(error) {

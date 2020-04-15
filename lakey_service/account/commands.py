@@ -12,7 +12,6 @@ from lily import (
     serializers,
     HTTPCommands,
 )
-from lily.base.events import EventFactory
 from django.template.loader import render_to_string
 
 from .domains import ACCOUNT_AUTHENTICATION
@@ -163,12 +162,12 @@ class GenerateTokenCommands(HTTPCommands):
         # validate google token
         gmail = AuthRequest.get_oauth2_email(request.input.body['oauth_token'])
         if request.input.body['email'] != gmail:
-            raise EventFactory.BrokenRequest('EMAIL_MISMATCH_DETECTED')
+            raise self.event.BrokenRequest('EMAIL_MISMATCH_DETECTED')
 
         # validate domain
         domain = gmail.split('@')[1]
         if domain != 'viessmann.com':
-            raise EventFactory.AuthError('WRONG_EMAIL_DOMAIN')
+            raise self.event.AuthError('WRONG_EMAIL_DOMAIN')
 
         # generate jwt token
         account, _ = Account.objects.get_or_create(email=gmail)
