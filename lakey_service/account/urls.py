@@ -26,4 +26,13 @@ urlpatterns = [
         commands.AuthTokenCommands.as_view(),
         name='auth.auth_token'),
 
+    url(
+        r'^get_token/$',
+        commands.GetTokenUICommands.as_view(),
+        name='auth.get_token.ui'),
+    
+    url(
+        r'^generate_token/$',
+        commands.GenerateTokenCommands.as_view(),
+        name='auth.get_token.ui'),
 ]

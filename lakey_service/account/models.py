@@ -67,7 +67,8 @@ class AuthRequest(models.Model):
         self.account, _ = Account.objects.get_or_create(email=email)
         self.save()
 
-    def get_oauth2_email(self, oauth_token):
+    @staticmethod
+    def get_oauth2_email(oauth_token):
 
         try:
             idinfo = id_token.verify_oauth2_token(
