@@ -3,6 +3,7 @@ from enum import Enum, unique
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.urls import reverse
 from lily.base.models import (
     array,
     boolean,
@@ -277,3 +278,9 @@ class CatalogueItem(ValidatingModel):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('account:auth.catalogue_item',
+                       args=[
+                           self.id
+                       ])

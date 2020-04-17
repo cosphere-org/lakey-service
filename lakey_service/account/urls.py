@@ -1,7 +1,9 @@
 
+from django.contrib.auth.decorators import login_required
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 
-from . import commands
+from . import commands, views
 
 
 urlpatterns = [
@@ -35,4 +37,21 @@ urlpatterns = [
         r'^generate_token/$',
         commands.GenerateTokenCommands.as_view(),
         name='auth.get_token.ui'),
+
+    url(
+        r'^login/$',
+        auth_views.LoginView.as_view(),
+        name='auth.login'
+    ),
+
+        url(
+        r'^$',
+        login_required(views.DashboardView.as_view()),
+        name='auth.dashboard'
+    ),
+
+    url(
+        r'(?P<item_id>[\w\-]+)/$',
+        views.catalogue_item_view,
+        name='auth.catalogue_item'),
 ]

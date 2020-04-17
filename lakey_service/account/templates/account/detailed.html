@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+{% load account_tags %}
+{% load static %}
+
+{% block content %}
+    <h1> {{ catalogue_item.name }} </h1>
+    <h2> Details </h2>
+    <ul>
+        <li>Executor type: {{ catalogue_item.executor_type }}</li>
+        <li>Maintained by: <a href=mailto:{{ catalogue_item.maintained_by.email }}>{{ catalogue_item.maintained_by.email }}</a></li>
+    </ul>
+
+    <h2> Summary statistics </h2>
+
+    {% if catalogue_item.sample %}
+        <h3> * Sample data </h3>
+        {% sample_table catalogue_item.sample %}
+    {% else %}
+        <p>No sample available for this item</p>
+    {% endif %}
+
+    {% if catalogue_item.spec %}
+        <h3> * Distribution of column values </h3>
+        {% distribution_chart catalogue_item.spec %}
+    {% else %}
+        <p>No distribution data available for this item</p>
+    {% endif %}
+
+{% endblock %}
