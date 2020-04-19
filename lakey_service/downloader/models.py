@@ -277,18 +277,21 @@ class DownloadRequest(ValidatingModel):
 
         container_name = settings.AZURE_BLOB_STORAGE_CONTAINER
 
+        # FIXME: !!! this is a quick fix just to make it work
+        blob_name = self.blob_name.replace(container_name + '/', '')
+
         sas = generate_blob_sas(
             account_name=account_name,
             account_key=settings.AZURE_BLOB_STORAGE_ACCOUNT_KEY,
-            container=container_name,
-            blob=self.blob_name,
+            container_name=container_name,
+            blob_name=blob_name,
             permission='r',
             start=timezone.now(),
             expiry=timezone.now() + timedelta(seconds=3600))
 
         return (
             f'https://{account_name}.blob.core.windows.net/'
-            f'{container_name}/{self.blob_name}?{sas}')
+            f'{container_name}/{blob_name}?{sas}')
 
 
 def pre_save_flow(sender, instance, **kwargs):

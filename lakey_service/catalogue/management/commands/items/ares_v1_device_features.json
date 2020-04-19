@@ -1,0 +1,152 @@
+{
+    "executor_type": "DATABRICKS",
+    "maintained_by_id": 1,
+    "name": "ares_v1.device_features",
+    "sample": [],
+    "spec": [
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "topology_hash",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "installation_id",
+            "size": null,
+            "type": "INTEGER"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "gateway_uuid",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "gateway_material_number",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "boiler_uuid",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "boiler_material_number",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "bmu_uuid",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "bmu_material_number",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "event",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "timestamp",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "timestamp_client",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "property",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "heatingcircuit",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "value",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "source",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "year",
+            "size": null,
+            "type": "INTEGER"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "month",
+            "size": null,
+            "type": "INTEGER"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "day",
+            "size": null,
+            "type": "INTEGER"
+        }
+    ]
+}

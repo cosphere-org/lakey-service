@@ -1,1 +1,267 @@
-hello in downloader
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block meta %}
+<style type="text/css">
+    table {
+        width: 800px;
+    }
+
+    .progress {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 123456;
+        margin: 0;
+
+        background: black;
+        opacity: 0.9;
+        display: none;
+
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .progress h4 {
+        color: white;
+    }
+
+    .downloading-done {
+        display: none;
+    }
+
+</style>
+
+<script type="text/javascript">
+    let COLUMN_NAME_TO_TYPE = ({{ column_name_to_type | safe }});
+
+    $(document).ready(() => {
+        $('select').formSelect();
+
+        $('form').submit(event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            let columns = (
+                $('.columns input:checked')
+                .toArray()
+                .map(c => c.value));
+
+            let filters = [];
+            $('.filter').each((_, e) => {
+                let name = $(e).find('.name').val();
+                let operator = $(e).find('.operator').val();
+                let value = $(e).find('.value').val();
+                let type = COLUMN_NAME_TO_TYPE[name];
+
+                if (type === 'INTEGER') {
+                    value = parseInt(value);
+
+                } else if (type === 'FLOAT') {
+                    value = parseFloat(value);
+
+                }
+
+                if (name && operator && value) {
+                    filters.push({
+                        name: name,
+                        operator: operator,
+                        value: value,
+                    });
+                }
+            });
+
+            $('body').css('overflow', 'hidden');
+            $('.progress').css('display', 'flex');
+            apiCreateDownloadRequest({
+                columns: columns,
+                filters: filters,
+            })
+            .then(download_uri => {
+                $('.downloading-progress').css('display', 'none');
+                $('.downloading-done').css('display', 'block');
+                $('.downloading-done a.download-result').attr('href', download_uri);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        });
+
+        /**
+         * CLOSING OF DOWNLOAD
+         */
+        $('.cancel').on('click', () => {
+            $('.progress').css('display', 'none');
+            $('.downloading-progress').css('display', 'block');
+            $('.downloading-done').css('display', 'none');
+            $('body').css('overflow', 'auto');
+        });
+
+        $('.download-result').on('click', () => {
+            $('.progress').css('display', 'none');
+            $('.downloading-progress').css('display', 'block');
+            $('.downloading-done').css('display', 'none');
+            $('body').css('overflow', 'auto');
+        });
+    });
+
+    let apiCreateDownloadRequest = spec => {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open(
+                'POST',
+                '/downloader/requests/');
+
+            let token = Cookies.get('lakey-auth-token');
+            xhr.setRequestHeader(
+                "Content-Type", "application/json;charset=UTF-8");
+            xhr.setRequestHeader(
+                "Authorization", `Bearer ${token}`);
+
+            xhr.send(
+                JSON.stringify({
+                    spec: spec,
+                    catalogue_item_id: ({{ catalogue_item_id }}),
+                }));
+
+            xhr.onload = () => {
+                resolve(JSON.parse(xhr.response).download_uri);
+            };
+        });
+    }
+
+</script>
+{% endblock %}
+
+{% block content %}
+<div
+    class="progress"
+>
+    <div class="downloading-progress preloader-wrapper big active">
+        <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+                <div class="circle">
+                </div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle">
+                </div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+    <h4
+        class="downloading-progress"
+    >
+    We're downloading your data, it will take few minutes
+    </h4>
+
+    <h4
+        class="downloading-done"
+    >
+    Your download it done! Have fun with your exploration!
+    </h4>
+    <div
+        class="downloading-done"
+    >
+        <a
+             class="download-result waves-effect waves-light btn"
+        >
+            Download <i class="material-icons right">file_download</i>
+        </a>
+        <a
+             class="cancel waves-effect waves-light btn"
+        >
+            Cancel
+        </a>
+
+    </div>
+
+</div>
+
+<h1> {{ name }} </h1>
+
+<form action="">
+
+    <h3>Columns</h3>
+    <div
+        class="columns"
+    >
+    {% for column in columns %}
+        <p>
+          <label>
+            <input type="checkbox" class="filled-in" value="{{ column }}" />
+            <span>{{ column }}</span>
+          </label>
+        </p>
+    {% endfor %}
+    </div>
+
+    <h3>Filters</h3>
+    <div>
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>
+                        column name
+                    </th>
+                    <th>
+                        operator
+                    </th>
+                    <th>
+                        value
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for _ in filters %}
+                <tr class="filter">
+                    <td>
+                        <select
+                            class="name"
+                        >
+                          <option value="" disabled selected>Choose the column</option>
+                          {% for column in columns %}
+                              <option value="{{ column }}">{{ column }}</option>
+                          {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select
+                            class="operator"
+                        >
+                          <option value="" disabled selected>Choose the operator</option>
+                          <option value=">"> greater than (>) </option>
+                          <option value=">="> greater than equal (>=) </option>
+                          <option value="<"> smaller than (<) </option>
+                          <option value="<="> smaller than equal (<=) </option>
+                          <option value="="> equal (=) </option>
+                          <option value="!="> not equal (!=) </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input class="value" type="text" />
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <button
+        class="btn waves-effect waves-light"
+        type="submit"
+    >
+        Submit <i class="material-icons right">send</i>
+    </button>
+
+</form>
+
+{% endblock %}

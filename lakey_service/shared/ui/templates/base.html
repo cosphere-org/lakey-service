@@ -24,15 +24,38 @@
     {% endblock %}
   </head>
   <body>
+    {% if is_authenticated %}
     <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper">
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="/ui/catalogue/">Catalogue</a></li>
-            <li><a href="/ui/downloader/requests/">Downloads</a></li>
+          <ul class="left hide-on-med-and-down">
+
+            <li
+              {% if name == 'catalogue' %}
+              class="active"
+              {% endif %}
+
+            ><a href="/ui/catalogue/">Catalogue</a></li>
+            <li
+              {% if name == 'downloads' %}
+              class="active"
+              {% endif %}
+            ><a href="/ui/downloader/requests/">Downloads</a></li>
+          </ul>
+
+          <ul class="right">
+            <li><a class="logout">logout</a></li>
           </ul>
         </div>
       </nav>
+      {% endif %}
+
+      <script type="text/javascript">
+        $('.logout').on('click', () => {
+          Cookies.remove('lakey-auth-token');
+          window.location.href = '/ui/accounts/login/';
+        });
+      </script>
     </div>
 
     <div class="content">
