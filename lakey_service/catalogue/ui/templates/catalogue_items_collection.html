@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load item_url %}
+
+{% block content %}
+  <h1>Catalogue</h1>
+
+  {% if items %}
+  <ul>
+    {% for item in items %}
+      <li>
+        [{{ item.executor_type }}]
+        <a href="{% item_url item %}">{{ item.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% else %}
+    <p>There are no items to show.</p>
+
+  {% endif %}
+
+{% endblock %}

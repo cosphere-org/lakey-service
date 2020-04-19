@@ -18,28 +18,6 @@ from tests.factory import EntityFactory
 ef = EntityFactory()
 
 
-class AuthenticateUICommandsTestCase(TestCase):
-
-    def get_uri(self, request_uuid):
-        return reverse(
-            'account:auth.requests.authenticate.ui',
-            kwargs={'request_uuid': request_uuid})
-
-    def setUp(self):
-        ef.clear()
-
-        self.app = Client()
-
-    def test_get(self):
-
-        response = self.app.get(self.get_uri('some-uuid'))
-
-        assert response.status_code == 200
-        html = response.content.decode('utf8')
-        assert 'some-uuid' in html
-        assert html.strip().startswith('<!DOCTYPE html>')
-
-
 class AuthRequestCommandsTestCase(TestCase):
 
     uri = reverse('account:auth.requests')
@@ -84,9 +62,8 @@ class AuthRequestAttachAccountCommandsTestCase(TestCase):
     def test_post(self):
 
         r = ef.auth_request()
-        self.mocker.patch.object(
-            AuthRequest,
-            'get_oauth2_email'
+        self.mocker.patch(
+            'account.models.validate_token'
         ).return_value = 'jacky@somewhere.org'
 
         assert Account.objects.count() == 0
@@ -111,9 +88,8 @@ class AuthRequestAttachAccountCommandsTestCase(TestCase):
 
     def test_post__broken_body(self):
 
-        self.mocker.patch.object(
-            AuthRequest,
-            'get_oauth2_email'
+        self.mocker.patch(
+            'account.models.validate_token'
         ).return_value = 'jacky@somewhere.org'
 
         assert Account.objects.count() == 0

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Lakey Authentication
+{% endblock %}
+
+{% block meta %}
+<meta
+    name="google-signin-client_id"
+    content="{{ client_id }}">
+
+<style>
+
+    .container {
+        height: 200px;
+        width: 100%;
+    }
+
+    .signin,
+    .catalogue-items,
+    .token {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .token input {
+        width: 300px !important;
+    }
+
+    .catalogue-items,
+    .token {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div
+    class="container"
+>
+    <!--
+        STEP 1: SIGN IN / SIGN UP
+    -->
+    <div
+        class="signin"
+    >
+        <a
+            class="waves-effect waves-light btn disabled">
+            Sign In / Up to Lakey
+        </a>
+    </div>
+
+    <!--
+        STEP 2: TOKEN / CATALOGUE ITEMS
+    -->
+    <div
+        class="catalogue-items"
+    >
+        <a
+            class="waves-effect waves-light btn"
+            href="/ui/catalogue/"
+        >
+            Start exploring our Data
+        </a>
+    </div>
+
+    <div
+        class="token"
+    >
+        <input id="token" type="text">
+        <label for="token">API Authorization Token</label>
+
+        <a
+            class="waves-effect waves-light btn">
+            Click to copy to the Clipboard
+        </a>
+    </div>
+
+    <script
+        type="text/javascript"
+        src="{% static "js/login.js" %}">
+    </script>
+
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+
+</div>
+{% endblock %}

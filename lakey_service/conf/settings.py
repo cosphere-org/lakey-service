@@ -3,6 +3,9 @@ from datetime import timedelta
 import os
 
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 SECRET_KEY = 'not.really.needed'
 
 DEBUG = True
@@ -37,6 +40,8 @@ GOOGLE_OAUTH2_SCOPE = [
 ]
 
 GOOGLE_OAUTH2_USER_INFO_URI = 'https://www.googleapis.com/oauth2/v1/userinfo'
+
+GOOGLE_OAUTH2_ALLOWED_DOMAINS = ['viessmann.com']
 
 #
 # AUTH REQUEST / TOKEN
@@ -114,7 +119,12 @@ DATABASES = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'shared', 'ui', 'templates'),
+            os.path.join(BASE_DIR, 'account', 'ui', 'templates'),
+            os.path.join(BASE_DIR, 'catalogue', 'ui', 'templates'),
+            os.path.join(BASE_DIR, 'downloader', 'ui', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,6 +133,15 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'markdown': 'shared.ui.templatetags.markdown',
+                'item_url': 'catalogue.ui.templatetags.item_url',
+                'download_item_url': (
+                    'catalogue.ui.templatetags.download_item_url'),
+                'sample_table': 'catalogue.ui.templatetags.sample_table',
+                'distribution_chart': (
+                    'catalogue.ui.templatetags.distribution_chart'),
+            }
         },
     },
 ]
@@ -141,12 +160,14 @@ INSTALLED_APPS = (
     'django.contrib.postgres',
     'django.contrib.auth',
     'django.contrib.admin',
+    'django.contrib.messages',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
-    'rest_framework',
+    'django_json_widget',
 
     # -- service's apps
+    'shared',
     'account',
     'catalogue',
     'downloader',
@@ -160,7 +181,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware'
 ]
 
-
 ROOT_URLCONF = 'conf.urls'
 
 
@@ -168,5 +188,11 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'shared', 'ui', 'static'),
+    os.path.join(BASE_DIR, 'account', 'ui', 'static'),
+]

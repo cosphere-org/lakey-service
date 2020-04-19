@@ -6,7 +6,7 @@ from django.urls import reverse
 from lily.base.test import Client
 import pytest
 
-from account.models import Account
+from account.models import AccountType
 from account.token import AuthToken
 from catalogue.models import CatalogueItem
 from catalogue.serializers import CatalogueItemSerializer
@@ -24,7 +24,7 @@ class CatalogueItemCollectionCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.AccountType.ADMIN)
+        self.account = ef.account(type=AccountType.ADMIN.value)
 
         token = AuthToken.encode(self.account)
         self.headers = {
@@ -312,7 +312,7 @@ class CatalogueItemElementCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.AccountType.ADMIN)
+        self.account = ef.account(type=AccountType.ADMIN.value)
 
         token = AuthToken.encode(self.account)
         self.headers = {
@@ -580,7 +580,7 @@ class CatalogueItemSampleAndDistributionsCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.AccountType.ADMIN)
+        self.account = ef.account(type=AccountType.ADMIN.value)
 
         token = AuthToken.encode(self.account)
         self.headers = {

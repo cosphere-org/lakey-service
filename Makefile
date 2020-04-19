@@ -42,14 +42,9 @@ create_fake_catalogue_items_with_overwrite:  ## create fake catalogue items with
 
 
 #
-# ADMIN
+# EXTRA
 #
-start_gunicorn_admin:  ## start service locally
+.PHONY: collectstatic
+collectstatic:  ## collectstatic
 	source env.sh && \
-	export PYTHONPATH="${PYTHONPATH}:${PWD}/lakey_service" && \
-	gunicorn conf.wsgi_admin \
-		--worker-class gevent \
-		-w 1 \
-		--log-level=debug \
-		-t 60 \
-		-b 127.0.0.1:10000
+	python lakey_service/manage.py collectstatic --noinput

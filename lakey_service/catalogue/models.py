@@ -3,7 +3,6 @@ from enum import Enum, unique
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.urls import reverse
 from lily.base.models import (
     array,
     boolean,
@@ -113,10 +112,14 @@ class CatalogueItem(ValidatingModel):
         on_delete=models.SET_NULL,
         related_name='catalogue_item_as_maintainer')
 
+    researchers = models.ManyToManyField(Account)
+
     #
     # SPEC
     #
     name = models.CharField(max_length=256, unique=True)
+
+    description = models.TextField(blank=True, null=True)
 
     sample = JSONSchemaField(
         default=list,
@@ -278,9 +281,3 @@ class CatalogueItem(ValidatingModel):
 
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse('account:auth.catalogue_item',
-                       args=[
-                           self.id
-                       ])

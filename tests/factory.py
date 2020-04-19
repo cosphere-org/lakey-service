@@ -5,6 +5,7 @@ from faker import Faker
 
 from account.models import (
     Account,
+    AccountType,
     AuthRequest,
 )
 from catalogue.models import CatalogueItem
@@ -24,7 +25,7 @@ class EntityFactory:
     def account(self, email=None, type=None):
         return Account.objects.create(
             email=email or faker.email(),
-            type=type or Account.AccountType.RESEARCHER)
+            type=type or AccountType.RESEARCHER.value)
 
     def auth_request(self, account=None):
 

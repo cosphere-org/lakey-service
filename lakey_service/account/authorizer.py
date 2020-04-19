@@ -1,5 +1,6 @@
 
 from lily import BaseAuthorizer
+from django.http import HttpResponseForbidden
 
 from .token import AuthToken
 
@@ -29,6 +30,20 @@ class Authorizer(BaseAuthorizer):
         # -- return the enrichment that should be available as
         # -- `request.access` attribute
         return {'account': account}
+
+    # FIXME: this is a temporary solution just to make it work
+    # while the UI is still handled by django
+    def ui_authorize(self, request):
+
+        try:
+            token = request.COOKIES['lakey-auth-token']
+
+        except KeyError:
+            raise HttpResponseForbidden('NO_AUTH_TOKEN_DETECTED')
+
+        account = AuthToken.decode(token)
+
+        return account
 
     def log(self, authorize_data):
         return {

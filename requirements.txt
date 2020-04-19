@@ -24,5 +24,19 @@ databricks-api==0.3.0
 azure-storage-common==2.1.0
 azure-storage-blob==12.3.0
 
+#
+# ADMIN
+#
+
+# -- django extra
+django-json-widget==0.2.0
+
+#
+# UI
+#
+
 # -- distribution charts
 plotly==4.6.0
+
+# -- markdown renderer
+Markdown==3.2.1

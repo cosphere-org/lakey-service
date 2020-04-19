@@ -7,7 +7,7 @@ from freezegun import freeze_time
 import pytest
 from lily.base.events import EventFactory
 
-from account.models import Account, AuthRequest
+from account.models import Account, AuthRequest, AccountType
 from account.token import AuthToken
 from tests.factory import EntityFactory
 
@@ -24,10 +24,10 @@ class AccountTestCase(TestCase):
 
         a = Account.objects.create(
             email='jacky@some.io',
-            type=Account.AccountType.ADMIN)
+            type=AccountType.ADMIN.value)
 
         assert a.email == 'jacky@some.io'
-        assert a.type == Account.AccountType.ADMIN
+        assert a.type == AccountType.ADMIN.value
 
 
 class AuthRequestTestCase(TestCase):
@@ -51,9 +51,8 @@ class AuthRequestTestCase(TestCase):
     #
     def test_attach_account__account_does_not_exist(self):
 
-        self.mocker.patch.object(
-            AuthRequest,
-            'get_oauth2_email'
+        self.mocker.patch(
+            'account.models.validate_token'
         ).return_value = 'jacky@somewhere.org'
 
         assert Account.objects.count() == 0
@@ -67,9 +66,8 @@ class AuthRequestTestCase(TestCase):
 
     def test_attach_account__account_exists(self):
 
-        self.mocker.patch.object(
-            AuthRequest,
-            'get_oauth2_email'
+        self.mocker.patch(
+            'account.models.validate_token'
         ).return_value = 'jacky@somewhere.org'
 
         account = ef.account(email='jacky@somewhere.org')
@@ -83,9 +81,8 @@ class AuthRequestTestCase(TestCase):
 
     def test_attach_account__emails_mismatch(self):
 
-        self.mocker.patch.object(
-            AuthRequest,
-            'get_oauth2_email'
+        self.mocker.patch(
+            'account.models.validate_token'
         ).return_value = 'alice@somewhere.org'
 
         r = ef.auth_request()
