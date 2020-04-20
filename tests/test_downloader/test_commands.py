@@ -7,7 +7,7 @@ from django.urls import reverse
 from lily.base.test import Client
 import pytest
 
-from account.models import Account
+from account.models import AccountType
 from account.token import AuthToken
 from downloader.models import DownloadRequest
 from downloader.serializers import DownloadRequestSerializer
@@ -30,7 +30,7 @@ class DownloadRequestEstimateCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.AccountType.ADMIN)
+        self.account = ef.account(type=AccountType.ADMIN.value)
 
         token = AuthToken.encode(self.account)
         self.headers = {
@@ -95,7 +95,7 @@ class DownloadRequestCollectionCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.AccountType.ADMIN)
+        self.account = ef.account(type=AccountType.ADMIN.value)
         self.ci = ef.catalogue_item(
             spec=[
                 {
@@ -328,7 +328,7 @@ class DownloadRequestElementCommandsTestCase(TestCase):
         ef.clear()
 
         self.app = Client()
-        self.account = ef.account(type=Account.AccountType.ADMIN)
+        self.account = ef.account(type=AccountType.ADMIN.value)
 
         token = AuthToken.encode(self.account)
         self.headers = {

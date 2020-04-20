@@ -1,7 +1,4 @@
 
-from django.urls import reverse
-from django.http import HttpResponse
-from django.conf import settings
 from lily import (
     command,
     Input,
@@ -12,7 +9,6 @@ from lily import (
     serializers,
     HTTPCommands,
 )
-from django.template.loader import render_to_string
 
 from .domains import ACCOUNT_AUTHENTICATION
 from .models import AuthRequest, Account
@@ -35,32 +31,15 @@ class AuthRequestCommands(HTTPCommands):
 
         r = AuthRequest.objects.create()
 
+        # FIXME: !!!! fix this URL!!!
+        # - make it absolute
+        # - make it add query param
         raise self.event.Created({
-            'authenticate_ui_uri': reverse(
-                'account:auth.requests.authenticate.ui',
-                kwargs={'request_uuid': r.uuid}),
+            # 'authenticate_ui_uri': reverse(
+            #     'account:auth.requests.authenticate.ui',
+            #     kwargs={'request_uuid': r.uuid}),
             'request_uuid': r.uuid,
         })
-
-
-class AuthRequestAuthenticateUICommands(HTTPCommands):
-
-    @command(
-        name=name.Execute('RENDER', 'AUTH_REQUEST_AUTHENTICATE_UI'),
-
-        meta=Meta(
-            title='Render Auth Request Authentication UI',
-            domain=ACCOUNT_AUTHENTICATION),
-    )
-    def get(self, request, request_uuid):
-
-        # FIXME: check is such `request_uuid` exists!!!!
-        return HttpResponse(render_to_string(
-            'authenticate.html',
-            {
-                'auth_request_uuid': request_uuid,
-                'client_id': settings.GOOGLE_OAUTH2_CLIENT_ID,
-            }))
 
 
 class AuthRequestAttachAccountCommands(HTTPCommands):
@@ -95,14 +74,14 @@ class AuthRequestAttachAccountCommands(HTTPCommands):
         raise self.event.Executed()
 
 
-class AuthTokenCommands(HTTPCommands):
+class AuthRequestAuthTokenCommands(HTTPCommands):
 
     class BodyParser(parsers.Parser):
 
         request_uuid = parsers.UUIDField()
 
     @command(
-        name=name.Create('AUTH_TOKEN'),
+        name=name.Create('AUTH_TOKEN_FOR_AUTH_REQUEST'),
 
         meta=Meta(
             title='Create Auth Token',
@@ -121,24 +100,7 @@ class AuthTokenCommands(HTTPCommands):
         raise self.event.Created({'token': r.get_token_and_delete()})
 
 
-class GetTokenUICommands(HTTPCommands):
-
-    @command(
-        name=name.Execute('RENDER', 'GET_TOKEN_UI'),
-
-        meta=Meta(
-            title='Get Token UI',
-            domain=ACCOUNT_AUTHENTICATION),
-    )
-    def get(self, request):
-        return HttpResponse(render_to_string(
-            'get_token.html',
-            {
-                'client_id': settings.GOOGLE_OAUTH2_CLIENT_ID,
-            }))
-
-
-class GenerateTokenCommands(HTTPCommands):
+class AuthTokenCommands(HTTPCommands):
 
     class BodyParser(parsers.Parser):
 
@@ -147,7 +109,7 @@ class GenerateTokenCommands(HTTPCommands):
         email = parsers.EmailField()
 
     @command(
-        name=name.Execute('GENERATE', 'TOKEN'),
+        name=name.Create('AUTH_TOKEN'),
 
         meta=Meta(
             title='Generate Token',
@@ -155,22 +117,14 @@ class GenerateTokenCommands(HTTPCommands):
 
         input=Input(body_parser=BodyParser),
 
-        output=Output(serializer=serializers.ObjectSerializer),
+        output=Output(serializer=AuthTokenSerializer),
     )
     def post(self, request):
 
-        # validate google token
-        gmail = AuthRequest.get_oauth2_email(request.input.body['oauth_token'])
-        if request.input.body['email'] != gmail:
-            raise self.event.BrokenRequest('EMAIL_MISMATCH_DETECTED')
+        email = request.input.body['email']
 
-        # validate domain
-        domain = gmail.split('@')[1]
-        if domain != 'viessmann.com':
-            raise self.event.AuthError('WRONG_EMAIL_DOMAIN')
+        oauth_token = request.input.body['oauth_token']
 
-        # generate jwt token
-        account, _ = Account.objects.get_or_create(email=gmail)
-        token = AuthToken.encode(account)
+        account = Account.objects.get_or_create_oauth2(email, oauth_token)
 
-        raise self.event.Executed({'token': token})
+        raise self.event.Created({'token': AuthToken.encode(account)})

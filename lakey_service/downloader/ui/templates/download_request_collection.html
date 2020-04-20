@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load filters %}
+{% load columns %}
+
+{% block content %}
+  <h1>Download Requests</h1>
+
+  {% if download_requests %}
+  <table>
+    <thead>
+      <tr>
+        <th>Catalogue Item Name</th>
+        <th>Created At</th>
+        <th>Columns</th>
+        <th>Filters</th>
+        <th>Output</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for req in download_requests %}
+      <tr>
+        <td>
+          {{ req.catalogue_item.name }}
+        </td>
+        <td>
+          {{ req.created_datetime }}
+        </td>
+        <td>
+          {% columns req.spec %}
+        </td>
+        <td>
+          {% filters req.spec %}
+        </td>
+        <td>
+
+          {% if req.blob_name %}
+          <a
+            class="download waves-effect waves-teal btn-flat"
+            href="{{ req.download_uri }}"
+          >
+            Download <i class="material-icons right">file_download</i>
+          </a>
+
+          {% else %}
+            NO OUTPUT
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+  <p>There are no download requests to show.</p>
+
+  {% endif %}
+
+{% endblock %}

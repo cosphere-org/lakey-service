@@ -1,0 +1,248 @@
+{
+    "executor_type": "DATABRICKS",
+    "maintained_by_id": 1,
+    "name": "atlas_v0.installations",
+    "sample": [],
+    "spec": [
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "installation_id",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "topology_hash",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "vi_next_ts",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "gateway_uuid",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "gateway_material_number",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "boiler_uuid",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "boiler_material_number",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "boiler_serial_editor",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "bmu_uuid",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "bmu_material_number",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "bmu_serial_editor",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "customer_uuid",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "department_name",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "model_id",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "gateway_created_at",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "gateway_registered_at",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "gateway_type",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "device_created_at",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "device_registered_at",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "device_pair_id",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "city",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "country",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "region",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "timezone",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "version",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "zip_code",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "operation_type",
+            "size": null,
+            "type": "STRING"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "year",
+            "size": null,
+            "type": "INTEGER"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "month",
+            "size": null,
+            "type": "INTEGER"
+        },
+        {
+            "distribution": null,
+            "is_enum": false,
+            "is_nullable": false,
+            "name": "day",
+            "size": null,
+            "type": "INTEGER"
+        }
+    ]
+}

@@ -1,8 +1,10 @@
 
+from enum import Enum, unique
 import uuid
 
+from django.db import models, IntegrityError
 from django.utils import timezone
-from django.db import models
+from django.contrib.auth.models import User
 from django.conf import settings
 from google.oauth2 import id_token
 from google.auth.transport import requests
@@ -12,23 +14,83 @@ from lily.base.models import EnumChoiceField
 from .token import AuthToken
 
 
+def validate_token(email, oauth_token):
+
+    try:
+        idinfo = id_token.verify_oauth2_token(
+            oauth_token,
+            requests.Request(),
+            settings.GOOGLE_OAUTH2_CLIENT_ID)
+
+        issuers = ['accounts.google.com', 'https://accounts.google.com']
+        if idinfo['iss'] not in issuers:
+            raise EventFactory.Conflict(
+                'GOOGLE_OAUTH2_USER_INFO_ERROR_DETECTED')
+
+        gmail_email = idinfo['email']
+
+    except ValueError:
+        raise EventFactory.Conflict(
+            'GOOGLE_OAUTH2_USER_INFO_ERROR_DETECTED')
+
+    # -- validate email
+    if gmail_email != email:
+        raise EventFactory.BrokenRequest('EMAIL_MISMATCH_DETECTED')
+
+    # -- validate domain
+    domain = email.split('@')[1]
+    if domain not in settings.GOOGLE_OAUTH2_ALLOWED_DOMAINS:
+        raise EventFactory.AuthError('WRONG_EMAIL_DOMAIN')
+
+    return gmail_email
+
+
+@unique
+class AccountType(Enum):
+
+    RESEARCHER = 'RESEARCHER'
+
+    ADMIN = 'ADMIN'
+
+
+class AccountManager(models.Manager):
+
+    def get_or_create_oauth2(self, email, oauth_token):
+
+        validate_token(email, oauth_token)
+
+        try:
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=None)
+
+        except IntegrityError:
+            user = User.objects.get(username=email, email=email)
+
+        account, created = Account.objects.get_or_create(
+            email=email, user=user)
+        # FIXME: test it!!!
+        if created:
+            self.account.type = AccountType.RESEARCHER.value
+            self.account.save()
+
+        return account
+
+
 class Account(models.Model):
+
+    objects = AccountManager()
 
     email = models.EmailField(unique=True)
 
-    class AccountType:
+    user = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE)
 
-        RESEARCHER = 'RESEARCHER'
-
-        ADMIN = 'ADMIN'
-
-        ANY = [RESEARCHER, ADMIN]
-
-    type = EnumChoiceField(
-        max_length=64,
-        default=AccountType.RESEARCHER,
-        enum_name='account_type',
-        choices=[(t, t) for t in AccountType.ANY])
+    type = EnumChoiceField(enum=AccountType)
 
     def __str__(self):
         return self.email
@@ -61,31 +123,15 @@ class AuthRequest(models.Model):
 
     def attach_account(self, email, oauth_token):
 
-        if self.get_oauth2_email(oauth_token) != email:
-            raise EventFactory.BrokenRequest('EMAIL_MISMATCH_DETECTED')
+        validate_token(email, oauth_token)
 
-        self.account, _ = Account.objects.get_or_create(email=email)
+        self.account, created = Account.objects.get_or_create(email=email)
+        # FIXME: test it!!!
+        if created:
+            self.account.type = AccountType.RESEARCHER.value
+            self.account.save()
+
         self.save()
-
-    @staticmethod
-    def get_oauth2_email(oauth_token):
-
-        try:
-            idinfo = id_token.verify_oauth2_token(
-                oauth_token,
-                requests.Request(),
-                settings.GOOGLE_OAUTH2_CLIENT_ID)
-
-            issuers = ['accounts.google.com', 'https://accounts.google.com']
-            if idinfo['iss'] not in issuers:
-                raise EventFactory.Conflict(
-                    'GOOGLE_OAUTH2_USER_INFO_ERROR_DETECTED')
-
-            return idinfo['email']
-
-        except ValueError:
-            raise EventFactory.Conflict(
-                'GOOGLE_OAUTH2_USER_INFO_ERROR_DETECTED')
 
     @property
     def expired(self):

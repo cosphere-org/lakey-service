@@ -1,0 +1,50 @@
+
+{% extends "base.html" %}
+{% load markdown %}
+{% load sample_table %}
+{% load distribution_chart %}
+{% load download_item_url %}
+{% load static %}
+
+{% block meta %}
+<style>
+.btn-floating {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<h1> {{ item.name }} </h1>
+<p>
+    {% markdown item.description %}
+</p>
+<ul>
+    <li>Created: {{ item.created_datetime }}</li>
+    <li>Updated: {{ item.updated_datetime }}</li>
+    <li>Created By: <a href=mailto:{{ item.created_by.email }}>{{ item.created_by.email }}</a></li>
+    <li>Updated By: <a href=mailto:{{ item.updated_by.email }}>{{ item.updated_by.email }}</a></li>
+    <li>Maintained By: <a href=mailto:{{ item.maintained_by.email }}>{{ item.maintained_by.email }}</a></li>
+</ul>
+
+<h3>Sample data</h3>
+{% if item.sample %}
+    {% sample_table item.sample %}
+{% else %}
+    <p>No sample available for this item</p>
+{% endif %}
+
+<h3>Distribution of column values</h3>
+{% if item.spec %}
+    {% distribution_chart item.spec %}
+{% else %}
+    <p>No distribution data available for this item</p>
+{% endif %}
+
+ <a
+    class="btn-floating btn-large waves-effect waves-light red"
+    href="{% download_item_url item %}"
+><i class="material-icons">file_download</i></a>
+{% endblock %}

@@ -1,7 +1,7 @@
 
 import djclick as click
 
-from ...models import Account
+from ...models import Account, AccountType
 
 
 @click.command()
@@ -10,8 +10,11 @@ from ...models import Account
     type=str)
 @click.option(
     '--type',
-    default=Account.AccountType.RESEARCHER,
-    type=click.Choice(Account.AccountType.ANY))
+    default=AccountType.RESEARCHER.value,
+    type=click.Choice([
+        AccountType.RESEARCHER.value,
+        AccountType.ADMIN.value,
+    ]))
 def command(email, type):
     """Create account of a given type."""
 

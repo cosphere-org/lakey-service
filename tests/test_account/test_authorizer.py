@@ -7,7 +7,7 @@ import pytest
 
 from account.token import AuthToken
 from account.authorizer import Authorizer
-from account.models import Account
+from account.models import AccountType
 
 from tests.factory import EntityFactory
 
@@ -29,14 +29,14 @@ class AuthorizerTestCase(TestCase):
     #
     def test_authorize(self):
 
-        a = ef.account(type=Account.AccountType.RESEARCHER)
+        a = ef.account(type=AccountType.RESEARCHER.value)
         self.mocker.patch.object(AuthToken, 'decode').return_value = a
         request = Mock(META={'HTTP_AUTHORIZATION': 'bearer token'})
 
         # -- raises nothing, just works fine
         authorized = Authorizer([
-            Account.AccountType.RESEARCHER,
-            Account.AccountType.ADMIN,
+            AccountType.RESEARCHER.value,
+            AccountType.ADMIN.value,
         ]).authorize(request)
 
         assert authorized == {'account': a}
@@ -67,12 +67,12 @@ class AuthorizerTestCase(TestCase):
 
     def test_authorize__access_denied(self):
 
-        a = ef.account(type=Account.AccountType.RESEARCHER)
+        a = ef.account(type=AccountType.RESEARCHER.value)
         self.mocker.patch.object(AuthToken, 'decode').return_value = a
         request = Mock(META={'HTTP_AUTHORIZATION': 'bearer token'})
 
         with pytest.raises(EventFactory.AccessDenied) as e:
-            Authorizer([Account.AccountType.ADMIN]).authorize(request)
+            Authorizer([AccountType.ADMIN.value]).authorize(request)
 
         assert e.value.data == {
             '@event': 'ACCESS_DENIED',

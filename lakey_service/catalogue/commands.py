@@ -13,7 +13,7 @@ from lily import (
     HTTPCommands,
 )
 
-from account.models import Account
+from account.models import AccountType
 from .domains import CATALOGUE
 from .models import CatalogueItem
 from .serializers import CatalogueItemListSerializer, CatalogueItemSerializer
@@ -29,7 +29,9 @@ class CatalogueItemCollectionCommands(HTTPCommands):
             title='Create Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[Account.AccountType.ADMIN]),
+        access=Access(access_list=[
+            AccountType.ADMIN.value,
+        ]),
 
         input=Input(body_parser=CatalogueItemCreateParser),
 
@@ -56,7 +58,10 @@ class CatalogueItemCollectionCommands(HTTPCommands):
             title='Bulk Read Catalogue Items',
             domain=CATALOGUE),
 
-        access=Access(access_list=Account.AccountType.ANY),
+        access=Access(access_list=[
+            AccountType.RESEARCHER.value,
+            AccountType.ADMIN.value,
+        ]),
 
         input=Input(query_parser=QueryParser),
 
@@ -109,7 +114,10 @@ class CatalogueItemElementCommands(HTTPCommands):
             title='Read Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=Account.AccountType.ANY),
+        access=Access(access_list=[
+            AccountType.RESEARCHER.value,
+            AccountType.ADMIN.value,
+        ]),
 
         output=Output(serializer=CatalogueItemSerializer),
     )
@@ -124,7 +132,9 @@ class CatalogueItemElementCommands(HTTPCommands):
             title='Update Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[Account.AccountType.ADMIN]),
+        access=Access(access_list=[
+            AccountType.ADMIN.value,
+        ]),
 
         input=Input(body_parser=CatalogueItemUpdateParser),
 
@@ -148,7 +158,9 @@ class CatalogueItemElementCommands(HTTPCommands):
             title='Delete Catalogue Item',
             domain=CATALOGUE),
 
-        access=Access(access_list=[Account.AccountType.ADMIN]),
+        access=Access(access_list=[
+            AccountType.ADMIN.value,
+        ]),
 
         output=Output(serializer=serializers.EmptySerializer),
     )
@@ -183,7 +195,9 @@ class CatalogueItemSampleAndDistributionsCommands(HTTPCommands):
 
         is_atomic=True,
 
-        access=Access(access_list=[Account.AccountType.ADMIN]),
+        access=Access(access_list=[
+            AccountType.ADMIN.value,
+        ]),
 
         output=Output(serializer=serializers.EmptySerializer),
     )

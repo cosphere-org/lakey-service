@@ -10,7 +10,7 @@ from lily import (
     HTTPCommands,
 )
 
-from account.models import Account
+from account.models import AccountType
 from .domains import DOWNLOAD_REQUESTS
 from .models import DownloadRequest
 from .serializers import (
@@ -32,7 +32,10 @@ class DownloadRequestEstimateCommands(HTTPCommands):
 
         input=Input(body_parser=DownloadRequestParser),
 
-        access=Access(access_list=Account.AccountType.ANY),
+        access=Access(access_list=[
+            AccountType.RESEARCHER.value,
+            AccountType.ADMIN.value,
+        ]),
 
         output=Output(serializer=DownloadRequestEstimateSerializer),
     )
@@ -62,7 +65,10 @@ class DownloadRequestCollectionCommands(HTTPCommands):
 
         input=Input(body_parser=DownloadRequestParser),
 
-        access=Access(access_list=Account.AccountType.ANY),
+        access=Access(access_list=[
+            AccountType.RESEARCHER.value,
+            AccountType.ADMIN.value,
+        ]),
 
         output=Output(serializer=DownloadRequestSerializer),
     )
@@ -94,7 +100,10 @@ class DownloadRequestCollectionCommands(HTTPCommands):
             title='Bulk Read Download Requests which you are waiting for',
             domain=DOWNLOAD_REQUESTS),
 
-        access=Access(access_list=Account.AccountType.ANY),
+        access=Access(access_list=[
+            AccountType.RESEARCHER.value,
+            AccountType.ADMIN.value,
+        ]),
 
         output=Output(serializer=DownloadRequestListSerializer),
     )
@@ -115,7 +124,10 @@ class DownloadRequestElementCommands(HTTPCommands):
             title='Read DownloadRequest one is waiting for',
             domain=DOWNLOAD_REQUESTS),
 
-        access=Access(access_list=Account.AccountType.ANY),
+        access=Access(access_list=[
+            AccountType.RESEARCHER.value,
+            AccountType.ADMIN.value,
+        ]),
 
         output=Output(serializer=DownloadRequestSerializer),
     )
@@ -133,7 +145,10 @@ class DownloadRequestElementCommands(HTTPCommands):
             title='Creator can cancel request or remove himself from waiters',
             domain=DOWNLOAD_REQUESTS),
 
-        access=Access(access_list=Account.AccountType.ANY),
+        access=Access(access_list=[
+            AccountType.RESEARCHER.value,
+            AccountType.ADMIN.value,
+        ]),
 
         output=Output(serializer=serializers.EmptySerializer),
     )
