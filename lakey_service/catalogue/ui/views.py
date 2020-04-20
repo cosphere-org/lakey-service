@@ -21,7 +21,7 @@ class CatalogueItemsCollectionView(View):
 
         return render(
             request,
-            'catalogue_items_collection.html',
+            'catalogue_item_collection.html',
             {
                 'items': items,
                 'name': 'catalogue',
@@ -45,7 +45,7 @@ class CatalogueItemElementView(View):
 
         return render(
             request,
-            'catalogue_items_element.html',
+            'catalogue_item_element.html',
             {
                 'item': item,
                 'is_authenticated': True,

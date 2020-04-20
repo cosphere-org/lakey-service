@@ -11,5 +11,5 @@ register = template.Library()
 def download_item_url(item):
 
     return reverse(
-        'downloader_ui:ui.catalogue.create_for_catalogue',
+        'downloader_ui:ui.request.create_for_catalogue',
         args=[item.id])

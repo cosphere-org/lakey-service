@@ -45,13 +45,18 @@ class DownloadRequestCollectionView(View):
 
         reqs = DownloadRequest.objects.filter(
             Q(created_by=account) |
-            Q(waiters__id=account.id)
-        ).order_by('name')
+            Q(waiters__id=account.id))
+        reqs = reqs.select_related('catalogue_item')
+        reqs = reqs.order_by('catalogue_item__name')
 
         return render(
             request,
             'download_request_collection.html',
-            {'downalod_requests': reqs})
+            {
+                'name': 'downloads',
+                'is_authenticated': True,
+                'download_requests': reqs,
+            })
 
 
 class DownloadRequestElementView(View):
@@ -69,4 +74,4 @@ class DownloadRequestElementView(View):
         return render(
             request,
             'download_request_element.html',
-            {'downalod_request': req})
+            {'download_request': req})

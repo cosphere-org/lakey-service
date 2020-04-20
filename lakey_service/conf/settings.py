@@ -143,6 +143,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries': {
+                'columns': 'downloader.ui.templatetags.columns',
+                'filters': 'downloader.ui.templatetags.filters',
                 'markdown': 'shared.ui.templatetags.markdown',
                 'item_url': 'catalogue.ui.templatetags.item_url',
                 'download_item_url': (

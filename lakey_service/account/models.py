@@ -68,8 +68,12 @@ class AccountManager(models.Manager):
         except IntegrityError:
             user = User.objects.get(username=email, email=email)
 
-        account, _ = Account.objects.get_or_create(
+        account, created = Account.objects.get_or_create(
             email=email, user=user)
+        # FIXME: test it!!!
+        if created:
+            self.account.type = AccountType.RESEARCHER.value
+            self.account.save()
 
         return account
 
@@ -121,7 +125,12 @@ class AuthRequest(models.Model):
 
         validate_token(email, oauth_token)
 
-        self.account, _ = Account.objects.get_or_create(email=email)
+        self.account, created = Account.objects.get_or_create(email=email)
+        # FIXME: test it!!!
+        if created:
+            self.account.type = AccountType.RESEARCHER.value
+            self.account.save()
+
         self.save()
 
     @property
